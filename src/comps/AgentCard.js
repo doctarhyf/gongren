@@ -1,6 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
+import { CLASS_BTN } from "../helpers/flow";
+import { FFD, formatFrenchDate } from "../helpers/func";
 
-export default function AgentCard({ agent }) {
+export default function AgentCard({ agent, onShowRoulement }) {
+  const [editMode, setEditMode] = useState(false);
+
   return (
     <section>
       {agent && (
@@ -15,23 +19,58 @@ export default function AgentCard({ agent }) {
           </div>
           <div>
             <table>
-              <tbody>
-                {Object.entries(agent).map((agent_data, i) => (
-                  <tr key={i}>
-                    <td align="right" className="text-neutral-400 text-sm">
-                      {agent_data[0]}
-                    </td>
-                    <td className="text-sky-500 p-1 font-bold ">
-                      {agent_data[1]}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
+              {!editMode && (
+                <tbody>
+                  {Object.entries(agent).map((agent_data, i) => (
+                    <tr key={i}>
+                      <td align="right" className="text-neutral-400 text-sm">
+                        {agent_data[0]}
+                      </td>
+                      <td className="text-sky-500 p-1 font-bold ">
+                        {agent_data[0] === "created_at" &&
+                          formatFrenchDate(agent_data[1])}
+                        {agent_data[0] !== "created_at" && agent_data[1]}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              )}
+
+              {editMode && (
+                <tbody>
+                  {Object.entries(agent).map((agent_data, i) => (
+                    <tr key={i}>
+                      <td align="right" className="text-neutral-400 text-sm">
+                        {agent_data[0]}
+                      </td>
+                      <td className=" ">
+                        <input
+                          className=" outline-none border border-sky-500 p-1 rounded-md "
+                          type="text"
+                          defaultValue={agent_data[1]}
+                        />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              )}
             </table>
           </div>
-          <div className="flex">
-            <button>VOIR ROULEMENT</button>
-            <button>UPDATE</button>
+          <div className="flex justify-center items-center text-center ">
+            {!editMode && (
+              <button
+                onClick={(e) => onShowRoulement(agent)}
+                className={CLASS_BTN}
+              >
+                VOIR ROULEMENT
+              </button>
+            )}
+            <button
+              onClick={(e) => setEditMode(!editMode)}
+              className={CLASS_BTN}
+            >
+              UPDATE
+            </button>
           </div>
         </div>
       )}

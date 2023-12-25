@@ -7,10 +7,14 @@ import AgentsList from "../comps/AgentsList";
 export default function Agents() {
   const [curAgent, setCurAgent] = useState(null);
 
+  function onShowRoulement() {
+    console.log("On Show Roulement ...");
+  }
+
   return (
     <div className="flex ">
       <AgentsList curAgent={curAgent} onAgentClick={setCurAgent} />
-      <AgentCard agent={curAgent} />
+      <AgentCard onShowRoulement={onShowRoulement} agent={curAgent} />
     </div>
   );
 }

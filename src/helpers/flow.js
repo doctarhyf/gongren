@@ -3,6 +3,9 @@ import Agents from "../pages/agents";
 import Roulements from "../pages/roulements";
 import Equipes from "../pages/equipes";
 
+export const CLASS_BTN =
+  " mx-1 hover:bg-sky-500 hover:text-white border p-1 text-sky-400 border-transparent cursor-pointer rounded-md";
+
 export const MAIN_MENU = [
   { name: "Home", path: "/home", el: Home },
   { name: "Agents", path: "/agents", el: Agents },
