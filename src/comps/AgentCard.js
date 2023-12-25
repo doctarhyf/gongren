@@ -38,14 +38,25 @@ export default function AgentCard({ agent, onShowRoulement }) {
 
               {editMode && (
                 <tbody>
-                  {Object.entries(agent).map((agent_data, i) => (
+                  {[
+                    ["contrat", agent.contrat, ["BNC", "KAY"]],
+                    ["equipe", agent.equipe, ["JR", "A", "B", "C", "D"]],
+                    ["mingzi", agent.mingzi],
+                    ["nom", agent.nom],
+                    ["poste", agent.poste, ["EXP", "NET", "OPE", "CHARG"]],
+                    ["postnom", agent.postnom],
+                    ["prenom", agent.prenom],
+                    ["section", agent.section, ["BROYAGE", "EMBALLAGE"]],
+                    ["phone", agent.phone],
+                    ["matricule", agent.matricule],
+                  ].map((agent_data, i) => (
                     <tr key={i}>
                       <td align="right" className="text-neutral-400 text-sm">
                         {agent_data[0]}
                       </td>
                       <td className=" ">
                         <input
-                          className=" outline-none border border-sky-500 p-1 rounded-md "
+                          className=" outline-none border border-sky-500  rounded-md "
                           type="text"
                           defaultValue={agent_data[1]}
                         />
@@ -58,19 +69,38 @@ export default function AgentCard({ agent, onShowRoulement }) {
           </div>
           <div className="flex justify-center items-center text-center ">
             {!editMode && (
-              <button
-                onClick={(e) => onShowRoulement(agent)}
-                className={CLASS_BTN}
-              >
-                VOIR ROULEMENT
-              </button>
+              <>
+                <button
+                  onClick={(e) => onShowRoulement(agent)}
+                  className={CLASS_BTN}
+                >
+                  VOIR ROULEMENT
+                </button>
+                <button
+                  onClick={(e) => setEditMode(!editMode)}
+                  className={CLASS_BTN}
+                >
+                  UPDATE
+                </button>
+              </>
             )}
-            <button
-              onClick={(e) => setEditMode(!editMode)}
-              className={CLASS_BTN}
-            >
-              UPDATE
-            </button>
+
+            {editMode && (
+              <>
+                <button
+                  onClick={(e) => setEditMode(!editMode)}
+                  className={CLASS_BTN}
+                >
+                  ANNULER
+                </button>
+                <button
+                  onClick={(e) => setEditMode(!editMode)}
+                  className={CLASS_BTN}
+                >
+                  ENREGISTER
+                </button>
+              </>
+            )}
           </div>
         </div>
       )}
