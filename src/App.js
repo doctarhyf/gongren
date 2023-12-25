@@ -18,7 +18,9 @@ function App() {
         <div className="text-3xl text-sky-500 border-b  border-sky-500">
           {curPage}
         </div>
-        <div>{MAIN_MENU.map((pg, i) => pg.path === curPage && <pg.el />)}</div>
+        <div>
+          {MAIN_MENU.map((pg, i) => pg.path === curPage && <pg.el key={i} />)}
+        </div>
       </div>
     </div>
   );
