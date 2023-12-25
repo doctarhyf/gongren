@@ -1,0 +1,132 @@
+import { TABLES_NAMES, supabase } from "./sb.config";
+
+/* export async function CountItemWithID(tableName, rowName, rowVal) {
+  console.log(`counting ${tableName} where ${rowName} = ${rowVal}`);
+
+  let count = (await supabase.from(tableName).select("*").eq(rowName, rowVal))
+    .count;
+
+  console.log(count);
+  return count;
+} */
+
+export async function InsertItem(tableName, newData) {
+  const { data, error } = await supabase.from(tableName).insert([newData]);
+
+  console.log("data => ", data, "\nerror => ", error);
+
+  if (error) return error;
+  return data;
+}
+
+export async function UpdateRoulement2(
+  month_code,
+  roulemant_data,
+  onSuccess,
+  onError
+) {
+  const count = await CountItemsInTableWithRowEqVal(
+    TABLES_NAMES.AGENTS_RLD,
+    "month_code",
+    month_code
+  );
+
+  const shouldCreateNewRecord = count === 0;
+  let res;
+  if (shouldCreateNewRecord) {
+    res = await InsertItem(TABLES_NAMES.AGENTS_RLD);
+  } else {
+    const { data, error } = await supabase
+      .from(TABLES_NAMES.AGENTS_RLD)
+      .update({ rl: roulemant_data })
+      .eq("month_code", month_code)
+      .select();
+
+    if (data) {
+      res = data;
+      if (onSuccess) onSuccess(data);
+    }
+    if (error) {
+      res = error;
+      if (onError) onError(error);
+    }
+  }
+
+  return count;
+}
+
+export async function UpdateRoulement(month_code, newData) {
+  const { data, error } = await supabase
+    .from(TABLES_NAMES.AGENTS_RLD)
+    .upsert([newData], { onConflict: "month_code" })
+    .select();
+
+  if (error) {
+    console.log(error);
+    return error;
+  }
+
+  console.log(data);
+  return data;
+}
+
+export async function CountItemsInTable(tableName) {
+  let { data, error } = await supabase.from(tableName).select("*");
+
+  if (error) return 0;
+  return data.length;
+}
+
+export async function CountItemsInTableWithRowEqVal(
+  tableName,
+  rowName,
+  rowVal
+) {
+  console.log(
+    "CountItemsInTableWithRowEqVal() ",
+    ` => counting from ${tableName} where ${rowName} === "${rowVal}" `
+  );
+
+  let { data, error } = await supabase
+    .from(tableName)
+    .select("*")
+    .eq(rowName, rowVal);
+
+  console.log("da count => ", data);
+
+  if (error) return 0;
+  return data.length;
+}
+
+export async function LoadItems(tableName, pageNum = 1, perPage = 5) {
+  let { data, error } = await supabase
+    .from(tableName)
+    .select("*")
+    .range(perPage * pageNum - 5, 5 * pageNum);
+
+  if (error) return error;
+
+  return data;
+}
+
+export async function LoadItemWithID(tableName, id) {
+  let { data, error } = await supabase
+    .from(tableName)
+    .select("*")
+    .eq("id", parseInt(id));
+
+  if (error) return error;
+
+  return data[0];
+}
+
+export async function LoadItemWithColNameEqColVal(tableName, colName, colVal) {
+  let { data, error } = await supabase
+    .from(tableName)
+    .select("*")
+    .eq(colName, colVal);
+
+  if (error) return error;
+
+  return data[0];
+}

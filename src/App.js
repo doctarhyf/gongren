@@ -1,25 +1,25 @@
 import logo from "./logo.svg";
 import "./App.css";
+import { MAIN_MENU } from "./helpers/flow";
+import { useState } from "react";
+import MainNav from "./comps/MainNav";
 
 function App() {
+  const [curPage, setCurPage] = useState(MAIN_MENU[0].path);
+
+  function onMenuClick(menu_item) {
+    setCurPage(menu_item.path);
+  }
+
   return (
-    <div className=" h-[100vh] ">
-      <section className="bg-sky-500 h-full w-44">
-        <div className="text-white  border-b pb-4 text-3xl p-2 text-center">
-          工人管理
+    <div className=" h-[100vh] flex ">
+      <MainNav onMenuClick={onMenuClick} curPage={curPage} />
+      <div className="p-2">
+        <div className="text-3xl text-sky-500 border-b  border-sky-500">
+          {curPage}
         </div>
-        <div>
-          <ul className="text-end p-2">
-            {[...Array(5)].map((it, i) => (
-              <li className="mb-2" key={i}>
-                <button className="text-right cursor-pointer hover:text-sky-500 hover:bg-white w-full  rounded-md p-2 ">
-                  Item
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
+        <div>{MAIN_MENU.map((pg, i) => pg.path === curPage && <pg.el />)}</div>
+      </div>
     </div>
   );
 }
