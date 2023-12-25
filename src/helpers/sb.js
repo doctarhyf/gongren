@@ -98,6 +98,22 @@ export async function CountItemsInTableWithRowEqVal(
   return data.length;
 }
 
+export async function CountAllItems(tableName) {
+  let { data, error } = await supabase.from(tableName).select("*");
+
+  if (error) return error;
+
+  return data.length;
+}
+
+export async function LoadAllItems(tableName) {
+  let { data, error } = await supabase.from(tableName).select("*");
+
+  if (error) return error;
+
+  return data;
+}
+
 export async function LoadItems(tableName, pageNum = 1, perPage = 5) {
   let { data, error } = await supabase
     .from(tableName)

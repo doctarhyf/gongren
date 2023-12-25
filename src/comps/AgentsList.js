@@ -3,71 +3,81 @@ import Loading from "./Loading";
 import * as SB from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
 
-const NEXT_PAGE = "+";
-const PREV_PAGE = "-";
+const PER_PAGE = 5;
 
 export default function AgentsList({ onAgentClick, curAgent }) {
   const [q, setq] = useState("");
+
+  const [agents, setagents] = useState([]);
   const [agentsf, setagentf] = useState([]);
   const [curPage, setCurPage] = useState(1);
-  const [agents, setagents] = useState([]);
   const [loading, setloading] = useState(false);
   const [numPages, setNumPages] = useState(0);
-  const per_page = 5;
 
   useEffect(() => {
-    loadAgents(1);
+    loadAgents();
   }, []);
 
-  async function loadAgents(curPage) {
+  async function loadAgents() {
     setloading(true);
     setagents([]);
+    setagentf([]);
+    const items_raw = await SB.LoadAllItems(TABLES_NAMES.AGENTS);
+    const items_len = items_raw.length;
+    const num_pages = Math.ceil(items_len / PER_PAGE);
+    let items = [];
 
-    const items = await SB.LoadItems(TABLES_NAMES.AGENTS, curPage);
+    let i = 1;
+    let pg = 1;
+    while (items_raw.length > 0) {
+      if (i > 5) {
+        i = 1;
+        pg++;
+      }
+      let it = { ...items_raw.pop(), page: pg };
+      i++;
 
-    setNumPages(Number.parseInt(items.length) / Number.parseInt(per_page));
+      items.push(it);
+      console.log(it);
+    }
+
     setagents(items);
-    setagentf(items);
+    setNumPages(num_pages);
+
+    setagentf(getItemsForPage(1));
+
     setloading(false);
+  }
+
+  function getItemsForPage(pg) {
+    return agents.filter((it, i) => Number(it.page) === Number(pg));
+  }
+
+  function onPageSelect(pg) {
+    setCurPage(pg);
+    setagentf(getItemsForPage(pg));
   }
 
   function onSearch(s = "") {
     let query = s.toLowerCase().trim();
 
     if (query === "") {
-      setagentf(agents);
+      setagentf(getItemsForPage(curPage));
       return;
     }
 
     let agents_filtered = agents.filter((agent, i) => {
       const check_nom = agent.nom.toLowerCase().includes(query);
+
       return check_nom;
     });
 
     setagentf(agents_filtered);
   }
 
-  function onPageChange(op, num_pages) {
-    num_pages = Number.parseInt(num_pages);
-
-    setCurPage((old) => {
-      console.log(old);
-      let cur_page = Number.parseFloat(old);
-
-      if (NEXT_PAGE === op) cur_page++;
-      if (PREV_PAGE === op) cur_page--;
-
-      /*   if (cur_page > num_pages) cur_page = 0;
-      if (cur_page < 1) cur_page = num_pages; */
-
-      loadAgents(cur_page);
-
-      return cur_page;
-    });
-  }
-
   return (
     <section className="p-1  ">
+      <Loading isLoading={loading} />{" "}
       <div>
         <input
           className="mb-2 border-sky-500 outline-none border rounded-md p-1"
@@ -94,24 +104,22 @@ export default function AgentsList({ onAgentClick, curAgent }) {
           </button>
         ))}
       </div>
-      <div>
-        <div className="join">
-          <button
-            className="join-item btn"
-            onClick={(e) => onPageChange(PREV_PAGE, numPages)}
-          >
-            «
-          </button>
-          <button className="join-item btn">Page {curPage}</button>
-          <button
-            className="join-item btn"
-            onClick={(e) => onPageChange(NEXT_PAGE, numPages)}
-          >
-            »
-          </button>
+      <div className="text-center">
+        <div className="max-w-44">
+          {[...Array(numPages).fill(0)].map((it, i) => (
+            <button
+              key={i}
+              className={` mx-1 p-1 px-2 hover:bg-sky-400 hover:text-white border rounded-md ${
+                i + 1 === curPage ? "bg-sky-500 text-white" : ""
+              } `}
+              name="options"
+              onClick={(e) => onPageSelect(i + 1)}
+            >
+              {i + 1}
+            </button>
+          ))}
         </div>
       </div>
-      <Loading isLoading={loading} />{" "}
     </section>
   );
 }

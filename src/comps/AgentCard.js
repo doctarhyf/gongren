@@ -29,6 +29,10 @@ export default function AgentCard({ agent }) {
               </tbody>
             </table>
           </div>
+          <div className="flex">
+            <button>VOIR ROULEMENT</button>
+            <button>UPDATE</button>
+          </div>
         </div>
       )}
       {agent === null && <div>Select an agent!</div>}
