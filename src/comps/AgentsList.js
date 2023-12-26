@@ -3,7 +3,7 @@ import Loading from "./Loading";
 import * as SB from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
 
-const PER_PAGE = 5;
+const PER_PAGE = 7;
 
 export default function AgentsList({ onAgentClick, curAgent }) {
   const [q, setq] = useState("");
@@ -18,19 +18,12 @@ export default function AgentsList({ onAgentClick, curAgent }) {
     loadAgents();
   }, []);
 
-  async function loadAgents() {
-    setloading(true);
-    setagents([]);
-    setagentf([]);
-    const items_raw = await SB.LoadAllItems(TABLES_NAMES.AGENTS);
-    const items_len = items_raw.length;
-    const num_pages = Math.ceil(items_len / PER_PAGE);
+  function GetSplittedItemsIntoPages(items_raw, items_per_page) {
     let items = [];
-
     let i = 1;
     let pg = 1;
     while (items_raw.length > 0) {
-      if (i > 5) {
+      if (i > items_per_page) {
         i = 1;
         pg++;
       }
@@ -38,31 +31,41 @@ export default function AgentsList({ onAgentClick, curAgent }) {
       i++;
 
       items.push(it);
-      console.log(it);
     }
 
-    setagents(items);
+    return items;
+  }
+
+  async function loadAgents() {
+    setloading(true);
+    setagents([]);
+    setagentf([]);
+    const items_raw = await SB.LoadAllItems(TABLES_NAMES.AGENTS);
+    const items_len = items_raw.length;
+    const num_pages = Math.ceil(items_len / PER_PAGE);
     setNumPages(num_pages);
 
-    setagentf(getItemsForPage(1));
+    let items = GetSplittedItemsIntoPages(items_raw, PER_PAGE);
+    setagents(items);
+    setagentf(GetItemsAtPage(1));
 
     setloading(false);
   }
 
-  function getItemsForPage(pg) {
-    return agents.filter((it, i) => Number(it.page) === Number(pg));
+  function GetItemsAtPage(pg) {
+    return agents.filter((it, i) => Number(it.page) == pg);
   }
 
   function onPageSelect(pg) {
     setCurPage(pg);
-    setagentf(getItemsForPage(pg));
+    setagentf(GetItemsAtPage(pg));
   }
 
   function onSearch(s = "") {
     let query = s.toLowerCase().trim();
 
     if (query === "") {
-      setagentf(getItemsForPage(curPage));
+      setagentf(GetItemsAtPage(curPage));
       return;
     }
 
