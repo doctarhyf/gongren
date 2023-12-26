@@ -53,7 +53,7 @@ export default function AgentsList({ onAgentClick, curAgent }) {
   }
 
   function GetItemsAtPage(pg) {
-    return agents.filter((it, i) => Number(it.page) == pg);
+    return agents.filter((it, i) => it.page === pg);
   }
 
   function onPageSelect(pg) {
