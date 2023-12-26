@@ -1,4 +1,8 @@
 import React, { useRef, useState } from "react";
+import Loading from "../comps/Loading";
+import * as SB from "../helpers/sb";
+import { TABLES_NAMES } from "../helpers/sb.config";
+import { POSTE, SECTIONS } from "../helpers/flow";
 
 export default function FormNewAgent({
   onFormNewAgentSave,
@@ -39,7 +43,9 @@ export default function FormNewAgent({
 
   const [loading, setloading] = useState(false);
 
-  function saveNewAgent() {
+  async function saveNewAgent() {
+    setloading(true);
+
     let agent_data = {
       //id: _(ref_id),
       //created_at: _(ref_created_at),
@@ -57,7 +63,14 @@ export default function FormNewAgent({
       //page: _(ref_page),
     };
 
-    console.log(`agent_data \n`, agent_data);
+    let res = await SB.InsertItem(TABLES_NAMES.AGENTS, agent_data);
+
+    if (res === null) {
+      onFormNewAgentCancel();
+    } else {
+      alert(res);
+    }
+    setloading(false);
   }
 
   function _(ref) {
@@ -66,18 +79,19 @@ export default function FormNewAgent({
 
   return (
     <div>
+      {loading && <div>Loading ...</div>}
       {[
         [ref_id, `id`, agent.id, , ,],
         [ref_created_at, `created_at`, agent.created_at, , ,],
-        [ref_contrat, "contrat", agent.contrat, ["BNC", "KAY"]],
-        [ref_equipe, "equipe", agent.equipe, ["JR", "A", "B", "C", "D"]],
+        [ref_contrat, "contrat", agent.contrat, ["BNC", "KAY", "GCK"]],
+        [ref_equipe, "equipe", agent.equipe, ["JR", "A", "B", "C", "D", "N/A"]],
         [ref_mingzi, "mingzi", agent.mingzi],
         [ref_nationalite, "nationalite", agent.nationalite, ["CD", "ZH"]],
         [ref_nom, "nom", agent.nom],
-        [ref_poste, "poste", agent.poste, ["EXP", "NET", "OPE", "CHARG"]],
+        [ref_poste, "poste", agent.poste, POSTE],
         [ref_postnom, "postnom", agent.postnom],
         [ref_prenom, "prenom", agent.prenom],
-        [ref_section, "section", agent.section, ["BROYAGE", "EMBALLAGE"]],
+        [ref_section, "section", agent.section, SECTIONS],
         [ref_phone, "phone", agent.phone],
         [ref_matricule, "matricule", agent.matricule],
       ].map((agent_data, i) => (
