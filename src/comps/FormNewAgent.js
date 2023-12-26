@@ -2,27 +2,35 @@ import React, { useRef, useState } from "react";
 import Loading from "../comps/Loading";
 import * as SB from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
-import { POSTE, SECTIONS } from "../helpers/flow";
+import {
+  CONTRATS,
+  EQUIPES,
+  NATIONALITIES,
+  POSTE,
+  SECTIONS,
+} from "../helpers/flow";
 
 export default function FormNewAgent({
   onFormNewAgentSave,
   onFormNewAgentCancel,
-  agentData,
+  agentDataToUpdate,
 }) {
-  let agent = agentData || {
+  let isNewAgent = agentDataToUpdate === undefined;
+
+  let agent = agentDataToUpdate || {
     id: 36,
     created_at: "2023-09-08T17:42:53.34043+00:00",
     contrat: "BNC",
     equipe: "C",
     mingzi: "",
     nationalite: "CD",
-    nom: "KALENGA",
+    nom: "",
     poste: "NET",
-    postnom: "WA UMBA",
-    prenom: "DEKALE",
+    postnom: "",
+    prenom: "",
     section: "ENSACHAGE",
-    phone: "0995439973",
-    matricule: "305",
+    phone: "",
+    matricule: "",
     page: 2,
   };
 
@@ -73,6 +81,10 @@ export default function FormNewAgent({
     setloading(false);
   }
 
+  async function onUpdateAgent() {
+    // alert("upd");
+  }
+
   function _(ref) {
     return ref.current && ref.current.value;
   }
@@ -83,17 +95,21 @@ export default function FormNewAgent({
       {[
         [ref_id, `id`, agent.id, , ,],
         [ref_created_at, `created_at`, agent.created_at, , ,],
-        [ref_contrat, "contrat", agent.contrat, ["BNC", "KAY", "GCK"]],
-        [ref_equipe, "equipe", agent.equipe, ["JR", "A", "B", "C", "D", "N/A"]],
-        [ref_mingzi, "mingzi", agent.mingzi],
-        [ref_nationalite, "nationalite", agent.nationalite, ["CD", "ZH"]],
+
         [ref_nom, "nom", agent.nom],
-        [ref_poste, "poste", agent.poste, POSTE],
         [ref_postnom, "postnom", agent.postnom],
         [ref_prenom, "prenom", agent.prenom],
+        [ref_mingzi, "mingzi", agent.mingzi],
+
         [ref_section, "section", agent.section, SECTIONS],
-        [ref_phone, "phone", agent.phone],
+        [ref_equipe, "equipe", agent.equipe, EQUIPES],
+        [ref_poste, "poste", agent.poste, POSTE],
+
+        [ref_contrat, "contrat", agent.contrat, CONTRATS],
+
         [ref_matricule, "matricule", agent.matricule],
+        [ref_nationalite, "nationalite", agent.nationalite, NATIONALITIES],
+        [ref_phone, "phone", agent.phone],
       ].map((agent_data, i) => (
         <tr key={i}>
           <td align="right" className="text-neutral-400 text-sm">
@@ -131,12 +147,22 @@ export default function FormNewAgent({
       >
         ANNULER
       </button>
-      <button
-        onClick={(e) => saveNewAgent()}
-        className="p-1 rounded-md border my-1 border-green-500 text-green-500 hover:bg-green-500 hover:text-white"
-      >
-        SAVE
-      </button>
+      {isNewAgent && (
+        <button
+          onClick={(e) => saveNewAgent()}
+          className="p-1 rounded-md border my-1 border-green-500 text-green-500 hover:bg-green-500 hover:text-white"
+        >
+          SAVE
+        </button>
+      )}
+      {!isNewAgent && (
+        <button
+          onClick={(e) => onUpdateAgent()}
+          className="p-1 rounded-md border my-1 border-green-500 text-green-500 hover:bg-green-500 hover:text-white"
+        >
+          UPDATE
+        </button>
+      )}
     </div>
   );
 }

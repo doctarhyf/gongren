@@ -10,6 +10,8 @@ export const CLASS_BTN =
 export const SECTIONS = ["BROYAGE", "ENSACHAGE", "N/A"];
 export const POSTE = ["NET", "EXP", "OPE", "CHARG", "MEC", "INT", "SUP"];
 export const EQUIPES = ["JR", "A", "B", "C", "D", "N/A"];
+export const CONTRATS = ["BNC", "KAY", "GCK"];
+export const NATIONALITIES = ["CD", "ZH"];
 
 export const MAIN_MENU = [
   { name: "Home", path: "/home", el: Home },

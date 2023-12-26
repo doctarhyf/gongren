@@ -1,4 +1,5 @@
 import React from "react";
+import "../App.css";
 
 export default function AgentsNamesTable({
   agentsArray,
@@ -6,7 +7,7 @@ export default function AgentsNamesTable({
   curAgent,
 }) {
   return (
-    <table>
+    <table class=" print-only">
       <thead>
         <tr>
           {["No", "Nom", "Agent", "Section", "Poste", "Equipe"].map((it, i) => (
