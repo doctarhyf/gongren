@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { EQUIPES, POSTE, SECTIONS } from "../helpers/flow";
 import { LoadAllItems } from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
+import AgentsNamesTable from "../comps/AgentsNamesTable";
 
 export default function Equipes() {
   const [agents, setagents] = useState([]);
@@ -9,6 +10,8 @@ export default function Equipes() {
 
   const ref_equipe = useRef();
   const ref_section = useRef();
+  const ref_sp_equipe = useRef();
+  const ref_sp_section = useRef();
 
   useEffect(() => {
     loadAgents();
@@ -35,10 +38,19 @@ export default function Equipes() {
     const section = ref_section.current.value;
     const equipe = ref_equipe.current.value;
 
+    ref_sp_section.current.textContent = section;
+    ref_sp_equipe.current.textContent = equipe;
+
     const itemsf = FilterAgents(agents, section, equipe);
 
+    console.log(itemsf[0]);
     setagentsf(itemsf);
   }
+
+  function onAgentClick(agent) {
+    console.log(agent);
+  }
+
   return (
     <div>
       <table>
@@ -77,12 +89,13 @@ export default function Equipes() {
         </tbody>
       </table>
 
-      <div className="text-3xl">Equipe ... - ...</div>
+      <div className="text-3xl">
+        Equipe <span ref={ref_sp_equipe}></span> -{" "}
+        <span ref={ref_sp_section}></span>
+      </div>
 
       <div>
-        {agentsf.map((it, i) => (
-          <div key={i}>{it.nom}</div>
-        ))}
+        <AgentsNamesTable agentsArray={agentsf} onAgentClick={onAgentClick} />
       </div>
     </div>
   );

@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import Loading from "./Loading";
 import * as SB from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
+import AgentsNamesTable from "./AgentsNamesTable";
 
-const PER_PAGE = 7;
+const PER_PAGE = 10;
 let loadAgentsTryCount = 3;
 
 export default function AgentsList({ onAgentClick, curAgent }) {
@@ -14,6 +15,7 @@ export default function AgentsList({ onAgentClick, curAgent }) {
   const [curPage, setCurPage] = useState(1);
   const [loading, setloading] = useState(false);
   const [numPages, setNumPages] = useState(0);
+  const [showNamesInTable, setshowNamesInTable] = useState(false);
 
   useEffect(() => {
     loadAgents();
@@ -90,11 +92,21 @@ export default function AgentsList({ onAgentClick, curAgent }) {
         />
       </div>
       <div>
-        {agentsf.map((agent, i) => (
-          <button
-            onClick={(e) => onAgentClick(agent)}
-            key={i}
-            className={` block w-full hover:text-white hover:bg-sky-500  p-1 border rounded-md border-sky-300 hover:border-sky-500 cursor-pointer mb-1
+        TABLE MODE ON/OFF
+        <input
+          type="checkbox"
+          className="toggle toggle-xs"
+          checked={showNamesInTable}
+          onChange={(e) => setshowNamesInTable(e.target.checked)}
+        />
+      </div>
+      {!showNamesInTable && (
+        <div>
+          {agentsf.map((agent, i) => (
+            <button
+              onClick={(e) => onAgentClick(agent)}
+              key={i}
+              className={` block w-full hover:text-white hover:bg-sky-500  p-1 border rounded-md border-sky-300 hover:border-sky-500 cursor-pointer mb-1
             
             ${
               curAgent && agent.id === curAgent.id
@@ -103,11 +115,19 @@ export default function AgentsList({ onAgentClick, curAgent }) {
             }
             
             `}
-          >
-            {agent.nom} - {agent.postnom}
-          </button>
-        ))}
-      </div>
+            >
+              {agent.nom} - {agent.postnom}
+            </button>
+          ))}
+        </div>
+      )}
+      {showNamesInTable && (
+        <AgentsNamesTable
+          curAgent={curAgent}
+          agentsArray={agentsf}
+          onAgentClick={(a) => onAgentClick(a)}
+        />
+      )}
       <div className="text-center">
         <div className="max-w-44">
           {[...Array(numPages).fill(0)].map((it, i) => (
