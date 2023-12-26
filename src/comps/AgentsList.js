@@ -4,6 +4,7 @@ import * as SB from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
 
 const PER_PAGE = 7;
+let loadAgentsTryCount = 3;
 
 export default function AgentsList({ onAgentClick, curAgent }) {
   const [q, setq] = useState("");
@@ -47,8 +48,8 @@ export default function AgentsList({ onAgentClick, curAgent }) {
 
     let items = GetSplittedItemsIntoPages(items_raw, PER_PAGE);
     setagents(items);
-    setagentf(GetItemsAtPage(1));
 
+    setagentf(items.slice(0, PER_PAGE));
     setloading(false);
   }
 
