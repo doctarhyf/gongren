@@ -1,15 +1,5 @@
 import { TABLES_NAMES, supabase } from "./sb.config";
 
-/* export async function CountItemWithID(tableName, rowName, rowVal) {
-  console.log(`counting ${tableName} where ${rowName} = ${rowVal}`);
-
-  let count = (await supabase.from(tableName).select("*").eq(rowName, rowVal))
-    .count;
-
-  console.log(count);
-  return count;
-} */
-
 export async function InsertItem(tableName, newData) {
   const { data, error } = await supabase.from(tableName).insert([newData]);
 
@@ -145,4 +135,24 @@ export async function LoadItemWithColNameEqColVal(tableName, colName, colVal) {
   if (error) return error;
 
   return data[0];
+}
+
+export async function UpdateItem(table_name, upd_data) {
+  const { data, error } = await supabase
+    .from(table_name)
+    .update({ ...upd_data })
+    .eq("id", upd_data.id)
+    .select();
+
+  if (error) return error;
+
+  return data;
+}
+
+export async function DeleteItem(table_name, agent_data) {
+  const { error } = await supabase
+    .from(table_name)
+    .delete()
+    .eq("id", agent_data.id);
+  if (error) return error;
 }

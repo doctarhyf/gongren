@@ -3,7 +3,7 @@ import * as SB from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
 import AgentCard from "../comps/AgentCard";
 import AgentsList from "../comps/AgentsList";
-import FormNewAgent from "../comps/FormNewAgent";
+import FormAddAgent from "../comps/FormAddAgent";
 
 export default function Agents() {
   const [curAgent, setCurAgent] = useState(null);
@@ -13,8 +13,31 @@ export default function Agents() {
     console.log("On Show Roulement ...");
   }
 
-  function onFormNewAgentSave() {
-    setShowFormAddNewAgent(false);
+  async function onSaveNewAgent(agent_data) {
+    //setShowFormAddNewAgent(false);
+
+    /* let res = await SB.InsertItem(TABLES_NAMES.AGENTS, agent_data);
+
+    if (res === null) {
+      onFormNewAgentCancel();
+      alert("Agent added!");
+    } else {
+      alert(res);
+    } */
+    console.log("save agent ", agent_data);
+  }
+
+  async function onUpdateAgent(agent_data) {
+    console.log(agent_data);
+
+    /*let res = await SB.UpdateItem(TABLES_NAMES.AGENTS, agent_data);
+
+    if (res === null) {
+      onFormNewAgentCancel();
+      alert("Agent added!");
+    } else {
+      alert(res);
+    }*/
   }
 
   function onFormNewAgentCancel() {
@@ -40,9 +63,10 @@ export default function Agents() {
       )}
 
       {showFormAddNewAgent && (
-        <FormNewAgent
-          onFormNewAgentSave={onFormNewAgentSave}
-          onFormNewAgentCancel={onFormNewAgentCancel}
+        <FormAddAgent
+          onFormSave={onSaveNewAgent}
+          onFormUpdate={onUpdateAgent}
+          onFormCancel={onFormNewAgentCancel}
         />
       )}
     </div>

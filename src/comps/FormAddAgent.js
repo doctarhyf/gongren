@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import Loading from "../comps/Loading";
+import Loading from "./Loading";
 import * as SB from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
 import {
@@ -10,9 +10,10 @@ import {
   SECTIONS,
 } from "../helpers/flow";
 
-export default function FormNewAgent({
-  onFormNewAgentSave,
-  onFormNewAgentCancel,
+export default function FormAddAgent({
+  onFormSave,
+  onFormUpdate,
+  onFormCancel,
   agentDataToUpdate,
 }) {
   let isNewAgent = agentDataToUpdate === undefined;
@@ -51,8 +52,8 @@ export default function FormNewAgent({
 
   const [loading, setloading] = useState(false);
 
-  async function saveNewAgent() {
-    setloading(true);
+  async function saveAgentData() {
+    //setloading(true);
 
     let agent_data = {
       //id: _(ref_id),
@@ -71,18 +72,12 @@ export default function FormNewAgent({
       //page: _(ref_page),
     };
 
-    let res = await SB.InsertItem(TABLES_NAMES.AGENTS, agent_data);
-
-    if (res === null) {
-      onFormNewAgentCancel();
-    } else {
-      alert(res);
+    if (!isNewAgent) {
+      agent_data.id = _(ref_id);
+      onFormUpdate(agent_data);
+      return;
     }
-    setloading(false);
-  }
-
-  async function onUpdateAgent() {
-    // alert("upd");
+    onFormSave(agent_data);
   }
 
   function _(ref) {
@@ -142,14 +137,14 @@ export default function FormNewAgent({
         </tr>
       ))}
       <button
-        onClick={(e) => onFormNewAgentCancel()}
+        onClick={onFormCancel}
         className="p-1 rounded-md border my-1 border-green-500 text-green-500 hover:bg-green-500 hover:text-white"
       >
         ANNULER
       </button>
       {isNewAgent && (
         <button
-          onClick={(e) => saveNewAgent()}
+          onClick={saveAgentData}
           className="p-1 rounded-md border my-1 border-green-500 text-green-500 hover:bg-green-500 hover:text-white"
         >
           SAVE
@@ -157,7 +152,7 @@ export default function FormNewAgent({
       )}
       {!isNewAgent && (
         <button
-          onClick={(e) => onUpdateAgent()}
+          onClick={saveAgentData}
           className="p-1 rounded-md border my-1 border-green-500 text-green-500 hover:bg-green-500 hover:text-white"
         >
           UPDATE

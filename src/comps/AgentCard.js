@@ -1,13 +1,38 @@
 import React, { useState } from "react";
-import { CLASS_BTN } from "../helpers/flow";
+import { CLASS_BTN, CONTRATS, EQUIPES, POSTE, SECTIONS } from "../helpers/flow";
 import { FFD, formatFrenchDate } from "../helpers/func";
+import FormAddAgent from "./FormAddAgent";
+import * as SB from "../helpers/sb";
+import { TABLES_NAMES } from "../helpers/sb.config";
 
 export default function AgentCard({ agent, onShowRoulement }) {
   const [editMode, setEditMode] = useState(false);
 
+  function onFormUpdate(d) {
+    console.log("update form ", d);
+  }
+
+  function onFormCancel() {
+    setEditMode(false);
+  }
+
+  async function deleteAgent(agent_data) {
+    let yes = confirm(
+      `Delete agent? "${agent_data.nom} - ${agent_data.postnom}", no undo!`
+    );
+
+    if (yes) {
+      const res = await SB.DeleteItem(TABLES_NAMES.AGENTS, agent_data);
+
+      if (res) alert(`Error delete ${res}`);
+
+      return;
+    }
+  }
+
   return (
     <section>
-      {agent && (
+      {agent && !editMode && (
         <div className="agent-card p-2 border-neutral-400 border rounded-md ml-2">
           <div className="text-center">
             <img
@@ -39,14 +64,14 @@ export default function AgentCard({ agent, onShowRoulement }) {
               {editMode && (
                 <tbody>
                   {[
-                    ["contrat", agent.contrat, ["BNC", "KAY"]],
-                    ["equipe", agent.equipe, ["JR", "A", "B", "C", "D"]],
+                    ["contrat", agent.contrat, CONTRATS],
+                    ["equipe", agent.equipe, EQUIPES],
                     ["mingzi", agent.mingzi],
                     ["nom", agent.nom],
-                    ["poste", agent.poste, ["EXP", "NET", "OPE", "CHARG"]],
+                    ["poste", agent.poste, POSTE],
                     ["postnom", agent.postnom],
                     ["prenom", agent.prenom],
-                    ["section", agent.section, ["BROYAGE", "EMBALLAGE"]],
+                    ["section", agent.section, SECTIONS],
                     ["phone", agent.phone],
                     ["matricule", agent.matricule],
                   ].map((agent_data, i) => (
@@ -82,6 +107,12 @@ export default function AgentCard({ agent, onShowRoulement }) {
                 >
                   UPDATE
                 </button>
+                <button
+                  onClick={(e) => deleteAgent(agent)}
+                  className={CLASS_BTN}
+                >
+                  DELETE
+                </button>
               </>
             )}
 
@@ -103,6 +134,13 @@ export default function AgentCard({ agent, onShowRoulement }) {
             )}
           </div>
         </div>
+      )}
+      {agent && editMode && (
+        <FormAddAgent
+          agentDataToUpdate={agent}
+          onFormUpdate={onFormUpdate}
+          onFormCancel={onFormCancel}
+        />
       )}
       {agent === null && <div>Select an agent!</div>}
     </section>
