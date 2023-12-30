@@ -138,15 +138,12 @@ export async function LoadItemWithColNameEqColVal(tableName, colName, colVal) {
 }
 
 export async function UpdateItem(table_name, upd_data) {
-  console.log(`Data to update \n`, JSON.stringify(upd_data));
-
   const { data, error } = await supabase
     .from(table_name)
-    .update({ nom: "我叫什么名字" })
+    .update(upd_data)
     .eq("id", upd_data.id)
     .select();
 
-  console.log("update res => ", error, data);
   if (error) return error;
 
   return data;
