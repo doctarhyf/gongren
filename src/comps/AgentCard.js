@@ -5,34 +5,68 @@ import FormAddAgent from "./FormAddAgent";
 import * as SB from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
 
-export default function AgentCard({ agent, onShowRoulement }) {
-  const [editMode, setEditMode] = useState(false);
+export const AGENT_CARD_EVENT = {
+  DELETED: "ag_del",
+  UPDATED: "ag_upd",
+  ERROR: "ag_err",
+};
 
-  function onFormUpdate(d) {
-    console.log("update form ", d);
+export default function AgentCard({
+  agent,
+  onShowRoulement,
+  onAgentCardEvent,
+  agentCardEditMode,
+  setAgentCardEditMode,
+}) {
+  async function onFormUpdate(agent_data) {
+    agent_data.id = agent.id;
+
+    if (
+      window.confirm(
+        `Update agent? "${agent_data.nom} - ${agent_data.postnom}", no undo!`
+      )
+    ) {
+      const res = await SB.UpdateItem(TABLES_NAMES.AGENTS, agent_data);
+
+      if (res) {
+        //alert(`Error delete ${res}`);
+        onAgentCardEvent(AGENT_CARD_EVENT.ERROR, res);
+        return;
+      }
+
+      //alert(`Agent deleted " ${agent_data.nom} - ${agent_data.prenom} "`);
+      onAgentCardEvent(AGENT_CARD_EVENT.UPDATED, agent_data);
+      return;
+    }
   }
 
   function onFormCancel() {
-    setEditMode(false);
+    setAgentCardEditMode(false);
   }
 
   async function deleteAgent(agent_data) {
-    let yes = confirm(
-      `Delete agent? "${agent_data.nom} - ${agent_data.postnom}", no undo!`
-    );
-
-    if (yes) {
+    if (
+      window.confirm(
+        `Delete agent? "${agent_data.nom} - ${agent_data.postnom}", no undo!`
+      )
+    ) {
       const res = await SB.DeleteItem(TABLES_NAMES.AGENTS, agent_data);
 
-      if (res) alert(`Error delete ${res}`);
+      if (res) {
+        //alert(`Error delete ${res}`);
+        onAgentCardEvent(AGENT_CARD_EVENT.ERROR, res);
+        return;
+      }
 
+      //alert(`Agent deleted " ${agent_data.nom} - ${agent_data.prenom} "`);
+      onAgentCardEvent(AGENT_CARD_EVENT.DELETED, agent_data);
       return;
     }
   }
 
   return (
     <section>
-      {agent && !editMode && (
+      {agent && !agentCardEditMode && (
         <div className="agent-card p-2 border-neutral-400 border rounded-md ml-2">
           <div className="text-center">
             <img
@@ -44,7 +78,7 @@ export default function AgentCard({ agent, onShowRoulement }) {
           </div>
           <div>
             <table>
-              {!editMode && (
+              {!agentCardEditMode && (
                 <tbody>
                   {Object.entries(agent).map((agent_data, i) => (
                     <tr key={i}>
@@ -61,7 +95,7 @@ export default function AgentCard({ agent, onShowRoulement }) {
                 </tbody>
               )}
 
-              {editMode && (
+              {agentCardEditMode && (
                 <tbody>
                   {[
                     ["contrat", agent.contrat, CONTRATS],
@@ -93,7 +127,7 @@ export default function AgentCard({ agent, onShowRoulement }) {
             </table>
           </div>
           <div className="flex justify-center items-center text-center ">
-            {!editMode && (
+            {!agentCardEditMode && (
               <>
                 <button
                   onClick={(e) => onShowRoulement(agent)}
@@ -102,7 +136,7 @@ export default function AgentCard({ agent, onShowRoulement }) {
                   VOIR ROULEMENT
                 </button>
                 <button
-                  onClick={(e) => setEditMode(!editMode)}
+                  onClick={(e) => setAgentCardEditMode(!agentCardEditMode)}
                   className={CLASS_BTN}
                 >
                   UPDATE
@@ -116,16 +150,16 @@ export default function AgentCard({ agent, onShowRoulement }) {
               </>
             )}
 
-            {editMode && (
+            {agentCardEditMode && (
               <>
                 <button
-                  onClick={(e) => setEditMode(!editMode)}
+                  onClick={(e) => setAgentCardEditMode(!agentCardEditMode)}
                   className={CLASS_BTN}
                 >
                   ANNULER
                 </button>
                 <button
-                  onClick={(e) => setEditMode(!editMode)}
+                  onClick={(e) => setAgentCardEditMode(!agentCardEditMode)}
                   className={CLASS_BTN}
                 >
                   ENREGISTER
@@ -135,7 +169,7 @@ export default function AgentCard({ agent, onShowRoulement }) {
           </div>
         </div>
       )}
-      {agent && editMode && (
+      {agent && agentCardEditMode && (
         <FormAddAgent
           agentDataToUpdate={agent}
           onFormUpdate={onFormUpdate}

@@ -1,49 +1,76 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import * as SB from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
-import AgentCard from "../comps/AgentCard";
+import AgentCard, { AGENT_CARD_EVENT } from "../comps/AgentCard";
 import AgentsList from "../comps/AgentsList";
 import FormAddAgent from "../comps/FormAddAgent";
 
 export default function Agents() {
   const [curAgent, setCurAgent] = useState(null);
   const [showFormAddNewAgent, setShowFormAddNewAgent] = useState(false);
+  const [updateKey, setUpdateKey] = useState();
+  const [agentCardEditMode, setAgentCardEditMode] = useState(false);
 
   function onShowRoulement() {
     console.log("On Show Roulement ...");
   }
 
+  function reloadComponents() {
+    const rdk = Math.random();
+    console.log(`Reloading comps with new key : ${rdk}`);
+    setUpdateKey(rdk);
+    setCurAgent(null);
+  }
+
   async function onSaveNewAgent(agent_data) {
-    //setShowFormAddNewAgent(false);
+    reloadComponents();
 
-    /* let res = await SB.InsertItem(TABLES_NAMES.AGENTS, agent_data);
-
+    const res = await SB.InsertItem(TABLES_NAMES.AGENTS, agent_data);
     if (res === null) {
-      onFormNewAgentCancel();
-      alert("Agent added!");
-    } else {
-      alert(res);
-    } */
-    console.log("save agent ", agent_data);
+      alert(`Agent "${agent_data.nom} - ${agent_data.postnom}" saved!`);
+      setShowFormAddNewAgent(false);
+      return;
+    }
+
+    const error = `Error saving agent!\n ${JSON.stringify(err)}`;
+    alert(error);
+    console.log(error);
   }
 
   async function onUpdateAgent(agent_data) {
     console.log(agent_data);
-
-    /*let res = await SB.UpdateItem(TABLES_NAMES.AGENTS, agent_data);
-
-    if (res === null) {
-      onFormNewAgentCancel();
-      alert("Agent added!");
-    } else {
-      alert(res);
-    }*/
   }
 
   function onFormNewAgentCancel() {
     setShowFormAddNewAgent(false);
   }
 
+  function onAgentCardEvent(e, data) {
+    console.log("onAgentCardEvent()", e, data);
+
+    reloadComponents();
+
+    let msg;
+
+    switch (e) {
+      case AGENT_CARD_EVENT.DELETED:
+        msg = `Agent " ${data.nom} - ${data.prenom} " deleted successfully!`;
+        break;
+
+      case AGENT_CARD_EVENT.UPDATED:
+        msg = `Agent " ${data.nom} - ${data.prenom} " updated successfully!`;
+        break;
+    }
+
+    alert(msg);
+    console.log(msg);
+  }
+
+  function onAgentClick(agent_data) {
+    setCurAgent(agent_data);
+    setShowFormAddNewAgent(false);
+    setAgentCardEditMode(false);
+  }
   return (
     <div>
       {!showFormAddNewAgent && (
@@ -57,8 +84,18 @@ export default function Agents() {
 
       {!showFormAddNewAgent && (
         <div className="flex ">
-          <AgentsList curAgent={curAgent} onAgentClick={setCurAgent} />
-          <AgentCard onShowRoulement={onShowRoulement} agent={curAgent} />
+          <AgentsList
+            key={updateKey}
+            curAgent={curAgent}
+            onAgentClick={(agent_data) => onAgentClick(agent_data)}
+          />
+          <AgentCard
+            agentCardEditMode={agentCardEditMode}
+            setAgentCardEditMode={setAgentCardEditMode}
+            onShowRoulement={onShowRoulement}
+            agent={curAgent}
+            onAgentCardEvent={onAgentCardEvent}
+          />
         </div>
       )}
 

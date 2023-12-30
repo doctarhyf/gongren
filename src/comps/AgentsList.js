@@ -5,7 +5,6 @@ import { TABLES_NAMES } from "../helpers/sb.config";
 import AgentsNamesTable from "./AgentsNamesTable";
 
 const PER_PAGE = 10;
-let loadAgentsTryCount = 3;
 
 export default function AgentsList({ onAgentClick, curAgent }) {
   const [q, setq] = useState("");
