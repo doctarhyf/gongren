@@ -86,7 +86,7 @@ export default function FormAddAgent({
 
   return (
     <div>
-      {loading && <div>Loading ...</div>}
+      <Loading isLoading={loading} />
       {[
         [ref_id, `id`, agent.id, , ,],
         [ref_created_at, `created_at`, agent.created_at, , ,],

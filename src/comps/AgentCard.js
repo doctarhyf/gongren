@@ -4,6 +4,7 @@ import { FFD, formatFrenchDate } from "../helpers/func";
 import FormAddAgent from "./FormAddAgent";
 import * as SB from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
+import Loading from "./Loading";
 
 export const AGENT_CARD_EVENT = {
   DELETED: "ag_del",
@@ -18,6 +19,8 @@ export default function AgentCard({
   agentCardEditMode,
   setAgentCardEditMode,
 }) {
+  const [loading, setloading] = useState(false);
+
   async function onFormUpdate(agent_data) {
     agent_data.id = agent.id;
 
@@ -26,16 +29,19 @@ export default function AgentCard({
         `Update agent? "${agent_data.nom} - ${agent_data.postnom}", no undo!`
       )
     ) {
+      setloading(true);
       const res = await SB.UpdateItem(TABLES_NAMES.AGENTS, agent_data);
 
       if (res) {
         //alert(`Error delete ${res}`);
         onAgentCardEvent(AGENT_CARD_EVENT.ERROR, res);
+        setloading(false);
         return;
       }
 
       //alert(`Agent deleted " ${agent_data.nom} - ${agent_data.prenom} "`);
       onAgentCardEvent(AGENT_CARD_EVENT.UPDATED, agent_data);
+      setloading(false);
       return;
     }
   }
@@ -50,22 +56,26 @@ export default function AgentCard({
         `Delete agent? "${agent_data.nom} - ${agent_data.postnom}", no undo!`
       )
     ) {
+      setloading(true);
       const res = await SB.DeleteItem(TABLES_NAMES.AGENTS, agent_data);
 
       if (res) {
         //alert(`Error delete ${res}`);
         onAgentCardEvent(AGENT_CARD_EVENT.ERROR, res);
+        setloading(false);
         return;
       }
 
       //alert(`Agent deleted " ${agent_data.nom} - ${agent_data.prenom} "`);
       onAgentCardEvent(AGENT_CARD_EVENT.DELETED, agent_data);
+      setloading(false);
       return;
     }
   }
 
   return (
     <section>
+      <Loading isLoading={loading} />
       {agent && !agentCardEditMode && (
         <div className="agent-card p-2 border-neutral-400 border rounded-md ml-2">
           <div className="text-center">

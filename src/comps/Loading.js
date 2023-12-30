@@ -1,7 +1,7 @@
 import React from "react";
 
-export default function Loading({ isLoading }) {
-  if (!isLoading) return;
+export default function Loading({ isLoading: loading }) {
+  if (!loading) return;
 
   return (
     <div className="text-center">
