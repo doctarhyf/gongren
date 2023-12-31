@@ -4,6 +4,7 @@ import Roulements from "../pages/roulements";
 import Equipes from "../pages/equipes";
 import Sections from "../pages/sections";
 
+export const CLASS_TD = `p-1 border border-neutral-300`;
 export const CLASS_BTN =
   " mx-1 hover:bg-sky-500 hover:text-white border p-1 text-sky-400 border-transparent cursor-pointer rounded-md";
 
@@ -19,4 +20,19 @@ export const MAIN_MENU = [
   { name: "Roulements", path: "/roulements", el: Roulements },
   { name: "Equipes", path: "/equipes", el: Equipes },
   /*{ name: "Sections", path: "/sections", el: Sections }, */
+];
+
+export const MONTHS = [
+  "Janvier",
+  "Février",
+  "Mars",
+  "Avril",
+  "Mai",
+  "Juin",
+  "Juillet",
+  "Août",
+  "Septembre",
+  "Octobre",
+  "Novembre",
+  "Décembre",
 ];

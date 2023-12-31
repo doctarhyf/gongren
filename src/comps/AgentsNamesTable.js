@@ -7,10 +7,19 @@ export default function AgentsNamesTable({
   curAgent,
 }) {
   return (
-    <table class=" print-only">
+    <table class=" print-only w-full ">
       <thead>
         <tr>
-          {["No", "Nom", "Agent", "Section", "Poste", "Equipe"].map((it, i) => (
+          {[
+            "No",
+            "Nom",
+            "Agent",
+            "Section",
+            "Poste",
+            "Equipe",
+            "Matricule",
+            "phone",
+          ].map((it, i) => (
             <th className="p-1 border-neutral-400 border" key={i}>
               {it}
             </th>
@@ -35,6 +44,8 @@ export default function AgentsNamesTable({
               agent.section,
               agent.poste,
               agent.equipe,
+              agent.matricule,
+              agent.phone,
             ].map((agd, i) => (
               <td key={i} className="p-1 border-neutral-400 border">
                 {agd}

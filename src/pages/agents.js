@@ -10,6 +10,7 @@ export default function Agents() {
   const [showFormAddNewAgent, setShowFormAddNewAgent] = useState(false);
   const [updateKey, setUpdateKey] = useState();
   const [agentCardEditMode, setAgentCardEditMode] = useState(false);
+  const [showAgentDetails, setShowAgentDetails] = useState(true);
 
   function onShowRoulement() {
     console.log("On Show Roulement ...");
@@ -17,7 +18,7 @@ export default function Agents() {
 
   function reloadComponents() {
     const rdk = Math.random();
-    console.log(`Reloading comps with new key : ${rdk}`);
+
     setUpdateKey(rdk);
     setCurAgent(null);
   }
@@ -32,7 +33,7 @@ export default function Agents() {
       return;
     }
 
-    const error = `Error saving agent!\n ${JSON.stringify(err)}`;
+    const error = `Error saving agent!\n ${JSON.stringify(res)}`;
     alert(error);
     console.log(error);
   }
@@ -74,12 +75,23 @@ export default function Agents() {
   return (
     <div>
       {!showFormAddNewAgent && (
-        <button
-          onClick={(e) => setShowFormAddNewAgent(true)}
-          className="p-1 rounded-md border my-1 border-green-500 text-green-500 hover:bg-green-500 hover:text-white"
-        >
-          NEW AGENT
-        </button>
+        <div>
+          <button
+            onClick={(e) => setShowFormAddNewAgent(true)}
+            className="p-1 rounded-md border my-1 border-green-500 text-green-500 hover:bg-green-500 hover:text-white"
+          >
+            NEW AGENT
+          </button>
+          <div>
+            Show/Hide Details
+            <input
+              type="checkbox"
+              className="toggle toggle-xs"
+              checked={showAgentDetails}
+              onChange={(e) => setShowAgentDetails(e.target.checked)}
+            />
+          </div>
+        </div>
       )}
 
       {!showFormAddNewAgent && (
@@ -89,13 +101,15 @@ export default function Agents() {
             curAgent={curAgent}
             onAgentClick={(agent_data) => onAgentClick(agent_data)}
           />
-          <AgentCard
-            agentCardEditMode={agentCardEditMode}
-            setAgentCardEditMode={setAgentCardEditMode}
-            onShowRoulement={onShowRoulement}
-            agent={curAgent}
-            onAgentCardEvent={onAgentCardEvent}
-          />
+          {showAgentDetails && (
+            <AgentCard
+              agentCardEditMode={agentCardEditMode}
+              setAgentCardEditMode={setAgentCardEditMode}
+              onShowRoulement={onShowRoulement}
+              agent={curAgent}
+              onAgentCardEvent={onAgentCardEvent}
+            />
+          )}
         </div>
       )}
 

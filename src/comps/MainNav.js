@@ -1,12 +1,14 @@
 import React from "react";
 import { MAIN_MENU } from "../helpers/flow";
+import gck from "../img/gck.png";
 
 function MainNav({ onMenuClick, curPage }) {
   return (
     <section className="bg-sky-500 h-full w-44">
-      <div className="text-white  border-b pb-4 text-3xl p-2 text-center">
-        工人管理
+      <div className="p-1">
+        <img src={gck} height={80} />
       </div>
+      <div className="text-white  border-b pb-4 p-2 text-center">工人管理</div>
       <div>
         <ul className="text-end p-2">
           {MAIN_MENU.map((menu_item, i) => (
