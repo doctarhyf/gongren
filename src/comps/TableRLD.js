@@ -17,6 +17,7 @@ export default function TableRLD({
   const [editing, setediting] = useState(false);
   const [loading, setloading] = useState(false);
   const [rld, setrld] = useState(curAgentRld);
+  const [init_data, set_init_data] = useState([]);
 
   if (error) curAgentRld = init;
 
@@ -76,7 +77,7 @@ export default function TableRLD({
     }
 
     const [, , year, month] = monthCode.split("_");
-    const d = new Date();
+    //const d = new Date();
 
     let cur_month = Number(month); // d.getMonth() - 1 < 0 ? 11 : d.getMonth() - 1;
     let next_month = Number.parseInt(cur_month) + 1;
@@ -85,6 +86,21 @@ export default function TableRLD({
     const days_in_cur_month = getDaysInMonth(year, cur_month);
     const days_in_next_month = getDaysInMonth(year, next_month);
     const rem_days_in_cur_months = days_in_cur_month - 20;
+    const rld_data = [];
+    let default_data = [];
+
+    let idx = 21;
+    rld.map((it, i) => {
+      let d = idx;
+      idx++;
+
+      if (d === 31) {
+        idx = 1;
+      }
+      console.log(`current d : ${d}`);
+      rld_data.push({ id: i, date: d, data: "-" });
+      default_data.push("-");
+    });
 
     const data = {
       cur_month: cur_month,
@@ -92,12 +108,16 @@ export default function TableRLD({
       days_in_cur_month: days_in_cur_month,
       days_in_next_month: days_in_next_month,
       rem_days_in_cur_months: rem_days_in_cur_months,
+      rld_data: rld_data,
     };
 
-    console.table(data);
+    set_init_data(data);
+    //console.table(data);
+
+    //return;
     setloading(true);
     let initData = {
-      rl: init.join(""),
+      rl: default_data.join(""),
       month_code: monthCode,
     };
     const res = await SB.InsertItem(TABLES_NAMES.AGENTS_RLD, initData);
@@ -165,7 +185,7 @@ export default function TableRLD({
             <td className={CLASS_TD}>Mat.工号</td>
             {[...Array(curAgentRld.length)].map((d, i) => (
               <td key={i} className={CLASS_TD}>
-                {i + 20}
+                {i + 20 > 31 ? i : i + 20}
               </td>
             ))}
           </tr>
