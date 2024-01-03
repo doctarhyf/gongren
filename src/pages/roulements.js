@@ -76,7 +76,7 @@ export default function Roulements() {
             Mois{" "}
             <select ref={ref_m} onChange={(e) => onDateChange(curAgent.id)}>
               {[...Array(12)].map((mois, i) => (
-                <option>{MONTHS[i]}</option>
+                <option key={i}>{MONTHS[i]}</option>
               ))}
             </select>
           </div>
@@ -84,7 +84,7 @@ export default function Roulements() {
             Annee{" "}
             <select ref={ref_y} onChange={(e) => onDateChange(curAgent.id)}>
               {[...Array(10)].map((annee, i) => (
-                <option>{new Date().getFullYear() + i}</option>
+                <option key={i}>{new Date().getFullYear() + i}</option>
               ))}
             </select>
           </div>

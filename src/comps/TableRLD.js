@@ -67,20 +67,31 @@ export default function TableRLD({
   }
 
   async function createTimetableData() {
+    if (monthCode === undefined) {
+      const msg = `monthCode is ${monthCode}`;
+      console.log(msg);
+      alert(msg);
+
+      return;
+    }
+
     const [, , year, month] = monthCode.split("_");
     const d = new Date();
-    let cur_month = d.getMonth() - 1 < 0 ? 11 : d.getMonth() - 1;
-    let next_month = cur_month + 1;
+
+    let cur_month = Number(month); // d.getMonth() - 1 < 0 ? 11 : d.getMonth() - 1;
+    let next_month = Number.parseInt(cur_month) + 1;
     next_month = next_month > 11 ? 0 : next_month;
 
     const days_in_cur_month = getDaysInMonth(year, cur_month);
     const days_in_next_month = getDaysInMonth(year, next_month);
+    const rem_days_in_cur_months = days_in_cur_month - 20;
 
     const data = {
       cur_month: cur_month,
       next_month: next_month,
       days_in_cur_month: days_in_cur_month,
       days_in_next_month: days_in_next_month,
+      rem_days_in_cur_months: rem_days_in_cur_months,
     };
 
     console.table(data);
