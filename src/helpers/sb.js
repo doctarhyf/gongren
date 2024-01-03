@@ -3,8 +3,6 @@ import { TABLES_NAMES, supabase } from "./sb.config";
 export async function InsertItem(tableName, newData) {
   const { data, error } = await supabase.from(tableName).insert([newData]);
 
-  console.log("data => ", data, "\nerror => ", error);
-
   if (error) return error;
   return data;
 }
