@@ -14,3 +14,9 @@ export function formatFrenchDate(inputDate) {
 }
 
 export const FFD = formatFrenchDate;
+
+export function getDaysInMonth(year, month) {
+  // Note: Months are zero-based in JavaScript (0-Jan, 1-Feb, ..., 11-Dec)
+  const lastDayOfMonth = new Date(year, month + 1, 0).getDate();
+  return lastDayOfMonth;
+}

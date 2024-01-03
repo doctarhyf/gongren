@@ -3,6 +3,7 @@ import * as SB from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
 import Loading from "./Loading";
 import { CLASS_BTN, CLASS_TD, MONTHS } from "../helpers/flow";
+import { getDaysInMonth } from "../helpers/func";
 
 const init = [...Array(31).fill("-")];
 
@@ -65,7 +66,24 @@ export default function TableRLD({
     );
   }
 
-  async function createNewTT() {
+  async function createTimetableData() {
+    const [, , year, month] = monthCode.split("_");
+    const d = new Date();
+    let cur_month = d.getMonth() - 1 < 0 ? 11 : d.getMonth() - 1;
+    let next_month = cur_month + 1;
+    next_month = next_month > 11 ? 0 : next_month;
+
+    const days_in_cur_month = getDaysInMonth(year, cur_month);
+    const days_in_next_month = getDaysInMonth(year, next_month);
+
+    const data = {
+      cur_month: cur_month,
+      next_month: next_month,
+      days_in_cur_month: days_in_cur_month,
+      days_in_next_month: days_in_next_month,
+    };
+
+    console.table(data);
     setloading(true);
     let initData = {
       rl: init.join(""),
@@ -82,7 +100,6 @@ export default function TableRLD({
 
     onRoulementSaved();
     setloading(false);
-    console.log("createNewTT()");
   }
 
   return (
@@ -111,7 +128,10 @@ export default function TableRLD({
               )}
               {error && (
                 <div>
-                  <button onClick={(e) => createNewTT()} className={CLASS_BTN}>
+                  <button
+                    onClick={(e) => createTimetableData()}
+                    className={CLASS_BTN}
+                  >
                     NEW TITMETABLE
                   </button>
                 </div>
