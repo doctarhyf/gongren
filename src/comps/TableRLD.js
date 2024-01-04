@@ -16,21 +16,23 @@ export default function TableRLD({
 }) {
   const [editing, setediting] = useState(false);
   const [loading, setloading] = useState(false);
-  const [rld, setrld] = useState(curAgentRld);
+  const [roulementData, setRoulementData] = useState(curAgentRld);
   const [init_data, set_init_data] = useState([]);
 
   if (error) curAgentRld = init;
 
   useEffect(() => {
     if (error) {
-      setrld(init);
+      //    setRoulementData(init);
+      //  console.log("curAgentRld => ", curAgentRld);
+      //console.log("init => ", init);
     }
   }, []);
 
   function onUpdateRLD(idx, val) {
     let upd = curAgentRld;
     upd[idx] = val;
-    setrld(upd);
+    setRoulementData(upd);
 
     // console.log(upd);
   }
@@ -40,7 +42,7 @@ export default function TableRLD({
 
     if (error) {
       const res = await SB.InsertItem(TABLES_NAMES.AGENTS_RLD, {
-        rl: rld.join(""),
+        rl: roulementData.join(""),
         month_code: monthCode,
       });
 
@@ -53,7 +55,7 @@ export default function TableRLD({
 
     SB.UpdateRoulement2(
       monthCode,
-      rld.join(""),
+      roulementData.join(""),
       (s) => {
         console.log(s);
         setloading(false);
@@ -66,6 +68,8 @@ export default function TableRLD({
       }
     );
   }
+
+  function createRLDDates() {}
 
   async function createTimetableData() {
     if (monthCode === undefined) {
@@ -142,7 +146,7 @@ export default function TableRLD({
             <td
               colSpan={curAgentRld.length + 3}
               className={CLASS_TD}
-              align="center"
+              /*  align="center" */
             >
               HORAIRE - {monthCode && MONTHS[monthCode.split("_")[3]]} /{" "}
               {monthCode && monthCode.split("_")[2]}
@@ -157,7 +161,7 @@ export default function TableRLD({
                   />
                 </div>
               )}
-              {error && (
+              {/* {error && (
                 <div>
                   <button
                     onClick={(e) => createTimetableData()}
@@ -166,7 +170,7 @@ export default function TableRLD({
                     NEW TITMETABLE
                   </button>
                 </div>
-              )}
+              )} */}
               {editing && (
                 <div>
                   {" "}

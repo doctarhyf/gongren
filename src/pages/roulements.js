@@ -5,6 +5,7 @@ import * as SB from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
 import Loading from "../comps/Loading";
 import TableRLD from "../comps/TableRLD";
+import { getDaysInMonth } from "../helpers/func";
 
 export default function Roulements() {
   const [curAgent, setCurAgent] = useState({ id: -1 });
@@ -32,19 +33,21 @@ export default function Roulements() {
   async function loadRoulement() {
     let data = await SB.LoadAllItems(TABLES_NAMES.AGENTS_RLD);
     set_roulement_data(data);
+    setrdk(Math.random());
+    setCurAgentRld([]);
   }
 
   function onAgentClick(agent_data) {
     setCurAgent(agent_data);
     onDateChange(agent_data.id);
-    setrdk(Math.random());
+    // setrdk(Math.random());
   }
 
   function ParseRLD(rld) {
     return rld.rl && rld.rl.split("");
   }
 
-  function onDateChange(id = -1) {
+  async function onDateChange(id = -1) {
     seterror(undefined);
     setCurAgentRld([]);
     const y = ref_y.current.value;
@@ -55,10 +58,17 @@ export default function Roulements() {
 
     const data = roulement_data.find((it, i) => it.month_code === mc);
 
-    console.log(data, mc);
+    //const init_data = GetInitRLD(mc);
 
     if (data === undefined) {
-      seterror(`Data for "${mc}" does not exist!`);
+      seterror(`Data for "${mc}" does not exist!New Data created`);
+
+      const init_data = await GetInitRLD(mc);
+
+      setCurAgentRld({ rl: init_data });
+      await loadRoulement();
+      seterror(null);
+      setrdk(Math.random());
       return;
     }
     const rl = ParseRLD(data);
@@ -67,9 +77,72 @@ export default function Roulements() {
     console.log(rl);
   }
 
+  async function GetInitRLD(monthCode) {
+    if (monthCode === undefined) {
+      const msg = `monthCode is ${monthCode}`;
+      console.log(msg);
+      alert(msg);
+
+      return;
+    }
+
+    const [, , year, month] = monthCode.split("_");
+    //const d = new Date();
+
+    let cur_month = Number(month); // d.getMonth() - 1 < 0 ? 11 : d.getMonth() - 1;
+    let next_month = Number.parseInt(cur_month) + 1;
+    next_month = next_month > 11 ? 0 : next_month;
+
+    const days_in_cur_month = getDaysInMonth(year, cur_month);
+    const days_in_next_month = getDaysInMonth(year, next_month);
+    const rem_days_in_cur_months = days_in_cur_month - 20;
+    const days_tot = rem_days_in_cur_months + 20;
+    const rld = [...Array(days_tot).fill("-")];
+    const rld_data = [];
+    let default_data = [];
+
+    let idx = 21;
+    rld.map((it, i) => {
+      let d = idx;
+      idx++;
+
+      if (d === 31) {
+        idx = 1;
+      }
+      console.log(`current d : ${d}`);
+      rld_data.push({ id: i, date: d, data: "-" });
+      default_data.push("-");
+    });
+
+    const data = {
+      cur_month: cur_month,
+      next_month: next_month,
+      days_in_cur_month: days_in_cur_month,
+      days_in_next_month: days_in_next_month,
+      rem_days_in_cur_months: rem_days_in_cur_months,
+      rld_data: rld_data,
+    };
+
+    const rl = default_data.join("");
+    let initData = {
+      rl: rl,
+      month_code: monthCode,
+    };
+    const res = await SB.InsertItem(TABLES_NAMES.AGENTS_RLD, initData);
+
+    if (res === null) {
+      alert("Data created!");
+    } else {
+      console.log(res);
+      alert(res.message);
+    }
+
+    return rl;
+  }
+
   return (
     <div className="flex">
-      <AgentsList onAgentClick={onAgentClick} curAgent={curAgent} />
+      <AgentsList key={rdk} onAgentClick={onAgentClick} curAgent={curAgent} />
       <div>
         <div>
           <div>
@@ -102,11 +175,11 @@ export default function Roulements() {
           curAgentRld={curAgentRld}
           monthCode={monthCode}
         />
-        {error && (
+        {/*  {error && (
           <div className="bg-red-500 text-white px-1 rounded-full text-xs text-center">
             {error}
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );
