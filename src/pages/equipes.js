@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { EQUIPES, POSTE, SECTIONS } from "../helpers/flow";
+import { CLASS_TD, EQUIPES, MONTHS, POSTE, SECTIONS } from "../helpers/flow";
 import { LoadAllItems } from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
 import AgentsNamesTable from "../comps/AgentsNamesTable";
@@ -7,13 +7,15 @@ import AgentsNamesTable from "../comps/AgentsNamesTable";
 export default function Equipes() {
   const [agents, setagents] = useState([]);
   const [agentsf, setagentsf] = useState([]);
-  const [rld, setrld] = useStates([]);
-  const [rldf, setrldf] = useStates([]);
+  const [rld, setrld] = useState([]);
+  const [rldf, setrldf] = useState([]);
 
   const ref_equipe = useRef();
   const ref_section = useRef();
   const ref_sp_equipe = useRef();
   const ref_sp_section = useRef();
+  const ref_year = useRef();
+  const ref_month = useRef();
 
   useEffect(() => {
     loadAgents();
@@ -45,14 +47,17 @@ export default function Equipes() {
     ref_sp_section.current.textContent = section;
     ref_sp_equipe.current.textContent = equipe;
 
-    const itemsf = FilterAgents(agents, section, equipe);
-    let rldzf = [];
+    const arr_agents = FilterAgents(agents, section, equipe);
 
-    setagentsf(itemsf);
+    setagentsf(arr_agents);
   }
 
   function onAgentClick(agent) {
     console.log(agent);
+  }
+
+  function onChangeDate(e) {
+    console.log(e);
   }
 
   return (
@@ -90,6 +95,27 @@ export default function Equipes() {
               </select>
             </td>
           </tr>
+          <tr>
+            <td>Date</td>
+            <td>
+              <div>
+                Year:
+                <select onChange={onChangeDate} ref={ref_year}>
+                  {[...Array(10)].map((it, i) => (
+                    <option>{new Date().getFullYear() + i}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                Month:
+                <select onChange={onChangeDate} ref={ref_year}>
+                  {[...Array(12)].map((it, i) => (
+                    <option value={i}>{MONTHS[i]}</option>
+                  ))}
+                </select>
+              </div>
+            </td>
+          </tr>
         </tbody>
       </table>
 
@@ -99,7 +125,24 @@ export default function Equipes() {
       </div>
 
       <div>
-        <AgentsNamesTable agentsArray={agentsf} onAgentClick={onAgentClick} />
+        {/* {false && (
+          <AgentsNamesTable agentsArray={agentsf} onAgentClick={onAgentClick} />
+        )} */}
+
+        <table>
+          <tbody>
+            {agentsf.map((ag, i) => (
+              <tr>
+                <td className={CLASS_TD}>{i + 1}</td>
+                <td className={CLASS_TD}>
+                  {ag.nom} - {ag.postnom}
+                </td>
+                <td className={CLASS_TD}>{ag.matricule}</td>
+                {}
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );

@@ -18,6 +18,8 @@ export default function TableRLD({
   const [loading, setloading] = useState(false);
   const [roulementData, setRoulementData] = useState(curAgentRld);
   const [init_data, set_init_data] = useState([]);
+  const [showHeader, setShowHeader] = useState(true);
+  const [showDates, setShowDates] = useState(true);
 
   if (error) curAgentRld = init;
 
@@ -71,27 +73,28 @@ export default function TableRLD({
     <div>
       <Loading isLoading={loading} />
       <table className="m-1">
-        <thead>
-          <tr>
-            <td
-              colSpan={curAgentRld.length + 3}
-              className={CLASS_TD}
-              /*  align="center" */
-            >
-              HORAIRE - {monthCode && MONTHS[monthCode.split("_")[3]]} /{" "}
-              {monthCode && monthCode.split("_")[2]}
-              {!error && !editing && (
-                <div>
-                  Edit
-                  <input
-                    type="checkbox"
-                    className="toggle toggle-xs"
-                    checked={editing}
-                    onChange={(e) => setediting(e.target.checked)}
-                  />
-                </div>
-              )}
-              {/* {error && (
+        {showHeader && (
+          <thead>
+            <tr>
+              <td
+                colSpan={curAgentRld.length + 3}
+                className={CLASS_TD}
+                /*  align="center" */
+              >
+                HORAIRE - {monthCode && MONTHS[monthCode.split("_")[3]]} /{" "}
+                {monthCode && monthCode.split("_")[2]}
+                {!error && !editing && (
+                  <div>
+                    Edit
+                    <input
+                      type="checkbox"
+                      className="toggle toggle-xs"
+                      checked={editing}
+                      onChange={(e) => setediting(e.target.checked)}
+                    />
+                  </div>
+                )}
+                {/* {error && (
                 <div>
                   <button
                     onClick={(e) => createTimetableData()}
@@ -101,28 +104,33 @@ export default function TableRLD({
                   </button>
                 </div>
               )} */}
-              {editing && (
-                <div>
-                  {" "}
-                  <button className={CLASS_BTN} onClick={(e) => saveRLD()}>
-                    SAVE
-                  </button>
-                </div>
-              )}
-            </td>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td className={CLASS_TD}>Num序号</td>
-            <td className={CLASS_TD}>Nom</td>
-            <td className={CLASS_TD}>Mat.工号</td>
-            {[...Array(curAgentRld.length)].map((d, i) => (
-              <td key={i} className={CLASS_TD}>
-                {i + 20 > 31 ? i : i + 20}
+                {editing && (
+                  <div>
+                    {" "}
+                    <button className={CLASS_BTN} onClick={(e) => saveRLD()}>
+                      SAVE
+                    </button>
+                  </div>
+                )}
               </td>
-            ))}
-          </tr>
+            </tr>
+          </thead>
+        )}
+
+        <tbody>
+          {showDates && (
+            <tr>
+              <td className={CLASS_TD}>Num序号</td>
+              <td className={CLASS_TD}>Nom</td>
+              <td className={CLASS_TD}>Mat.工号</td>
+              {[...Array(curAgentRld.length)].map((d, i) => (
+                <td key={i} className={CLASS_TD}>
+                  {i + 20 > 31 ? i : i + 20}
+                </td>
+              ))}
+            </tr>
+          )}
+
           <tr>
             <td className={CLASS_TD}>{curAgent.id}</td>
             <td className={CLASS_TD}>
