@@ -7,6 +7,8 @@ import AgentsNamesTable from "../comps/AgentsNamesTable";
 export default function Equipes() {
   const [agents, setagents] = useState([]);
   const [agentsf, setagentsf] = useState([]);
+  const [rld, setrld] = useStates([]);
+  const [rldf, setrldf] = useStates([]);
 
   const ref_equipe = useRef();
   const ref_section = useRef();
@@ -19,8 +21,10 @@ export default function Equipes() {
 
   async function loadAgents() {
     let items = await LoadAllItems(TABLES_NAMES.AGENTS);
+    let rlds = await LoadAllItems(TABLES_NAMES.AGENTS_RLD);
 
     setagents(items);
+    setrld(rlds);
   }
 
   function FilterAgents(items_raw, section, equipe) {
@@ -42,8 +46,8 @@ export default function Equipes() {
     ref_sp_equipe.current.textContent = equipe;
 
     const itemsf = FilterAgents(agents, section, equipe);
+    let rldzf = [];
 
-    console.log(itemsf[0]);
     setagentsf(itemsf);
   }
 

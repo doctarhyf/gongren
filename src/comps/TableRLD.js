@@ -33,8 +33,6 @@ export default function TableRLD({
     let upd = curAgentRld;
     upd[idx] = val;
     setRoulementData(upd);
-
-    // console.log(upd);
   }
 
   async function saveRLD() {
@@ -67,74 +65,6 @@ export default function TableRLD({
         setediting(false);
       }
     );
-  }
-
-  function createRLDDates() {}
-
-  async function createTimetableData() {
-    if (monthCode === undefined) {
-      const msg = `monthCode is ${monthCode}`;
-      console.log(msg);
-      alert(msg);
-
-      return;
-    }
-
-    const [, , year, month] = monthCode.split("_");
-    //const d = new Date();
-
-    let cur_month = Number(month); // d.getMonth() - 1 < 0 ? 11 : d.getMonth() - 1;
-    let next_month = Number.parseInt(cur_month) + 1;
-    next_month = next_month > 11 ? 0 : next_month;
-
-    const days_in_cur_month = getDaysInMonth(year, cur_month);
-    const days_in_next_month = getDaysInMonth(year, next_month);
-    const rem_days_in_cur_months = days_in_cur_month - 20;
-    const rld_data = [];
-    let default_data = [];
-
-    let idx = 21;
-    rld.map((it, i) => {
-      let d = idx;
-      idx++;
-
-      if (d === 31) {
-        idx = 1;
-      }
-      console.log(`current d : ${d}`);
-      rld_data.push({ id: i, date: d, data: "-" });
-      default_data.push("-");
-    });
-
-    const data = {
-      cur_month: cur_month,
-      next_month: next_month,
-      days_in_cur_month: days_in_cur_month,
-      days_in_next_month: days_in_next_month,
-      rem_days_in_cur_months: rem_days_in_cur_months,
-      rld_data: rld_data,
-    };
-
-    set_init_data(data);
-    //console.table(data);
-
-    //return;
-    setloading(true);
-    let initData = {
-      rl: default_data.join(""),
-      month_code: monthCode,
-    };
-    const res = await SB.InsertItem(TABLES_NAMES.AGENTS_RLD, initData);
-
-    if (res === null) {
-      alert("Data created!");
-    } else {
-      console.log(res);
-      alert(res.message);
-    }
-
-    onRoulementSaved();
-    setloading(false);
   }
 
   return (
