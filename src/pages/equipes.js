@@ -49,7 +49,35 @@ export default function Equipes() {
 
     const arr_agents = FilterAgents(agents, section, equipe);
 
-    setagentsf(arr_agents);
+    let arr_agents_with_rld = [];
+
+    arr_agents.map((agent, i) => {
+      const { id: agent_id } = agent;
+      const y = 2024;
+      //ref_year.current.value;
+      const m = 0;
+      //ref_month.current.value;
+      let mc = `mc_${agent_id}_${y}_${m}`;
+      //console.log(`mc : `, mc);
+
+      //console.log(rld);
+      const roulement_data = rld.find((it, i) => it.month_code === mc);
+
+      agent.rld = roulement_data;
+
+      if (roulement_data === undefined) {
+        console.error(`rld for ${mc} is undefinded`);
+        const data = { rl: [...Array(31).fill("-")].join(""), month_code: mc };
+        agent.rld = data;
+      } else {
+        console.info(`rld for ${mc}\n`, agent);
+      }
+      arr_agents_with_rld.push(agent);
+    });
+
+    //console.log(arr_agents_with_rld);
+
+    setagentsf(arr_agents_with_rld);
   }
 
   function onAgentClick(agent) {
@@ -102,13 +130,13 @@ export default function Equipes() {
                 Year:
                 <select onChange={onChangeDate} ref={ref_year}>
                   {[...Array(10)].map((it, i) => (
-                    <option>{new Date().getFullYear() + i}</option>
+                    <option key={i}>{new Date().getFullYear() + i}</option>
                   ))}
                 </select>
               </div>
               <div>
                 Month:
-                <select onChange={onChangeDate} ref={ref_year}>
+                <select onChange={onChangeDate} ref={ref_month}>
                   {[...Array(12)].map((it, i) => (
                     <option value={i}>{MONTHS[i]}</option>
                   ))}
@@ -138,7 +166,9 @@ export default function Equipes() {
                   {ag.nom} - {ag.postnom}
                 </td>
                 <td className={CLASS_TD}>{ag.matricule}</td>
-                {}
+                {ag.rld.rl.split("").map((r, i) => (
+                  <td className={CLASS_TD}>{r}</td>
+                ))}
               </tr>
             ))}
           </tbody>
