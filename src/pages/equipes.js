@@ -14,6 +14,8 @@ export default function Equipes() {
   const ref_section = useRef();
   const ref_sp_equipe = useRef();
   const ref_sp_section = useRef();
+  const ref_sp_y = useRef();
+  const ref_sp_m = useRef();
   const ref_year = useRef();
   const ref_month = useRef();
 
@@ -41,11 +43,16 @@ export default function Equipes() {
   }
 
   function onChange(e) {
+    let y = ref_year.current.value;
+    let m = ref_month.current.value;
+
     const section = ref_section.current.value;
     const equipe = ref_equipe.current.value;
 
     ref_sp_section.current.textContent = section;
     ref_sp_equipe.current.textContent = equipe;
+    ref_sp_y.current.textContent = y;
+    ref_sp_m.current.textContent = MONTHS[m];
 
     const arr_agents = FilterAgents(agents, section, equipe);
 
@@ -53,14 +60,9 @@ export default function Equipes() {
 
     arr_agents.map((agent, i) => {
       const { id: agent_id } = agent;
-      const y = 2024;
-      //ref_year.current.value;
-      const m = 0;
-      //ref_month.current.value;
-      let mc = `mc_${agent_id}_${y}_${m}`;
-      //console.log(`mc : `, mc);
 
-      //console.log(rld);
+      let mc = `mc_${agent_id}_${y}_${m}`;
+
       const roulement_data = rld.find((it, i) => it.month_code === mc);
 
       agent.rld = roulement_data;
@@ -82,10 +84,6 @@ export default function Equipes() {
 
   function onAgentClick(agent) {
     console.log(agent);
-  }
-
-  function onChangeDate(e) {
-    console.log(e);
   }
 
   return (
@@ -128,7 +126,7 @@ export default function Equipes() {
             <td>
               <div>
                 Year:
-                <select onChange={onChangeDate} ref={ref_year}>
+                <select onChange={onChange} ref={ref_year}>
                   {[...Array(10)].map((it, i) => (
                     <option key={i}>{new Date().getFullYear() + i}</option>
                   ))}
@@ -136,7 +134,7 @@ export default function Equipes() {
               </div>
               <div>
                 Month:
-                <select onChange={onChangeDate} ref={ref_month}>
+                <select onChange={onChange} ref={ref_month}>
                   {[...Array(12)].map((it, i) => (
                     <option value={i}>{MONTHS[i]}</option>
                   ))}
@@ -147,18 +145,34 @@ export default function Equipes() {
         </tbody>
       </table>
 
-      <div className="text-3xl">
-        Equipe <span ref={ref_sp_equipe}></span> -{" "}
-        <span ref={ref_sp_section}></span>
-      </div>
-
       <div>
         {/* {false && (
           <AgentsNamesTable agentsArray={agentsf} onAgentClick={onAgentClick} />
         )} */}
 
         <table>
+          <thead>
+            <tr>
+              <td
+                className={CLASS_TD}
+                colSpan={agentsf[0] && agentsf[0].rld.rl.split("").length + 3}
+              >
+                <div className="text-2xl">
+                  Equipe <span ref={ref_sp_equipe}></span> -{" "}
+                  <span ref={ref_sp_section}></span> /{" "}
+                  <span ref={ref_sp_m}></span> - <span ref={ref_sp_y}></span>
+                </div>
+              </td>
+            </tr>
+          </thead>
           <tbody>
+            <tr>
+              <td className={CLASS_TD} colSpan={3}></td>
+              {agentsf[0] &&
+                agentsf[0].rld.rl
+                  .split("")
+                  .map((it, i) => <td className={CLASS_TD}>{i + 1}</td>)}
+            </tr>
             {agentsf.map((ag, i) => (
               <tr>
                 <td className={CLASS_TD}>{i + 1}</td>
