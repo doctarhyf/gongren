@@ -4,6 +4,7 @@ import { TABLES_NAMES } from "../helpers/sb.config";
 import AgentCard, { AGENT_CARD_EVENT } from "../comps/AgentCard";
 import AgentsList from "../comps/AgentsList";
 import FormAddAgent from "../comps/FormAddAgent";
+import Loading from "../comps/Loading";
 
 export default function Agents() {
   const [curAgent, setCurAgent] = useState(null);
@@ -11,6 +12,7 @@ export default function Agents() {
   const [updateKey, setUpdateKey] = useState();
   const [agentCardEditMode, setAgentCardEditMode] = useState(false);
   const [showAgentDetails, setShowAgentDetails] = useState(true);
+  const [loading, setloading] = useState(false);
 
   function onShowRoulement() {
     console.log("On Show Roulement ...");
@@ -24,18 +26,21 @@ export default function Agents() {
   }
 
   async function onSaveNewAgent(agent_data) {
+    setloading(true);
     reloadComponents();
 
     const res = await SB.InsertItem(TABLES_NAMES.AGENTS, agent_data);
     if (res === null) {
       alert(`Agent "${agent_data.nom} - ${agent_data.postnom}" saved!`);
       setShowFormAddNewAgent(false);
+      setloading(false);
       return;
     }
 
     const error = `Error saving agent!\n ${JSON.stringify(res)}`;
     alert(error);
     console.log(error);
+    setloading(false);
   }
 
   async function onUpdateAgent(agent_data) {
@@ -114,11 +119,14 @@ export default function Agents() {
       )}
 
       {showFormAddNewAgent && (
-        <FormAddAgent
-          onFormSave={onSaveNewAgent}
-          onFormUpdate={onUpdateAgent}
-          onFormCancel={onFormNewAgentCancel}
-        />
+        <div>
+          <Loading isLoading={loading} />
+          <FormAddAgent
+            onFormSave={onSaveNewAgent}
+            onFormUpdate={onUpdateAgent}
+            onFormCancel={onFormNewAgentCancel}
+          />
+        </div>
       )}
     </div>
   );

@@ -156,7 +156,7 @@ export default function TableRLD({
               </td>
             ))}
           </tr>
-          <td className={COL_SPAN}>
+          <td className="">
             <div>
               {" "}
               Nb. Abs.:<b>0</b>

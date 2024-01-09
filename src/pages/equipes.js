@@ -1,7 +1,17 @@
 import React, { useEffect, useRef, useState } from "react";
-import { CLASS_TD, EQUIPES, MONTHS, POSTE, SECTIONS } from "../helpers/flow";
+import {
+  CLASS_TD,
+  EQUIPES,
+  K_POSTE_CHARGEUR,
+  K_POSTE_NETTOYEUR,
+  K_POSTE_OPERATEUR,
+  MONTHS,
+  POSTE,
+  SECTIONS,
+} from "../helpers/flow";
 import { LoadAllItems } from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
+import shield from "../img/shield.png";
 
 function AgentsTable({
   agentsf,
@@ -11,6 +21,16 @@ function AgentsTable({
   ref_sp_y,
 }) {
   const COL_SPAN = 4;
+  const nb_op = GetNumAgentsByPoste(K_POSTE_OPERATEUR);
+  const nb_charg = GetNumAgentsByPoste(K_POSTE_CHARGEUR);
+  const nb_net = GetNumAgentsByPoste(K_POSTE_NETTOYEUR);
+  const chef_deq = agentsf.find((it, i) => it.chef_deq === "OUI");
+
+  console.log("chef_deq => ", chef_deq);
+
+  function GetNumAgentsByPoste(k_poste) {
+    return agentsf.filter((it, i) => it.poste === POSTE[k_poste]).length;
+  }
 
   return (
     <table>
@@ -19,19 +39,20 @@ function AgentsTable({
           <td className={COL_SPAN}>
             <div>
               {" "}
-              D'equipe:<b>nom</b>
+              D'equipe:
+              <b>{chef_deq && `${chef_deq.nom} ${chef_deq.postnom}`}</b>
             </div>
             <div>
               {" "}
-              Nb. Ope.:<b>0</b>
+              Nb. Ope.:<b>{nb_op}</b>
             </div>
             <div>
               {" "}
-              Nb. Charg.:<b>0</b>
+              Nb. Charg.:<b>{nb_charg}</b>
             </div>
             <div>
               {" "}
-              Nb. Net.:<b>0</b>
+              Nb. Net.:<b>{nb_net}</b>
             </div>
           </td>
         </tr>
@@ -42,7 +63,7 @@ function AgentsTable({
               agentsf[0] && agentsf[0].rld.rl.split("").length + COL_SPAN
             }
           >
-            <div className="text-2xl">
+            <div className="text-2xl text-center">
               Equipe <span ref={ref_sp_equipe}></span> -{" "}
               <span ref={ref_sp_section}></span> / <span ref={ref_sp_m}></span>{" "}
               - <span ref={ref_sp_y}></span>
@@ -75,11 +96,18 @@ function AgentsTable({
           </td>
         </tr>
         {agentsf.map((ag, i) => (
-          <tr>
+          <tr className={` ${ag.chef_deq === "OUI" && "bg-sky-200"}  `}>
             <td className={CLASS_TD}>{i + 1}</td>
             <td className={CLASS_TD}>
-              {ag.nom} {ag.postnom}
-              <b>{ag.mingzi}</b>
+              <div className="flex">
+                {ag.nom} {ag.postnom}
+                <b>{ag.mingzi}</b>
+                {ag.chef_deq === "OUI" && (
+                  <span className="mx-2">
+                    <img src={shield} width={20} height={20} />
+                  </span>
+                )}
+              </div>
             </td>
             <td className={CLASS_TD}>{ag.contrat}</td>
             <td className={CLASS_TD}>{ag.poste}</td>

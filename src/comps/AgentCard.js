@@ -57,11 +57,18 @@ export default function AgentCard({
       )
     ) {
       setloading(true);
-      const res = await SB.DeleteItem(TABLES_NAMES.AGENTS, agent_data);
+      const res_del_agent = await SB.DeleteItem(
+        TABLES_NAMES.AGENTS,
+        agent_data
+      );
+      const res_del_all_rld = await SB.DeleteItemByColEqVal(
+        TABLES_NAMES.AGENTS_RLD,
+        "agent_id",
+        agent_data.id
+      );
 
-      if (res) {
-        //alert(`Error delete ${res}`);
-        onAgentCardEvent(AGENT_CARD_EVENT.ERROR, res);
+      if (res_del_agent || res_del_all_rld) {
+        onAgentCardEvent(AGENT_CARD_EVENT.ERROR, res_del_agent);
         setloading(false);
         return;
       }
@@ -113,6 +120,7 @@ export default function AgentCard({
                     ["mingzi", agent.mingzi],
                     ["nom", agent.nom],
                     ["poste", agent.poste, POSTE],
+
                     ["postnom", agent.postnom],
                     ["prenom", agent.prenom],
                     ["section", agent.section, SECTIONS],

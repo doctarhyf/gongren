@@ -64,8 +64,8 @@ export default function Roulements() {
       seterror(`Data for "${mc}" does not exist!New Data created`);
 
       const init_data = await GetInitRLD(mc);
-
-      setCurAgentRld({ rl: init_data });
+      console.log(id);
+      setCurAgentRld({ rl: init_data, agent_id: id });
       await loadRoulement();
       seterror(null);
       setrdk(Math.random());
@@ -86,7 +86,7 @@ export default function Roulements() {
       return;
     }
 
-    const [, , year, month] = monthCode.split("_");
+    const [, id, year, month] = monthCode.split("_");
     //const d = new Date();
 
     let cur_month = Number(month); // d.getMonth() - 1 < 0 ? 11 : d.getMonth() - 1;
@@ -127,6 +127,7 @@ export default function Roulements() {
     let initData = {
       rl: rl,
       month_code: monthCode,
+      agent_id: id,
     };
     const res = await SB.InsertItem(TABLES_NAMES.AGENTS_RLD, initData);
 
@@ -175,11 +176,6 @@ export default function Roulements() {
           curAgentRld={curAgentRld}
           monthCode={monthCode}
         />
-        {/*  {error && (
-          <div className="bg-red-500 text-white px-1 rounded-full text-xs text-center">
-            {error}
-          </div>
-        )} */}
       </div>
     </div>
   );

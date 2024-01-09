@@ -147,10 +147,18 @@ export async function UpdateItem(table_name, upd_data) {
   return data;
 }
 
-export async function DeleteItem(table_name, agent_data) {
+export async function DeleteItem(table_name, item_data) {
   const { error } = await supabase
     .from(table_name)
     .delete()
-    .eq("id", agent_data.id);
+    .eq("id", item_data.id);
+  if (error) return error;
+}
+
+export async function DeleteItemByColEqVal(table_name, col_name, col_val) {
+  const { error } = await supabase
+    .from(table_name)
+    .delete()
+    .eq(col_name, col_val);
   if (error) return error;
 }

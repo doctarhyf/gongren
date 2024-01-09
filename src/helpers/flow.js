@@ -8,6 +8,14 @@ export const CLASS_TD = `p-1 border border-neutral-300`;
 export const CLASS_BTN =
   " mx-1 hover:bg-sky-500 hover:text-white border p-1 text-sky-400 border-transparent cursor-pointer rounded-md";
 
+export const K_POSTE_NETTOYEUR = 0;
+export const K_POSTE_EXPLOITANT = 1;
+export const K_POSTE_OPERATEUR = 2;
+export const K_POSTE_CHARGEUR = 3;
+export const K_POSTE_MECANICIEN = 4;
+export const K_POSTE_INTERPRETE = 5;
+export const K_POSTE_SUPERVISEUR = 6;
+
 export const SECTIONS = ["BROYAGE", "ENSACHAGE", "N/A"];
 export const POSTE = ["NET", "EXP", "OPE", "CHARG", "MEC", "INT", "SUP"];
 export const EQUIPES = ["JR", "A", "B", "C", "D", "N/A"];

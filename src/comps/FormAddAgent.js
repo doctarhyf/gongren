@@ -48,6 +48,7 @@ export default function FormAddAgent({
   const ref_section = useRef();
   const ref_phone = useRef();
   const ref_matricule = useRef();
+  const ref_chef_deq = useRef();
   const ref_page = useRef();
 
   const [loading, setloading] = useState(false);
@@ -64,6 +65,7 @@ export default function FormAddAgent({
       nationalite: _(ref_nationalite),
       nom: _(ref_nom),
       poste: _(ref_poste),
+      chef_deq: _(ref_chef_deq),
       postnom: _(ref_postnom),
       prenom: _(ref_prenom),
       section: _(ref_section),
@@ -99,6 +101,8 @@ export default function FormAddAgent({
         [ref_section, "section", agent.section, SECTIONS],
         [ref_equipe, "equipe", agent.equipe, EQUIPES],
         [ref_poste, "poste", agent.poste, POSTE],
+
+        [ref_chef_deq, `Chef d'quipe`, agent.chef_deq, ["NON", "OUI"]],
 
         [ref_contrat, "contrat", agent.contrat, CONTRATS],
 
