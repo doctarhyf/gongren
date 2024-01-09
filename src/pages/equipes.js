@@ -2,7 +2,96 @@ import React, { useEffect, useRef, useState } from "react";
 import { CLASS_TD, EQUIPES, MONTHS, POSTE, SECTIONS } from "../helpers/flow";
 import { LoadAllItems } from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
-import AgentsNamesTable from "../comps/AgentsNamesTable";
+
+function AgentsTable({
+  agentsf,
+  ref_sp_equipe,
+  ref_sp_section,
+  ref_sp_m,
+  ref_sp_y,
+}) {
+  const COL_SPAN = 4;
+
+  return (
+    <table>
+      <thead>
+        <tr>
+          <td className={COL_SPAN}>
+            <div>
+              {" "}
+              D'equipe:<b>nom</b>
+            </div>
+            <div>
+              {" "}
+              Nb. Ope.:<b>0</b>
+            </div>
+            <div>
+              {" "}
+              Nb. Charg.:<b>0</b>
+            </div>
+            <div>
+              {" "}
+              Nb. Net.:<b>0</b>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td
+            className={CLASS_TD}
+            colSpan={
+              agentsf[0] && agentsf[0].rld.rl.split("").length + COL_SPAN
+            }
+          >
+            <div className="text-2xl">
+              Equipe <span ref={ref_sp_equipe}></span> -{" "}
+              <span ref={ref_sp_section}></span> / <span ref={ref_sp_m}></span>{" "}
+              - <span ref={ref_sp_y}></span>
+            </div>
+          </td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td className={CLASS_TD} colSpan={COL_SPAN}></td>
+          {agentsf[0] &&
+            agentsf[0].rld.rl.split("").map((it, i) => (
+              <td key={i} className={CLASS_TD}>
+                {i + 1}
+              </td>
+            ))}
+        </tr>
+        <tr>
+          <td className={CLASS_TD}>
+            <b>No</b>
+          </td>
+          <td className={CLASS_TD}>
+            <b>Nom et Postnom</b>
+          </td>
+          <td className={CLASS_TD}>
+            <b>Agent</b>
+          </td>
+          <td className={CLASS_TD}>
+            <b>Poste</b>
+          </td>
+        </tr>
+        {agentsf.map((ag, i) => (
+          <tr>
+            <td className={CLASS_TD}>{i + 1}</td>
+            <td className={CLASS_TD}>
+              {ag.nom} {ag.postnom}
+              <b>{ag.mingzi}</b>
+            </td>
+            <td className={CLASS_TD}>{ag.contrat}</td>
+            <td className={CLASS_TD}>{ag.poste}</td>
+            {ag.rld.rl.split("").map((r, i) => (
+              <td className={CLASS_TD}>{r}</td>
+            ))}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+}
 
 export default function Equipes() {
   const [agents, setagents] = useState([]);
@@ -136,7 +225,9 @@ export default function Equipes() {
                 Month:
                 <select onChange={onChange} ref={ref_month}>
                   {[...Array(12)].map((it, i) => (
-                    <option value={i}>{MONTHS[i]}</option>
+                    <option key={i} value={i}>
+                      {MONTHS[i]}
+                    </option>
                   ))}
                 </select>
               </div>
@@ -150,43 +241,13 @@ export default function Equipes() {
           <AgentsNamesTable agentsArray={agentsf} onAgentClick={onAgentClick} />
         )} */}
 
-        <table>
-          <thead>
-            <tr>
-              <td
-                className={CLASS_TD}
-                colSpan={agentsf[0] && agentsf[0].rld.rl.split("").length + 3}
-              >
-                <div className="text-2xl">
-                  Equipe <span ref={ref_sp_equipe}></span> -{" "}
-                  <span ref={ref_sp_section}></span> /{" "}
-                  <span ref={ref_sp_m}></span> - <span ref={ref_sp_y}></span>
-                </div>
-              </td>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td className={CLASS_TD} colSpan={3}></td>
-              {agentsf[0] &&
-                agentsf[0].rld.rl
-                  .split("")
-                  .map((it, i) => <td className={CLASS_TD}>{i + 1}</td>)}
-            </tr>
-            {agentsf.map((ag, i) => (
-              <tr>
-                <td className={CLASS_TD}>{i + 1}</td>
-                <td className={CLASS_TD}>
-                  {ag.nom} - {ag.postnom}
-                </td>
-                <td className={CLASS_TD}>{ag.matricule}</td>
-                {ag.rld.rl.split("").map((r, i) => (
-                  <td className={CLASS_TD}>{r}</td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <AgentsTable
+          agentsf={agentsf}
+          ref_sp_equipe={ref_sp_equipe}
+          ref_sp_section={ref_sp_section}
+          ref_sp_m={ref_sp_m}
+          ref_sp_y={ref_sp_y}
+        />
       </div>
     </div>
   );
