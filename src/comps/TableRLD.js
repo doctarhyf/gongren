@@ -156,6 +156,16 @@ export default function TableRLD({
               </td>
             ))}
           </tr>
+          <td className={COL_SPAN}>
+            <div>
+              {" "}
+              Nb. Abs.:<b>0</b>
+            </div>
+            <div>
+              {" "}
+              Nb. Mal.:<b>0</b>
+            </div>
+          </td>
         </tbody>
       </table>
     </div>
