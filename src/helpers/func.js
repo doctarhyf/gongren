@@ -207,3 +207,8 @@ export function GroupBySectionAndEquipe(data) {
     return result;
   }, {});
 }
+
+export function _(ref) {
+  if (ref === undefined) return;
+  return ref.current.value;
+}

@@ -12,18 +12,15 @@ export default function DateSelector({ onDateSelected }) {
   const ref_dtype = useRef();
 
   function onDateChange(e) {
-    console.log(e);
-
     const y = Number(_(ref_year));
     const m = Number(_(ref_month));
     const d = Number(_(ref_day));
 
-    let date = { y: y, m: m, d: d };
+    let date = { y: y, m: m, d: d, type: _(ref_dtype) };
 
     if (onDateSelected === undefined)
       console.error(`onDateSelected() is not defined!`);
-    onDateSelected &&
-      onDateSelected({ ...date, type: ref_dtype.current.value });
+    onDateSelected && onDateSelected(date);
   }
 
   function _(ref) {
@@ -32,22 +29,25 @@ export default function DateSelector({ onDateSelected }) {
   }
   return (
     <div>
-      damn Date Type:{" "}
-      <select
-        ref={ref_dtype}
-        value={dateType}
-        onChange={(e) => {
-          setDateType((old) => {
-            onDateChange(e.target.value);
-            //console.log(e.target.value);
-            return e.target.value;
-          });
-        }}
-      >
-        {["Y", "M", "D"].map((t, i) => (
-          <option value={t}>{DATE_TYPE[t]}</option>
-        ))}
-      </select>
+      <div>
+        Date Type:{" "}
+        <select
+          ref={ref_dtype}
+          value={dateType}
+          onChange={(e) => {
+            setDateType((old) => {
+              onDateChange(e.target.value);
+
+              return e.target.value;
+            });
+          }}
+        >
+          {["Y", "M", "D"].map((t, i) => (
+            <option value={t}>{DATE_TYPE[t]}</option>
+          ))}
+        </select>
+      </div>
+
       <div>
         Year:{" "}
         <select ref={ref_year} onChange={onDateChange}>

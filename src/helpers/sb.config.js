@@ -9,4 +9,5 @@ export const TABLES_NAMES = {
   AGENTS: "agents",
   AGENTS_RLD: "agents_rld",
   TEST: "test",
+  LOADS: "loads",
 };

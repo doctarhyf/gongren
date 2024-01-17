@@ -1,0 +1,96 @@
+import React, { useRef, useState } from "react";
+import Loading from "./Loading";
+import { CLASS_BTN } from "../helpers/flow";
+import { _ } from "../helpers/func";
+import * as SB from "../helpers/sb";
+import { TABLES_NAMES } from "../helpers/sb.config";
+import DateSelector from "./DateSelector";
+
+export default function BagsDataInput() {
+  const [loading, setloading] = useState(false);
+  const ref_team = useRef();
+  const ref_shift = useRef();
+  const ref_sacs = useRef();
+  const ref_retours = useRef();
+  const ref_ajouts = useRef();
+  const [date, setdate] = useState({
+    y: new Date().getFullYear(),
+    m: new Date().getMonth(),
+    d: new Date().getDay(),
+  });
+
+  function onDateSelected(d) {
+    setdate(d);
+  }
+
+  async function onSaveLoad() {
+    setloading(true);
+    const team = _(ref_team);
+
+    const shift = _(ref_shift);
+    const sacs = Number(_(ref_sacs));
+    const retours = Number(_(ref_retours));
+    const ajouts = Number(_(ref_ajouts));
+    const code = `${team}_${shift}_${date.y}_${date.m}_${date.d}`;
+    const load = {
+      code: code,
+      sacs: sacs,
+      retours: retours,
+      ajouts: ajouts,
+    };
+
+    let res = await SB.InsertItem(TABLES_NAMES.LOADS, load);
+
+    if (res === null) {
+      alert("Data added succssefully!");
+    } else {
+      alert(JSON.stringify(res));
+    }
+    console.log(res);
+    setloading(false);
+  }
+
+  return (
+    <div>
+      <DateSelector onDateSelected={onDateSelected} />
+
+      <div>
+        <div>
+          Team:
+          <select ref={ref_team}>
+            {["A", "B", "C", "D"].map((t, i) => (
+              <option>{t}</option>
+            ))}
+          </select>
+        </div>
+        <div>
+          SHIFT:
+          <select ref={ref_shift}>
+            {["白班", "中班", "夜班"].map((t, i) => (
+              <option value={["M", "P", "N"][i]}>{t}</option>
+            ))}
+          </select>
+        </div>
+        <div>
+          DATE: {date.d}/{date.m}/{date.y}
+        </div>
+
+        <div>
+          SACS: <input ref={ref_sacs} type="text" />
+        </div>
+        <div>
+          RETOURS: <input ref={ref_retours} type="text" />
+        </div>
+        <div>
+          AJOUTS: <input ref={ref_ajouts} type="text" />
+        </div>
+        <div>
+          <button onClick={onSaveLoad} className={CLASS_BTN}>
+            SAVE
+          </button>
+        </div>
+        <Loading isLoading={loading} />
+      </div>
+    </div>
+  );
+}
