@@ -4,6 +4,7 @@ import Roulements from "../pages/roulements";
 import Equipes from "../pages/equipes";
 import Sections from "../pages/sections";
 import Listes from "../pages/listes";
+import Chargement from "../pages/chargement";
 
 export const CLASS_TD = `p-1 border border-neutral-300`;
 export const CLASS_BTN =
@@ -35,6 +36,7 @@ export const NATIONALITIES = ["CD", "ZH"];
 
 export const MAIN_MENU = [
   { name: "Home", path: "/home", el: Home },
+  { name: "Chargement", path: "/chargement", el: Chargement },
   { name: "Agents", path: "/agents", el: Agents },
   { name: "Roulements", path: "/roulements", el: Roulements },
   { name: "Equipes", path: "/equipes", el: Equipes },
