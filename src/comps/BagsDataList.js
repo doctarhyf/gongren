@@ -3,22 +3,36 @@ import * as SB from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
 import Loading from "../comps/Loading";
 import DateSelector from "./DateSelector";
-import { CLASS_BTN, MONTHS } from "../helpers/flow";
+import { CLASS_BTN, CLASS_TD, MONTHS } from "../helpers/flow";
 
-export default function BagsDataList() {
+export default function BagsDataList({ loadsf, showRepportMode }) {
   const [loading, setloading] = useState(false);
   const [loads, setloads] = useState([]);
-  const [loadsf, setloadsf] = useState([]);
+  // const [loadsf, setloadsf] = useState([]);
   const [date, setdate] = useState();
   const [yearData, setYearData] = useState();
   const [monthData, setMonthData] = useState();
   const [dayData, setDayData] = useState();
   const [shiftData, setShiftData] = useState();
   const [curLoadData, setCurLoadData] = useState();
+  const [datePath, setDatePath] = useState({
+    y: new Date().getFullYear(),
+    m: "",
+    d: "",
+    shift: "",
+  });
 
   function onDateSelected(new_date) {
     setdate(new_date);
-    setloadsf([]);
+
+    const { y: year, m: month } = new_date;
+    const date_code = `${new_date.y}-${new_date.m}`;
+    const data = loadsf[year][date_code];
+    setloads(data);
+
+    console.log(data);
+
+    //setloadsf([]);
 
     /* setSelectedLoad(undefined);
     const [y, m, d, t] = Object.values(new_date);
@@ -35,137 +49,168 @@ export default function BagsDataList() {
     setloadsf(loads_filtered); */
   }
 
-  useEffect(() => {
-    loadData();
-  }, []);
-
-  async function loadData() {
-    setloading(true);
-    const d = await SB.LoadAllItems(TABLES_NAMES.LOADS);
-    console.log(groupByYearMonthAndDay(d));
-
-    setloads(groupByYearMonthAndDay(d));
-    setloadsf(groupByYearMonthAndDay(d));
-    setloading(false);
-  }
-
-  const groupByYearMonthAndDay = (array) => {
-    return array.reduce((acc, obj) => {
-      const { code } = obj;
-      const [team, shift, year, month, day] = code.split("_");
-      const yearKey = year.toString();
-      const monthKey = `${year}-${month}`;
-      const dayKey = `${year}-${month}-${day}`;
-
-      acc[yearKey] = acc[yearKey] || {};
-      acc[yearKey][monthKey] = acc[yearKey][monthKey] || {};
-      acc[yearKey][monthKey][dayKey] = acc[yearKey][monthKey][dayKey] || [];
-      acc[yearKey][monthKey][dayKey].push(obj);
-
-      return acc;
-    }, {});
-  };
-
-  const groupByYearAndMonth = (array) => {
-    return array.reduce((acc, obj) => {
-      const { code } = obj;
-      const [team, shift, year, month, day] = code.split("_");
-      const key = `${year}-${MONTHS[month]}`;
-
-      if (!acc[key]) {
-        acc[key] = [];
-      }
-
-      acc[key].push(obj);
-
-      return acc;
-    }, {});
-  };
-
   function stfy(d) {
     return JSON.stringify(d).toString();
   }
   return (
     <div>
       <Loading isLoading={loading} />
-      <DateSelector onDateSelected={onDateSelected} />
 
-      <div className="flex  ">
-        <div className="border-l pl-1">
-          {Object.entries(loadsf).map((year_data, i) => (
-            <div
-              key={i}
-              onClick={(e) => {
-                setYearData(year_data[1]);
-              }}
-              className={CLASS_BTN}
-            >
-              {year_data[0]}
+      {showRepportMode && (
+        <>
+          <DateSelector onDateSelected={onDateSelected} />
+          {loads === undefined && (
+            <div>
+              No data for selected date <b>{`${MONTHS[date.m]}, ${date.y}`}</b>
             </div>
-          ))}
-        </div>
+          )}
 
-        {yearData && (
-          <div className="border-l pl-1">
-            {Object.entries(yearData).map((month_data, i) => (
-              <div
-                key={i}
-                onClick={(e) => {
-                  setMonthData(month_data[1]);
-                }}
-                className={CLASS_BTN}
-              >
-                {month_data[0]}
-              </div>
-            ))}
-          </div>
-        )}
+          {loads && (
+            <table>
+              <tbody>
+                <tr>
+                  <td className={CLASS_TD}>Date</td>
+                  <td className={CLASS_TD}>Sacs</td>
+                  <td className={CLASS_TD}>Ajouts</td>
+                  <td className={CLASS_TD}>Retours</td>
+                </tr>
+                {Object.entries(loads).map((day, i) => (
+                  <tr>
+                    <td className={CLASS_TD}>{day[0]}</td>
+                    <td className={CLASS_TD}>
+                      {Object.values(day[1]).map((d, i) => (
+                        <tr className="p-0 border-collapse">
+                          <td className={CLASS_TD}>{d.code}</td>
+                          <td className={CLASS_TD}>{d.sacs}</td>
+                        </tr>
+                      ))}
+                    </td>
+                    <td className={CLASS_TD}>
+                      {Object.values(day[1]).map((d, i) => (
+                        <tr className="p-0 border-collapse">
+                          <td className={CLASS_TD}>{d.ajouts}</td>
+                        </tr>
+                      ))}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </>
+      )}
 
-        {monthData && (
-          <div className="border-l pl-1">
-            {Object.entries(monthData).map((day_data, i) => (
-              <div
-                key={i}
-                onClick={(e) => {
-                  setDayData(day_data[1]);
-                }}
-                className={CLASS_BTN}
-              >
-                {day_data[0]}
-              </div>
-            ))}
-          </div>
-        )}
-
-        {dayData && (
-          <div className="border-l pl-1">
-            {Object.entries(dayData).map((shift_data, i) => (
-              <div
-                key={i}
-                onClick={(e) => {
-                  console.log("shift data", shift_data[1]);
-                  setShiftData(shift_data[1]);
-                }}
-                className={CLASS_BTN}
-              >
-                {shift_data[1].code}
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-
-      {shiftData && (
-        <div className="border-l pl-1">
-          {[
-            ...Object.entries(shiftData),
-            ["Tonnage", Object.entries(shiftData)[2][1] / 20 + "T"],
-          ].map((dt, i) => (
-            <div key={i}>
-              {dt[0]} : {dt[1]}
+      {!showRepportMode && (
+        <>
+          <div className="flex  ">
+            <div className="border-l pl-1">
+              {Object.entries(loadsf).map((year_data, i) => (
+                <div
+                  key={i}
+                  onClick={(e) => {
+                    setShiftData(undefined);
+                    setMonthData(undefined);
+                    setDayData(undefined);
+                    setDatePath((old) => ({
+                      y: year_data[0],
+                      m: "",
+                      d: "",
+                      shift: "",
+                    }));
+                    setYearData(year_data[1]);
+                  }}
+                  className={CLASS_BTN}
+                >
+                  {year_data[0]}
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+
+            {yearData && (
+              <div className="border-l pl-1">
+                {Object.entries(yearData).map((month_data, i) => (
+                  <div
+                    key={i}
+                    onClick={(e) => {
+                      setShiftData(undefined);
+                      setMonthData(undefined);
+                      setDayData(undefined);
+                      setDatePath((old) => ({
+                        ...old,
+                        m: MONTHS[Number(month_data[0].split("-")[1])],
+                        d: "",
+                        shift: "",
+                      }));
+                      setMonthData(month_data[1]);
+                    }}
+                    className={CLASS_BTN}
+                  >
+                    {month_data[0]}
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {monthData && (
+              <div className="border-l pl-1">
+                {Object.entries(monthData).map((day_data, i) => (
+                  <div
+                    key={i}
+                    onClick={(e) => {
+                      setShiftData(undefined);
+                      setDatePath((old) => ({
+                        ...old,
+                        d: day_data[0].split("-")[2],
+                        shift: "",
+                      }));
+                      setDayData(day_data[1]);
+                    }}
+                    className={CLASS_BTN}
+                  >
+                    {day_data[0]}
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {dayData && (
+              <div className="border-l pl-1">
+                {Object.entries(dayData).map((shift_data, i) => (
+                  <div
+                    key={i}
+                    onClick={(e) => {
+                      setDatePath((old) => ({
+                        ...old,
+                        shift: shift_data[1].code,
+                      }));
+                      setShiftData(shift_data[1]);
+                    }}
+                    className={CLASS_BTN}
+                  >
+                    {shift_data[1].code}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+          <div>
+            Year:{datePath.y} | {datePath.m && <span>Month:{datePath.m},</span>}
+            | {datePath.d && <span>D:{datePath.d}</span>} |{" "}
+            {datePath.shift && <span>Shift:{datePath.shift}</span>}
+          </div>
+          {shiftData && (
+            <div className="border-l pl-1">
+              {[
+                ...Object.entries(shiftData),
+                ["Tonnage", Object.entries(shiftData)[2][1] / 20 + "T"],
+              ].map((dt, i) => (
+                <div key={i}>
+                  {dt[0]} : {dt[1]}
+                </div>
+              ))}
+            </div>
+          )}{" "}
+        </>
       )}
     </div>
   );
