@@ -51,7 +51,7 @@ export default function BagsDataInput() {
   }
 
   return (
-    <div>
+    <div className="flex flex-row-reverse">
       <DateSelector onDateSelected={onDateSelected} />
 
       <div>

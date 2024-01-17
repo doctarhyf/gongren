@@ -27,7 +27,7 @@ export default function BagsDataList() {
 
       const [equipe, shift, y, m, d] = code.split("_");
       const cur_date_code = `${y}_${m}_${d}`;
-      return cur_date_code, date_code === cur_date_code;
+      return date_code === cur_date_code;
     });
 
     console.log(loads_filtered);
