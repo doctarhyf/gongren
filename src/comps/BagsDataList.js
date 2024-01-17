@@ -14,6 +14,7 @@ export default function BagsDataList() {
   const [monthData, setMonthData] = useState();
   const [dayData, setDayData] = useState();
   const [shiftData, setShiftData] = useState();
+  const [curLoadData, setCurLoadData] = useState();
 
   function onDateSelected(new_date) {
     setdate(new_date);
@@ -95,28 +96,24 @@ export default function BagsDataList() {
             <div
               key={i}
               onClick={(e) => {
-                setYearData(year_data);
+                setYearData(year_data[1]);
               }}
-              className={`${CLASS_BTN}  ${
-                year_data[0] === yearData[0] ? "bg-sky-500 text-white" : ""
-              }  `}
+              className={CLASS_BTN}
             >
               {year_data[0]}
             </div>
           ))}
         </div>
 
-        {yearData[1] && (
+        {yearData && (
           <div className="border-l pl-1">
-            {Object.entries(yearData[1]).map((month_data, i) => (
+            {Object.entries(yearData).map((month_data, i) => (
               <div
                 key={i}
                 onClick={(e) => {
-                  setMonthData(month_data);
+                  setMonthData(month_data[1]);
                 }}
-                className={`${CLASS_BTN}  ${
-                  month_data[0] === monthData[0] ? "bg-sky-500 text-white" : ""
-                }  `}
+                className={CLASS_BTN}
               >
                 {month_data[0]}
               </div>
@@ -124,17 +121,15 @@ export default function BagsDataList() {
           </div>
         )}
 
-        {monthData[1] && (
+        {monthData && (
           <div className="border-l pl-1">
-            {Object.entries(monthData[1]).map((day_data, i) => (
+            {Object.entries(monthData).map((day_data, i) => (
               <div
                 key={i}
                 onClick={(e) => {
-                  setDayData(day_data);
+                  setDayData(day_data[1]);
                 }}
-                className={`${CLASS_BTN}  ${
-                  day_data[0] === dayData[0] ? "bg-sky-500 text-white" : ""
-                }  `}
+                className={CLASS_BTN}
               >
                 {day_data[0]}
               </div>
@@ -142,18 +137,16 @@ export default function BagsDataList() {
           </div>
         )}
 
-        {dayData[1] && (
+        {dayData && (
           <div className="border-l pl-1">
-            {Object.entries(dayData[1]).map((shift_data, i) => (
+            {Object.entries(dayData).map((shift_data, i) => (
               <div
                 key={i}
                 onClick={(e) => {
                   console.log("shift data", shift_data[1]);
-                  setShiftData(shift_data);
+                  setShiftData(shift_data[1]);
                 }}
-                className={`${CLASS_BTN}  ${
-                  shift_data[0] === shiftData[0] ? "bg-sky-500 text-white" : ""
-                }  `}
+                className={CLASS_BTN}
               >
                 {shift_data[1].code}
               </div>
@@ -162,11 +155,11 @@ export default function BagsDataList() {
         )}
       </div>
 
-      {shiftData[1] && (
+      {shiftData && (
         <div className="border-l pl-1">
           {[
-            ...Object.entries(shiftData[1]),
-            ["Tonnage", Object.entries(shiftData[1])[2][1] / 20 + "T"],
+            ...Object.entries(shiftData),
+            ["Tonnage", Object.entries(shiftData)[2][1] / 20 + "T"],
           ].map((dt, i) => (
             <div key={i}>
               {dt[0]} : {dt[1]}
