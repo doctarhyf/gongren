@@ -69,6 +69,35 @@ export default function BagsDataList({ loadsf, showRepportMode }) {
             <table>
               <tbody>
                 <tr>
+                  <td className={CLASS_TD} colSpan={8} align="center">
+                    水泥包装每班产量统计分析
+                  </td>
+                </tr>
+                <tr>
+                  {[
+                    "日期",
+                    "班组",
+                    "产量(T)",
+                    "设备原因",
+                    "电气原因",
+                    "停电原因",
+                    "其它原因",
+                    "备注",
+                  ].map((title, i) => (
+                    <td key={i} className={CLASS_TD}>
+                      {title}
+                    </td>
+                  ))}
+                </tr>
+                {[...Array(31)].map((r, i) => (
+                  <tr key={i}>
+                    <td className={CLASS_TD}>2023.01.{i + 1}</td>
+                    <td className={CLASS_TD}>cool</td>
+                  </tr>
+                ))}
+              </tbody>
+              {/* <tbody>
+                <tr>
                   <td className={CLASS_TD}>Date</td>
                   <td className={CLASS_TD}>Sacs</td>
                   <td className={CLASS_TD}>Ajouts</td>
@@ -94,7 +123,7 @@ export default function BagsDataList({ loadsf, showRepportMode }) {
                     </td>
                   </tr>
                 ))}
-              </tbody>
+              </tbody> */}
             </table>
           )}
         </>
@@ -194,9 +223,12 @@ export default function BagsDataList({ loadsf, showRepportMode }) {
             )}
           </div>
           <div>
-            Year:{datePath.y} | {datePath.m && <span>Month:{datePath.m},</span>}
-            | {datePath.d && <span>D:{datePath.d}</span>} |{" "}
-            {datePath.shift && <span>Shift:{datePath.shift}</span>}
+            <div>Year:{datePath.y}</div>
+            <div>{datePath.m && <span>Month:{datePath.m},</span>}</div>
+            <div>{datePath.d && <span>Day:{datePath.d}</span>}</div>
+            <div className="border-b pb-1 mb-1 border-neutral-400">
+              {datePath.shift && <span>Shift:{datePath.shift}</span>}
+            </div>
           </div>
           {shiftData && (
             <div className="border-l pl-1">

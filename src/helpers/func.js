@@ -66,7 +66,7 @@ export function GeneratePDF(agents_names, list_title) {
   doc.addImage(logo, "PNG", LOGO_X, LOGO_Y, LOGO_W, LOGO_H);
   doc.line(MARG, LOGO_H + MARG, PG_W - MARG, LOGO_H + MARG);
 
-  let title = `NOMS DES AGENTS CIMETERIE`;
+  let title = `NOM DES AGENTS DE L'ATELIER CIMENT`;
   doc.text(title, LOGO_W + MARG * 2, LOGO_H + MARG / 1.5);
   doc.setFontSize(12);
 
@@ -135,7 +135,7 @@ function addTitle(doc, agents) {
   let { equipe, section } = agents[0];
   let date = new Date().toLocaleDateString();
 
-  let title = `LISTE AGENTS CIMENTERIE, ${section} EQUIPE ${equipe}, le ${date}`;
+  let title = `NOM DES AGENTS DE L'ATELIER CIMENT, ${section} EQUIPE ${equipe}, le ${date}`;
   doc.setFontSize(12);
   const x = 10;
   const y = LOGOH / LOGO_RATIO + 20;

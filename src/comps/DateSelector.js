@@ -4,7 +4,7 @@ import { MONTHS } from "../helpers/flow";
 export default function DateSelector({ onDateSelected }) {
   const DATE_TYPE = { Y: "Year", M: "Month", D: "Day" };
 
-  const [dateType, setDateType] = useState("M");
+  const [dateType, setDateType] = useState("D");
 
   const ref_year = useRef();
   const ref_month = useRef();
