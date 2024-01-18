@@ -2,13 +2,21 @@ import React from "react";
 import { MAIN_MENU } from "../helpers/flow";
 import gck from "../img/gck.png";
 
-function MainNav({ onMenuClick, curPage }) {
+function MainNav({ onMenuClick, curPage, onLogout }) {
   return (
     <section className="bg-sky-500 h-full w-44">
-      <div className="p-1">
-        <img src={gck} height={80} />
+      <div className=" border-b">
+        <div className="p-1">
+          <img src={gck} height={80} />
+        </div>
+        <div className="text-white  pb-4 p-2 text-center">工人管理</div>
+        <button
+          onClick={onLogout}
+          className="text-red-500 hover:border-b border-transparent hover:border-red-500"
+        >
+          LOGOUT
+        </button>
       </div>
-      <div className="text-white  border-b pb-4 p-2 text-center">工人管理</div>
       <div>
         <ul className="text-end p-2">
           {MAIN_MENU.map((menu_item, i) => (
