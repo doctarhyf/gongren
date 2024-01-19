@@ -10,4 +10,5 @@ export const TABLES_NAMES = {
   AGENTS_RLD: "agents_rld",
   TEST: "test",
   LOADS: "loads",
+  USERS: "user_login",
 };
