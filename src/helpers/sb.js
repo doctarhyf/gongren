@@ -109,15 +109,23 @@ export async function GetUser(matricule, pin) {
     .eq("matricule", matricule)
     .eq("pin", pin);
 
-  console.log(`loggin in. user:"${matricule}", pin:"${pin}" ...`, data, error);
-  console.log(data, data);
+  const isOneRecord = data.length;
+
+  if (isOneRecord) {
+    return data[0];
+  }
+  // .eq("matricule", matricule)
+  //.eq("pin", pin);
+  /* console.log(`loggin in. user:"${matricule}", pin:"${pin}" ...`, data, error);
+  console.log(data);
   if (data.length === 1) return data[0];
   if (error) return error;
   return {
     error: true,
-    message: `Error loading user:"${matricule}", pin:"${pin}`,
+    message: `Error loading user:'${matricule}', pin:'${pin}'`,
     res: data && JSON.stringify(data),
-  };
+  }; */
+  return error;
 }
 
 export async function LoadItems(tableName, pageNum = 1, perPage = 5) {

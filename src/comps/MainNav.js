@@ -12,7 +12,7 @@ function MainNav({ onMenuClick, curPage, onLogout }) {
         <div className="text-white  pb-4 p-2 text-center">工人管理</div>
         <button
           onClick={onLogout}
-          className="text-red-500 hover:border-b border-transparent hover:border-red-500"
+          className=" hover:border-b border-transparent "
         >
           LOGOUT
         </button>

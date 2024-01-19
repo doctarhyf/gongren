@@ -6,6 +6,7 @@ import MainNav from "./comps/MainNav";
 import Loading from "./comps/Loading";
 import * as SB from "./helpers/sb";
 import { _ } from "./helpers/func";
+import { TABLES_NAMES } from "./helpers/sb.config";
 
 function MyApp({ user, onLogout }) {
   const [curPage, setCurPage] = useState(MAIN_MENU[0].path);
@@ -32,14 +33,14 @@ function MyApp({ user, onLogout }) {
   );
 }
 
-function Login({ onLogin }) {
+function FormLogin({ onLogin }) {
   const ref_mat = useRef();
   const ref_pin = useRef();
 
-  function login() {
-    const mat = _(ref_mat).toUpperCase().replace(" ", "");
-    const pin = _(ref_pin).toUpperCase().replace(" ", "");
-    console.log(`mat : ${mat}, pin : ${pin}`);
+  function onBtnLogin() {
+    const mat = ref_mat.current.value;
+    const pin = ref_pin.current.value;
+
     onLogin(mat, pin);
   }
 
@@ -52,7 +53,10 @@ function Login({ onLogin }) {
         <div>Password</div>
         <input ref={ref_pin} type="password" placeholder="000000" />
         <div>
-          <button onClick={login} className={` ${CLASS_BTN} mx-auto w-full`}>
+          <button
+            onClick={(e) => onBtnLogin()}
+            className={` ${CLASS_BTN} mx-auto w-full`}
+          >
             LOGIN
           </button>
         </div>
@@ -64,13 +68,23 @@ function Login({ onLogin }) {
 function App() {
   const [user, setuser] = useState();
   const [loading, setloading] = useState(false);
+  const [error, seterror] = useState(undefined);
 
   async function onLogin(mat, pin) {
+    seterror(undefined);
     setloading(true);
+    const res = await SB.GetUser(mat.toUpperCase(), pin);
 
-    const u = await SB.GetUser(mat, pin);
-    console.log(u);
-    //setuser({ id: 1, mat: "L0501", nom: "Franvale" });
+    if (res === null) {
+      let error_message = `User cant be found!\nmat: '${mat}', pin: '${pin}'`;
+      alert(error_message);
+      console.log(error_message);
+      seterror(error_message);
+    }
+
+    setuser(res);
+
+    setloading(false);
   }
 
   function onLogout() {
@@ -79,12 +93,16 @@ function App() {
   }
 
   if (user) return <MyApp user={user} onLogout={onLogout} />;
-
   return (
-    <div>
-      <Login onLogin={onLogin} />
+    <>
+      <FormLogin onLogin={onLogin} />
+      {error && (
+        <div className="mx-auto max-w-96 rounded-xl bg-red-500 border p-1  text-center text-white">
+          {error}
+        </div>
+      )}
       <Loading isLoading={loading} />
-    </div>
+    </>
   );
 }
 
