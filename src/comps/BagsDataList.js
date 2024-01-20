@@ -119,6 +119,7 @@ export default function BagsDataList({
         <>
           <div className="flex  ">
             <div className="border-l pl-1">
+              <div>Annee/年</div>
               {Object.entries(loadsf).map((year_data, i) => (
                 <div
                   key={i}
@@ -144,6 +145,7 @@ export default function BagsDataList({
 
             {yearData && (
               <div className="border-l pl-1">
+                <div>Mois/月</div>
                 {Object.entries(yearData).map((month_data, i) => (
                   <div
                     key={i}
@@ -170,6 +172,7 @@ export default function BagsDataList({
 
             {monthData && (
               <div className="border-l pl-1">
+                <div>Jour/日</div>
                 {Object.entries(monthData).map((day_data, i) => (
                   <div
                     key={i}
@@ -193,6 +196,7 @@ export default function BagsDataList({
 
             {dayData && (
               <div className="border-l pl-1">
+                <div>Equipe/班次</div>
                 {Object.entries(dayData).map((shift_data, i) => (
                   <div
                     key={i}
