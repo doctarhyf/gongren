@@ -6,11 +6,12 @@ import * as SB from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
 import DateSelector from "./DateSelector";
 
-export default function BagsDataInput() {
+export default function BagsDataInput({ onDataAdded, onError }) {
   const [loading, setloading] = useState(false);
   const ref_team = useRef();
   const ref_shift = useRef();
   const ref_sacs = useRef();
+  const ref_camions = useRef();
   const ref_retours = useRef();
   const ref_ajouts = useRef();
   const [date, setdate] = useState({
@@ -29,12 +30,14 @@ export default function BagsDataInput() {
 
     const shift = _(ref_shift);
     const sacs = Number(_(ref_sacs));
+    const camions = Number(_(ref_camions));
     const retours = Number(_(ref_retours));
     const ajouts = Number(_(ref_ajouts));
     const code = `${team}_${shift}_${date.y}_${date.m}_${date.d}`;
     const load = {
       code: code,
       sacs: sacs,
+      camions: camions,
       retours: retours,
       ajouts: ajouts,
     };
@@ -43,8 +46,11 @@ export default function BagsDataInput() {
 
     if (res === null) {
       alert("Data added succssefully!");
+      onDataAdded && onDataAdded(load);
     } else {
-      alert(JSON.stringify(res));
+      const err = JSON.stringify(res);
+      alert(err);
+      onError && onError(err);
     }
     console.log(res);
     setloading(false);
@@ -77,6 +83,9 @@ export default function BagsDataInput() {
 
         <div>
           SACS: <input ref={ref_sacs} type="text" />
+        </div>
+        <div>
+          CAMIONS: <input ref={ref_camions} type="text" />
         </div>
         <div>
           RETOURS: <input ref={ref_retours} type="text" />

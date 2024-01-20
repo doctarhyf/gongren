@@ -111,7 +111,9 @@ export default function Chargement() {
           onChange={(e) => setShowRepportMode(e.target.checked)}
         />
       </div>
-      {addDataMode && <BagsDataInput date={date} />}
+      {addDataMode && (
+        <BagsDataInput onDataAdded={(e) => setAddDataMode(false)} date={date} />
+      )}
       {!addDataMode && (
         <>
           <BagsDataList
