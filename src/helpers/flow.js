@@ -26,6 +26,13 @@ export const K_POSTE_INTERPRETE = 5;
 export const K_POSTE_SUPERVISEUR = 6;
 export const K_POSTE_AIDE_OPERATEUR = 7;
 
+export const USER_LEVEL = {
+  AGENT: 0,
+  SUPERVISOR: 1,
+  ADMIN: 2,
+  SUPER: 3,
+};
+
 export const SECTIONS = ["BROYAGE", "ENSACHAGE", "NETTOYAGE", "N/A"];
 export const POSTE = [
   "NET",
@@ -42,15 +49,30 @@ export const CONTRATS = ["BNC", "KAY", "GCK"];
 export const NATIONALITIES = ["CD", "ZH"];
 
 export const MAIN_MENU = [
-  { name: "Home", path: "/home", el: Home },
-  { name: "Chargement", path: "/chargement", el: Chargement },
-  { name: "Magasin", path: "/magasin", el: Magasin },
-  { name: "Dico", path: "/dico", el: Dico },
-  { name: "Sacs", path: "/sacs", el: Sacs },
-  { name: "Agents", path: "/agents", el: Agents },
-  { name: "Roulements", path: "/roulements", el: Roulements },
-  { name: "Equipes", path: "/equipes", el: Equipes },
-  { name: "Listes", path: "/listes", el: Listes },
+  { name: "Home", path: "/home", el: Home, user_level: USER_LEVEL.AGENT },
+  { name: "Chargement", path: "/chargement", el: Chargement, user_level: 0 },
+  { name: "Magasin", path: "/magasin", el: Magasin, user_level: 0 },
+  { name: "Dico", path: "/dico", el: Dico, user_level: 0 },
+  { name: "Sacs", path: "/sacs", el: Sacs, user_level: 0 },
+  {
+    name: "Agents",
+    path: "/agents",
+    el: Agents,
+    user_level: USER_LEVEL.SUPERVISOR,
+  },
+  {
+    name: "Roulements",
+    path: "/roulements",
+    el: Roulements,
+    user_level: USER_LEVEL.SUPER,
+  },
+  {
+    name: "Equipes",
+    path: "/equipes",
+    el: Equipes,
+    user_level: USER_LEVEL.SUPERVISOR,
+  },
+  { name: "Listes", path: "/listes", el: Listes, user_level: USER_LEVEL.AGENT },
   /*{ name: "Sections", path: "/sections", el: Sections }, */
 ];
 

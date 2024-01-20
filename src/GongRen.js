@@ -18,6 +18,7 @@ export default function GongRen({ user, onLogout }) {
   return (
     <div className=" h-[100vh] flex ">
       <MainNav
+        user={user}
         onMenuClick={onMenuClick}
         onLogout={onLogout}
         curPage={curPage}

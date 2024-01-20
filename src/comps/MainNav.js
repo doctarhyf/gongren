@@ -1,8 +1,8 @@
 import React from "react";
-import { MAIN_MENU } from "../helpers/flow";
+import { MAIN_MENU, USER_LEVEL } from "../helpers/flow";
 import gck from "../img/gck.png";
 
-function MainNav({ onMenuClick, curPage, onLogout }) {
+function MainNav({ user, onMenuClick, curPage, onLogout }) {
   return (
     <section className="bg-sky-500 h-full w-44">
       <div className=" border-b">
@@ -10,9 +10,15 @@ function MainNav({ onMenuClick, curPage, onLogout }) {
           <img src={gck} height={80} />
         </div>
         <div className="text-white  pb-4 p-2 text-center">工人管理</div>
+        <>
+          <div>
+            Hello, <span>{user.display_name}</span>
+          </div>
+          <div>User level : {Object.keys(USER_LEVEL)[user.user_level]}</div>
+        </>
         <button
           onClick={onLogout}
-          className=" hover:border-b border-transparent "
+          className=" w-1/2  rounded-md mx-auto bg-red-500 text-white hover:bg-red-700 "
         >
           LOGOUT
         </button>
@@ -21,9 +27,10 @@ function MainNav({ onMenuClick, curPage, onLogout }) {
         <ul className="text-end p-2">
           {MAIN_MENU.map((menu_item, i) => (
             <li className="mb-2" key={i}>
-              <button
-                onClick={(e) => onMenuClick(menu_item)}
-                className={`
+              {user.user_level >= menu_item.user_level && (
+                <button
+                  onClick={(e) => onMenuClick(menu_item)}
+                  className={`
                 ${curPage === menu_item.path ? "text-sky-500 bg-white" : ""}
 
                 text-right cursor-pointer
@@ -31,9 +38,10 @@ function MainNav({ onMenuClick, curPage, onLogout }) {
                  hover:bg-white 
                  w-full  
                  rounded-md p-2 `}
-              >
-                {menu_item.name}
-              </button>
+                >
+                  {menu_item.name}
+                </button>
+              )}
             </li>
           ))}
         </ul>
