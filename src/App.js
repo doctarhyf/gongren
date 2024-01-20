@@ -7,63 +7,8 @@ import Loading from "./comps/Loading";
 import * as SB from "./helpers/sb";
 import { _ } from "./helpers/func";
 import { TABLES_NAMES } from "./helpers/sb.config";
-
-function MyApp({ user, onLogout }) {
-  const [curPage, setCurPage] = useState(MAIN_MENU[0].path);
-
-  function onMenuClick(menu_item) {
-    setCurPage(menu_item.path);
-  }
-  return (
-    <div className=" h-[100vh] flex ">
-      <MainNav
-        onMenuClick={onMenuClick}
-        onLogout={onLogout}
-        curPage={curPage}
-      />
-      <div className="p-2">
-        <div className="text-3xl text-sky-500 border-b  border-sky-500">
-          {curPage}
-        </div>
-        <div>
-          {MAIN_MENU.map((pg, i) => pg.path === curPage && <pg.el key={i} />)}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function FormLogin({ onLogin }) {
-  const ref_mat = useRef();
-  const ref_pin = useRef();
-
-  function onBtnLogin() {
-    const mat = ref_mat.current.value;
-    const pin = ref_pin.current.value;
-
-    onLogin(mat, pin);
-  }
-
-  return (
-    <div className=" flex flex-col mt-4 ">
-      <div className="mx-auto flex flex-col space-y-4 ">
-        <img src={LOGO} width={200} />
-        <div>Matricule</div>
-        <input ref={ref_mat} type="text" placeholder="matricule" />
-        <div>Password</div>
-        <input ref={ref_pin} type="password" placeholder="000000" />
-        <div>
-          <button
-            onClick={(e) => onBtnLogin()}
-            className={` ${CLASS_BTN} mx-auto w-full`}
-          >
-            LOGIN
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
+import FormLogin from "./comps/FormLogin";
+import GongRen from "./GongRen";
 
 function App() {
   const [user, setuser] = useState();
@@ -77,9 +22,9 @@ function App() {
 
     if (res === null) {
       let error_message = `User cant be found!\nmat: '${mat}', pin: '${pin}'`;
-      alert(error_message);
-      console.log(error_message);
       seterror(error_message);
+      document.getElementById("my_modal_1").showModal();
+      console.log(error_message);
     }
 
     setuser(res);
@@ -92,15 +37,24 @@ function App() {
     console.log(user);
   }
 
-  if (user) return <MyApp user={user} onLogout={onLogout} />;
+  if (user) return <GongRen user={user} onLogout={onLogout} />;
   return (
     <>
       <FormLogin onLogin={onLogin} />
-      {error && (
-        <div className="mx-auto max-w-96 rounded-xl bg-red-500 border p-1  text-center text-white">
-          {error}
+
+      <dialog id="my_modal_1" className="modal">
+        <div className="modal-box">
+          <h3 className="font-bold text-lg">Login error!</h3>
+          <p className="py-4">{error}</p>
+          <div className="modal-action">
+            <form method="dialog">
+              {/* if there is a button in form, it will close the modal */}
+              <button className="btn">Close</button>
+            </form>
+          </div>
         </div>
-      )}
+      </dialog>
+
       <Loading isLoading={loading} />
     </>
   );
