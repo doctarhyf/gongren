@@ -306,10 +306,16 @@ export function ParseDayRepport(day_data) {
 export function ParseShiftRepport(shift_data) {
   const shift = shift_data[1];
   const [t, s, y, m, d] = shift.code.split("_");
+  const s_hours = {
+    M: ["Matin", "白班", "07h00 - 15h00"],
+    P: ["Matin", "中班", "15h00 - 23h00"],
+    N: ["Matin", "夜班", "23h00 - 07h00"],
+  };
 
   let repport = { type: " de Chargement" };
 
   repport.equipe = t;
+  repport.heure = `${s_hours[s][0]}, ${s_hours[s][2]}`;
   repport.sacs = shift.sacs + " Sacs";
   repport.tonnage = Number(shift.sacs / 20);
   repport.code = shift.code;
