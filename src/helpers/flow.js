@@ -17,6 +17,9 @@ export const CLASS_TD = `p-1 border border-neutral-300`;
 export const CLASS_BTN =
   " mx-1 hover:bg-sky-500 hover:text-white border p-1 text-sky-400 border-transparent cursor-pointer rounded-md";
 
+export const CLASS_INPUT_TEXT =
+  "p-1 border rounded-md outline-none hover:border-sky-500 focus:border-purple-500";
+
 export const K_POSTE_NETTOYEUR = 0;
 export const K_POSTE_EXPLOITANT = 1;
 export const K_POSTE_OPERATEUR = 2;

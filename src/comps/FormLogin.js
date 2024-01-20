@@ -1,5 +1,11 @@
 import { useRef } from "react";
-import { CLASS_BTN, LOGO, MAIN_MENU } from "../helpers/flow";
+import {
+  CLASS_BTN,
+  CLASS_INPUT_TEXT,
+  CLASS_TD,
+  LOGO,
+  MAIN_MENU,
+} from "../helpers/flow";
 
 export default function FormLogin({ onLogin }) {
   const ref_mat = useRef();
@@ -22,6 +28,7 @@ export default function FormLogin({ onLogin }) {
           ref={ref_mat}
           type="text"
           placeholder="matricule"
+          className={CLASS_INPUT_TEXT}
         />
         <div>Password</div>
         <input
@@ -29,6 +36,7 @@ export default function FormLogin({ onLogin }) {
           ref={ref_pin}
           type="password"
           placeholder="0000"
+          className={CLASS_INPUT_TEXT}
         />
         <div>
           <button
