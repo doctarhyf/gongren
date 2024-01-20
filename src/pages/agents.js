@@ -13,6 +13,7 @@ export default function Agents() {
   const [agentCardEditMode, setAgentCardEditMode] = useState(false);
   const [showAgentDetails, setShowAgentDetails] = useState(true);
   const [loading, setloading] = useState(false);
+  const [msg, setmsg] = useState({ title: "", content: "" });
 
   function onShowRoulement() {
     console.log("On Show Roulement ...");
@@ -26,19 +27,26 @@ export default function Agents() {
   }
 
   async function onSaveNewAgent(agent_data) {
+    setmsg({ title: "", content: "" });
     setloading(true);
     reloadComponents();
 
     const res = await SB.InsertItem(TABLES_NAMES.AGENTS, agent_data);
     if (res === null) {
-      alert(`Agent "${agent_data.nom} - ${agent_data.postnom}" saved!`);
+      setmsg({
+        title: "Data saved",
+        content: `Agent "${agent_data.nom} - ${agent_data.postnom}" saved!`,
+      });
+      document.getElementById("my_modal_1").showModal();
       setShowFormAddNewAgent(false);
       setloading(false);
       return;
     }
 
     const error = `Error saving agent!\n ${JSON.stringify(res)}`;
-    alert(error);
+    setmsg({ title: "Error", content: error });
+    //alert(error);
+    document.getElementById("my_modal_1").showModal();
     console.log(error);
     setloading(false);
   }
@@ -68,7 +76,8 @@ export default function Agents() {
         break;
     }
 
-    alert(msg);
+    setmsg({ title: "Data saved!", content: msg });
+    document.getElementById("my_modal_1").showModal();
     console.log(msg);
   }
 
@@ -78,56 +87,70 @@ export default function Agents() {
     setAgentCardEditMode(false);
   }
   return (
-    <div>
-      {!showFormAddNewAgent && (
-        <div>
-          <button
-            onClick={(e) => setShowFormAddNewAgent(true)}
-            className="p-1 rounded-md border my-1 border-green-500 text-green-500 hover:bg-green-500 hover:text-white"
-          >
-            NEW AGENT
-          </button>
-          <div>
-            Show/Hide Details
-            <input
-              type="checkbox"
-              className="toggle toggle-xs"
-              checked={showAgentDetails}
-              onChange={(e) => setShowAgentDetails(e.target.checked)}
-            />
+    <>
+      <dialog id="my_modal_1" className="modal">
+        <div className="modal-box">
+          <h3 className="font-bold text-lg">{msg.title}</h3>
+          <p className="py-4">{msg.content}</p>
+          <div className="modal-action">
+            <form method="dialog">
+              {/* if there is a button in form, it will close the modal */}
+              <button className="btn">Close</button>
+            </form>
           </div>
         </div>
-      )}
+      </dialog>
+      <div>
+        {!showFormAddNewAgent && (
+          <div>
+            <button
+              onClick={(e) => setShowFormAddNewAgent(true)}
+              className="p-1 rounded-md border my-1 border-green-500 text-green-500 hover:bg-green-500 hover:text-white"
+            >
+              NEW AGENT
+            </button>
+            <div>
+              Show/Hide Details
+              <input
+                type="checkbox"
+                className="toggle toggle-xs"
+                checked={showAgentDetails}
+                onChange={(e) => setShowAgentDetails(e.target.checked)}
+              />
+            </div>
+          </div>
+        )}
 
-      {!showFormAddNewAgent && (
-        <div className="flex ">
-          <AgentsList
-            key={updateKey}
-            curAgent={curAgent}
-            onAgentClick={(agent_data) => onAgentClick(agent_data)}
-          />
-          {showAgentDetails && (
-            <AgentCard
-              agentCardEditMode={agentCardEditMode}
-              setAgentCardEditMode={setAgentCardEditMode}
-              onShowRoulement={onShowRoulement}
-              agent={curAgent}
-              onAgentCardEvent={onAgentCardEvent}
+        {!showFormAddNewAgent && (
+          <div className="flex ">
+            <AgentsList
+              key={updateKey}
+              curAgent={curAgent}
+              onAgentClick={(agent_data) => onAgentClick(agent_data)}
             />
-          )}
-        </div>
-      )}
+            {showAgentDetails && (
+              <AgentCard
+                agentCardEditMode={agentCardEditMode}
+                setAgentCardEditMode={setAgentCardEditMode}
+                onShowRoulement={onShowRoulement}
+                agent={curAgent}
+                onAgentCardEvent={onAgentCardEvent}
+              />
+            )}
+          </div>
+        )}
 
-      {showFormAddNewAgent && (
-        <div>
-          <Loading isLoading={loading} />
-          <FormAddAgent
-            onFormSave={onSaveNewAgent}
-            onFormUpdate={onUpdateAgent}
-            onFormCancel={onFormNewAgentCancel}
-          />
-        </div>
-      )}
-    </div>
+        {showFormAddNewAgent && (
+          <div>
+            <Loading isLoading={loading} />
+            <FormAddAgent
+              onFormSave={onSaveNewAgent}
+              onFormUpdate={onUpdateAgent}
+              onFormCancel={onFormNewAgentCancel}
+            />
+          </div>
+        )}
+      </div>
+    </>
   );
 }
