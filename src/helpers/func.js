@@ -220,7 +220,7 @@ export function ParseYearRepport(year_data) {
   let ret = 0;
   let ajt = 0;
   let camions = 0;
-  repport.annee = year_data[0];
+  repport.date = year_data[0];
   Object.values(year_data[1]).map((m, i) => {
     Object.values(m).map((d, i) => {
       Object.values(d).map((shift, i) => {
@@ -228,7 +228,7 @@ export function ParseYearRepport(year_data) {
         ret += Number(shift.retours);
         ajt += Number(shift.ajouts);
         t = sacs / 20;
-        camions++;
+        camions += Number(shift.camions);
       });
     });
   });
@@ -244,13 +244,12 @@ export function ParseYearRepport(year_data) {
 export function ParseMonthRepport(month_data) {
   const [y, m] = month_data[0].split("-");
 
-  let repport = { type: "Mensuel" };
+  let repport = { type: "Mensuel", date: `Mois ${MONTHS[m]} ${y}` };
   let sacs = 0;
   let t = 0;
   let ret = 0;
   let ajt = 0;
   let camions = 0;
-  repport.mois = `${MONTHS[m]} ${y}`;
 
   Object.values(month_data[1]).map((d, i) => {
     Object.values(d).map((shift, i) => {
@@ -258,7 +257,7 @@ export function ParseMonthRepport(month_data) {
       ret += Number(shift.retours);
       ajt += Number(shift.ajouts);
       t = sacs / 20;
-      camions++;
+      camions += Number(shift.camions);
     });
   });
 
@@ -274,32 +273,27 @@ export function ParseMonthRepport(month_data) {
 export function ParseDayRepport(day_data) {
   const [y, m, d] = day_data[0].split("-");
 
-  let repport = { type: "Journalier" };
+  let repport = { type: "Journalier", date: `Du ${d} ${MONTHS[m]} ${y}` };
   let sacs = 0;
   let t = 0;
   let ret = 0;
   let ajt = 0;
-  //let camions = 0;
+  let camions = 0;
   let bonus = 0;
-
-  repport.mois = `le ${d} ${MONTHS[m]} ${y}`;
 
   Object.values(day_data[1]).map((shift, i) => {
     sacs += Number(shift.sacs);
     ret += Number(shift.retours);
     ajt += Number(shift.ajouts);
     t = sacs / 20;
-    //camions++;
+    camions += Number(shift.camions);
   });
 
   repport.sacs = sacs + " Sacs";
   repport.tonnage = t + " T";
-  //repport.camions = camions;
+  repport.camions = camions;
   repport.retours = ret;
   repport.ajouts = ajt;
-  /* const bonus_marg_t = t - 600 < 0 ? 0 : t - 600;
-  const bonus_marg_cdf = bonus_marg_t * 1000;
-  repport.bonus = `${bonus_marg_t} T => ${bonus_marg_cdf} CDF`; */
   return repport;
 }
 
@@ -312,11 +306,15 @@ export function ParseShiftRepport(shift_data) {
     N: ["Matin", "夜班", "23h00 - 07h00"],
   };
 
-  let repport = { type: " de Chargement" };
+  let repport = {
+    type: " de Chargement",
+    date: `Equipe ${t}, de ${s_hours[s][2]}, ${s_hours[s][0]}, le ${d} ${MONTHS[m]} ${y}, `,
+  };
 
   repport.equipe = t;
   repport.heure = `${s_hours[s][0]}, ${s_hours[s][2]}`;
   repport.sacs = shift.sacs + " Sacs";
+  repport.camions = shift.camions;
   repport.tonnage = Number(shift.sacs / 20);
   repport.code = shift.code;
   repport.retours = shift.retours;

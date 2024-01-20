@@ -216,32 +216,6 @@ export default function BagsDataList({
               </div>
             )}
           </div>
-          {/* <div>
-            <div>
-              Year: <b>{datePath.y}</b>
-            </div>
-            <div>
-              {datePath.m && (
-                <span>
-                  Month: <b>{datePath.m}</b>,
-                </span>
-              )}
-            </div>
-            <div>
-              {datePath.d && (
-                <span>
-                  Day: <b>{datePath.d}</b>
-                </span>
-              )}
-            </div>
-            <div className="border-b pb-1 mb-1 border-neutral-400">
-              {datePath.shift && (
-                <span>
-                  Shift: <b>{datePath.shift}</b>
-                </span>
-              )}
-            </div>
-          </div> */}
         </>
       )}
     </div>
