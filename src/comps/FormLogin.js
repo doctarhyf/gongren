@@ -38,6 +38,16 @@ export default function FormLogin({ onLogin }) {
             LOGIN
           </button>
         </div>
+
+        <div>
+          Code and Design by{" "}
+          <a
+            className="text-sky-500  italic"
+            href="https://github.com/doctarhyf"
+          >
+            Ir. Franvale Mutunda K. / @doctarhyf
+          </a>
+        </div>
       </div>
     </div>
   );
