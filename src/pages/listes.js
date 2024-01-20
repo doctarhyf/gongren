@@ -7,13 +7,16 @@ import pdf from "../img/pdf.png";
 export default function Listes() {
   const [agents, setagents] = useState([]);
   const ref_title = useRef();
+  const [msg, setmsg] = useState();
 
   function onAgentClick(ag) {
     console.log(ag);
     setagents((old) => {
       let i = old.findIndex((it, i) => it.id === ag.id);
       if (i === -1) return [...old, ag];
-      alert(`Agent "${ag.nom} ${ag.postnom}" already added!`);
+      setmsg(`Agent "${ag.nom} ${ag.postnom}" already added!`);
+      document.getElementById("my_modal_1").showModal();
+
       return old;
     });
   }
@@ -21,8 +24,9 @@ export default function Listes() {
   function printPDF(agents) {
     if (agents.length === 0) {
       const msg = "Agents list cant be empty!";
-      alert(msg);
-      throw new Error(msg);
+      setmsg(msg);
+      document.getElementById("my_modal_1").showModal();
+      //throw new Error(msg);
       return;
     }
 
@@ -63,59 +67,89 @@ export default function Listes() {
     });
   }
 
+  function onClearAllData() {
+    document.getElementById("my_modal_2").showModal();
+  }
+
   return (
-    <div className="flex">
-      <div>
-        <div className="text-green-500">Click on name to add it</div>
-        <AgentsList onTeamClick={onTeamClick} onAgentClick={onAgentClick} />
-      </div>
-      <div>
-        <div className="font-bold">Count : {agents.length}</div>
-        <div>
-          <div>Liste title:</div>
-          <div>
-            <input
-              placeholder="Nom de l'equipe"
-              className={CLASS_TD}
-              type="text"
-              ref={ref_title}
-            />
+    <>
+      <dialog id="my_modal_2" className="modal">
+        <div className="modal-box">
+          <h3 className="font-bold text-lg">Login error!</h3>
+          <p className="py-4">Clear all data?</p>
+          <div className="modal-action">
+            <form method="dialog">
+              <button className="btn">NO</button>
+              <button className="btn" onClick={(e) => setagents([])}>
+                CLEAR
+              </button>
+            </form>
           </div>
         </div>
-        <div className="flex">
-          <button
-            onClick={(e) => printPDF(agents)}
-            className={`${CLASS_BTN} flex text-sm my-2`}
-          >
-            <img src={pdf} width={20} height={30} /> IMPRIMER PDF
-          </button>
-          <button
-            onClick={(e) => {
-              if (window.confirm("Clear all data?")) {
-                setagents([]);
-              }
-            }}
-            className={`${CLASS_BTN} flex text-sm my-2`}
-          >
-            <img src={pdf} width={20} height={30} /> CLEAR
-          </button>
+      </dialog>
+
+      <dialog id="my_modal_1" className="modal">
+        <div className="modal-box">
+          <h3 className="font-bold text-lg">Login error!</h3>
+          <p className="py-4">{msg}</p>
+          <div className="modal-action">
+            <form method="dialog">
+              {/* if there is a button in form, it will close the modal */}
+              <button className="btn">Close</button>
+            </form>
+          </div>
         </div>
-        <div className="text-red-500">Click on name to remove it</div>
+      </dialog>
+
+      <div className="flex">
         <div>
-          {agents.map((it, i) => (
-            <div
-              onClick={(e) => onDelAgent(it)}
-              className="px-2 py-1 border-2
+          <div className="text-green-500">Click on name to add it</div>
+          <AgentsList onTeamClick={onTeamClick} onAgentClick={onAgentClick} />
+        </div>
+        <div>
+          <div className="font-bold">Count : {agents.length}</div>
+          <div>
+            <div>Liste title:</div>
+            <div>
+              <input
+                placeholder="Nom de l'equipe"
+                className={CLASS_TD}
+                type="text"
+                ref={ref_title}
+              />
+            </div>
+          </div>
+          <div className="flex">
+            <button
+              onClick={(e) => printPDF(agents)}
+              className={`${CLASS_BTN} flex text-sm my-2`}
+            >
+              <img src={pdf} width={20} height={30} /> IMPRIMER PDF
+            </button>
+            <button
+              onClick={(e) => onClearAllData()}
+              className={`${CLASS_BTN} flex text-sm my-2`}
+            >
+              <img src={pdf} width={20} height={30} /> CLEAR
+            </button>
+          </div>
+          <div className="text-red-500">Click on name to remove it</div>
+          <div>
+            {agents.map((it, i) => (
+              <div
+                onClick={(e) => onDelAgent(it)}
+                className="px-2 py-1 border-2
              hover:border-red-600
              rounded-full
              border-transparent
              hover:bg-red-200 hover:text-red-500 cursor-pointer"
-            >
-              {`${i + 1}. ${it.nom} ${it.postnom}`}
-            </div>
-          ))}
+              >
+                {`${i + 1}. ${it.nom} ${it.postnom}`}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
