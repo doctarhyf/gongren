@@ -6,6 +6,12 @@ import BagsDataInput from "../comps/BagsDataInput";
 import * as SB from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
 import BagsDataList from "../comps/BagsDataList";
+import {
+  ParseDayRepport,
+  ParseMonthRepport,
+  ParseShiftRepport,
+  ParseYearRepport,
+} from "../helpers/func";
 
 export default function Chargement() {
   const [date, setdate] = useState({});
@@ -63,6 +69,27 @@ export default function Chargement() {
     }, {});
   };
 
+  const [rep, setrep] = useState();
+
+  function onSetDataLevel(level, data) {
+    setrep({});
+    if (level === "y") {
+      setrep(ParseYearRepport(data));
+    }
+
+    if (level === "m") {
+      setrep(ParseMonthRepport(data));
+    }
+
+    if (level === "d") {
+      setrep(ParseDayRepport(data));
+    }
+
+    if (level === "s") {
+      setrep(ParseShiftRepport(data));
+    }
+  }
+
   return (
     <div>
       <Loading isLoading={loading} />
@@ -75,7 +102,6 @@ export default function Chargement() {
           onChange={(e) => setAddDataMode(e.target.checked)}
         />
       </div>
-
       <div>
         SHOW REPPORT MODE
         <input
@@ -85,11 +111,26 @@ export default function Chargement() {
           onChange={(e) => setShowRepportMode(e.target.checked)}
         />
       </div>
-
       {addDataMode && <BagsDataInput date={date} />}
-
       {!addDataMode && (
-        <BagsDataList loadsf={loadsf} showRepportMode={showRepportMode} />
+        <>
+          <BagsDataList
+            loadsf={loadsf}
+            showRepportMode={showRepportMode}
+            onSetDataLevel={onSetDataLevel}
+          />
+          <div>
+            <div className="text-xl text-sky-500">Repport</div>
+            <div>
+              {rep &&
+                Object.entries(rep).map((k, v) => (
+                  <div>
+                    {k[0]} : <b>{k[1]}</b>
+                  </div>
+                ))}
+            </div>
+          </div>
+        </>
       )}
     </div>
   );

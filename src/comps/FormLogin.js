@@ -19,7 +19,7 @@ export default function FormLogin({ onLogin }) {
         <div>Matricule</div>
         <input ref={ref_mat} type="text" placeholder="matricule" />
         <div>Password</div>
-        <input ref={ref_pin} type="password" placeholder="000000" />
+        <input ref={ref_pin} type="password" placeholder="0000" />
         <div>
           <button
             onClick={(e) => onBtnLogin()}

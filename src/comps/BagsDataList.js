@@ -5,7 +5,11 @@ import Loading from "../comps/Loading";
 import DateSelector from "./DateSelector";
 import { CLASS_BTN, CLASS_TD, MONTHS } from "../helpers/flow";
 
-export default function BagsDataList({ loadsf, showRepportMode }) {
+export default function BagsDataList({
+  loadsf,
+  showRepportMode,
+  onSetDataLevel,
+}) {
   const [loading, setloading] = useState(false);
   const [loads, setloads] = useState([]);
   // const [loadsf, setloadsf] = useState([]);
@@ -29,24 +33,6 @@ export default function BagsDataList({ loadsf, showRepportMode }) {
     const date_code = `${new_date.y}-${new_date.m}`;
     const data = loadsf[year][date_code];
     setloads(data);
-
-    console.log(data);
-
-    //setloadsf([]);
-
-    /* setSelectedLoad(undefined);
-    const [y, m, d, t] = Object.values(new_date);
-    const date_code = `${y}_${m}_${d}`;
-
-    const loads_filtered = loads.filter((it, i) => {
-      const { code } = it;
-
-      const [equipe, shift, y, m, d] = code.split("_");
-      const cur_date_code = `${y}_${m}_${d}`;
-      return date_code === cur_date_code;
-    });
-
-    setloadsf(loads_filtered); */
   }
 
   function stfy(d) {
@@ -137,6 +123,7 @@ export default function BagsDataList({ loadsf, showRepportMode }) {
                 <div
                   key={i}
                   onClick={(e) => {
+                    onSetDataLevel("y", year_data);
                     setShiftData(undefined);
                     setMonthData(undefined);
                     setDayData(undefined);
@@ -161,6 +148,7 @@ export default function BagsDataList({ loadsf, showRepportMode }) {
                   <div
                     key={i}
                     onClick={(e) => {
+                      onSetDataLevel("m", month_data);
                       setShiftData(undefined);
                       setMonthData(undefined);
                       setDayData(undefined);
@@ -186,6 +174,7 @@ export default function BagsDataList({ loadsf, showRepportMode }) {
                   <div
                     key={i}
                     onClick={(e) => {
+                      onSetDataLevel("d", day_data);
                       setShiftData(undefined);
                       setDatePath((old) => ({
                         ...old,
@@ -208,6 +197,7 @@ export default function BagsDataList({ loadsf, showRepportMode }) {
                   <div
                     key={i}
                     onClick={(e) => {
+                      onSetDataLevel("s", shift_data);
                       setDatePath((old) => ({
                         ...old,
                         shift: shift_data[1].code,
@@ -223,25 +213,31 @@ export default function BagsDataList({ loadsf, showRepportMode }) {
             )}
           </div>
           <div>
-            <div>Year:{datePath.y}</div>
-            <div>{datePath.m && <span>Month:{datePath.m},</span>}</div>
-            <div>{datePath.d && <span>Day:{datePath.d}</span>}</div>
+            <div>
+              Year: <b>{datePath.y}</b>
+            </div>
+            <div>
+              {datePath.m && (
+                <span>
+                  Month: <b>{datePath.m}</b>,
+                </span>
+              )}
+            </div>
+            <div>
+              {datePath.d && (
+                <span>
+                  Day: <b>{datePath.d}</b>
+                </span>
+              )}
+            </div>
             <div className="border-b pb-1 mb-1 border-neutral-400">
-              {datePath.shift && <span>Shift:{datePath.shift}</span>}
+              {datePath.shift && (
+                <span>
+                  Shift: <b>{datePath.shift}</b>
+                </span>
+              )}
             </div>
           </div>
-          {shiftData && (
-            <div className="border-l pl-1">
-              {[
-                ...Object.entries(shiftData),
-                ["Tonnage", Object.entries(shiftData)[2][1] / 20 + "T"],
-              ].map((dt, i) => (
-                <div key={i}>
-                  {dt[0]} : {dt[1]}
-                </div>
-              ))}
-            </div>
-          )}{" "}
         </>
       )}
     </div>
