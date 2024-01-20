@@ -17,9 +17,19 @@ export default function FormLogin({ onLogin }) {
       <div className="mx-auto flex flex-col space-y-4 ">
         <img src={LOGO} width={200} />
         <div>Matricule</div>
-        <input ref={ref_mat} type="text" placeholder="matricule" />
+        <input
+          value={"L0501"}
+          ref={ref_mat}
+          type="text"
+          placeholder="matricule"
+        />
         <div>Password</div>
-        <input ref={ref_pin} type="password" placeholder="0000" />
+        <input
+          value={"0000"}
+          ref={ref_pin}
+          type="password"
+          placeholder="0000"
+        />
         <div>
           <button
             onClick={(e) => onBtnLogin()}

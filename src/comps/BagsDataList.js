@@ -212,7 +212,7 @@ export default function BagsDataList({
               </div>
             )}
           </div>
-          <div>
+          {/* <div>
             <div>
               Year: <b>{datePath.y}</b>
             </div>
@@ -237,7 +237,7 @@ export default function BagsDataList({
                 </span>
               )}
             </div>
-          </div>
+          </div> */}
         </>
       )}
     </div>

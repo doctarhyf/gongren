@@ -13,6 +13,22 @@ import {
   ParseYearRepport,
 } from "../helpers/func";
 
+function RepportCard({ data }) {
+  return (
+    <div className="border mt-2 rounded-md p-1 bg-neutral-100 shadow-md">
+      <div className="text-xl text-sky-500">Rapport {data.type}</div>
+      <div>
+        {data &&
+          Object.entries(data).map((k, v) => (
+            <div>
+              {k[0]} : <b>{k[1]}</b>
+            </div>
+          ))}
+      </div>
+    </div>
+  );
+}
+
 export default function Chargement() {
   const [date, setdate] = useState({});
 
@@ -69,24 +85,24 @@ export default function Chargement() {
     }, {});
   };
 
-  const [rep, setrep] = useState();
+  const [repportData, setRepportData] = useState();
 
   function onSetDataLevel(level, data) {
-    setrep({});
+    setRepportData({});
     if (level === "y") {
-      setrep(ParseYearRepport(data));
+      setRepportData(ParseYearRepport(data));
     }
 
     if (level === "m") {
-      setrep(ParseMonthRepport(data));
+      setRepportData(ParseMonthRepport(data));
     }
 
     if (level === "d") {
-      setrep(ParseDayRepport(data));
+      setRepportData(ParseDayRepport(data));
     }
 
     if (level === "s") {
-      setrep(ParseShiftRepport(data));
+      setRepportData(ParseShiftRepport(data));
     }
   }
 
@@ -121,17 +137,8 @@ export default function Chargement() {
             showRepportMode={showRepportMode}
             onSetDataLevel={onSetDataLevel}
           />
-          <div>
-            <div className="text-xl text-sky-500">Repport</div>
-            <div>
-              {rep &&
-                Object.entries(rep).map((k, v) => (
-                  <div>
-                    {k[0]} : <b>{k[1]}</b>
-                  </div>
-                ))}
-            </div>
-          </div>
+
+          <RepportCard data={repportData} />
         </>
       )}
     </div>

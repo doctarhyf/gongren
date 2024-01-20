@@ -214,7 +214,7 @@ export function _(ref) {
 }
 
 export function ParseYearRepport(year_data) {
-  let repport = {};
+  let repport = { type: "Annuel" };
   let sacs = 0;
   let t = 0;
   let ret = 0;
@@ -244,7 +244,7 @@ export function ParseYearRepport(year_data) {
 export function ParseMonthRepport(month_data) {
   const [y, m] = month_data[0].split("-");
 
-  let repport = {};
+  let repport = { type: "Mensuel" };
   let sacs = 0;
   let t = 0;
   let ret = 0;
@@ -274,7 +274,7 @@ export function ParseMonthRepport(month_data) {
 export function ParseDayRepport(day_data) {
   const [y, m, d] = day_data[0].split("-");
 
-  let repport = {};
+  let repport = { type: "Journalier" };
   let sacs = 0;
   let t = 0;
   let ret = 0;
@@ -307,7 +307,7 @@ export function ParseShiftRepport(shift_data) {
   const shift = shift_data[1];
   const [t, s, y, m, d] = shift.code.split("_");
 
-  let repport = {};
+  let repport = { type: " de Chargement" };
 
   repport.equipe = t;
   repport.sacs = shift.sacs + " Sacs";
