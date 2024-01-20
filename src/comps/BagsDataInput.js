@@ -6,6 +6,128 @@ import * as SB from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
 import DateSelector from "./DateSelector";
 
+function Bon({ id, sacs, onSacsChange, onRemoveBon }) {
+  return (
+    <div className="bon flex gap-2 border-t">
+      <div className="text-xl">No. {id}</div>
+      <div>
+        <div>Sacs</div>
+        <div className="flex">
+          <input
+            value={sacs}
+            onChange={(e) =>
+              onSacsChange && onSacsChange(id, Number(e.target.value))
+            }
+            type="text"
+          />
+          <button
+            className={CLASS_BTN}
+            onClick={(e) => onRemoveBon && onRemoveBon(id)}
+          >
+            X
+          </button>
+        </div>
+      </div>
+      {/*  <div>
+        <div>Plaque</div>
+        <input type="text" />
+      </div> */}
+    </div>
+  );
+}
+
+function LoadsCalculator({ show, onAddCamion, onSaveTotalSacs }) {
+  const [camions, setcamions] = useState([0]);
+
+  function onSacsChange(id, sacs) {
+    const nb_sacs = Number(sacs) || 0;
+    let old = camions;
+    old[id] = nb_sacs;
+
+    const new_array = [...old];
+    setcamions(new_array);
+    console.log(new_array);
+  }
+
+  function onRemoveBon(index) {
+    let array = camions;
+
+    if (index >= 0 && index < array.length) {
+      array.splice(index, 1);
+    }
+    const new_array = [...array];
+    setcamions(new_array);
+    console.log(new_array);
+  }
+
+  return (
+    <div className={` ${show ? "block" : "hidden"} `}>
+      <div className="text-sky-500 border-b my-1">Calculator</div>
+      <div>Camions : {camions.length}</div>
+      <div>
+        Sacs Total:{" "}
+        {camions.reduce(
+          (accumulator, currentValue) => accumulator + currentValue,
+          0
+        )}{" "}
+        Sacs
+      </div>
+      <div>
+        Tonnage Total:{" "}
+        {camions.reduce(
+          (accumulator, currentValue) => accumulator + currentValue,
+          0
+        ) / 20}{" "}
+        T
+      </div>
+      <div>
+        {camions.map((sacs, i) => (
+          <Bon
+            id={i}
+            sacs={sacs}
+            onSacsChange={onSacsChange}
+            onRemoveBon={onRemoveBon}
+          />
+        ))}
+      </div>
+      <div>
+        <button
+          onClick={(e) => {
+            setcamions((old) => [...old, 0]);
+            console.log(camions);
+          }}
+          className={CLASS_BTN}
+        >
+          Ajouter bon
+        </button>
+        <button
+          onClick={(e) => {
+            setcamions([0]);
+          }}
+          className={CLASS_BTN}
+        >
+          Clear
+        </button>
+        <button
+          onClick={(e) => {
+            onSaveTotalSacs &&
+              onSaveTotalSacs(
+                camions.reduce(
+                  (accumulator, currentValue) => accumulator + currentValue,
+                  0
+                ),
+                camions.length
+              );
+          }}
+          className={CLASS_BTN}
+        >
+          Save
+        </button>
+      </div>
+    </div>
+  );
+}
+
 export default function BagsDataInput({ onDataAdded, onError }) {
   const [loading, setloading] = useState(false);
   const ref_team = useRef();
@@ -19,6 +141,7 @@ export default function BagsDataInput({ onDataAdded, onError }) {
     m: new Date().getMonth(),
     d: new Date().getDay(),
   });
+  const [showCalculator, setShowCalculator] = useState(false);
 
   function onDateSelected(d) {
     setdate(d);
@@ -56,11 +179,18 @@ export default function BagsDataInput({ onDataAdded, onError }) {
     setloading(false);
   }
 
+  function onSaveTotalSacs(sacs, camions) {
+    console.log(`Sacs: ${sacs} sacs, ${sacs / 20} tons`);
+    ref_sacs.current.value = sacs;
+    ref_camions.current.value = camions;
+    setShowCalculator(false);
+  }
+
   return (
     <div className="flex flex-row-reverse">
       <DateSelector onDateSelected={onDateSelected} />
 
-      <div>
+      <div className={` ${showCalculator ? "hidden" : "block"} `}>
         <div>
           Team:
           <select ref={ref_team}>
@@ -80,13 +210,27 @@ export default function BagsDataInput({ onDataAdded, onError }) {
         <div>
           DATE: {date.d}/{date.m}/{date.y}
         </div>
+        <div className="border rounded-md ">
+          <div>
+            SACS: <input ref={ref_sacs} type="text" />
+          </div>
+          <div>
+            CAMIONS: <input ref={ref_camions} type="text" />
+          </div>
 
-        <div>
-          SACS: <input ref={ref_sacs} type="text" />
+          <div className="form-control">
+            <label className="label cursor-pointer">
+              <span className="label-text">AFFICHER CALCULATEUR DE BONS</span>
+              <input
+                type="checkbox"
+                onChange={(e) => setShowCalculator(e.target.checked)}
+                className="toggle"
+                checked={showCalculator}
+              />
+            </label>
+          </div>
         </div>
-        <div>
-          CAMIONS: <input ref={ref_camions} type="text" />
-        </div>
+
         <div>
           RETOURS: <input ref={ref_retours} type="text" />
         </div>
@@ -100,6 +244,11 @@ export default function BagsDataInput({ onDataAdded, onError }) {
         </div>
         <Loading isLoading={loading} />
       </div>
+
+      <LoadsCalculator
+        show={showCalculator}
+        onSaveTotalSacs={onSaveTotalSacs}
+      />
     </div>
   );
 }
