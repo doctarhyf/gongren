@@ -3,6 +3,8 @@ import { MAIN_MENU, USER_LEVEL } from "../helpers/flow";
 import gck from "../img/gck.png";
 
 function MainNav({ user, onMenuClick, curPage, onLogout }) {
+  console.log(user);
+
   return (
     <section className="bg-sky-500 h-full w-44">
       <div className=" border-b">

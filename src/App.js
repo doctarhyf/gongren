@@ -1,7 +1,7 @@
 import logo from "./logo.svg";
 import "./App.css";
 import { CLASS_BTN, LOGO, MAIN_MENU } from "./helpers/flow";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import MainNav from "./comps/MainNav";
 import Loading from "./comps/Loading";
 import * as SB from "./helpers/sb";
@@ -9,11 +9,21 @@ import { _ } from "./helpers/func";
 import { TABLES_NAMES } from "./helpers/sb.config";
 import FormLogin from "./comps/FormLogin";
 import GongRen from "./GongRen";
+import { useCookies } from "react-cookie";
 
 function App() {
   const [user, setuser] = useState();
   const [loading, setloading] = useState(false);
   const [error, seterror] = useState(undefined);
+  const [cookies, setCookie, removeCookie] = useCookies(["gr_user"]);
+
+  useEffect(() => {
+    const myCookieValue = cookies.gr_user;
+    console.log("myCookieValue", myCookieValue);
+    if (myCookieValue) {
+      setuser(myCookieValue);
+    }
+  });
 
   async function onLogin(mat, pin) {
     seterror(undefined);
@@ -27,14 +37,20 @@ function App() {
       console.log(error_message);
     }
 
+    const expirationTime = new Date();
+    expirationTime.setMinutes(expirationTime.getMinutes() + 5);
+    setCookie("gr_user", JSON.stringify(res), {
+      path: "/",
+      expires: expirationTime,
+    });
     setuser(res);
 
     setloading(false);
   }
 
   function onLogout() {
+    removeCookie("gr_user", { path: "/" });
     setuser(undefined);
-    console.log(user);
   }
 
   if (user) return <GongRen user={user} onLogout={onLogout} />;
