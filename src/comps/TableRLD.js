@@ -4,6 +4,7 @@ import { TABLES_NAMES } from "../helpers/sb.config";
 import Loading from "./Loading";
 import { CLASS_BTN, CLASS_TD, MONTHS } from "../helpers/flow";
 import pdf from "../img/pdf.png";
+import { print_agent_roulement, doc } from "../helpers/funcs_print.mjs";
 
 const init = [...Array(31).fill("-")];
 
@@ -62,21 +63,15 @@ export default function TableRLD({
     );
   }
   function printPDF(e) {
-    /*
-    ({
-    nom: {
-      fr: "MUTUNDA KOJI Franvale",
-      zh: "库齐",
-    },
-    rld: "JJJNNNRRRJJJNNNRRRJJJNNNRRRJJJN",
-    month: 1,
-    year: 2024,
-    poste: "INT",
-  }
-    */
+    if (monthCode === undefined) {
+      alert("monthCode is undefined!");
+      return;
+    }
 
     const { nom, postnom, prenom, mingzi, poste } = curAgent;
+
     const [mc, id, year, month] = monthCode.split("_");
+
     const print_data = {
       nom: { fr: `${nom} ${postnom} ${prenom}`, zh: `${mingzi}` },
       rld: curAgentRld.join(""),
@@ -85,7 +80,7 @@ export default function TableRLD({
       poste: poste,
     };
 
-    console.log(curAgent, curAgentRld, monthCode, print_data);
+    print_agent_roulement(doc, print_data);
   }
 
   return (
