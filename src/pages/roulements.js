@@ -14,6 +14,7 @@ export default function Roulements() {
   const [monthCode, setMonthCode] = useState();
   const [error, seterror] = useState(false);
   const [rdk, setrdk] = useState(Math.random());
+  const [num_days_in_current_m, set_num_days_in_current_m] = useState(31);
 
   const ref_m = useRef();
   const ref_y = useRef();
@@ -64,7 +65,7 @@ export default function Roulements() {
       seterror(`Data for "${mc}" does not exist!New Data created`);
 
       const init_data = await GetInitRLD(mc);
-      console.log(id);
+      console.log(init_data);
       setCurAgentRld({ rl: init_data, agent_id: id });
       await loadRoulement();
       seterror(null);
@@ -86,7 +87,7 @@ export default function Roulements() {
       return;
     }
 
-    const [, id, year, month] = monthCode.split("_");
+    const [mc, id, year, month] = monthCode.split("_");
     //const d = new Date();
 
     let cur_month = Number(month); // d.getMonth() - 1 < 0 ? 11 : d.getMonth() - 1;
@@ -101,15 +102,16 @@ export default function Roulements() {
     const rld_data = [];
     let default_data = [];
 
+    let daysCountInMonth = getDaysInMonth(year, month);
+    set_num_days_in_current_m(daysCountInMonth);
     let idx = 21;
     rld.map((it, i) => {
       let d = idx;
-      idx++;
 
-      if (d === 31) {
+      if (d === daysCountInMonth) {
         idx = 1;
       }
-      console.log(`current d : ${d}`);
+      // console.log(`current d : ${d}`);
       rld_data.push({ id: i, date: d, data: "-" });
       default_data.push("-");
     });
@@ -124,6 +126,7 @@ export default function Roulements() {
     };
 
     const rl = default_data.join("");
+    console.log(rld_data);
     let initData = {
       rl: rl,
       month_code: monthCode,
@@ -171,6 +174,7 @@ export default function Roulements() {
         <TableRLD
           onRoulementSaved={onRoulementSaved}
           error={error !== undefined}
+          daysCount={num_days_in_current_m}
           key={rdk}
           curAgent={curAgent}
           curAgentRld={curAgentRld}

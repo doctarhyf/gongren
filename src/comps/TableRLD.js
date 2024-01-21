@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import * as SB from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
 import Loading from "./Loading";
 import { CLASS_BTN, CLASS_TD, MONTHS } from "../helpers/flow";
+import pdf from "../img/pdf.png";
 
 const init = [...Array(31).fill("-")];
 
@@ -10,6 +11,7 @@ export default function TableRLD({
   curAgent,
   curAgentRld,
   monthCode,
+  daysCount,
   error,
   onRoulementSaved,
 }) {
@@ -59,6 +61,32 @@ export default function TableRLD({
       }
     );
   }
+  function printPDF(e) {
+    /*
+    ({
+    nom: {
+      fr: "MUTUNDA KOJI Franvale",
+      zh: "库齐",
+    },
+    rld: "JJJNNNRRRJJJNNNRRRJJJNNNRRRJJJN",
+    month: 1,
+    year: 2024,
+    poste: "INT",
+  }
+    */
+
+    const { nom, postnom, prenom, mingzi, poste } = curAgent;
+    const [mc, id, year, month] = monthCode.split("_");
+    const print_data = {
+      nom: { fr: `${nom} ${postnom} ${prenom}`, zh: `${mingzi}` },
+      rld: curAgentRld.join(""),
+      month: Number(month),
+      year: Number(year),
+      poste: poste,
+    };
+
+    console.log(curAgent, curAgentRld, monthCode, print_data);
+  }
 
   return (
     <div>
@@ -103,6 +131,16 @@ export default function TableRLD({
                     </button>
                   </div>
                 )}
+                {!editing && (
+                  <div>
+                    <button
+                      onClick={printPDF}
+                      className={`${CLASS_BTN} flex text-sm my-2`}
+                    >
+                      <img src={pdf} width={20} height={30} /> IMPRIMER PDF
+                    </button>
+                  </div>
+                )}
               </td>
             </tr>
           </thead>
@@ -114,9 +152,9 @@ export default function TableRLD({
               <td className={CLASS_TD}>Num序号</td>
               <td className={CLASS_TD}>Nom</td>
               <td className={CLASS_TD}>Mat.工号</td>
-              {[...Array(curAgentRld.length)].map((d, i) => (
+              {[...Array(daysCount)].map((d, i) => (
                 <td key={i} className={CLASS_TD}>
-                  {i + 20 > 31 ? i : i + 20}
+                  {21 + i > daysCount ? (daysCount - i - 20 - 1) * -1 : 21 + i}
                 </td>
               ))}
             </tr>
