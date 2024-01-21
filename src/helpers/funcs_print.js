@@ -435,7 +435,7 @@ function print_agent_roulement(doc, agent_data) {
       BOX_WIDTH_SPACE_PCT,
       FONT_SIZE,
       text_tokens,
-      [{ lat: "L0501" }]
+      [{ lat: matricule }]
     );
     doc.rect(
       PAGE_MARG,
