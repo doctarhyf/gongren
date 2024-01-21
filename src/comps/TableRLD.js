@@ -4,7 +4,7 @@ import { TABLES_NAMES } from "../helpers/sb.config";
 import Loading from "./Loading";
 import { CLASS_BTN, CLASS_TD, MONTHS } from "../helpers/flow";
 import pdf from "../img/pdf.png";
-import { print_agent_roulement, doc } from "../helpers/funcs_print.mjs";
+import { print_agent_roulement, doc } from "../helpers/funcs_print.js";
 
 const init = [...Array(31).fill("-")];
 
@@ -68,7 +68,7 @@ export default function TableRLD({
       return;
     }
 
-    const { nom, postnom, prenom, mingzi, poste } = curAgent;
+    const { nom, postnom, prenom, mingzi, poste, matricule } = curAgent;
 
     const [mc, id, year, month] = monthCode.split("_");
 
@@ -78,6 +78,7 @@ export default function TableRLD({
       month: Number(month),
       year: Number(year),
       poste: poste,
+      matricule,
     };
 
     print_agent_roulement(doc, print_data);
@@ -147,7 +148,7 @@ export default function TableRLD({
               <td className={CLASS_TD}>Num序号</td>
               <td className={CLASS_TD}>Nom</td>
               <td className={CLASS_TD}>Mat.工号</td>
-              {[...Array(daysCount)].map((d, i) => (
+              {curAgentRld.map((d, i) => (
                 <td key={i} className={CLASS_TD}>
                   {21 + i > daysCount ? (daysCount - i - 20 - 1) * -1 : 21 + i}
                 </td>

@@ -14,7 +14,7 @@ export default function Roulements() {
   const [monthCode, setMonthCode] = useState();
   const [error, seterror] = useState(false);
   const [rdk, setrdk] = useState(Math.random());
-  const [num_days_in_current_m, set_num_days_in_current_m] = useState(31);
+  const [lastDayDate, setLastDayDate] = useState(31);
 
   const ref_m = useRef();
   const ref_y = useRef();
@@ -75,7 +75,7 @@ export default function Roulements() {
     const rl = ParseRLD(data);
     setCurAgentRld(rl);
 
-    console.log(rl);
+    setLastDayDate(getDaysInMonth(Number(y), Number(MONTHS.indexOf(m))));
   }
 
   async function GetInitRLD(monthCode) {
@@ -103,7 +103,7 @@ export default function Roulements() {
     let default_data = [];
 
     let daysCountInMonth = getDaysInMonth(year, month);
-    set_num_days_in_current_m(daysCountInMonth);
+    setLastDayDate(daysCountInMonth);
     let idx = 21;
     rld.map((it, i) => {
       let d = idx;
@@ -174,7 +174,7 @@ export default function Roulements() {
         <TableRLD
           onRoulementSaved={onRoulementSaved}
           error={error !== undefined}
-          daysCount={num_days_in_current_m}
+          daysCount={lastDayDate}
           key={rdk}
           curAgent={curAgent}
           curAgentRld={curAgentRld}

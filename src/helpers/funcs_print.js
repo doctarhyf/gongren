@@ -1,4 +1,6 @@
 import { jsPDF } from "jspdf";
+import { getDaysInMonth } from "./func";
+import { MONTHS } from "./flow";
 const orientation = "landscape";
 const doc = new jsPDF({ orientation: orientation });
 let r = doc.addFont(
@@ -163,7 +165,9 @@ function draw_en_tete(
   const text_gck = [
     { lat: "GCK" },
     { zh: "公司水泥线水泥" },
+    { lat: " ' " },
     { zh: poste_zh },
+    { lat: " ' " },
     { zh: "名单" },
   ];
   const text_poste = [
@@ -174,14 +178,15 @@ function draw_en_tete(
 
   let cury = agent_data.year;
   let curm = agent_data.month - 1;
-  let nextm = curm + 1 > 12 ? 1 : curm + 1;
-  let curmn = getFrenchMonthName(curm).toUpperCase();
-  let nextmn = getFrenchMonthName(nextm).toUpperCase();
+  let nextm = curm + 2 > 12 ? 1 : curm + 1;
+
+  let curmn = getFrenchMonthName(curm + 1).toUpperCase();
+  let nextmn = getFrenchMonthName(nextm + 1).toUpperCase();
 
   const text_roulement_month = [
-    { lat: `${curmn} - ${nextmn} (${cury}` },
+    { lat: `${curmn} - ${nextmn} (${curm + 2 > 12 ? cury + 1 : cury}` },
     { zh: "年" },
-    { lat: curm + 1 + "" },
+    { lat: curm + 2 + "" },
     { zh: "月" },
     { lat: ")" },
   ];
@@ -311,12 +316,9 @@ function getDayName(dateString, oneLetter) {
     "Samedi",
   ];
 
-  // Create a new Date object from the given date string
-  console.log(dateString);
-  return "L";
   const date = new Date(dateString);
 
-  // Get the day of the week (0-6)
+  //console.log(` date => ${date}, dateString => ${dateString}`);
   const dayOfWeekIndex = date.getDay();
 
   // Get the day name from the array
@@ -334,18 +336,40 @@ function print_agent_roulement(doc, agent_data) {
 
   // Add a new, single page
   doc.addPage();
-  const { month, year } = agent_data;
+  const { matricule, month, year, nom, postnom } = agent_data;
+
+  const fname = `${matricule}_${nom.fr.replaceAll(" ", "_")}_${
+    MONTHS[month]
+  }_${year}.pdf`;
+  console.log(fname);
   let days_letters = [];
   const array_rld = agent_data.rld.split("");
+
   const END_DATE = array_rld.length;
   const num_days = array_rld.length;
+  let date_idx = 21;
+  let month_idx = month + 1;
+  let inNextMonth = false;
+  let lastDate = getDaysInMonth(year, month);
 
   array_rld.map((d, i) => {
-    let ds = `${month + 1}/${i + 1}/${year}`;
+    if (date_idx > lastDate) {
+      date_idx = 1;
+      if (inNextMonth === false) {
+        month_idx += 1;
+        inNextMonth = true;
+      }
+    }
+
+    let ds = `${month_idx}/${date_idx}/${year}`;
     let dt = new Date(ds).toString();
     let dname = getDayName(ds, true);
+    console.log(`ds => ${ds}, dt => ${dt.split(" ")[0]}, dname => ${dname}`);
     days_letters[i] = dname;
+    date_idx++;
   });
+
+  console.log(days_letters);
 
   doc.setFontSize(FONT_SIZE);
   draw_en_tete(doc, agent_data, PAGE_MARG, PG_W, LOGO_H, (h) => {
@@ -474,7 +498,7 @@ function print_agent_roulement(doc, agent_data) {
     });
   });
 
-  doc.save("rl.pdf");
+  doc.save(fname);
 }
 
 function print_agents_list_roulement(agents_rl) {
