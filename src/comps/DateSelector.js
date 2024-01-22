@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { MONTHS } from "../helpers/flow";
 
-export default function DateSelector({ onDateSelected }) {
+export default function DateSelector({ onDateSelected, defaultDate }) {
   const DATE_TYPE = { Y: "Year", M: "Month", D: "Day" };
 
   const [dateType, setDateType] = useState("D");

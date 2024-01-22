@@ -105,9 +105,10 @@ export default function Chargement() {
   const [shiftDataToUpdate, setShiftDataToUpdate] = useState();
 
   function onUpdateShiftData(data) {
-    console.log(data);
+    //console.log(data);
     setShiftDataToUpdate(data);
     setAddDataMode(true);
+    loadData();
   }
 
   return (
@@ -140,7 +141,10 @@ export default function Chargement() {
           <BagsDataInput
             onCancel={(e) => setAddDataMode(false)}
             dataToUpdate={shiftDataToUpdate}
-            onDataAdded={(e) => setAddDataMode(false)}
+            onDataAdded={(e) => {
+              setAddDataMode(false);
+              loadData();
+            }}
             date={date}
           />
         </>
