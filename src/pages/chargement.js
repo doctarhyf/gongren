@@ -73,6 +73,8 @@ export default function Chargement() {
   const [repportData, setRepportData] = useState();
 
   function onSetDataLevel(level, data) {
+    console.log("lev dat ", data);
+
     let rep_data;
     setRepportData({});
     if (level === "y") {

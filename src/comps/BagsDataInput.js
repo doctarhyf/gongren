@@ -56,10 +56,19 @@ export default function BagsDataInput({
 
     let res;
     if (dataToUpdate) {
-      console.log("will update ", dataToUpdate);
+      /* console.log(
+        `will update \nid : ${dataToUpdate.id}\nupd data : `,
+        load,
+        "\nold data ",
+        dataToUpdate
+      ); */
+      res = await SB.UpdateItem(TABLES_NAMES.LOADS, {
+        ...load,
+        id: dataToUpdate.id,
+      });
     } else {
-      console.log("will save new data", load);
-      //res = await SB.InsertItem(TABLES_NAMES.LOADS, load);
+      /* console.log("will save new data", load); */
+      res = await SB.InsertItem(TABLES_NAMES.LOADS, load);
     }
 
     if (res === null) {

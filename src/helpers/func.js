@@ -305,6 +305,8 @@ export function ParseDayRepport(day_data) {
 }
 
 export function ParseShiftRepport(shift_data) {
+  console.log("ssddtt => ", shift_data);
+
   const shift = shift_data[1];
   const [t, s, y, m, d] = shift.code.split("_");
 
@@ -313,6 +315,7 @@ export function ParseShiftRepport(shift_data) {
     date: `Equipe ${t}, de ${SHIF_HOURS_ZH[s][2]}, ${SHIF_HOURS_ZH[s][0]}, le ${d} ${MONTHS[m]} ${y}, `,
   };
 
+  repport.id = shift.id;
   repport.equipe = t;
   repport.heure = `${SHIF_HOURS_ZH[s][0]}, ${SHIF_HOURS_ZH[s][2]}`;
   repport.sacs = shift.sacs + " Sacs";
@@ -324,9 +327,10 @@ export function ParseShiftRepport(shift_data) {
   repport.dechires = shift.dechires;
   const bonus_marg_t = repport.tonnage - 600 < 0 ? 0 : repport.tonnage - 600;
   const bonus_marg_cdf = bonus_marg_t * 1000;
-  repport.bonus = `${bonus_marg_t} T => ${bonus_marg_cdf} CDF`;
+  repport.bonus = bonus_marg_cdf;
 
   const upd = {
+    id: shift.id,
     shift: s,
     team: t, //SHIF_HOURS_ZH[shift.code[0]][1],
     date: `${d}/${m}/${y}`,
