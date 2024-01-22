@@ -73,22 +73,39 @@ export default function Chargement() {
   const [repportData, setRepportData] = useState();
 
   function onSetDataLevel(level, data) {
+    let rep_data;
     setRepportData({});
     if (level === "y") {
-      setRepportData(ParseYearRepport(data));
+      rep_data = ParseYearRepport(data);
+      rep_data.tid = level;
+      setRepportData(rep_data);
     }
 
     if (level === "m") {
-      setRepportData(ParseMonthRepport(data));
+      rep_data = ParseMonthRepport(data);
+      rep_data.tid = level;
+      setRepportData(rep_data);
     }
 
     if (level === "d") {
-      setRepportData(ParseDayRepport(data));
+      rep_data = ParseDayRepport(data);
+      rep_data.tid = level;
+      setRepportData(rep_data);
     }
 
     if (level === "s") {
-      setRepportData(ParseShiftRepport(data));
+      rep_data = ParseShiftRepport(data);
+      rep_data.tid = level;
+      setRepportData(rep_data);
     }
+  }
+
+  const [shiftDataToUpdate, setShiftDataToUpdate] = useState();
+
+  function onUpdateShiftData(data) {
+    console.log(data);
+    setShiftDataToUpdate(data);
+    setAddDataMode(true);
   }
 
   return (
@@ -100,7 +117,10 @@ export default function Chargement() {
           type="checkbox"
           className="toggle toggle-xs"
           checked={addDataMode}
-          onChange={(e) => setAddDataMode(e.target.checked)}
+          onChange={(e) => {
+            setShiftDataToUpdate(undefined);
+            setAddDataMode(e.target.checked);
+          }}
         />
       </div>
       <div>
@@ -113,7 +133,15 @@ export default function Chargement() {
         />
       </div>
       {addDataMode && (
-        <BagsDataInput onDataAdded={(e) => setAddDataMode(false)} date={date} />
+        <>
+          <div>{shiftDataToUpdate && "updating ..."}</div>
+          <BagsDataInput
+            onCancel={(e) => setAddDataMode(false)}
+            dataToUpdate={shiftDataToUpdate}
+            onDataAdded={(e) => setAddDataMode(false)}
+            date={date}
+          />
+        </>
       )}
       {!addDataMode && (
         <>
@@ -123,7 +151,10 @@ export default function Chargement() {
             onSetDataLevel={onSetDataLevel}
           />
 
-          <RepportCard data={repportData} />
+          <RepportCard
+            data={repportData}
+            onUpdateShiftData={onUpdateShiftData}
+          />
         </>
       )}
     </div>

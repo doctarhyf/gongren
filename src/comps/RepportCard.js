@@ -1,4 +1,6 @@
-export default function RepportCard({ data }) {
+import { CLASS_BTN } from "../helpers/flow";
+
+export default function RepportCard({ data, onUpdateShiftData }) {
   return (
     <div className="border mt-2 rounded-md p-1 bg-neutral-100 shadow-md">
       <div className=" text-sky-500">
@@ -12,7 +14,7 @@ export default function RepportCard({ data }) {
         {data &&
           Object.entries(data).map((k, v) => (
             <div>
-              {k[0] !== "date" && k[0] !== "type" && (
+              {!["date", "type", "tid", "upd"].includes(k[0]) && (
                 <>
                   {" "}
                   {k[0]} : <b>{k[1]}</b>
@@ -21,6 +23,16 @@ export default function RepportCard({ data }) {
             </div>
           ))}
       </div>
+      {data && data.tid === "s" && (
+        <div>
+          <button
+            onClick={(e) => onUpdateShiftData(data)}
+            className={CLASS_BTN}
+          >
+            UPDATE
+          </button>
+        </div>
+      )}
     </div>
   );
 }

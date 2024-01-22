@@ -1,13 +1,18 @@
 import React, { useRef, useState } from "react";
 import Loading from "./Loading";
-import { CLASS_BTN } from "../helpers/flow";
+import { CLASS_BTN, SHIFTS_ZH } from "../helpers/flow";
 import { _ } from "../helpers/func";
 import * as SB from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
 import DateSelector from "./DateSelector";
 import LoadsCalculator from "./LoadCalculator";
 
-export default function BagsDataInput({ onDataAdded, onError }) {
+export default function BagsDataInput({
+  onDataAdded,
+  onCancel,
+  onError,
+  dataToUpdate,
+}) {
   const [loading, setloading] = useState(false);
   const ref_team = useRef();
   const ref_shift = useRef();
@@ -15,6 +20,8 @@ export default function BagsDataInput({ onDataAdded, onError }) {
   const ref_camions = useRef();
   const ref_retours = useRef();
   const ref_ajouts = useRef();
+  const ref_dechires = useRef();
+
   const [date, setdate] = useState({
     y: new Date().getFullYear(),
     m: new Date().getMonth(),
@@ -35,6 +42,8 @@ export default function BagsDataInput({ onDataAdded, onError }) {
     const camions = Number(_(ref_camions));
     const retours = Number(_(ref_retours));
     const ajouts = Number(_(ref_ajouts));
+    const dechires = Number(_(ref_dechires));
+
     const code = `${team}_${shift}_${date.y}_${date.m}_${date.d}`;
     const load = {
       code: code,
@@ -42,9 +51,16 @@ export default function BagsDataInput({ onDataAdded, onError }) {
       camions: camions,
       retours: retours,
       ajouts: ajouts,
+      dechires: dechires,
     };
 
-    let res = await SB.InsertItem(TABLES_NAMES.LOADS, load);
+    let res;
+    if (dataToUpdate) {
+      console.log("will update ", dataToUpdate);
+    } else {
+      console.log("will save new data", load);
+      //res = await SB.InsertItem(TABLES_NAMES.LOADS, load);
+    }
 
     if (res === null) {
       alert("Data added succssefully!");
@@ -65,6 +81,19 @@ export default function BagsDataInput({ onDataAdded, onError }) {
     setShowCalculator(false);
   }
 
+  /* const upd = {
+    shift: shift.code[0], //SHIF_HOURS_ZH[shift.code[0]][1],
+    sacs: shift.sacs,
+    camions: shift.camions,
+    retours: shift.retours,
+    ajouts: shift.ajouts,
+    dechires: shift.dechires,
+  };*/
+
+  const upd = dataToUpdate && JSON.parse(dataToUpdate.upd);
+
+  console.log("upd => ", upd);
+
   return (
     <div className="flex flex-row-reverse">
       <DateSelector onDateSelected={onDateSelected} />
@@ -74,27 +103,31 @@ export default function BagsDataInput({ onDataAdded, onError }) {
           Team:
           <select ref={ref_team}>
             {["A", "B", "C", "D"].map((t, i) => (
-              <option>{t}</option>
+              <option selected={upd && t === upd.team}>{t}</option>
             ))}
           </select>
         </div>
         <div>
           SHIFT:
           <select ref={ref_shift}>
-            {["白班", "中班", "夜班"].map((t, i) => (
-              <option value={["M", "P", "N"][i]}>{t}</option>
+            {["M", "P", "N"].map((t, i) => (
+              <option selected={upd && t === upd.shift}>{t}</option>
             ))}
           </select>
         </div>
-        <div>
-          DATE: {date.d}/{date.m}/{date.y}
-        </div>
+        <div>DATE: {(upd && upd.date) || `${date.d}/${date.m}/${date.y}`}</div>
         <div className="border rounded-md ">
           <div>
-            SACS: <input ref={ref_sacs} type="text" />
+            SACS:{" "}
+            <input ref={ref_sacs} type="text" defaultValue={upd && upd.sacs} />
           </div>
           <div>
-            CAMIONS: <input ref={ref_camions} type="text" />
+            CAMIONS:{" "}
+            <input
+              ref={ref_camions}
+              type="text"
+              defaultValue={upd && upd.camions}
+            />
           </div>
 
           <div className="form-control">
@@ -111,14 +144,35 @@ export default function BagsDataInput({ onDataAdded, onError }) {
         </div>
 
         <div>
-          RETOURS: <input ref={ref_retours} type="text" />
+          RETOURS:{" "}
+          <input
+            ref={ref_retours}
+            type="text"
+            defaultValue={upd && upd.retours}
+          />
         </div>
         <div>
-          AJOUTS: <input ref={ref_ajouts} type="text" />
+          AJOUTS:{" "}
+          <input
+            ref={ref_ajouts}
+            type="text"
+            defaultValue={upd && upd.ajouts}
+          />
         </div>
         <div>
+          DECHIRES:{" "}
+          <input
+            ref={ref_dechires}
+            type="text"
+            defaultValue={upd && upd.dechires}
+          />
+        </div>
+        <div className="flex">
           <button onClick={onSaveLoad} className={CLASS_BTN}>
             SAVE
+          </button>
+          <button onClick={onCancel} className={CLASS_BTN}>
+            CANCEL
           </button>
         </div>
         <Loading isLoading={loading} />
