@@ -9,14 +9,14 @@ import {
   K_POSTE_NETTOYEUR,
   K_POSTE_OPERATEUR,
   MONTHS,
-  POSTE,
   SECTIONS,
 } from "../helpers/flow";
 import { LoadAllItems } from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
 import shield from "../img/shield.png";
+import sup from "../img/sup.png";
 import pdf from "../img/pdf.png";
-import { CountAgentsByPostType, GeneratePDF, printPDF1 } from "../helpers/func";
+import { CountAgentsByPostType, printPDF1 } from "../helpers/func";
 import Loading from "../comps/Loading";
 
 function AgentsTable({
@@ -33,19 +33,13 @@ function AgentsTable({
   const nb_aide_op = CountAgentsByPostType(agentsf, K_POSTE_AIDE_OPERATEUR);
   const chef_deq = agentsf.find((it, i) => it.chef_deq === "OUI");
 
-  function printPDF(agents) {
-    if (agents.length === 0) {
-      throw new Error("Agents list cant be empty!");
+  function printPDF(agents_array) {
+    if (agents_array.length === 0) {
+      alert("Agents list cant be empty!");
       return;
     }
 
-    /* const names_list = agents.map((el, i) => {
-      let name = `${el.nom} ${el.postnom}`;
-      return name;
-    });
-
-    GeneratePDF(names_list); */
-    printPDF1(agents);
+    printPDF1(agents_array);
   }
 
   return (
@@ -77,12 +71,20 @@ function AgentsTable({
               </div>
 
               {agentsf.length !== 0 && (
-                <div>
+                <div className="flex gap-4">
                   <button
                     onClick={(e) => printPDF(agentsf)}
                     className={`${CLASS_BTN} flex text-sm my-2`}
                   >
-                    <img src={pdf} width={20} height={30} /> IMPRIMER PDF
+                    <img src={pdf} alt="pdf" width={20} height={30} /> IMPRIMER
+                    LISTE
+                  </button>
+                  <button
+                    onClick={(e) => printPDF(agentsf)}
+                    className={`${CLASS_BTN} flex text-sm my-2`}
+                  >
+                    <img alt="pdf" src={pdf} width={20} height={30} /> IMPRIMER
+                    ROULEMENT
                   </button>
                 </div>
               )}
@@ -114,7 +116,7 @@ function AgentsTable({
               ))}
           </tr>
           <tr>
-            <td className={CLASS_TD}>
+            <td className={` ${CLASS_TD} w-min `}>
               <b>No</b>
             </td>
             <td className={CLASS_TD}>
@@ -130,21 +132,31 @@ function AgentsTable({
           {agentsf.map((ag, i) => (
             <tr
               key={i}
-              className={` ${ag.chef_deq === "OUI" && "bg-sky-200"}  `}
+              className={` ${
+                ag.chef_deq === "OUI" && "bg-neutral-200/60 font-bold"
+              }   ${ag.poste === "SUP" && "bg-neutral-200/60 font-bold"}  `}
             >
-              <td className={CLASS_TD}>{i + 1}</td>
+              <td className={` ${CLASS_TD} w-min `}>{i + 1}</td>
               <td className={CLASS_TD}>
                 <div className="flex">
                   {ag.nom} {ag.postnom}
                   <b>{ag.mingzi}</b>
                   {ag.chef_deq === "OUI" && (
                     <span className="mx-2">
-                      <img src={shield} width={20} height={20} />
+                      <img alt="shield" src={shield} width={20} height={20} />
+                    </span>
+                  )}
+                  {ag.poste === "SUP" && (
+                    <span className="mx-2">
+                      <img alt="sup" src={sup} width={20} height={20} />
                     </span>
                   )}
                 </div>
               </td>
-              <td className={CLASS_TD}>{ag.contrat}</td>
+              <td className={CLASS_TD}>
+                {ag.contrat}
+                {ag.matricule && `- ${ag.matricule}`}
+              </td>
               <td className={CLASS_TD}>{ag.poste}</td>
               {ag.rld.rl.split("").map((r, i) => (
                 <td className={CLASS_TD}>{r}</td>
@@ -161,7 +173,8 @@ export default function Equipes() {
   const [agents, setagents] = useState([]);
   const [agentsf, setagentsf] = useState([]);
   const [rld, setrld] = useState([]);
-  const [rldf, setrldf] = useState([]);
+  const [showOnlyGCKAgents, setShowOnlyGCKAgents] = useState(false);
+
   const [loading, setloading] = useState(false);
 
   const ref_equipe = useRef();
@@ -195,13 +208,15 @@ export default function Equipes() {
       const check_equipe = ag.equipe === equipe;
       const check_section = ag.section === section;
 
+      if (showOnlyGCKAgents) return ag.contrat === "GCK";
+
       return check_equipe && check_section;
     });
 
     return items;
   }
 
-  function onChange(e) {
+  function onFilterAgents(e) {
     let y = ref_year.current.value;
     let m = ref_month.current.value;
 
@@ -234,15 +249,12 @@ export default function Equipes() {
         console.info(`rld for ${mc}\n`, agent);
       }
       arr_agents_with_rld.push(agent);
+      return agent;
     });
 
     //console.log(arr_agents_with_rld);
 
     setagentsf(arr_agents_with_rld);
-  }
-
-  function onAgentClick(agent) {
-    console.log(agent);
   }
 
   return (
@@ -251,35 +263,56 @@ export default function Equipes() {
       {!loading && (
         <table>
           <tbody>
+            <div className={` ${showOnlyGCKAgents ? "hidden" : "block"} `}>
+              <tr>
+                <td>SECTION</td>
+                <td>
+                  <select
+                    name="section"
+                    ref={ref_section}
+                    defaultValue={SECTIONS[0]}
+                    onChange={onFilterAgents}
+                  >
+                    {SECTIONS.map((it, i) => (
+                      <option key={i}>{it}</option>
+                    ))}
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td>EQUIPE</td>
+                <td>
+                  {" "}
+                  <select
+                    name="equipe"
+                    defaultValue={EQUIPES[0]}
+                    ref={ref_equipe}
+                    onChange={onFilterAgents}
+                  >
+                    {EQUIPES.map((it, i) => (
+                      <option key={i}>{it}</option>
+                    ))}
+                  </select>
+                </td>
+              </tr>
+            </div>
+
             <tr>
-              <td>SECTION</td>
-              <td>
-                <select
-                  name="section"
-                  ref={ref_section}
-                  defaultValue={SECTIONS[0]}
-                  onChange={onChange}
-                >
-                  {SECTIONS.map((it, i) => (
-                    <option key={i}>{it}</option>
-                  ))}
-                </select>
-              </td>
-            </tr>
-            <tr>
-              <td>EQUIPE</td>
-              <td>
-                {" "}
-                <select
-                  name="equipe"
-                  defaultValue={EQUIPES[0]}
-                  ref={ref_equipe}
-                  onChange={onChange}
-                >
-                  {EQUIPES.map((it, i) => (
-                    <option key={i}>{it}</option>
-                  ))}
-                </select>
+              <td colSpan={2}>
+                <div className="form-control">
+                  <label className="label cursor-pointer">
+                    <span className="label-text">Only Agents GCK</span>
+                    <input
+                      onChange={(e) => {
+                        const show = e.target.checked;
+                        setShowOnlyGCKAgents(show);
+                      }}
+                      type="checkbox"
+                      className="toggle"
+                      checked={showOnlyGCKAgents}
+                    />
+                  </label>
+                </div>
               </td>
             </tr>
             <tr>
@@ -287,7 +320,7 @@ export default function Equipes() {
               <td>
                 <div>
                   Year:
-                  <select onChange={onChange} ref={ref_year}>
+                  <select onChange={onFilterAgents} ref={ref_year}>
                     {[...Array(10)].map((it, i) => (
                       <option key={i}>{new Date().getFullYear() + i}</option>
                     ))}
@@ -295,7 +328,7 @@ export default function Equipes() {
                 </div>
                 <div>
                   Month:
-                  <select onChange={onChange} ref={ref_month}>
+                  <select onChange={onFilterAgents} ref={ref_month}>
                     {[...Array(12)].map((it, i) => (
                       <option key={i} value={i}>
                         {MONTHS[i]}
