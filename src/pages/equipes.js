@@ -88,13 +88,13 @@ function AgentsTable({
       let ad = {
         nom: {
           fr: `${ag.nom} ${ag.postnom} ${ag.prenom}`,
-          zh: `${ag.mingzi}`,
+          zh: ` ${ag.mingzi}`,
         },
         rld: ag.rld.rl,
         month: m,
         year: y,
         poste: ag.poste,
-        id: index,
+        id: index + 1,
         contrat: ag.contrat,
         matricule: ag.matricule, //matricule: "L0501",
       };
