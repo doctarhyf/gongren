@@ -18,6 +18,7 @@ import sup from "../img/sup.png";
 import pdf from "../img/pdf.png";
 import { CountAgentsByPostType, printPDF1 } from "../helpers/func";
 import Loading from "../comps/Loading";
+import { GetRandomArray, doc, print_agents_rl } from "../helpers/funcs_print";
 
 function AgentsTable({
   agentsf,
@@ -40,6 +41,66 @@ function AgentsTable({
     }
 
     printPDF1(agents_array);
+  }
+
+  function printAgentsRoulementPDF(agents_array) {
+    if (agents_array.length === 0) {
+      alert("Agents list cant be empty!");
+      return;
+    }
+
+    /* MODEL 
+    
+  let d = {
+      nom: {
+        fr: fr.slice(0, Math.random() * fr.length),
+        zh: "库齐",
+      },
+      rld: "JJJNNNRRRJJJNNNRRRJJJNNNRRRJJJN",
+      month: 1,
+      year: 2024,
+      poste: "INT",
+      id: index,
+      contrat: "GCK",
+      matricule: "L0501",
+    };
+    agents_data.push(d);
+  }
+
+
+
+    
+    */
+
+    //console.log(agents_array[0]);
+
+    const agents_rld_parsed_data = PrepareAgentsPrintRLD(agents_array); //GetRandomArray(20);
+    print_agents_rl(agents_rld_parsed_data);
+    console.log(printAgentsRoulementPDF);
+  }
+
+  function PrepareAgentsPrintRLD(array) {
+    return array.map((ag, index) => {
+      let [mc, rl_id, y, m] = ag.rld.month_code.split("_");
+
+      console.log(ag);
+
+      let ad = {
+        nom: {
+          fr: `${ag.nom} ${ag.postnom} ${ag.prenom}`,
+          zh: `${ag.mingzi}`,
+        },
+        rld: ag.rld.rl,
+        month: m,
+        year: y,
+        poste: ag.poste,
+        id: index,
+        contrat: ag.contrat,
+        matricule: ag.matricule, //matricule: "L0501",
+      };
+
+      return ad;
+    });
   }
 
   return (
@@ -80,7 +141,7 @@ function AgentsTable({
                     LISTE
                   </button>
                   <button
-                    onClick={(e) => printPDF(agentsf)}
+                    onClick={(e) => printAgentsRoulementPDF(agentsf)}
                     className={`${CLASS_BTN} flex text-sm my-2`}
                   >
                     <img alt="pdf" src={pdf} width={20} height={30} /> IMPRIMER
