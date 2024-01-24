@@ -1,5 +1,6 @@
 import { jsPDF } from "jspdf";
-import { getDaysInMonth } from "./func";
+
+import { getDaysInMonth, formatFrenchDate } from "./func";
 import { MONTHS } from "./flow";
 const orientation = "landscape";
 const doc = new jsPDF({ orientation: orientation });
