@@ -29,7 +29,7 @@ export const FFD = formatFrenchDate;
 export function getDaysInMonth(y, m, doNotAddOne) {
   if (doNotAddOne) m -= 1;
   const lastDayOfMonth = new Date(y, m + 1, 0).getDate();
-  console.log(new Date(y, m + 1, 0).toLocaleDateString());
+  //console.log(new Date(y, m + 1, 0).toLocaleDateString());
   return lastDayOfMonth;
 }
 

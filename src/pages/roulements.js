@@ -136,6 +136,7 @@ export default function Roulements() {
 
     if (res === null) {
       alert("Data created!");
+      loadRoulement();
     } else {
       console.log(res);
       alert(res.message);
