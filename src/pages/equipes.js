@@ -16,7 +16,11 @@ import { TABLES_NAMES } from "../helpers/sb.config";
 import shield from "../img/shield.png";
 import sup from "../img/sup.png";
 import pdf from "../img/pdf.png";
-import { CountAgentsByPostType, printPDF1 } from "../helpers/func";
+import {
+  CountAgentsByPostType,
+  getDaysInMonth,
+  printPDF1,
+} from "../helpers/func";
 import Loading from "../comps/Loading";
 import { GetRandomArray, doc, print_agents_rl } from "../helpers/funcs_print";
 
@@ -33,6 +37,17 @@ function AgentsTable({
   const nb_net = CountAgentsByPostType(agentsf, K_POSTE_NETTOYEUR);
   const nb_aide_op = CountAgentsByPostType(agentsf, K_POSTE_AIDE_OPERATEUR);
   const chef_deq = agentsf.find((it, i) => it.chef_deq === "OUI");
+  let daysCount = 31;
+
+  if (agentsf.length > 0) {
+    let ag = agentsf[0];
+
+    const [mc, agent_id, y, m] = ag.rld.month_code.split("_");
+
+    daysCount = new Date(Number(y), Number(m) + 1, 0).getDate();
+  }
+
+  console.log("daysCount", daysCount);
 
   function printPDF(agents_array) {
     if (agents_array.length === 0) {
@@ -48,31 +63,6 @@ function AgentsTable({
       alert("Agents list cant be empty!");
       return;
     }
-
-    /* MODEL 
-    
-  let d = {
-      nom: {
-        fr: fr.slice(0, Math.random() * fr.length),
-        zh: "库齐",
-      },
-      rld: "JJJNNNRRRJJJNNNRRRJJJNNNRRRJJJN",
-      month: 1,
-      year: 2024,
-      poste: "INT",
-      id: index,
-      contrat: "GCK",
-      matricule: "L0501",
-    };
-    agents_data.push(d);
-  }
-
-
-
-    
-    */
-
-    //console.log(agents_array[0]);
 
     const agents_rld_parsed_data = PrepareAgentsPrintRLD(agents_array); //GetRandomArray(20);
     print_agents_rl(agents_rld_parsed_data);
@@ -169,12 +159,18 @@ function AgentsTable({
         <tbody>
           <tr>
             <td className={CLASS_TD} colSpan={COL_SPAN}></td>
-            {agentsf[0] &&
+            {/* {agentsf[0] &&
               agentsf[0].rld.rl.split("").map((it, i) => (
                 <td key={i} className={CLASS_TD}>
                   {i + 1}
                 </td>
-              ))}
+              ))} */}
+
+            {[...Array(daysCount)].map((d, i) => (
+              <td key={i} className={CLASS_TD}>
+                {21 + i > daysCount ? (daysCount - i - 20 - 1) * -1 : 21 + i}
+              </td>
+            ))}
           </tr>
           <tr>
             <td className={` ${CLASS_TD} w-min `}>
@@ -219,9 +215,12 @@ function AgentsTable({
                 {ag.matricule && `- ${ag.matricule}`}
               </td>
               <td className={CLASS_TD}>{ag.poste}</td>
-              {ag.rld.rl.split("").map((r, i) => (
-                <td className={CLASS_TD}>{r}</td>
-              ))}
+              {ag.rld.rl
+                .slice(0, daysCount)
+                .split("")
+                .map((r, i) => (
+                  <td className={CLASS_TD}>{r}</td>
+                ))}
             </tr>
           ))}
         </tbody>

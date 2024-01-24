@@ -87,7 +87,7 @@ export default function AgentsList({ onAgentClick, curAgent, onTeamClick }) {
   }
 
   return (
-    <section className="p-1  ">
+    <section className="p-1   ">
       <Loading isLoading={loading} />{" "}
       <div>
         <input
@@ -115,9 +115,9 @@ export default function AgentsList({ onAgentClick, curAgent, onTeamClick }) {
         />
       </div>
       {!showTeamMode && (
-        <>
+        <div className="">
           {!showNamesInTable && (
-            <div>
+            <div className="">
               {agentsf.map((agent, i) => (
                 <button
                   onClick={(e) => onAgentClick(agent)}
@@ -132,7 +132,7 @@ export default function AgentsList({ onAgentClick, curAgent, onTeamClick }) {
             
             `}
                 >
-                  <div className="flex justify-between">
+                  <div className="flex   justify-between">
                     {agent.nom} {agent.postnom}
                     {agent.chef_deq === "OUI" && (
                       <span className="mx-2">
@@ -151,7 +151,7 @@ export default function AgentsList({ onAgentClick, curAgent, onTeamClick }) {
               onAgentClick={(a) => onAgentClick(a)}
             />
           )}
-        </>
+        </div>
       )}
       {showTeamMode && (
         <div>

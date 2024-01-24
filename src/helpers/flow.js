@@ -60,16 +60,14 @@ export const NATIONALITIES = ["CD", "ZH"];
 
 export const MAIN_MENU = [
   { name: "Home", path: "/home", el: Home, user_level: USER_LEVEL.AGENT },
-  { name: "Chargement", path: "/chargement", el: Chargement, user_level: 0 },
-  { name: "Magasin", path: "/magasin", el: Magasin, user_level: 0 },
-  { name: "Dico", path: "/dico", el: Dico, user_level: 0 },
-  { name: "Sacs", path: "/sacs", el: Sacs, user_level: 0 },
   {
     name: "Agents",
     path: "/agents",
     el: Agents,
     user_level: USER_LEVEL.SUPERVISOR,
   },
+  { name: "Chargement", path: "/chargement", el: Chargement, user_level: 0 },
+
   {
     name: "Roulements",
     path: "/roulements",
@@ -82,6 +80,11 @@ export const MAIN_MENU = [
     el: Equipes,
     user_level: USER_LEVEL.SUPERVISOR,
   },
+
+  { name: "Magasin", path: "/magasin", el: Magasin, user_level: 0 },
+  { name: "Dico", path: "/dico", el: Dico, user_level: 0 },
+  { name: "Sacs", path: "/sacs", el: Sacs, user_level: 0 },
+
   { name: "Listes", path: "/listes", el: Listes, user_level: USER_LEVEL.AGENT },
   /*{ name: "Sections", path: "/sections", el: Sections }, */
 ];
