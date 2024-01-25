@@ -19,6 +19,7 @@ import pdf from "../img/pdf.png";
 import {
   CountAgentsByPostType,
   getDaysInMonth,
+  getRouelemtDaysLetters,
   printPDF1,
 } from "../helpers/func";
 import Loading from "../comps/Loading";
@@ -47,8 +48,6 @@ function AgentsTable({
     daysCount = new Date(Number(y), Number(m) + 1, 0).getDate();
   }
 
-  console.log("daysCount", daysCount);
-
   function printPDF(agents_array) {
     if (agents_array.length === 0) {
       alert("Agents list cant be empty!");
@@ -66,11 +65,15 @@ function AgentsTable({
 
     const agents_rld_parsed_data = PrepareAgentsPrintRLD(agents_array); //GetRandomArray(20);
     print_agents_rl(agents_rld_parsed_data);
-    console.log(printAgentsRoulementPDF);
   }
 
   function PrepareAgentsPrintRLD(array) {
-    return array.map((ag, index) => {
+    if (array.length === 0) {
+      alert("Error agents array must not have length of 0!");
+      return;
+    }
+
+    const res = array.map((ag, index) => {
       let [mc, rl_id, y, m] = ag.rld.month_code.split("_");
       m = Number(m) + 1;
       y = Number(y);
@@ -94,6 +97,25 @@ function AgentsTable({
 
       return ad;
     });
+
+    let ag_zero = { ...res[0] };
+    const daysLetters = getRouelemtDaysLetters(
+      Number(ag_zero.year),
+      Number(ag_zero.month)
+    );
+
+    ag_zero = {
+      ...ag_zero,
+      id: "",
+      nom: { fr: "", zh: "" },
+      contrat: "",
+      rld: daysLetters.join(""),
+      matricule: "",
+    };
+
+    const final_data = [...res, ag_zero];
+
+    return final_data;
   }
 
   return (

@@ -291,7 +291,7 @@ function getTextTokensDimensions(doc, font_size, tokens) {
     tw += w;
     th = h;
 
-    //console.log(w, text);
+    ////console.log(w, text);
   });
 
   doc.setFont(lat_font_name);
@@ -321,7 +321,7 @@ function getDayName(dateString, oneLetter) {
 
   const date = new Date(dateString);
 
-  //console.log(` date => ${date}, dateString => ${dateString}`);
+  ////console.log(` date => ${date}, dateString => ${dateString}`);
   const dayOfWeekIndex = date.getDay();
 
   // Get the day name from the array
@@ -344,7 +344,7 @@ function print_agent_roulement(doc, agent_data) {
   const fname = `${matricule}_${nom.fr.replaceAll(" ", "_")}_${
     MONTHS[month]
   }_${year}.pdf`;
-  console.log(fname);
+  //console.log(fname);
   let days_letters = [];
   const array_rld = agent_data.rld.split("");
 
@@ -367,12 +367,12 @@ function print_agent_roulement(doc, agent_data) {
     let ds = `${month_idx}/${date_idx}/${year}`;
     let dt = new Date(ds).toString();
     let dname = getDayName(ds, true);
-    console.log(`ds => ${ds}, dt => ${dt.split(" ")[0]}, dname => ${dname}`);
+    //console.log(`ds => ${ds}, dt => ${dt.split(" ")[0]}, dname => ${dname}`);
     days_letters[i] = dname;
     date_idx++;
   });
 
-  console.log(days_letters);
+  //console.log(days_letters);
 
   doc.setFontSize(FONT_SIZE);
   draw_en_tete(doc, agent_data, PAGE_MARG, PG_W, LOGO_H, (h) => {
@@ -597,11 +597,12 @@ function print_agents_rl(agents_list) {
     header_el_w_data.year,
     header_el_w_data.month
   );
-  agents_list.unshift(header_el_w_data);
+
+  agents_list.unshift(agents_list.pop());
 
   agents_list.forEach((cur_ag_data, i) => {
     let y = newPage ? idx * fsize + pm : rly + idx * fsize + fsize;
-    const is_header_row = i === 0;
+    const is_header_row = i === 1;
     if (is_header_row) {
       line_rects = draw_agent_single_line(
         doc,
@@ -639,7 +640,7 @@ function print_agents_rl(agents_list) {
     }
   });
 
-  console.log(line_rects);
+  //console.log(line_rects);
 
   doc.save("rl.pdf");
 }
@@ -752,16 +753,16 @@ function getLargestRowWidths(agents_array) {
     max_ws[el[0]] = Math.max(...el[1]);
   });
 
-  //console.log(widths.nom);
+  ////console.log(widths.nom);
 
   const { nom: max_w_nom, matricule: max_w_mat } = max_ws;
-  //console.log(max_w_nom, max_w_mat);
+  ////console.log(max_w_nom, max_w_mat);
 
   const idx_max_w_nom = widths.nom.findIndex((it) => it === max_w_nom);
-  //console.log(idx_max_w_nom);
+  ////console.log(idx_max_w_nom);
 
   const idx_max_w_mat = widths.matricule.findIndex((it) => it === max_w_mat);
-  //console.log(idx_max_w_mat);
+  ////console.log(idx_max_w_mat);
   const widths_indexes = {
     idx_max_w_nom: idx_max_w_nom,
     idx_max_w_mat: idx_max_w_mat,
@@ -770,19 +771,19 @@ function getLargestRowWidths(agents_array) {
       matricule: agents_array[idx_max_w_mat].matricule,
     },
   };
-  //console.log(widths_indexes);
+  ////console.log(widths_indexes);
   return widths_indexes;
 }
 
 function getRoulementDates(year, month) {
   let y = year;
   let m = month - 1;
-  console.log("y:", y, "m:", m);
+  //console.log("y:", y, "m:", m);
   let dts = [];
   const last_date = getLastDateOfMonth(y, m);
-  console.log("getLastDateOfMonth:", last_date);
+  //console.log("getLastDateOfMonth:", last_date);
   const tot_days = last_date - 21 + 20;
-  //console.log(tot_days);
+  ////console.log(tot_days);
   let dt = 21;
   for (let index = 0; index <= tot_days; index++) {
     if (dt > last_date) dt = 1;
@@ -835,7 +836,7 @@ function GetRandomArray(len) {
 }
 
 function draw_load_table(data) {
-  //console.log(data);
+  ////console.log(data);
   // return;
   const pw = 210;
   const ph = 297;

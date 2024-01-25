@@ -305,6 +305,33 @@ export function ParseDayRepport(day_data) {
   return repport;
 }
 
+export function getRouelemtDaysLetters(year, monthIndex) {
+  // Ensure the monthIndex is between 0 (January) and 11 (December)
+  monthIndex = monthIndex - 1;
+  monthIndex = (monthIndex + 12) % 12;
+
+  // Calculate the 21st of the current month
+  const startDate = new Date(year, monthIndex, 21);
+
+  // Calculate the 20th of the next month
+  const endDate = new Date(year, monthIndex + 1, 20);
+
+  const dayNames = [];
+  let currentDate = new Date(startDate);
+
+  while (currentDate <= endDate) {
+    const dayName = currentDate
+      .toLocaleDateString("fr-FR", { weekday: "long" })
+      .charAt(0)
+      .toUpperCase();
+    dayNames.push(dayName);
+    // console.log(currentDate);
+    currentDate.setDate(currentDate.getDate() + 1);
+  }
+
+  return dayNames;
+}
+
 export function ParseShiftRepport(shift_data) {
   console.log("ssddtt => ", shift_data);
 
