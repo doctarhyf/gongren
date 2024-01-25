@@ -120,52 +120,52 @@ function AgentsTable({
 
   return (
     <>
+      <tr>
+        <td className={COL_SPAN}>
+          <div>
+            {" "}
+            D'equipe:
+            <b>{chef_deq && `${chef_deq.nom} ${chef_deq.postnom}`}</b>
+          </div>
+          <div>
+            {" "}
+            Operateurs:<b>{nb_op}</b>
+          </div>
+          <div>
+            {" "}
+            Aide Operateurs:<b>{nb_aide_op}</b>
+          </div>
+          <div>
+            {" "}
+            Chargeurs:<b>{nb_charg}</b>
+          </div>
+          <div>
+            {" "}
+            Nettoyeurs:<b>{nb_net}</b>
+          </div>
+
+          {agentsf.length !== 0 && (
+            <div className="flex gap-4">
+              <button
+                onClick={(e) => printPDF(agentsf)}
+                className={`${CLASS_BTN} flex text-sm my-2`}
+              >
+                <img src={pdf} alt="pdf" width={20} height={30} /> IMPRIMER
+                LISTE
+              </button>
+              <button
+                onClick={(e) => printAgentsRoulementPDF(agentsf)}
+                className={`${CLASS_BTN} flex text-sm my-2`}
+              >
+                <img alt="pdf" src={pdf} width={20} height={30} /> IMPRIMER
+                ROULEMENT
+              </button>
+            </div>
+          )}
+        </td>
+      </tr>
       <table>
         <thead>
-          <tr>
-            <td className={COL_SPAN}>
-              <div>
-                {" "}
-                D'equipe:
-                <b>{chef_deq && `${chef_deq.nom} ${chef_deq.postnom}`}</b>
-              </div>
-              <div>
-                {" "}
-                Operateurs:<b>{nb_op}</b>
-              </div>
-              <div>
-                {" "}
-                Aide Operateurs:<b>{nb_aide_op}</b>
-              </div>
-              <div>
-                {" "}
-                Chargeurs:<b>{nb_charg}</b>
-              </div>
-              <div>
-                {" "}
-                Nettoyeurs:<b>{nb_net}</b>
-              </div>
-
-              {agentsf.length !== 0 && (
-                <div className="flex gap-4">
-                  <button
-                    onClick={(e) => printPDF(agentsf)}
-                    className={`${CLASS_BTN} flex text-sm my-2`}
-                  >
-                    <img src={pdf} alt="pdf" width={20} height={30} /> IMPRIMER
-                    LISTE
-                  </button>
-                  <button
-                    onClick={(e) => printAgentsRoulementPDF(agentsf)}
-                    className={`${CLASS_BTN} flex text-sm my-2`}
-                  >
-                    <img alt="pdf" src={pdf} width={20} height={30} /> IMPRIMER
-                    ROULEMENT
-                  </button>
-                </div>
-              )}
-            </td>
-          </tr>
           <tr>
             <td
               className={CLASS_TD}
