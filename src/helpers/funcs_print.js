@@ -898,20 +898,28 @@ function draw_charg_table(doc, pw, ph, pm, rect_title, fsize, load_data) {
   const texts = [
     [
       "TEMPS",
-      "CHEF D. PST.", //"CHEF DE POSTE",
+      ["CHEF DE", "POSTE"], //"CHEF DE POSTE",
       "MACHINE",
       "NOMS DES AGENTS",
-      "CM. CHRG", //"NOMBRE DE CAMIONS CHARGES",
-      "DIFF. CHRG.", //"DIFFERENCE DE CHARGEMENT",
-      "MONTANT",
+      ["NOMBRE", "DE CAMIONS", "CHARGES"],
+      ["DIFFERENCE", "DE CHARGEMENT"],
+      ["MONTANT", "FC"],
     ],
-    ["07h0015h00", "DEQ M.", "", "", "", "SACS/TON./PRIM", "PRIME FC"],
+    [["07h00", "15h00"], "DEQ M.", "", "", "", "SACS/TON./PRIM", "PRIME FC"],
     ["MATIN", "", "", "", "", "", ""],
-    ["15h0023h00", "DEQ AP.", "", "", "", "SACS/TON./PRIM", "PRIME FC"],
+    [["15h00", "23h00"], "DEQ AP.", "", "", "", "SACS/TON./PRIM", "PRIME FC"],
     ["APREM.", "", "", "", "", "", ""],
-    ["23h0007h00", "DEQ N.", "", "", "", "SACS/TON./PRIM", "PRIME FC"],
+    [["23h00", "07h00"], "DEQ N.", "", "", "", "SACS/TON./PRIM", "PRIME FC"],
     ["NUIT", "DEQ M.", "", "", "", "", ""],
-    ["TOT. JR.", "DEQ M.", "", "", "", "SACS/TON./PRIM", "TOT. P. FC"],
+    [
+      ["TOTAL", "DU JOUR"],
+      "DEQ M.",
+      "",
+      "",
+      "",
+      "SACS/TON./PRIM",
+      "TOT. P. FC",
+    ],
   ];
 
   let totx = 0;
