@@ -1,6 +1,12 @@
 import { CLASS_BTN } from "../helpers/flow";
+import { draw_load_table } from "../helpers/funcs_print";
+import ButtonPrint from "./ButtonPrint";
 
 export default function RepportCard({ data, onUpdateShiftData }) {
+  function onPrintDailyRepport(data) {
+    draw_load_table(data);
+  }
+
   return (
     <div className="border mt-2 rounded-md p-1 bg-neutral-100 shadow-md">
       <div className=" text-sky-500">
@@ -31,6 +37,15 @@ export default function RepportCard({ data, onUpdateShiftData }) {
           >
             UPDATE
           </button>
+        </div>
+      )}
+
+      {data && data.tid === "d" && (
+        <div>
+          <ButtonPrint
+            onClick={(e) => onPrintDailyRepport(data)}
+            title={"PRINT DAILY REPPORT."}
+          />
         </div>
       )}
     </div>

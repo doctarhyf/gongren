@@ -22,10 +22,6 @@ export default function Bon({ id, sacs, onSacsChange, onRemoveBon }) {
           </button>
         </div>
       </div>
-      {/*  <div>
-        <div>Plaque</div>
-        <input type="text" />
-      </div> */}
     </div>
   );
 }

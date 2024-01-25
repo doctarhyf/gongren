@@ -120,6 +120,7 @@ function drawLogo(doc) {
   const LOGO_X = MARG;
   const LOGO_Y = 10;
   const LOGO_W = (293 / 10) * 2;
+  const LOGO_H = (66 / 10) * 2;
 
   doc.setFontSize(12);
   const date = new Date().toDateString();
@@ -129,7 +130,8 @@ function drawLogo(doc) {
   doc.setFontSize(16);
 
   doc.addImage(logo, "PNG", LOGO_X, LOGO_Y, LOGO_W, LOGO_H);
-  //doc.line(MARG, LOGO_H + MARG, PG_W - MARG, LOGO_H + MARG);
+
+  return { x: LOGO_X, y: LOGO_Y, w: LOGO_W, h: LOGO_H };
 }
 
 function draw_en_tete(
@@ -714,10 +716,10 @@ function draw_logo(doc, x, y, w, h) {
   doc.addImage(logo, "PNG", x, y, w, h);
 }
 
-function draw_date(doc, page_width, page_margin, font_size) {
+function draw_date(doc, page_width, page_margin, font_size, other_date) {
   const old_font_size = doc.getFontSize();
   doc.setFontSize(font_size);
-  const date = formatFrenchDate(new Date());
+  const date = formatFrenchDate(other_date || new Date()).toUpperCase();
   let { w, h } = doc.getTextDimensions(date);
 
   doc.text(date, page_width - w - page_margin, page_margin);
@@ -832,7 +834,114 @@ function GetRandomArray(len) {
   return agents_data;
 }
 
+function draw_load_table(data) {
+  //console.log(data);
+  // return;
+  const pw = 210;
+  const ph = 297;
+  const pm = 15;
+  const fsize = 8;
+
+  const doc = new jsPDF();
+  let fontr = doc.addFont(
+    "./fonts/DroidSansFallback.ttf",
+    "DroidSansFallback",
+    "normal"
+  );
+
+  const rect_logo = drawLogo(doc);
+  draw_date(doc, pw, pm, fsize, new Date().setFullYear(1989));
+  const rect_title = draw_title(doc, rect_logo.y + rect_logo.h, pw, pm, fsize);
+
+  draw_charg_table(doc, pw, ph, pm, rect_title, fsize, data);
+
+  doc.save("rl.pdf");
+}
+
+function draw_title(doc, y, pw, pm, fsize) {
+  const text_tokens = [
+    { lat: "RAPPORT DU CHARGEMENT JOURNALIER/" },
+    { zh: "包装日报告" },
+  ];
+  const old_fsize = doc.getFontSize();
+
+  doc.setFontSize(fsize);
+  const { w, h } = getTextTokensDimensions(doc, fsize, text_tokens);
+
+  const tx = pm + (pw - pm) / 2 - w / 2;
+  const ty = y + fsize;
+
+  drawChineseEnglishTextLine(doc, tx, ty, fsize, text_tokens);
+
+  doc.setFontSize(old_fsize);
+
+  return { x: tx, y: ty, w: w, h: h };
+}
+
+function draw_charg_table(doc, pw, ph, pm, rect_title, fsize, load_data) {
+  const old_fsize = doc.getFontSize();
+  doc.setFontSize(fsize);
+  const table_x = pm;
+  const table_y = rect_title.y + fsize;
+  const table_w = pw - pm * 2;
+  const table_h = ph - pm - fsize - (rect_title.y + rect_title.h);
+
+  const boxes_rect = [];
+  const cols = [19, 21, 22, 45, 23, 29, 22];
+  const rows = [15, 56, 11, 56, 13, 60, 13, 13];
+
+  const texts = [
+    [
+      "TEMPS",
+      "CHEF D. PST.", //"CHEF DE POSTE",
+      "MACHINE",
+      "NOMS DES AGENTS",
+      "CM. CHRG", //"NOMBRE DE CAMIONS CHARGES",
+      "DIFF. CHRG.", //"DIFFERENCE DE CHARGEMENT",
+      "MONTANT",
+    ],
+    ["07h0015h00", "DEQ M.", "", "", "", "SACS/TON./PRIM", "PRIME FC"],
+    ["MATIN", "", "", "", "", "", ""],
+    ["15h0023h00", "DEQ AP.", "", "", "", "SACS/TON./PRIM", "PRIME FC"],
+    ["APREM.", "", "", "", "", "", ""],
+    ["23h0007h00", "DEQ N.", "", "", "", "SACS/TON./PRIM", "PRIME FC"],
+    ["NUIT", "DEQ M.", "", "", "", "", ""],
+    ["TOT. JR.", "DEQ M.", "", "", "", "SACS/TON./PRIM", "TOT. P. FC"],
+  ];
+
+  let totx = 0;
+  let toty = 0;
+  const boxes = [];
+  rows.forEach((boxh, iy) => {
+    toty = rows.slice(0, iy).reduce((acc, cv) => acc + cv, 0);
+    cols.forEach((boxw, ix) => {
+      totx = cols.slice(0, ix).reduce((acc, cv) => acc + cv, 0);
+      const box = {
+        x: table_x + totx,
+        y: table_y + toty,
+        w: boxw,
+        h: boxh,
+        ix: ix,
+        iy: iy,
+      };
+
+      const box_text = texts[iy][ix] || ""; // `ix:${ix}, iy:${iy}`;
+
+      doc.rect(box.x, box.y, box.w, box.h);
+      doc.text(box_text, box.x + box.w / 2, box.y + box.h / 2, {
+        align: "center",
+      });
+
+      //doc.text("this is cool", box.x, box.y, { angle: 270, align: "center" });
+      boxes.push(box);
+    });
+  });
+
+  doc.setFontSize(old_fsize);
+}
+
 export {
+  draw_load_table,
   GetRandomArray,
   hline,
   vline,
