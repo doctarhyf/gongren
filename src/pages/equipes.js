@@ -72,15 +72,18 @@ function AgentsTable({
   function PrepareAgentsPrintRLD(array) {
     return array.map((ag, index) => {
       let [mc, rl_id, y, m] = ag.rld.month_code.split("_");
+      m = Number(m) + 1;
+      y = Number(y);
 
-      console.log(ag);
+      const num_days_in_month = getDaysInMonth(y, m, true);
+      const rld = ag.rld.rl.slice(0, num_days_in_month);
 
       let ad = {
         nom: {
           fr: `${ag.nom} ${ag.postnom} ${ag.prenom}`,
           zh: ` ${ag.mingzi}`,
         },
-        rld: ag.rld.rl,
+        rld: rld,
         month: m,
         year: y,
         poste: ag.poste,
