@@ -54,7 +54,18 @@ export const POSTE = [
   "SUP",
   "AIDOP",
 ];
-export const EQUIPES = ["JR", "A", "B", "C", "D", "MEC", "NET", "INT", "N/A"];
+export const EQUIPES = [
+  "JR",
+  "A",
+  "B",
+  "C",
+  "D",
+  "MEC",
+  "NET",
+  "INT",
+  "CHIN",
+  "N/A",
+];
 export const CONTRATS = ["BNC", "KAY", "GCK"];
 export const NATIONALITIES = ["CD", "ZH"];
 

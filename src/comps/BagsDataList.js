@@ -5,6 +5,70 @@ import Loading from "../comps/Loading";
 import DateSelector from "./DateSelector";
 import { CLASS_BTN, CLASS_TD, MONTHS } from "../helpers/flow";
 
+function MyForm() {
+  return (
+    <table>
+      <tbody>
+        <tr>
+          <td className={CLASS_TD} colSpan={8} align="center">
+            水泥包装每班产量统计分析
+          </td>
+        </tr>
+        <tr>
+          {[
+            "日期",
+            "班组",
+            "产量(T)",
+            "设备原因",
+            "电气原因",
+            "停电原因",
+            "其它原因",
+            "备注",
+          ].map((title, i) => (
+            <td key={i} className={CLASS_TD}>
+              {title}
+            </td>
+          ))}
+        </tr>
+        {[...Array(31)].map((r, i) => (
+          <tr key={i}>
+            <td className={CLASS_TD}>2023.01.{i + 1}</td>
+            <td className={CLASS_TD}>cool</td>
+          </tr>
+        ))}
+      </tbody>
+      {/* <tbody>
+                <tr>
+                  <td className={CLASS_TD}>Date</td>
+                  <td className={CLASS_TD}>Sacs</td>
+                  <td className={CLASS_TD}>Ajouts</td>
+                  <td className={CLASS_TD}>Retours</td>
+                </tr>
+                {Object.entries(loads).map((day, i) => (
+                  <tr>
+                    <td className={CLASS_TD}>{day[0]}</td>
+                    <td className={CLASS_TD}>
+                      {Object.values(day[1]).map((d, i) => (
+                        <tr className="p-0 border-collapse">
+                          <td className={CLASS_TD}>{d.code}</td>
+                          <td className={CLASS_TD}>{d.sacs}</td>
+                        </tr>
+                      ))}
+                    </td>
+                    <td className={CLASS_TD}>
+                      {Object.values(day[1]).map((d, i) => (
+                        <tr className="p-0 border-collapse">
+                          <td className={CLASS_TD}>{d.ajouts}</td>
+                        </tr>
+                      ))}
+                    </td>
+                  </tr>
+                ))}
+              </tbody> */}
+    </table>
+  );
+}
+
 export default function BagsDataList({
   loadsf,
   showRepportMode,
@@ -51,67 +115,7 @@ export default function BagsDataList({
             </div>
           )}
 
-          {loads && (
-            <table>
-              <tbody>
-                <tr>
-                  <td className={CLASS_TD} colSpan={8} align="center">
-                    水泥包装每班产量统计分析
-                  </td>
-                </tr>
-                <tr>
-                  {[
-                    "日期",
-                    "班组",
-                    "产量(T)",
-                    "设备原因",
-                    "电气原因",
-                    "停电原因",
-                    "其它原因",
-                    "备注",
-                  ].map((title, i) => (
-                    <td key={i} className={CLASS_TD}>
-                      {title}
-                    </td>
-                  ))}
-                </tr>
-                {[...Array(31)].map((r, i) => (
-                  <tr key={i}>
-                    <td className={CLASS_TD}>2023.01.{i + 1}</td>
-                    <td className={CLASS_TD}>cool</td>
-                  </tr>
-                ))}
-              </tbody>
-              {/* <tbody>
-                <tr>
-                  <td className={CLASS_TD}>Date</td>
-                  <td className={CLASS_TD}>Sacs</td>
-                  <td className={CLASS_TD}>Ajouts</td>
-                  <td className={CLASS_TD}>Retours</td>
-                </tr>
-                {Object.entries(loads).map((day, i) => (
-                  <tr>
-                    <td className={CLASS_TD}>{day[0]}</td>
-                    <td className={CLASS_TD}>
-                      {Object.values(day[1]).map((d, i) => (
-                        <tr className="p-0 border-collapse">
-                          <td className={CLASS_TD}>{d.code}</td>
-                          <td className={CLASS_TD}>{d.sacs}</td>
-                        </tr>
-                      ))}
-                    </td>
-                    <td className={CLASS_TD}>
-                      {Object.values(day[1]).map((d, i) => (
-                        <tr className="p-0 border-collapse">
-                          <td className={CLASS_TD}>{d.ajouts}</td>
-                        </tr>
-                      ))}
-                    </td>
-                  </tr>
-                ))}
-              </tbody> */}
-            </table>
-          )}
+          {loads && <div>repport mode</div>}
         </>
       )}
 

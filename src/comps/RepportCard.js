@@ -12,9 +12,8 @@ export default function RepportCard({ data, onUpdateShiftData }) {
       <div className=" text-sky-500">
         <div className="py-1 text-xl border-b mb-1">
           {" "}
-          Rapport {data && data.type}
+          Rapport {data && data.type} / {data && data.type && data.date}
         </div>
-        <div>{data && data.type && data.date}</div>
       </div>
       <div>
         {data &&
