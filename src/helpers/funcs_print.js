@@ -558,6 +558,9 @@ function print_agents_list_roulement(agents_rl) {
 }
 
 function print_agents_rl(agents_list) {
+  const first_el = { ...agents_list[0] };
+  const days_names_el = { ...agents_list[agents_list.length - 1] };
+
   const doc = new jsPDF({ orientation: orientation });
   let r = doc.addFont(
     "fonts/DroidSansFallback.ttf",
@@ -598,9 +601,10 @@ function print_agents_rl(agents_list) {
     header_el_w_data.month
   );
 
-  agents_list.unshift(agents_list.pop());
+  const final_data = [days_names_el, first_el, ...agents_list];
+  final_data.pop();
 
-  agents_list.forEach((cur_ag_data, i) => {
+  final_data.forEach((cur_ag_data, i) => {
     let y = newPage ? idx * fsize + pm : rly + idx * fsize + fsize;
     const is_header_row = i === 1;
     if (is_header_row) {
