@@ -19,7 +19,7 @@ export default function FormLogin({ onLogin }) {
   }
 
   return (
-    <div className=" flex flex-col mt-4 ">
+    <div className=" flex flex-col mt-4 mx-2 p-2 ">
       <div className="mx-auto flex flex-col space-y-4 ">
         <img src={LOGO} width={200} />
         <div>Matricule</div>
@@ -30,7 +30,7 @@ export default function FormLogin({ onLogin }) {
           placeholder="matricule"
           className={CLASS_INPUT_TEXT}
         />
-        <div>Password</div>
+        <div>PIN</div>
         <input
           value={"0000"}
           ref={ref_pin}
@@ -47,7 +47,7 @@ export default function FormLogin({ onLogin }) {
           </button>
         </div>
 
-        <div>
+        <div className="text-sm">
           Code and Design by{" "}
           <a
             className="text-sky-500  italic"

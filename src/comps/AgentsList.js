@@ -133,7 +133,7 @@ export default function AgentsList({ onAgentClick, curAgent, onTeamClick }) {
             `}
                 >
                   <div className="flex   justify-between">
-                    {agent.nom} {agent.postnom}
+                    {agent.nom} {agent.postnom} {agent.prenom} {agent.mingzi}
                     {agent.chef_deq === "OUI" && (
                       <span className="mx-2">
                         <img src={shield} width={20} height={20} />
