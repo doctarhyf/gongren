@@ -856,8 +856,8 @@ function draw_load_table(data) {
 
   const rect_logo = drawLogo(doc);
 
-  draw_date(doc, pw, pm, fsize, new Date().setFullYear(1989));
-  const rect_title = draw_title(doc, rect_logo.y + rect_logo.h, pw, pm, fsize);
+  draw_date(doc, pw, pm, fsize, new Date(data.date), true);
+  const rect_title = draw_title(doc, rect_logo.y + rect_logo.h, pw, pm, 12);
 
   draw_charg_table(doc, pw, ph, pm, rect_title, fsize, data);
 
@@ -915,9 +915,9 @@ function draw_charg_table(doc, pw, ph, pm, rect_title, fsize, load_data) {
   let ton_bonus_n =
     Number(sacs_n) / 20 - 600 < 0 ? 0 : Number(sacs_n) / 20 - 600;
 
-  ton_bonus_m = ton_bonus_m.toFixed(2);
-  ton_bonus_p = ton_bonus_p.toFixed(2);
-  ton_bonus_n = ton_bonus_n.toFixed(2);
+  ton_bonus_m = Number(ton_bonus_m.toFixed(2));
+  ton_bonus_p = Number(ton_bonus_p.toFixed(2));
+  ton_bonus_n = Number(ton_bonus_n.toFixed(2));
 
   const prime_m = ton_bonus_m * 1000;
   const prime_p = ton_bonus_p * 1000;
@@ -995,7 +995,7 @@ function draw_charg_table(doc, pw, ph, pm, rect_title, fsize, load_data) {
         `${ton_bonus_n} T`,
         -90,
       ],
-      `${prime_n} FC`,
+      [`${prime_n} FC`, -90],
     ],
     ["NUIT", "DEQ M.", "", "", "", "", ""],
     [
