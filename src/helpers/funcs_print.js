@@ -855,6 +855,7 @@ function draw_load_table(data) {
   );
 
   const rect_logo = drawLogo(doc);
+
   draw_date(doc, pw, pm, fsize, new Date().setFullYear(1989));
   const rect_title = draw_title(doc, rect_logo.y + rect_logo.h, pw, pm, fsize);
 
