@@ -908,12 +908,16 @@ function draw_charg_table(doc, pw, ph, pm, rect_title, fsize, load_data) {
   const ton_p = sacs_p / 20;
   const ton_n = sacs_n / 20;
 
-  const ton_bonus_m =
+  let ton_bonus_m =
     Number(sacs_m) / 20 - 600 < 0 ? 0 : Number(sacs_m) / 20 - 600;
-  const ton_bonus_p =
+  let ton_bonus_p =
     Number(sacs_p) / 20 - 600 < 0 ? 0 : Number(sacs_p) / 20 - 600;
-  const ton_bonus_n =
+  let ton_bonus_n =
     Number(sacs_n) / 20 - 600 < 0 ? 0 : Number(sacs_n) / 20 - 600;
+
+  ton_bonus_m = ton_bonus_m.toFixed(2);
+  ton_bonus_p = ton_bonus_p.toFixed(2);
+  ton_bonus_n = ton_bonus_n.toFixed(2);
 
   const prime_m = ton_bonus_m * 1000;
   const prime_p = ton_bonus_p * 1000;
