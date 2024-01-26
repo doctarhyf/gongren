@@ -1,7 +1,7 @@
 import { jsPDF } from "jspdf";
 
 import { getDaysInMonth, formatFrenchDate } from "./func";
-import { MONTHS } from "./flow";
+import { MONTHS, SUPERVISORS } from "./flow";
 const orientation = "landscape";
 const doc = new jsPDF({ orientation: orientation });
 let r = doc.addFont(
@@ -884,6 +884,21 @@ function draw_title(doc, y, pw, pm, fsize) {
 }
 
 function draw_charg_table(doc, pw, ph, pm, rect_title, fsize, load_data) {
+  const loads = {};
+
+  load_data.data.forEach((ld, i) => {
+    const [team, shift, year, month, day] = ld.code.split("_");
+    loads[shift] = { ...ld, sup: SUPERVISORS[team] };
+  });
+
+  const deq_m = loads.M?.sup?.nom || "DEQ. M";
+  const deq_p = loads.P?.sup?.nom || "DEQ. P";
+  const deq_n = loads.N?.sup?.nom || "DEQ. N";
+
+  const cam_m = loads.M?.camions || "0";
+  const cam_p = loads.P?.camions || "0";
+  const cam_n = loads.N?.camions || "0";
+
   const old_fsize = doc.getFontSize();
   doc.setFontSize(fsize);
   const table_x = pm;
@@ -907,30 +922,30 @@ function draw_charg_table(doc, pw, ph, pm, rect_title, fsize, load_data) {
     ],
     [
       ["07h00", "15h00", -90],
-      ["DEQ M.", -90],
+      [deq_m, -90],
       "",
       "",
-      ["12 CAMIONS", -90],
-      ["(1101 - 600) T", " ", "501 T", -90],
+      [`${cam_m} CAMIONS`, -90],
+      [`(1100 - 600) T`, " ", "501 T", -90],
       ["501 000 FC", -90],
     ],
     ["MATIN", "", "", "", "", "", ""],
     [
       ["15h00", "23h00"],
-      ["DEQ AP.", -90],
+      [deq_p, -90],
       "",
       "",
-      "",
+      [`${cam_p} CAMIONS`, -90],
       ["SACS/TON./PRIM", -90],
       ["501 000 FC", -90],
     ],
     ["APREM.", "", "", "", "", "", ""],
     [
       ["23h00", "07h00"],
-      ["DEQ N.", -90],
+      [deq_n, -90],
       "",
       "",
-      "",
+      [`${cam_n} CAMIONS`, -90],
       ["SACS/TON./PRIM", -90],
       "PRIME FC",
     ],

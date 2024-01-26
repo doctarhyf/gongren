@@ -30,7 +30,6 @@ export default function Chargement() {
   async function loadData() {
     setloading(true);
     const d = await SB.LoadAllItems(TABLES_NAMES.LOADS);
-    console.log(groupByYearMonthAndDay(d));
 
     setloads(groupByYearMonthAndDay(d));
     setloadsf(groupByYearMonthAndDay(d));
@@ -73,8 +72,6 @@ export default function Chargement() {
   const [repportData, setRepportData] = useState();
 
   function onSetDataLevel(level, data) {
-    console.log("lev dat ", data);
-
     let rep_data;
     setRepportData({});
     if (level === "y") {

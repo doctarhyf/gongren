@@ -334,7 +334,7 @@ export function getRouelemtDaysLetters(year, monthIndex) {
 }
 
 export function ParseShiftRepport(shift_data) {
-  console.log("ssddtt => ", shift_data);
+  //console.log("ssddtt => ", shift_data);
 
   const shift = shift_data[1];
   const [t, s, y, m, d] = shift.code.split("_");
@@ -369,8 +369,6 @@ export function ParseShiftRepport(shift_data) {
     ajouts: shift.ajouts,
     dechires: shift.dechires,
   };
-
-  console.log("chinese shift ", SHIF_HOURS_ZH[s][1]);
 
   repport.upd = JSON.stringify(upd);
   return repport;

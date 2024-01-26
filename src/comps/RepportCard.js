@@ -5,7 +5,7 @@ import ButtonPrint from "./ButtonPrint";
 export default function RepportCard({ data, onUpdateShiftData }) {
   function onPrintDailyRepport(data) {
     draw_load_table(data);
-    console.log(data);
+    //console.log(data);
   }
 
   return (
