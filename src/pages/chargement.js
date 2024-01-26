@@ -29,6 +29,9 @@ export default function Chargement() {
 
   async function loadData() {
     setloading(true);
+    setloadsf([]);
+    setloads([]);
+    setRepportData({});
     const d = await SB.LoadAllItems(TABLES_NAMES.LOADS);
 
     setloads(groupByYearMonthAndDay(d));
