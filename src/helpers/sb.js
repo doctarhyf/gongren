@@ -178,7 +178,8 @@ export async function DeleteItem(table_name, item_data) {
     .from(table_name)
     .delete()
     .eq("id", item_data.id);
-  if (error) return error;
+
+  return error;
 }
 
 export async function DeleteItemByColEqVal(table_name, col_name, col_val) {

@@ -108,6 +108,21 @@ export default function Chargement() {
     loadData();
   }
 
+  async function onDeleteShiftData(data) {
+    console.log(`deleting shift data ...`, data);
+
+    const error = await SB.DeleteItem(TABLES_NAMES.LOADS, data);
+    if (error) {
+      const msg = `Error deleting ...\n${JSON.stringify(error)}`;
+      alert(msg);
+      console.log(msg);
+      return;
+    }
+
+    alert(`Load deleted!`);
+    loadData();
+  }
+
   return (
     <div>
       <Loading isLoading={loading} />
@@ -157,6 +172,7 @@ export default function Chargement() {
           <RepportCard
             data={repportData}
             onUpdateShiftData={onUpdateShiftData}
+            onDeleteShiftData={onDeleteShiftData}
           />
         </>
       )}

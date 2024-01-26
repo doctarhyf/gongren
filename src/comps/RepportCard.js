@@ -2,7 +2,11 @@ import { CLASS_BTN } from "../helpers/flow";
 import { draw_load_table } from "../helpers/funcs_print";
 import ButtonPrint from "./ButtonPrint";
 
-export default function RepportCard({ data, onUpdateShiftData }) {
+export default function RepportCard({
+  data,
+  onUpdateShiftData,
+  onDeleteShiftData,
+}) {
   function onPrintDailyRepport(data) {
     draw_load_table(data);
     //console.log(data);
@@ -30,13 +34,23 @@ export default function RepportCard({ data, onUpdateShiftData }) {
           ))}
       </div>
       {data && data.tid === "s" && (
-        <div>
-          <button
-            onClick={(e) => onUpdateShiftData(data)}
-            className={CLASS_BTN}
-          >
-            UPDATE
-          </button>
+        <div className="flex gap-2">
+          <div>
+            <button
+              onClick={(e) => onUpdateShiftData(data)}
+              className={CLASS_BTN}
+            >
+              UPDATE
+            </button>
+          </div>
+          <div>
+            <button
+              onClick={(e) => onDeleteShiftData(data)}
+              className={CLASS_BTN}
+            >
+              DELETE
+            </button>
+          </div>
         </div>
       )}
 
