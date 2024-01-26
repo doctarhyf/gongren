@@ -840,8 +840,8 @@ function GetRandomArray(len) {
 }
 
 function draw_load_table(data) {
-  ////console.log(data);
-  // return;
+  const fname = `PRIME_${data.date.toUpperCase().replaceAll(" ", "_")}.pdf`;
+
   const pw = 210;
   const ph = 297;
   const pm = 15;
@@ -860,7 +860,7 @@ function draw_load_table(data) {
 
   draw_charg_table(doc, pw, ph, pm, rect_title, fsize, data);
 
-  doc.save("rl.pdf");
+  doc.save(fname);
 }
 
 function draw_title(doc, y, pw, pm, fsize) {

@@ -128,14 +128,18 @@ export default function BagsDataInput({
         <div className="border rounded-md ">
           <div>
             SACS:{" "}
-            <input ref={ref_sacs} type="text" defaultValue={upd && upd.sacs} />
+            <input
+              ref={ref_sacs}
+              type="text"
+              defaultValue={(upd && upd.sacs) || 0}
+            />
           </div>
           <div>
             CAMIONS:{" "}
             <input
               ref={ref_camions}
               type="text"
-              defaultValue={upd && upd.camions}
+              defaultValue={(upd && upd.camions) || 0}
             />
           </div>
 
@@ -157,7 +161,7 @@ export default function BagsDataInput({
           <input
             ref={ref_retours}
             type="text"
-            defaultValue={upd && upd.retours}
+            defaultValue={(upd && upd.retours) || 0}
           />
         </div>
         <div>
@@ -165,7 +169,7 @@ export default function BagsDataInput({
           <input
             ref={ref_ajouts}
             type="text"
-            defaultValue={upd && upd.ajouts}
+            defaultValue={(upd && upd.ajouts) || 0}
           />
         </div>
         <div>
@@ -173,7 +177,7 @@ export default function BagsDataInput({
           <input
             ref={ref_dechires}
             type="text"
-            defaultValue={upd && upd.dechires}
+            defaultValue={(upd && upd.dechires) || 0}
           />
         </div>
         <div className="flex">
