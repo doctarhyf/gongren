@@ -891,13 +891,35 @@ function draw_charg_table(doc, pw, ph, pm, rect_title, fsize, load_data) {
     loads[shift] = { ...ld, sup: SUPERVISORS[team] };
   });
 
-  const deq_m = loads.M?.sup?.nom || "DEQ. M";
-  const deq_p = loads.P?.sup?.nom || "DEQ. P";
-  const deq_n = loads.N?.sup?.nom || "DEQ. N";
+  const deq_m = loads.M?.sup?.nom || "";
+  const deq_p = loads.P?.sup?.nom || "";
+  const deq_n = loads.N?.sup?.nom || "";
 
   const cam_m = loads.M?.camions || "0";
   const cam_p = loads.P?.camions || "0";
   const cam_n = loads.N?.camions || "0";
+
+  const sacs_m = loads.M?.sacs || "0";
+  const sacs_p = loads.P?.sacs || "0";
+  const sacs_n = loads.N?.sacs || "0";
+
+  const ton_m = sacs_m / 20;
+  const ton_p = sacs_p / 20;
+  const ton_n = sacs_n / 20;
+
+  const ton_bonus_m =
+    Number(sacs_m) / 20 - 600 < 0 ? 0 : Number(sacs_m) / 20 - 600;
+  const ton_bonus_p =
+    Number(sacs_p) / 20 - 600 < 0 ? 0 : Number(sacs_p) / 20 - 600;
+  const ton_bonus_n =
+    Number(sacs_n) / 20 - 600 < 0 ? 0 : Number(sacs_n) / 20 - 600;
+
+  const prime_m = ton_bonus_m * 1000;
+  const prime_p = ton_bonus_p * 1000;
+  const prime_n = ton_bonus_n * 1000;
+
+  const tot_prime_cdf = prime_m + prime_p + prime_n;
+  const tot_ton = ton_bonus_m + ton_bonus_p + ton_bonus_n;
 
   const old_fsize = doc.getFontSize();
   doc.setFontSize(fsize);
@@ -926,8 +948,15 @@ function draw_charg_table(doc, pw, ph, pm, rect_title, fsize, load_data) {
       "",
       "",
       [`${cam_m} CAMIONS`, -90],
-      [`(1100 - 600) T`, " ", "501 T", -90],
-      ["501 000 FC", -90],
+      [
+        `${sacs_m} sacs`,
+        ` `,
+        `(${ton_m} - 600) T`,
+        " ",
+        `${ton_bonus_m} T`,
+        -90,
+      ],
+      [`${prime_m} FC`, -90],
     ],
     ["MATIN", "", "", "", "", "", ""],
     [
@@ -936,8 +965,15 @@ function draw_charg_table(doc, pw, ph, pm, rect_title, fsize, load_data) {
       "",
       "",
       [`${cam_p} CAMIONS`, -90],
-      ["SACS/TON./PRIM", -90],
-      ["501 000 FC", -90],
+      [
+        `${sacs_p} sacs`,
+        ` `,
+        `(${ton_p} - 600) T`,
+        " ",
+        `${ton_bonus_p} T`,
+        -90,
+      ],
+      [`${prime_p} FC`, -90],
     ],
     ["APREM.", "", "", "", "", "", ""],
     [
@@ -946,8 +982,15 @@ function draw_charg_table(doc, pw, ph, pm, rect_title, fsize, load_data) {
       "",
       "",
       [`${cam_n} CAMIONS`, -90],
-      ["SACS/TON./PRIM", -90],
-      "PRIME FC",
+      [
+        `${sacs_n} sacs`,
+        ` `,
+        `(${ton_n} - 600) T`,
+        " ",
+        `${ton_bonus_n} T`,
+        -90,
+      ],
+      `${prime_n} FC`,
     ],
     ["NUIT", "DEQ M.", "", "", "", "", ""],
     [
@@ -956,8 +999,8 @@ function draw_charg_table(doc, pw, ph, pm, rect_title, fsize, load_data) {
       "",
       "",
       "",
-      "SACS/TON./PRIM",
-      "TOT. P. FC",
+      `${tot_ton} T`,
+      `${tot_prime_cdf} FC`,
     ],
   ];
 
