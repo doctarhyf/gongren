@@ -5,6 +5,7 @@ import ButtonPrint from "./ButtonPrint";
 export default function RepportCard({ data, onUpdateShiftData }) {
   function onPrintDailyRepport(data) {
     draw_load_table(data);
+    console.log(data);
   }
 
   return (
@@ -19,7 +20,7 @@ export default function RepportCard({ data, onUpdateShiftData }) {
         {data &&
           Object.entries(data).map((k, v) => (
             <div>
-              {!["date", "type", "tid", "upd"].includes(k[0]) && (
+              {!["date", "type", "tid", "upd", "data"].includes(k[0]) && (
                 <>
                   {" "}
                   {k[0]} : <b>{k[1]}</b>

@@ -297,11 +297,12 @@ export function ParseDayRepport(day_data) {
     camions += Number(shift.camions);
   });
 
-  repport.sacs = sacs + " Sacs";
-  repport.tonnage = t + " T";
+  repport.sacs = sacs;
+  repport.tonnage = t;
   repport.camions = camions;
   repport.retours = ret;
   repport.ajouts = ajt;
+  repport.data = day_data[1];
   return repport;
 }
 
