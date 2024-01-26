@@ -50,7 +50,7 @@ Superviseur班长: @Albert Kankombwe 
 
         <div className="form-control">
           <label className="label cursor-pointer">
-            <span className="label-text">Remember me</span>
+            <span className="label-text">Weixin Repport</span>
             <input
               type="checkbox"
               className="toggle"
