@@ -905,11 +905,35 @@ function draw_charg_table(doc, pw, ph, pm, rect_title, fsize, load_data) {
       ["DIFFERENCE", "DE CHARGEMENT"],
       ["MONTANT", "FC"],
     ],
-    [["07h00", "15h00"], "DEQ M.", "", "", "", "SACS/TON./PRIM", "PRIME FC"],
+    [
+      ["07h00", "15h00", -90],
+      ["DEQ M.", -90],
+      "",
+      "",
+      ["12 CAMIONS", -90],
+      ["(1101 - 600) T", " ", "501 T", -90],
+      ["501 000 FC", -90],
+    ],
     ["MATIN", "", "", "", "", "", ""],
-    [["15h00", "23h00"], "DEQ AP.", "", "", "", "SACS/TON./PRIM", "PRIME FC"],
+    [
+      ["15h00", "23h00"],
+      ["DEQ AP.", -90],
+      "",
+      "",
+      "",
+      ["SACS/TON./PRIM", -90],
+      ["501 000 FC", -90],
+    ],
     ["APREM.", "", "", "", "", "", ""],
-    [["23h00", "07h00"], "DEQ N.", "", "", "", "SACS/TON./PRIM", "PRIME FC"],
+    [
+      ["23h00", "07h00"],
+      ["DEQ N.", -90],
+      "",
+      "",
+      "",
+      ["SACS/TON./PRIM", -90],
+      "PRIME FC",
+    ],
     ["NUIT", "DEQ M.", "", "", "", "", ""],
     [
       ["TOTAL", "DU JOUR"],
@@ -938,14 +962,38 @@ function draw_charg_table(doc, pw, ph, pm, rect_title, fsize, load_data) {
         iy: iy,
       };
 
-      const box_text = texts[iy][ix] || ""; // `ix:${ix}, iy:${iy}`;
+      let box_text = texts[iy][ix];
+      const text_is_array = Array.isArray(box_text); // || ""; // `ix:${ix}, iy:${iy}`;
+      let box_text_angle = 0;
+      let align = "center";
+
+      if (text_is_array) {
+        const text_array_len = box_text.length;
+        const last_el = box_text[text_array_len - 1];
+
+        if (typeof last_el === "number") {
+          box_text_angle = last_el;
+
+          box_text = box_text.splice(0, text_array_len - 1);
+          align = "left";
+        }
+      }
+
+      let tvx = box.x + box.w / 2;
+      let tvy = box.y + box.h / 2;
+
+      if (box_text_angle !== 0) {
+        const { w } = doc.getTextDimensions(box_text.join(""));
+        tvy -= w / 2;
+        //tvy = tvy -
+      }
 
       doc.rect(box.x, box.y, box.w, box.h);
-      doc.text(box_text, box.x + box.w / 2, box.y + box.h / 2, {
-        align: "center",
+      doc.text(box_text, tvx, tvy, {
+        align: align,
+        angle: box_text_angle,
       });
 
-      //doc.text("this is cool", box.x, box.y, { angle: 270, align: "center" });
       boxes.push(box);
     });
   });
