@@ -192,6 +192,7 @@ export default function BagsDataInput({
       </div>
 
       <LoadsCalculator
+        onCancel={(e) => setShowCalculator(false)}
         show={showCalculator}
         onSaveTotalSacs={onSaveTotalSacs}
       />

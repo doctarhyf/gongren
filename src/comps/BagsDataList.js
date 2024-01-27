@@ -106,19 +106,32 @@ export default function BagsDataList({
     <div>
       <Loading isLoading={loading} />
 
-      {showRepportMode && (
+      {true && (
         <>
-          <DateSelector onDateSelected={onDateSelected} />
-          {loads === undefined && (
-            <div>
-              No data for selected date <b>{`${MONTHS[date.m]}, ${date.y}`}</b>
-            </div>
-          )}
+          {showRepportMode && (
+            <>
+              <DateSelector onDateSelected={onDateSelected} />
+              {loads === undefined && (
+                <div>
+                  No data for selected date{" "}
+                  <b>{`${MONTHS[date.m]}, ${date.y}`}</b>
+                </div>
+              )}
 
-          {loads && <div>repport mode</div>}
+              {loads && (
+                <div>
+                  <div>repport mode cool</div>
+                  <div>
+                    {loadsf.map((ld, i) => (
+                      <div>{JSON.stringify(ld)}</div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </>
+          )}
         </>
       )}
-
       {!showRepportMode && (
         <>
           <div className="flex  ">

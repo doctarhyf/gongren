@@ -10,10 +10,10 @@ import Dico from "../pages/dico";
 import Sacs from "../pages/sacs";
 
 export const SUPERVISORS = {
-  A: { nom: "ALBERT KANKOBWE" },
-  B: { nom: "BERTIN KAYEMBE" },
-  C: { nom: "SERGE KAZALI" },
-  D: { nom: "AMEDEE KATANGA" },
+  A: { nom: "ALBERT KANKOBWE", zh: "刚果贝" },
+  B: { nom: "BERTIN KAYEMBE", zh: "编带" },
+  C: { nom: "SERGE KAZALI", zh: "塞基尔" },
+  D: { nom: "AMEDEE KATANGA", zh: "噶当噶" },
 };
 
 export const LOGO =
@@ -21,7 +21,7 @@ export const LOGO =
 const MARG = 15;
 
 export const SHIFTS_ZH = ["白班", "中班", "夜班"];
-export const SHIF_HOURS_ZH = {
+export const SHIFT_HOURS_ZH = {
   M: ["Matin", "白班", "07h00 - 15h00"],
   P: ["Matin", "中班", "15h00 - 23h00"],
   N: ["Matin", "夜班", "23h00 - 07h00"],

@@ -6,6 +6,7 @@ export default function LoadsCalculator({
   show,
   onAddCamion,
   onSaveTotalSacs,
+  onCancel,
 }) {
   const [camions, setcamions] = useState([0]);
 
@@ -68,7 +69,7 @@ export default function LoadsCalculator({
           }}
           className={CLASS_BTN}
         >
-          Ajouter bon
+          Ajouter Camion
         </button>
         <button
           onClick={(e) => {
@@ -92,6 +93,9 @@ export default function LoadsCalculator({
           className={CLASS_BTN}
         >
           Save
+        </button>
+        <button className={CLASS_BTN} onClick={(e) => onCancel && onCancel()}>
+          CANCEL
         </button>
       </div>
     </div>

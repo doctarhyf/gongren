@@ -21,6 +21,7 @@ export default function Chargement() {
   const [loading, setloading] = useState(false);
   const [loads, setloads] = useState([]);
   const [loadsf, setloadsf] = useState([]);
+  const [loads_by_item, set_loads_by_item] = useState();
   const [showRepportMode, setShowRepportMode] = useState(false);
 
   useEffect(() => {
@@ -32,8 +33,10 @@ export default function Chargement() {
     setloadsf([]);
     setloads([]);
     setRepportData({});
+    set_loads_by_item([]);
     const d = await SB.LoadAllItems(TABLES_NAMES.LOADS);
 
+    set_loads_by_item([...d]);
     setloads(groupByYearMonthAndDay(d));
     setloadsf(groupByYearMonthAndDay(d));
     setloading(false);
@@ -165,7 +168,7 @@ export default function Chargement() {
         </>
       )}
       {!addDataMode && (
-        <>
+        <div className="flex  gap-4">
           <BagsDataList
             loadsf={loadsf}
             showRepportMode={showRepportMode}
@@ -177,7 +180,7 @@ export default function Chargement() {
             onUpdateShiftData={onUpdateShiftData}
             onDeleteShiftData={onDeleteShiftData}
           />
-        </>
+        </div>
       )}
     </div>
   );

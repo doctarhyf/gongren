@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { CLASS_BTN } from "../helpers/flow";
+import { CLASS_BTN, SHIFT_HOURS_ZH, SUPERVISORS } from "../helpers/flow";
 import { draw_load_table } from "../helpers/funcs_print";
 import ButtonPrint from "./ButtonPrint";
 
@@ -40,53 +40,97 @@ Superviseur班长: @Albert Kankombwe 
     alert(`Text copied!`);
   }
 
+  let rep_data = undefined;
+
+  if (data && data.upd) {
+    rep_data = JSON.parse(data.upd);
+    const [day, month, year] = rep_data.date.split("/");
+
+    rep_data.day = day;
+    rep_data.month = month;
+    rep_data.year = year;
+  }
+
   return (
-    <div className="border mt-2 rounded-md p-1 bg-neutral-100 shadow-md">
+    <div className="border mt-2 rounded-md p-1 h-min bg-neutral-100 shadow-md">
       <div className=" text-sky-500">
         <div className="py-1 text-xl border-b mb-1">
-          {" "}
-          Rapport {data && data.type} / {data && data.type && data.date}
+          <div>Rapport {data && data.type}</div>
+          <div className="text-sm">{data && data.type && data.date}</div>
         </div>
 
-        <div className="form-control">
-          <label className="label cursor-pointer">
-            <span className="label-text">Weixin Repport</span>
-            <input
-              type="checkbox"
-              className="toggle"
-              checked={weixinRepport}
-              onChange={(e) => setWeixinRepport(e.target.checked)}
-            />
-          </label>
-        </div>
+        {data && data.tid === "s" && (
+          <div className="form-control">
+            <label className="label cursor-pointer">
+              <span className="label-text">Weixin Repport</span>
+              <input
+                type="checkbox"
+                className="toggle"
+                checked={weixinRepport}
+                onChange={(e) => setWeixinRepport(e.target.checked)}
+              />
+            </label>
+          </div>
+        )}
       </div>
 
-      {!weixinRepport && (
-        <div>
-          {data &&
-            Object.entries(data).map((k, v) => (
-              <div>
-                {!["date", "type", "tid", "upd", "data"].includes(k[0]) && (
-                  <>
-                    {" "}
-                    {k[0]} : <b>{k[1]}</b>
-                  </>
-                )}
-              </div>
-            ))}
-        </div>
-      )}
-      {weixinRepport && (
-        <div>
+      {(data && data.tid === "s" && weixinRepport) ||
+        (true && (
           <div>
+            {data &&
+              Object.entries(data).map((k, v) => (
+                <div>
+                  {!["date", "type", "tid", "upd", "data"].includes(k[0]) && (
+                    <>
+                      {" "}
+                      {k[0]} : <b>{k[1]}</b>
+                    </>
+                  )}
+                </div>
+              ))}
+          </div>
+        ))}
+      {weixinRepport && rep_data && (
+        <div>
+          <div className="p-2">
             <div>•EMBALLAGE CIMENT水泥包装</div>
-            <div>2024年1月22日</div>
-            <div>Équipe班：D</div>
-            <div>Superviseur班长:@katanga  遍但</div>
-            <div> •MATIN白班 装车24辆/Camions Chargés</div>
-            <div>袋子用11 070个/Sacs Utilisés</div>
-            <div>共计553.5吨/Tonne</div>
-            <div>撕裂的袋子19个/Sacs déchirés</div>
+            <div className=" font-bold ">
+              {rep_data.year}年{Number(rep_data.month) + 1}月{rep_data.day}日
+            </div>
+            <div>
+              Équipe班：<span className="font-bold">{rep_data.team}</span>
+            </div>
+            <div>
+              Superviseur班长:
+              <span className="font-bold">
+                @{SUPERVISORS[rep_data.team].nom}
+                {SUPERVISORS[rep_data.team].zh}
+              </span>
+            </div>
+            <div>
+              {" "}
+              •{SHIFT_HOURS_ZH[rep_data.shift][0]}
+              <span className="font-bold">
+                {SHIFT_HOURS_ZH[rep_data.shift][1]} 装车{rep_data.camions}
+              </span>
+              辆/Camions Chargés
+            </div>
+            <div>
+              袋子用
+              <span className="font-bold">{rep_data.sacs}个/Sacs Utilisés</span>
+            </div>
+            <div>
+              共计
+              <span className="font-bold">
+                {(Number(rep_data.sacs) / 20).toFixed(2)}吨/Tonne
+              </span>
+            </div>
+            <div>
+              撕裂的袋子
+              <span className="font-bold">
+                {rep_data.dechires}个/Sacs déchirés
+              </span>
+            </div>
           </div>
           <div>
             <button className={CLASS_BTN} onClick={(e) => onCopyText()}>
