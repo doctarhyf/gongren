@@ -4,6 +4,7 @@ import { TABLES_NAMES } from "../helpers/sb.config";
 import Loading from "../comps/Loading";
 import DateSelector from "./DateSelector";
 import { CLASS_BTN, CLASS_TD, MONTHS } from "../helpers/flow";
+import { formatFrenchDate } from "../helpers/func";
 
 function MyForm() {
   return (
@@ -73,6 +74,7 @@ export default function BagsDataList({
   loadsf,
   showRepportMode,
   onSetDataLevel,
+  loads_by_item,
 }) {
   const [loading, setloading] = useState(false);
   const [loads, setloads] = useState([]);
@@ -90,13 +92,42 @@ export default function BagsDataList({
     shift: "",
   });
 
+  const [loadsbif, setloadsbif] = useState();
+
   function onDateSelected(new_date) {
     setdate(new_date);
 
     const { y: year, m: month } = new_date;
     const date_code = `${new_date.y}-${new_date.m}`;
-    const data = loadsf[year][date_code];
+    const data = loadsf[year] && loadsf[year][date_code];
+
     setloads(data);
+    if (data === undefined) {
+      setloadsbif([]);
+      return;
+    }
+    setloadsbif(FilterLoadsByYearMonth(loads_by_item, year, month));
+  }
+
+  function FilterLoadsByYearMonth(data, y, m) {
+    let year_data =
+      data.filter && data.filter((it, i) => it.code.includes(`${y}_${m}`));
+
+    let final_data = {};
+
+    year_data.forEach((it, i) => {
+      const [team, shift, year, month, date] = it.code.split("_");
+      const day = `${year}_${month}_${date}`;
+
+      if (final_data[day] == undefined) {
+        final_data[day] = [it];
+      } else {
+        final_data[day].push(it);
+      }
+    });
+
+    console.log("f data => ", final_data);
+    return final_data;
   }
 
   function stfy(d) {
@@ -111,6 +142,7 @@ export default function BagsDataList({
           {showRepportMode && (
             <>
               <DateSelector onDateSelected={onDateSelected} />
+              <div>Select date to view repport</div>
               {loads === undefined && (
                 <div>
                   No data for selected date{" "}
@@ -120,7 +152,78 @@ export default function BagsDataList({
 
               {
                 <div>
-                  <div>repport mode cool</div>
+                  <table>
+                    <thead>
+                      <tr>
+                        {[
+                          "id",
+                          "date",
+                          "code",
+                          "sacs",
+                          "t",
+                          "camions",
+                          "dechires",
+                          "retours",
+                          "ajouts",
+                        ].map((t, i) => (
+                          <td className={CLASS_TD}>{t}</td>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {loadsbif &&
+                        Object.entries(loadsbif).map((ld, i) => (
+                          <tr className="p-0">
+                            <td className={CLASS_TD}>{i}</td>
+                            <td className={CLASS_TD}>{ld[0]}</td>
+                            <td>
+                              {ld[1].map &&
+                                ld[1].map((it, i) => (
+                                  <div className={CLASS_TD}>{it.code}</div>
+                                ))}
+                            </td>
+                            <td>
+                              {ld[1].map &&
+                                ld[1].map((it, i) => (
+                                  <div className={CLASS_TD}>{it.sacs}</div>
+                                ))}
+                            </td>
+                            <td>
+                              {ld[1].map &&
+                                ld[1].map((it, i) => (
+                                  <div className={CLASS_TD}>
+                                    {Number(it.sacs) / 20}
+                                  </div>
+                                ))}
+                            </td>
+                            <td>
+                              {ld[1].map &&
+                                ld[1].map((it, i) => (
+                                  <div className={CLASS_TD}>{it.camions}</div>
+                                ))}
+                            </td>
+                            <td>
+                              {ld[1].map &&
+                                ld[1].map((it, i) => (
+                                  <div className={CLASS_TD}>{it.dechires}</div>
+                                ))}
+                            </td>
+                            <td>
+                              {ld[1].map &&
+                                ld[1].map((it, i) => (
+                                  <div className={CLASS_TD}>{it.retours}</div>
+                                ))}
+                            </td>
+                            <td>
+                              {ld[1].map &&
+                                ld[1].map((it, i) => (
+                                  <div className={CLASS_TD}>{it.ajouts}</div>
+                                ))}
+                            </td>
+                          </tr>
+                        ))}
+                    </tbody>
+                  </table>
                 </div>
               }
             </>

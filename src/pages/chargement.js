@@ -36,7 +36,7 @@ export default function Chargement() {
     set_loads_by_item([]);
     const d = await SB.LoadAllItems(TABLES_NAMES.LOADS);
 
-    set_loads_by_item([...d]);
+    set_loads_by_item(d);
     setloads(groupByYearMonthAndDay(d));
     setloadsf(groupByYearMonthAndDay(d));
     setloading(false);
@@ -173,6 +173,7 @@ export default function Chargement() {
             loadsf={loadsf}
             showRepportMode={showRepportMode}
             onSetDataLevel={onSetDataLevel}
+            loads_by_item={loads_by_item}
           />
 
           <RepportCard
