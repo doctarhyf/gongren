@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 
 import {
   CLASS_BTN,
+  CLASS_INPUT_TEXT,
   CLASS_TD,
   EQUIPES,
   K_POSTE_AIDE_OPERATEUR,
@@ -31,6 +32,7 @@ function AgentsTable({
   ref_sp_section,
   ref_sp_m,
   ref_sp_y,
+  list_title,
 }) {
   const COL_SPAN = 4;
   const nb_op = CountAgentsByPostType(agentsf, K_POSTE_OPERATEUR);
@@ -107,7 +109,7 @@ function AgentsTable({
     ag_zero = {
       ...ag_zero,
       id: "",
-      nom: { fr: "", zh: "" },
+      nom: { fr: list_title || "", zh: "" },
       contrat: "",
       rld: daysLetters.join(""),
       matricule: "",
@@ -260,6 +262,7 @@ export default function Equipes() {
   const [rld, setrld] = useState([]);
   const [loading, setloading] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState();
+  const [list_title, set_list_title] = useState();
 
   const ref_equipe = useRef();
   const ref_section = useRef();
@@ -306,7 +309,7 @@ export default function Equipes() {
   }
 
   function FilterAgents(items_raw, section, equipe, filter) {
-    console.log("FilterAgents", filter);
+    set_list_title(undefined);
 
     let items = items_raw.filter((ag, i) => {
       const by_equipe = ag.equipe === equipe;
@@ -319,7 +322,6 @@ export default function Equipes() {
       const equipe_section = by_equipe && by_section;
       const eq_sec_gck = equipe_section && gck;
       const eq_sec_mor = equipe_section && mor;
-      const eq_sec_cong = equipe_section && cd;
       const all_gck = gck;
       const all_zh = all_gck && zh;
       const all_cd = all_gck && cd;
@@ -327,7 +329,10 @@ export default function Equipes() {
         all_gck && !zh && ag.poste === "SUP" && ag.section === "ENSACHAGE";
 
       if (filter) {
-        if ("GCK AGENTS" === filter.name) return eq_sec_gck;
+        if ("GCK AGENTS" === filter.name) {
+          set_list_title("AGENTS GCK");
+          return eq_sec_gck;
+        }
         if ("MOR AGENTS" === filter.name) return eq_sec_mor;
         if ("FULL TEAM" === filter.name) return equipe_section;
         if ("ALL CHINESE STUFF" === filter.name) return all_zh;
@@ -441,7 +446,11 @@ export default function Equipes() {
               <td>
                 <div>
                   Year:
-                  <select onChange={onFilterAgents} ref={ref_year}>
+                  <select
+                    onChange={onFilterAgents}
+                    ref={ref_year}
+                    className={CLASS_INPUT_TEXT}
+                  >
                     {[...Array(10)].map((it, i) => (
                       <option key={i}>{new Date().getFullYear() + i}</option>
                     ))}
@@ -499,6 +508,7 @@ export default function Equipes() {
           ref_sp_section={ref_sp_section}
           ref_sp_m={ref_sp_m}
           ref_sp_y={ref_sp_y}
+          list_title={list_title}
         />
       </div>
     </div>
