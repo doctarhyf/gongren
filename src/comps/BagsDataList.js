@@ -109,6 +109,16 @@ export default function BagsDataList({
     setloadsbif(FilterLoadsByYearMonth(loads_by_item, year, month));
   }
 
+  const customOrder = { M: 1, N: 3, P: 2 };
+
+  const customSort = (a, b) => {
+    const codeA = a.code.charAt(2);
+    const codeB = b.code.charAt(2);
+
+    console.log(`Sorting `, codeA, codeB);
+    return customOrder[codeA] - customOrder[codeB];
+  };
+
   function FilterLoadsByYearMonth(data, y, m) {
     let year_data =
       data.filter && data.filter((it, i) => it.code.includes(`${y}_${m}`));
@@ -124,6 +134,10 @@ export default function BagsDataList({
       } else {
         final_data[day].push(it);
       }
+
+      let old = final_data[day];
+
+      final_data[day] = [...old.sort(customSort)];
     });
 
     console.log("f data => ", final_data);
