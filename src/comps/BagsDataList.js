@@ -5,6 +5,7 @@ import Loading from "../comps/Loading";
 import DateSelector from "./DateSelector";
 import { CLASS_BTN, CLASS_TD, MONTHS } from "../helpers/flow";
 import { formatFrenchDate } from "../helpers/func";
+import ButtonPrint from "./ButtonPrint";
 
 function MyForm() {
   return (
@@ -92,6 +93,7 @@ export default function BagsDataList({
     shift: "",
   });
 
+  const [rapViewData, setRapViewData] = useState();
   const [loadsbif, setloadsbif] = useState();
 
   function onDateSelected(new_date) {
@@ -109,23 +111,47 @@ export default function BagsDataList({
     setloadsbif(FilterLoadsByYearMonth(loads_by_item, year, month));
   }
 
-  const customOrder = { M: 1, N: 3, P: 2 };
+  const customOrderShift = { M: 1, N: 3, P: 2 };
 
-  const customSort = (a, b) => {
+  const customSortShifts = (a, b) => {
     const codeA = a.code.charAt(2);
     const codeB = b.code.charAt(2);
 
-    console.log(`Sorting `, codeA, codeB);
-    return customOrder[codeA] - customOrder[codeB];
+    return customOrderShift[codeA] - customOrderShift[codeB];
   };
 
   function FilterLoadsByYearMonth(data, y, m) {
     let year_data =
       data.filter && data.filter((it, i) => it.code.includes(`${y}_${m}`));
 
+    year_data = year_data.sort((a, b) => {
+      const lastTwoCharsA = a.code.slice(-2);
+      const lastTwoCharsB = b.code.slice(-2);
+
+      return lastTwoCharsA.localeCompare(lastTwoCharsB);
+    });
+
     let final_data = {};
 
+    let tot_sacs = 0;
+    let tot_camions = 0;
+    let tot_retours = 0;
+    let tot_ajouts = 0;
+    let tot_dechires = 0;
+    let tot_bonus = 0;
+
     year_data.forEach((it, i) => {
+      const { sacs, camions, ajouts, retours, dechires } = it;
+
+      tot_sacs += sacs;
+      tot_camions += camions;
+      tot_ajouts += ajouts;
+      tot_retours += retours;
+      tot_dechires += dechires;
+
+      const bonus = Number(sacs) / 20 - 600 < 0 ? 0 : Number(sacs) / 20 - 600;
+      tot_bonus += bonus;
+
       const [team, shift, year, month, date] = it.code.split("_");
       const day = `${year}_${month}_${date}`;
 
@@ -137,7 +163,17 @@ export default function BagsDataList({
 
       let old = final_data[day];
 
-      final_data[day] = [...old.sort(customSort)];
+      final_data[day] = [...old.sort(customSortShifts)];
+    });
+
+    setRapViewData({
+      sacs: tot_sacs,
+      camions: tot_camions,
+      t: (tot_sacs / 20).toFixed(2),
+      ajouts: tot_ajouts,
+      retours: tot_retours,
+      dechires: tot_dechires,
+      bonus: tot_bonus,
     });
 
     console.log("f data => ", final_data);
@@ -166,15 +202,24 @@ export default function BagsDataList({
 
               {
                 <div>
+                  <div className="flex">
+                    <ButtonPrint
+                      title={"PRINT"}
+                      onClick={(e) => console.log(e)}
+                    />
+                  </div>
                   <table>
                     <thead>
                       <tr>
                         {[
                           "id",
                           "date",
-                          "code",
+                          //"code",
+                          "equipe",
+                          "shift",
                           "sacs",
                           "t",
+                          "bonus",
                           "camions",
                           "dechires",
                           "retours",
@@ -183,17 +228,68 @@ export default function BagsDataList({
                           <td className={CLASS_TD}>{t}</td>
                         ))}
                       </tr>
+                      <tr>
+                        {[
+                          "TOTAL",
+                          "",
+                          //"code",
+                          "",
+                          "",
+                          rapViewData.sacs,
+                          rapViewData.t,
+                          rapViewData.bonus,
+                          rapViewData.camions,
+                          rapViewData.dechires,
+                          rapViewData.retours,
+                          rapViewData.ajouts,
+                        ].map((t, i) => (
+                          <>
+                            {![1, 2, 3].includes(i) && (
+                              <td
+                                className={CLASS_TD}
+                                colSpan={i === 0 ? 4 : 1}
+                              >
+                                {t}
+                              </td>
+                            )}
+                          </>
+                        ))}
+                      </tr>
                     </thead>
                     <tbody>
                       {loadsbif &&
                         Object.entries(loadsbif).map((ld, i) => (
-                          <tr className="p-0">
+                          <tr
+                            className={`p-0 ${
+                              i % 2 === 0 ? "bg-neutral-100" : ""
+                            } hover:bg-slate-200 hover:cursor-pointer`}
+                          >
                             <td className={CLASS_TD}>{i}</td>
-                            <td className={CLASS_TD}>{ld[0]}</td>
-                            <td>
+                            <td className={CLASS_TD}>
+                              {ld[0]
+                                .replaceAll("_", "/")
+                                .replaceAll("/0/", "/1/")}
+                            </td>
+                            {/*  <td>
                               {ld[1].map &&
                                 ld[1].map((it, i) => (
                                   <div className={CLASS_TD}>{it.code}</div>
+                                ))}
+                            </td> */}
+                            <td>
+                              {ld[1].map &&
+                                ld[1].map((it, i) => (
+                                  <div className={CLASS_TD}>
+                                    {it.code.split("_")[0]}
+                                  </div>
+                                ))}
+                            </td>
+                            <td>
+                              {ld[1].map &&
+                                ld[1].map((it, i) => (
+                                  <div className={CLASS_TD}>
+                                    {it.code.split("_")[1]}
+                                  </div>
                                 ))}
                             </td>
                             <td>
@@ -207,6 +303,16 @@ export default function BagsDataList({
                                 ld[1].map((it, i) => (
                                   <div className={CLASS_TD}>
                                     {Number(it.sacs) / 20}
+                                  </div>
+                                ))}
+                            </td>
+                            <td>
+                              {ld[1].map &&
+                                ld[1].map((it, i) => (
+                                  <div className={CLASS_TD}>
+                                    {Number(it.sacs) / 20 - 600 < 0
+                                      ? 0
+                                      : (Number(it.sacs) / 20 - 600).toFixed(2)}
                                   </div>
                                 ))}
                             </td>
