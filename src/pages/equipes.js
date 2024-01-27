@@ -257,9 +257,10 @@ function AgentsTable({
 export default function Equipes() {
   const [agents, setagents] = useState([]);
   const [agentsf, setagentsf] = useState([]);
-  const [rld, setrld] = useState([]);
+  const [rld, setrld] = useState([]); /* 
   const [showOnlyGCKAgents, setShowOnlyGCKAgents] = useState(false);
-
+  const [showOnlyMORAgents, setShowOnlyMORAgents] = useState(false);
+ */
   const [loading, setloading] = useState(false);
 
   const ref_equipe = useRef();
@@ -288,20 +289,29 @@ export default function Equipes() {
     setloading(false);
   }
 
-  function FilterAgents(items_raw, section, equipe) {
+  function FilterAgents(items_raw, section, equipe, showFilter) {
     let items = items_raw.filter((ag, i) => {
-      const check_equipe = ag.equipe === equipe;
-      const check_section = ag.section === section;
+      const by_equipe = ag.equipe === equipe;
+      const by_section = ag.section === section;
+      const gck = ag.contrat === "GCK";
+      const mor = ag.contrat !== "GCK";
 
-      if (showOnlyGCKAgents) return ag.contrat === "GCK";
+      ///
+      const equipe_section = by_equipe && by_section;
+      const eq_sec_gck = equipe_section && gck;
+      const eq_sec_mor = equipe_section && mor;
 
-      return check_equipe && check_section;
+      if (showFilter === "showOnlyGCKAgents") return eq_sec_gck;
+      if (showFilter === "showOnlyMorAgents") return eq_sec_mor;
+
+      return equipe_section;
     });
 
     return items;
   }
 
-  function onFilterAgents(e) {
+  function onFilterAgents(showFilter) {
+    setagentsf([]);
     let y = ref_year.current.value;
     let m = ref_month.current.value;
 
@@ -313,7 +323,12 @@ export default function Equipes() {
     ref_sp_y.current.textContent = y;
     ref_sp_m.current.textContent = MONTHS[m];
 
-    const arr_agents = FilterAgents(agents, section, equipe);
+    const arr_agents = FilterAgents(
+      agents,
+      section,
+      equipe,
+      showFilter || selectedOption
+    );
 
     let arr_agents_with_rld = [];
 
@@ -339,16 +354,93 @@ export default function Equipes() {
 
     //console.log(arr_agents_with_rld);
 
-    setagentsf(arr_agents_with_rld);
+    setagentsf([...arr_agents_with_rld]);
   }
+
+  const [selectedOption, setSelectedOption] = useState(null);
+
+  const handleOptionChange = (event) => {
+    const v = event.target.value;
+    setSelectedOption((old) => {
+      onFilterAgents(v);
+      return v;
+    });
+  };
 
   return (
     <div>
       <Loading isLoading={loading} />
+
+      <div className="p-1 border w-auto">
+        {/*  <div className="form-control">
+          <label className="label cursor-pointer">
+            <span className="label-text">Only GCK Agents</span>
+            <input
+              onChange={(e) => {
+                const show = e.target.checked;
+                onFilterAgents();
+                setShowOnlyGCKAgents(show);
+              }}
+              type="checkbox"
+              className="toggle"
+              checked={showOnlyGCKAgents}
+            />
+          </label>
+        </div>
+        <div className="form-control">
+          <label className="label cursor-pointer">
+            <span className="label-text">Only M.O.R Agents</span>
+            <input
+              onChange={(e) => {
+                const show = e.target.checked;
+                onFilterAgents();
+                setShowOnlyMORAgents(show);
+              }}
+              type="checkbox"
+              className="toggle"
+              checked={showOnlyMORAgents}
+            />
+          </label>
+        </div> */}
+
+        <div>
+          <label>
+            <input
+              type="radio"
+              value="showOnlyGCKAgents"
+              checked={selectedOption === "showOnlyGCKAgents"}
+              onChange={handleOptionChange}
+            />
+            Show Only GCK Agents
+          </label>
+
+          <label>
+            <input
+              type="radio"
+              value="showOnlyMorAgents"
+              checked={selectedOption === "showOnlyMorAgents"}
+              onChange={handleOptionChange}
+            />
+            Show Only Mor Agents
+          </label>
+          <label>
+            <input
+              type="radio"
+              value="showAllAgents"
+              checked={selectedOption === "showAllAgents"}
+              onChange={handleOptionChange}
+            />
+            Show All Agents
+          </label>
+
+          <div>Selected Option: {selectedOption}</div>
+        </div>
+      </div>
+
       {!loading && (
         <table>
           <tbody>
-            <div className={` ${showOnlyGCKAgents ? "hidden" : "block"} `}>
+            <div>
               <tr>
                 <td>SECTION</td>
                 <td>
@@ -382,24 +474,6 @@ export default function Equipes() {
               </tr>
             </div>
 
-            <tr>
-              <td colSpan={2}>
-                <div className="form-control">
-                  <label className="label cursor-pointer">
-                    <span className="label-text">Only Agents GCK</span>
-                    <input
-                      onChange={(e) => {
-                        const show = e.target.checked;
-                        setShowOnlyGCKAgents(show);
-                      }}
-                      type="checkbox"
-                      className="toggle"
-                      checked={showOnlyGCKAgents}
-                    />
-                  </label>
-                </div>
-              </td>
-            </tr>
             <tr>
               <td>Date</td>
               <td>

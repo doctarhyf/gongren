@@ -118,16 +118,11 @@ export default function BagsDataList({
                 </div>
               )}
 
-              {loads && (
+              {
                 <div>
                   <div>repport mode cool</div>
-                  <div>
-                    {loadsf.map((ld, i) => (
-                      <div>{JSON.stringify(ld)}</div>
-                    ))}
-                  </div>
                 </div>
-              )}
+              }
             </>
           )}
         </>
