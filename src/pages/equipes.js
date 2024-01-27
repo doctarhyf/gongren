@@ -120,50 +120,6 @@ function AgentsTable({
 
   return (
     <>
-      <tr>
-        <td className={COL_SPAN}>
-          <div>
-            {" "}
-            D'equipe:
-            <b>{chef_deq && `${chef_deq.nom} ${chef_deq.postnom}`}</b>
-          </div>
-          <div>
-            {" "}
-            Operateurs:<b>{nb_op}</b>
-          </div>
-          <div>
-            {" "}
-            Aide Operateurs:<b>{nb_aide_op}</b>
-          </div>
-          <div>
-            {" "}
-            Chargeurs:<b>{nb_charg}</b>
-          </div>
-          <div>
-            {" "}
-            Nettoyeurs:<b>{nb_net}</b>
-          </div>
-
-          {agentsf.length !== 0 && (
-            <div className="flex gap-4">
-              <button
-                onClick={(e) => printPDF(agentsf)}
-                className={`${CLASS_BTN} flex text-sm my-2`}
-              >
-                <img src={pdf} alt="pdf" width={20} height={30} /> IMPRIMER
-                LISTE
-              </button>
-              <button
-                onClick={(e) => printAgentsRoulementPDF(agentsf)}
-                className={`${CLASS_BTN} flex text-sm my-2`}
-              >
-                <img alt="pdf" src={pdf} width={20} height={30} /> IMPRIMER
-                ROULEMENT
-              </button>
-            </div>
-          )}
-        </td>
-      </tr>
       <table>
         <thead>
           <tr>
@@ -250,6 +206,50 @@ function AgentsTable({
           ))}
         </tbody>
       </table>
+
+      <tr>
+        <td className={COL_SPAN}>
+          {agentsf.length !== 0 && (
+            <div className="flex gap-4">
+              <button
+                onClick={(e) => printPDF(agentsf)}
+                className={`${CLASS_BTN} flex text-sm my-2`}
+              >
+                <img src={pdf} alt="pdf" width={20} height={30} /> IMPRIMER
+                LISTE
+              </button>
+              <button
+                onClick={(e) => printAgentsRoulementPDF(agentsf)}
+                className={`${CLASS_BTN} flex text-sm my-2`}
+              >
+                <img alt="pdf" src={pdf} width={20} height={30} /> IMPRIMER
+                ROULEMENT
+              </button>
+            </div>
+          )}
+          <div>
+            {" "}
+            D'equipe:
+            <b>{chef_deq && `${chef_deq.nom} ${chef_deq.postnom}`}</b>
+          </div>
+          <div>
+            {" "}
+            Operateurs:<b>{nb_op}</b>
+          </div>
+          <div>
+            {" "}
+            Aide Operateurs:<b>{nb_aide_op}</b>
+          </div>
+          <div>
+            {" "}
+            Chargeurs:<b>{nb_charg}</b>
+          </div>
+          <div>
+            {" "}
+            Nettoyeurs:<b>{nb_net}</b>
+          </div>
+        </td>
+      </tr>
     </>
   );
 }
@@ -257,11 +257,9 @@ function AgentsTable({
 export default function Equipes() {
   const [agents, setagents] = useState([]);
   const [agentsf, setagentsf] = useState([]);
-  const [rld, setrld] = useState([]); /* 
-  const [showOnlyGCKAgents, setShowOnlyGCKAgents] = useState(false);
-  const [showOnlyMORAgents, setShowOnlyMORAgents] = useState(false);
- */
+  const [rld, setrld] = useState([]);
   const [loading, setloading] = useState(false);
+  const [selectedFilter, setSelectedFilter] = useState();
 
   const ref_equipe = useRef();
   const ref_section = useRef();
@@ -271,6 +269,22 @@ export default function Equipes() {
   const ref_sp_m = useRef();
   const ref_year = useRef();
   const ref_month = useRef();
+
+  const ref_gck_agents = useRef();
+  const ref_mor_agents = useRef();
+  const ref_full_team = useRef();
+  const ref_all_gck_stuff = useRef();
+  const ref_all_cd_stuff = useRef();
+  const ref_all_zh_stuff = useRef();
+
+  const FILTERS = [
+    { name: "GCK AGENTS", ref: ref_gck_agents },
+    { name: "MOR AGENTS", ref: ref_mor_agents },
+    { name: "FULL TEAM", ref: ref_full_team },
+    { name: "ALL GCK STUFF", ref: ref_all_gck_stuff },
+    { name: "ALL CD GCK STUFF", ref: ref_all_cd_stuff },
+    { name: "ALL ZH GCK STUFF", ref: ref_all_zh_stuff },
+  ];
 
   useEffect(() => {
     loadAgents();
@@ -289,20 +303,34 @@ export default function Equipes() {
     setloading(false);
   }
 
-  function FilterAgents(items_raw, section, equipe, showFilter) {
+  function FilterAgents(items_raw, section, equipe, filter) {
+    console.log("FilterAgents", filter);
+
     let items = items_raw.filter((ag, i) => {
       const by_equipe = ag.equipe === equipe;
       const by_section = ag.section === section;
       const gck = ag.contrat === "GCK";
       const mor = ag.contrat !== "GCK";
+      const cd = ag.nationalite === "CD";
+      const zh = ag.nationalite === "ZH";
 
-      ///
       const equipe_section = by_equipe && by_section;
       const eq_sec_gck = equipe_section && gck;
       const eq_sec_mor = equipe_section && mor;
+      const eq_sec_cong = equipe_section && cd;
+      const all_gck = gck;
+      const all_zh = all_gck && zh;
+      const all_cd = all_gck && cd;
 
-      if (showFilter === "showOnlyGCKAgents") return eq_sec_gck;
-      if (showFilter === "showOnlyMorAgents") return eq_sec_mor;
+      if (filter) {
+        if ("GCK AGENTS" === filter.name) return eq_sec_gck;
+        if ("MOR AGENTS" === filter.name) return eq_sec_mor;
+        if ("FULL TEAM" === filter.name) return equipe_section;
+        if ("ALL CHINESE STUFF" === filter.name) return all_zh;
+        if ("ALL GCK STUFF" === filter.name) return all_gck;
+        if ("ALL CD GCK STUFF" === filter.name) return all_cd;
+        if ("ALL ZH GCK STUFF" === filter.name) return all_zh;
+      }
 
       return equipe_section;
     });
@@ -310,7 +338,7 @@ export default function Equipes() {
     return items;
   }
 
-  function onFilterAgents(showFilter) {
+  function onFilterAgents() {
     setagentsf([]);
     let y = ref_year.current.value;
     let m = ref_month.current.value;
@@ -323,12 +351,7 @@ export default function Equipes() {
     ref_sp_y.current.textContent = y;
     ref_sp_m.current.textContent = MONTHS[m];
 
-    const arr_agents = FilterAgents(
-      agents,
-      section,
-      equipe,
-      showFilter || selectedOption
-    );
+    const arr_agents = FilterAgents(agents, section, equipe, selectedFilter);
 
     let arr_agents_with_rld = [];
 
@@ -357,85 +380,19 @@ export default function Equipes() {
     setagentsf([...arr_agents_with_rld]);
   }
 
-  const [selectedOption, setSelectedOption] = useState(null);
+  useEffect(() => {
+    onFilterAgents();
+  }, [selectedFilter]);
 
-  const handleOptionChange = (event) => {
-    const v = event.target.value;
-    setSelectedOption((old) => {
-      onFilterAgents(v);
-      return v;
-    });
-  };
+  function onSetFilter(e) {
+    setSelectedFilter(e);
+  }
+
+  const [showFilters, setShowFilters] = useState(false);
 
   return (
     <div>
       <Loading isLoading={loading} />
-
-      <div className="p-1 border w-auto">
-        {/*  <div className="form-control">
-          <label className="label cursor-pointer">
-            <span className="label-text">Only GCK Agents</span>
-            <input
-              onChange={(e) => {
-                const show = e.target.checked;
-                onFilterAgents();
-                setShowOnlyGCKAgents(show);
-              }}
-              type="checkbox"
-              className="toggle"
-              checked={showOnlyGCKAgents}
-            />
-          </label>
-        </div>
-        <div className="form-control">
-          <label className="label cursor-pointer">
-            <span className="label-text">Only M.O.R Agents</span>
-            <input
-              onChange={(e) => {
-                const show = e.target.checked;
-                onFilterAgents();
-                setShowOnlyMORAgents(show);
-              }}
-              type="checkbox"
-              className="toggle"
-              checked={showOnlyMORAgents}
-            />
-          </label>
-        </div> */}
-
-        <div>
-          <label>
-            <input
-              type="radio"
-              value="showOnlyGCKAgents"
-              checked={selectedOption === "showOnlyGCKAgents"}
-              onChange={handleOptionChange}
-            />
-            Show Only GCK Agents
-          </label>
-
-          <label>
-            <input
-              type="radio"
-              value="showOnlyMorAgents"
-              checked={selectedOption === "showOnlyMorAgents"}
-              onChange={handleOptionChange}
-            />
-            Show Only Mor Agents
-          </label>
-          <label>
-            <input
-              type="radio"
-              value="showAllAgents"
-              checked={selectedOption === "showAllAgents"}
-              onChange={handleOptionChange}
-            />
-            Show All Agents
-          </label>
-
-          <div>Selected Option: {selectedOption}</div>
-        </div>
-      </div>
 
       {!loading && (
         <table>
@@ -500,6 +457,35 @@ export default function Equipes() {
           </tbody>
         </table>
       )}
+
+      <div>
+        <button
+          className={CLASS_BTN}
+          onClick={(e) => setShowFilters(!showFilters)}
+        >
+          {" "}
+          SHOW/HIDE FILTERS{" "}
+        </button>
+
+        <div
+          className={`p-2 border w-auto ${showFilters ? "block" : "hidden"}`}
+        >
+          {FILTERS.map((f, i) => (
+            <div>
+              <label>
+                <input
+                  onChange={(e) => onSetFilter(f)}
+                  ref={f.ref}
+                  type="radio"
+                  name="filter"
+                  value={f.name.replaceAll(" ", "_")}
+                />
+                {f.name}
+              </label>
+            </div>
+          ))}
+        </div>
+      </div>
 
       <div>
         <AgentsTable
