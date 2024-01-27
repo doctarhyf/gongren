@@ -276,6 +276,7 @@ export default function Equipes() {
   const ref_all_gck_stuff = useRef();
   const ref_all_cd_stuff = useRef();
   const ref_all_zh_stuff = useRef();
+  const ref_all_sup = useRef();
 
   const FILTERS = [
     { name: "GCK AGENTS", ref: ref_gck_agents },
@@ -284,6 +285,7 @@ export default function Equipes() {
     { name: "ALL GCK STUFF", ref: ref_all_gck_stuff },
     { name: "ALL CD GCK STUFF", ref: ref_all_cd_stuff },
     { name: "ALL ZH GCK STUFF", ref: ref_all_zh_stuff },
+    { name: "ALL SUPERVISORS", ref: ref_all_sup },
   ];
 
   useEffect(() => {
@@ -321,6 +323,8 @@ export default function Equipes() {
       const all_gck = gck;
       const all_zh = all_gck && zh;
       const all_cd = all_gck && cd;
+      const all_sup =
+        all_gck && !zh && ag.poste === "SUP" && ag.section === "ENSACHAGE";
 
       if (filter) {
         if ("GCK AGENTS" === filter.name) return eq_sec_gck;
@@ -330,6 +334,7 @@ export default function Equipes() {
         if ("ALL GCK STUFF" === filter.name) return all_gck;
         if ("ALL CD GCK STUFF" === filter.name) return all_cd;
         if ("ALL ZH GCK STUFF" === filter.name) return all_zh;
+        if ("ALL SUPERVISORS" === filter.name) return all_sup;
       }
 
       return equipe_section;
