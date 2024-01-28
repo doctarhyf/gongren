@@ -5,7 +5,7 @@ import * as SB from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
 
 import TableRLD from "../comps/TableRLD";
-import { getDaysInMonth } from "../helpers/func";
+import { getDaysInMonth, getRouelemtDaysLetters } from "../helpers/func";
 
 export default function Roulements() {
   const [curAgent, setCurAgent] = useState({ id: -1 });
@@ -15,6 +15,7 @@ export default function Roulements() {
   const [error, seterror] = useState(false);
   const [rdk, setrdk] = useState(Math.random());
   const [lastDayDate, setLastDayDate] = useState(31);
+  const [daysLetters, setDaysLetters] = useState([]);
 
   const ref_m = useRef();
   const ref_y = useRef();
@@ -51,10 +52,11 @@ export default function Roulements() {
   async function onDateChange(id = -1) {
     seterror(undefined);
     setCurAgentRld([]);
-    const y = ref_y.current.value;
-    const m = ref_m.current.value;
+    const y = Number(ref_y.current.value);
+    const m_name = ref_m.current.value;
+    const m = MONTHS.indexOf(m_name);
 
-    const mc = `mc_${id}_${y}_${MONTHS.indexOf(m)}`;
+    const mc = `mc_${id}_${y}_${m}`;
     setMonthCode(mc);
 
     const data = roulement_data.find((it, i) => it.month_code === mc);
@@ -75,7 +77,10 @@ export default function Roulements() {
     const rl = ParseRLD(data);
     setCurAgentRld(rl);
 
-    setLastDayDate(getDaysInMonth(Number(y), Number(MONTHS.indexOf(m))));
+    setLastDayDate(getDaysInMonth(Number(y), Number(MONTHS.indexOf(m_name))));
+    const dl = getRouelemtDaysLetters(y, m + 1);
+    console.log("dl", dl);
+    setDaysLetters(dl);
   }
 
   async function GetInitRLD(monthCode) {
@@ -180,6 +185,7 @@ export default function Roulements() {
           curAgent={curAgent}
           curAgentRld={curAgentRld}
           monthCode={monthCode}
+          daysLetters={daysLetters}
         />
       </div>
     </div>

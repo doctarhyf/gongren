@@ -4,7 +4,12 @@ import { TABLES_NAMES } from "../helpers/sb.config";
 import Loading from "./Loading";
 import { CLASS_BTN, CLASS_TD, MONTHS } from "../helpers/flow";
 import pdf from "../img/pdf.png";
-import { print_agent_roulement, doc } from "../helpers/funcs_print.js";
+import {
+  print_agent_roulement,
+  doc,
+  getDayName,
+} from "../helpers/funcs_print.js";
+import { getRouelemtDaysLetters } from "../helpers/func.js";
 
 const init = [...Array(31).fill("-")];
 
@@ -15,6 +20,7 @@ export default function TableRLD({
   daysCount,
   error,
   onRoulementSaved,
+  daysLetters,
 }) {
   const [editing, setediting] = useState(false);
   const [loading, setloading] = useState(false);
@@ -144,16 +150,29 @@ export default function TableRLD({
 
         <tbody>
           {showDates && (
-            <tr>
-              <td className={CLASS_TD}>Num序号</td>
-              <td className={CLASS_TD}>Nom</td>
-              <td className={CLASS_TD}>Mat.工号</td>
-              {curAgentRld.map((d, i) => (
-                <td key={i} className={CLASS_TD}>
-                  {21 + i > daysCount ? (daysCount - i - 20 - 1) * -1 : 21 + i}
-                </td>
-              ))}
-            </tr>
+            <>
+              <tr>
+                <td colSpan={3} className={CLASS_TD}></td>
+
+                {daysLetters.map((d, i) => (
+                  <td key={i} className={CLASS_TD}>
+                    {d}
+                  </td>
+                ))}
+              </tr>
+              <tr>
+                <td className={CLASS_TD}>Num序号</td>
+                <td className={CLASS_TD}>Nom</td>
+                <td className={CLASS_TD}>Mat.工号</td>
+                {curAgentRld.map((d, i) => (
+                  <td key={i} className={CLASS_TD}>
+                    {21 + i > daysCount
+                      ? (daysCount - i - 20 - 1) * -1
+                      : 21 + i}
+                  </td>
+                ))}
+              </tr>
+            </>
           )}
 
           <tr>
