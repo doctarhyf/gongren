@@ -67,11 +67,17 @@ export default function Roulements() {
       seterror(`Data for "${mc}" does not exist!New Data created`);
 
       const init_data = await GetInitRLD(mc);
-      console.log(init_data);
+
       setCurAgentRld({ rl: init_data, agent_id: id });
       await loadRoulement();
       seterror(null);
       setrdk(Math.random());
+
+      setLastDayDate(getDaysInMonth(Number(y), Number(MONTHS.indexOf(m_name))));
+      const dl = getRouelemtDaysLetters(y, m + 1);
+
+      setDaysLetters(dl);
+
       return;
     }
     const rl = ParseRLD(data);
@@ -79,7 +85,7 @@ export default function Roulements() {
 
     setLastDayDate(getDaysInMonth(Number(y), Number(MONTHS.indexOf(m_name))));
     const dl = getRouelemtDaysLetters(y, m + 1);
-    console.log("dl", dl);
+
     setDaysLetters(dl);
   }
 

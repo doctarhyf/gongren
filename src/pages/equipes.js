@@ -21,6 +21,7 @@ import {
   CountAgentsByPostType,
   getDaysInMonth,
   getRouelemtDaysLetters,
+  getRouelemtDaysLetters2,
   printPDF1,
 } from "../helpers/func";
 import Loading from "../comps/Loading";
@@ -33,6 +34,7 @@ function AgentsTable({
   ref_sp_m,
   ref_sp_y,
   list_title,
+  daysLetters,
 }) {
   const COL_SPAN = 4;
   const nb_op = CountAgentsByPostType(agentsf, K_POSTE_OPERATEUR);
@@ -142,16 +144,9 @@ function AgentsTable({
         <tbody>
           <tr>
             <td className={CLASS_TD} colSpan={COL_SPAN}></td>
-            {/* {agentsf[0] &&
-              agentsf[0].rld.rl.split("").map((it, i) => (
-                <td key={i} className={CLASS_TD}>
-                  {i + 1}
-                </td>
-              ))} */}
-
-            {[...Array(daysCount)].map((d, i) => (
+            {daysLetters.map((d, i) => (
               <td key={i} className={CLASS_TD}>
-                {21 + i > daysCount ? (daysCount - i - 20 - 1) * -1 : 21 + i}
+                {d}
               </td>
             ))}
           </tr>
@@ -168,6 +163,11 @@ function AgentsTable({
             <td className={CLASS_TD}>
               <b>Poste</b>
             </td>
+            {[...Array(daysCount)].map((d, i) => (
+              <td key={i} className={CLASS_TD}>
+                {21 + i > daysCount ? (daysCount - i - 20 - 1) * -1 : 21 + i}
+              </td>
+            ))}
           </tr>
           {agentsf.map((ag, i) => (
             <tr
@@ -263,6 +263,7 @@ export default function Equipes() {
   const [loading, setloading] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState();
   const [list_title, set_list_title] = useState();
+  const [daysLetters, setDaysLetters] = useState([]);
 
   const ref_equipe = useRef();
   const ref_section = useRef();
@@ -350,8 +351,14 @@ export default function Equipes() {
 
   function onFilterAgents() {
     setagentsf([]);
+    setDaysLetters([]);
+
     let y = ref_year.current.value;
     let m = ref_month.current.value;
+
+    const dl = getRouelemtDaysLetters2(y, m);
+    console.log(dl);
+    setDaysLetters(dl);
 
     const section = ref_section.current.value;
     const equipe = ref_equipe.current.value;
@@ -384,8 +391,6 @@ export default function Equipes() {
       arr_agents_with_rld.push(agent);
       return agent;
     });
-
-    //console.log(arr_agents_with_rld);
 
     setagentsf([...arr_agents_with_rld]);
   }
@@ -509,6 +514,7 @@ export default function Equipes() {
           ref_sp_m={ref_sp_m}
           ref_sp_y={ref_sp_y}
           list_title={list_title}
+          daysLetters={daysLetters}
         />
       </div>
     </div>

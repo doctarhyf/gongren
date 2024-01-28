@@ -327,6 +327,32 @@ export const customSortDaysArray = (a, b) => {
   return dateA - dateB; //lastTwoCharsA.localeCompare(lastTwoCharsB);
 };
 
+export function getRouelemtDaysLetters2(year, month) {
+  // Calculate the 21st of the current month
+  let monthIndex = Number(month);
+  const startDate = new Date(year, monthIndex, 21);
+
+  // Calculate the 20th of the next month
+  const endDate = new Date(year, monthIndex + 1, 20);
+
+  const dayNames = [];
+  let currentDate = new Date(startDate);
+
+  while (currentDate <= endDate) {
+    const dayName = currentDate
+      .toLocaleDateString("fr-FR", { weekday: "long" })
+      .charAt(0)
+      .toUpperCase();
+    dayNames.push(dayName);
+    // console.log(currentDate);
+    currentDate.setDate(currentDate.getDate() + 1);
+  }
+
+  console.log(startDate, endDate, dayNames);
+
+  return dayNames;
+}
+
 export function getRouelemtDaysLetters(year, monthIndex) {
   // Ensure the monthIndex is between 0 (January) and 11 (December)
   monthIndex = monthIndex - 1;
@@ -351,14 +377,8 @@ export function getRouelemtDaysLetters(year, monthIndex) {
     currentDate.setDate(currentDate.getDate() + 1);
   }
 
-  console.log(
-    "startDate",
-    startDate.toDateString(),
-    "endDate",
-    endDate.toDateString(),
-    year,
-    monthIndex
-  );
+  console.log(startDate, endDate);
+
   return dayNames;
 }
 
