@@ -113,7 +113,7 @@ export default function BagsDataList({
       setloadsbif([]);
       return;
     }
-    setloadsbif(FilterLoadsByYearMonth(loads_by_item, year, month));
+    setloadsbif(SortLoadsByYearMonth(loads_by_item, year, month));
   }
 
   const customOrderShift = { M: 1, N: 3, P: 2 };
@@ -125,13 +125,13 @@ export default function BagsDataList({
     return customOrderShift[codeA] - customOrderShift[codeB];
   };
 
-  function FilterLoadsByYearMonth(data, y, m) {
+  function SortLoadsByYearMonth(data, y, m) {
     let year_data =
       data.filter && data.filter((it, i) => it.code.includes(`${y}_${m}`));
 
     year_data = year_data.sort(customSortByDate);
 
-    let total_data = {};
+    let sorted_loads = {};
     let tot_sacs = 0;
     let tot_camions = 0;
     let tot_retours = 0;
@@ -154,31 +154,31 @@ export default function BagsDataList({
       const [team, shift, year, month, date] = it.code.split("_");
       const day = `${year}_${month}_${date}`;
 
-      if (total_data[day] == undefined) {
-        total_data[day] = [it];
+      if (sorted_loads[day] == undefined) {
+        sorted_loads[day] = [it];
       } else {
-        total_data[day].push(it);
+        sorted_loads[day].push(it);
       }
 
-      let old = total_data[day];
+      let old = sorted_loads[day];
 
-      total_data[day] = [...old.sort(customSortShifts)];
+      sorted_loads[day] = [...old.sort(customSortShifts)];
     });
 
-    /* total_data = {
+    const total_data = {
       sacs: tot_sacs,
       camions: tot_camions,
-      t: (tot_sacs / 20).toFixed(2),
+      t: (Number(tot_sacs) / 20).toFixed(2),
       ajouts: tot_ajouts,
       retours: tot_retours,
       dechires: tot_dechires,
       bonus: tot_bonus,
-    }; */
+    };
 
     setTotalData(total_data);
     console.log("total_data", total_data);
 
-    return total_data;
+    return sorted_loads;
   }
 
   function stfy(d) {

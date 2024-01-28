@@ -324,7 +324,6 @@ export const customSortDaysArray = (a, b) => {
   const dateA = Number(a[0].split("-")[2]); //.code.slice(-2);
   const dateB = Number(b[0].split("-")[2]); //.code.slice(-2);
 
-  console.log("lastTwoCharsA", dateA, "lastTwoCharsB", dateB);
   return dateA - dateB; //lastTwoCharsA.localeCompare(lastTwoCharsB);
 };
 
