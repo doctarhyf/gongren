@@ -11,6 +11,7 @@ import {
   formatFrenchDate,
 } from "../helpers/func";
 import ButtonPrint from "./ButtonPrint";
+import RepportCard from "./RepportCard";
 
 function MyForm() {
   return (
@@ -81,6 +82,9 @@ export default function BagsDataList({
   showRepportMode,
   onSetDataLevel,
   loads_by_item,
+  repportData,
+  onUpdateShiftData,
+  onDeleteShiftData,
 }) {
   const [loading, setloading] = useState(false);
   const [loads, setloads] = useState([]);
@@ -188,174 +192,162 @@ export default function BagsDataList({
     <div>
       <Loading isLoading={loading} />
 
-      {true && (
+      {showRepportMode && (
         <>
-          {showRepportMode && (
-            <>
-              <DateSelector onDateSelected={onDateSelected} />
-              <div>Select date to view repport</div>
-              {loads === undefined && (
-                <div>
-                  No data for selected date{" "}
-                  <b>{`${MONTHS[date.m]}, ${date.y}`}</b>
-                </div>
-              )}
+          <DateSelector onDateSelected={onDateSelected} />
+          <div>Select date to view repport</div>
+          {loads === undefined && (
+            <div>
+              No data for selected date <b>{`${MONTHS[date.m]}, ${date.y}`}</b>
+            </div>
+          )}
 
-              {
-                <div>
-                  <div className="flex">
-                    <ButtonPrint
-                      title={"PRINT"}
-                      onClick={(e) => console.log(e)}
-                    />
-                  </div>
-                  <table>
-                    <thead>
-                      <tr>
-                        {[
-                          "id",
-                          "date",
-                          //"code",
-                          "equipe",
-                          "shift",
-                          "sacs",
-                          "t",
+          {
+            <div>
+              <div className="flex">
+                <ButtonPrint title={"PRINT"} onClick={(e) => console.log(e)} />
+              </div>
+              <table>
+                <thead>
+                  <tr>
+                    {[
+                      "id",
+                      "date",
+                      //"code",
+                      "equipe",
+                      "shift",
+                      "sacs",
+                      "t",
 
-                          "bonus",
-                          "camions",
-                          "dechires",
-                          "retours",
-                          "ajouts",
-                        ].map((t, i) => (
-                          <td className={CLASS_TD}>{t}</td>
-                        ))}
-                      </tr>
-                      {totalData && (
-                        <tr>
-                          {[
-                            "TOTAL",
-                            "",
-                            //"code",
-                            "",
-                            "",
-                            totalData.sacs,
-                            totalData.t,
-                            totalData.bonus,
-                            totalData.camions,
-                            totalData.dechires,
-                            totalData.retours,
-                            totalData.ajouts,
-                          ].map((t, i) => (
-                            <>
-                              {![1, 2, 3].includes(i) && (
-                                <td
-                                  className={CLASS_TD}
-                                  colSpan={i === 0 ? 4 : 1}
-                                >
-                                  {t}
-                                </td>
-                              )}
-                            </>
-                          ))}
-                        </tr>
-                      )}
-                    </thead>
-                    <tbody>
-                      {loadsbif &&
-                        Object.entries(loadsbif).map((ld, i) => (
-                          <tr
-                            className={`p-0 ${
-                              i % 2 === 0 ? "bg-neutral-100" : ""
-                            } hover:bg-slate-200 hover:cursor-pointer`}
-                          >
-                            <td className={CLASS_TD}>{i}</td>
-                            <td className={CLASS_TD}>
-                              {ld[0]
-                                .replaceAll("_", "/")
-                                .replaceAll("/0/", "/1/")}
+                      "bonus",
+                      "camions",
+                      "dechires",
+                      "retours",
+                      "ajouts",
+                    ].map((t, i) => (
+                      <td className={CLASS_TD}>{t}</td>
+                    ))}
+                  </tr>
+                  {totalData && (
+                    <tr>
+                      {[
+                        "TOTAL",
+                        "",
+                        //"code",
+                        "",
+                        "",
+                        totalData.sacs,
+                        totalData.t,
+                        totalData.bonus,
+                        totalData.camions,
+                        totalData.dechires,
+                        totalData.retours,
+                        totalData.ajouts,
+                      ].map((t, i) => (
+                        <>
+                          {![1, 2, 3].includes(i) && (
+                            <td className={CLASS_TD} colSpan={i === 0 ? 4 : 1}>
+                              {t}
                             </td>
-                            {/*  <td>
+                          )}
+                        </>
+                      ))}
+                    </tr>
+                  )}
+                </thead>
+                <tbody>
+                  {loadsbif &&
+                    Object.entries(loadsbif).map((ld, i) => (
+                      <tr
+                        className={`p-0 ${
+                          i % 2 === 0 ? "bg-neutral-100" : ""
+                        } hover:bg-slate-200 hover:cursor-pointer`}
+                      >
+                        <td className={CLASS_TD}>{i}</td>
+                        <td className={CLASS_TD}>
+                          {ld[0].replaceAll("_", "/").replaceAll("/0/", "/1/")}
+                        </td>
+                        {/*  <td>
                               {ld[1].map &&
                                 ld[1].map((it, i) => (
                                   <div className={CLASS_TD}>{it.code}</div>
                                 ))}
                             </td> */}
-                            <td>
-                              {ld[1].map &&
-                                ld[1].map((it, i) => (
-                                  <div className={CLASS_TD}>
-                                    {it.code.split("_")[0]}
-                                  </div>
-                                ))}
-                            </td>
-                            <td>
-                              {ld[1].map &&
-                                ld[1].map((it, i) => (
-                                  <div className={CLASS_TD}>
-                                    {it.code.split("_")[1]}
-                                  </div>
-                                ))}
-                            </td>
-                            <td>
-                              {ld[1].map &&
-                                ld[1].map((it, i) => (
-                                  <div className={CLASS_TD}>{it.sacs}</div>
-                                ))}
-                            </td>
-                            <td>
-                              {ld[1].map &&
-                                ld[1].map((it, i) => (
-                                  <div className={CLASS_TD}>
-                                    {Number(it.sacs) / 20}
-                                  </div>
-                                ))}
-                            </td>
-                            <td>
-                              {ld[1].map &&
-                                ld[1].map((it, i) => (
-                                  <div className={CLASS_TD}>
-                                    {Number(it.sacs) / 20 - 600 < 0
-                                      ? 0
-                                      : (Number(it.sacs) / 20 - 600).toFixed(2)}
-                                  </div>
-                                ))}
-                            </td>
-                            <td>
-                              {ld[1].map &&
-                                ld[1].map((it, i) => (
-                                  <div className={CLASS_TD}>{it.camions}</div>
-                                ))}
-                            </td>
-                            <td>
-                              {ld[1].map &&
-                                ld[1].map((it, i) => (
-                                  <div className={CLASS_TD}>{it.dechires}</div>
-                                ))}
-                            </td>
-                            <td>
-                              {ld[1].map &&
-                                ld[1].map((it, i) => (
-                                  <div className={CLASS_TD}>{it.retours}</div>
-                                ))}
-                            </td>
-                            <td>
-                              {ld[1].map &&
-                                ld[1].map((it, i) => (
-                                  <div className={CLASS_TD}>{it.ajouts}</div>
-                                ))}
-                            </td>
-                          </tr>
-                        ))}
-                    </tbody>
-                  </table>
-                </div>
-              }
-            </>
-          )}
+                        <td>
+                          {ld[1].map &&
+                            ld[1].map((it, i) => (
+                              <div className={CLASS_TD}>
+                                {it.code.split("_")[0]}
+                              </div>
+                            ))}
+                        </td>
+                        <td>
+                          {ld[1].map &&
+                            ld[1].map((it, i) => (
+                              <div className={CLASS_TD}>
+                                {it.code.split("_")[1]}
+                              </div>
+                            ))}
+                        </td>
+                        <td>
+                          {ld[1].map &&
+                            ld[1].map((it, i) => (
+                              <div className={CLASS_TD}>{it.sacs}</div>
+                            ))}
+                        </td>
+                        <td>
+                          {ld[1].map &&
+                            ld[1].map((it, i) => (
+                              <div className={CLASS_TD}>
+                                {Number(it.sacs) / 20}
+                              </div>
+                            ))}
+                        </td>
+                        <td>
+                          {ld[1].map &&
+                            ld[1].map((it, i) => (
+                              <div className={CLASS_TD}>
+                                {Number(it.sacs) / 20 - 600 < 0
+                                  ? 0
+                                  : (Number(it.sacs) / 20 - 600).toFixed(2)}
+                              </div>
+                            ))}
+                        </td>
+                        <td>
+                          {ld[1].map &&
+                            ld[1].map((it, i) => (
+                              <div className={CLASS_TD}>{it.camions}</div>
+                            ))}
+                        </td>
+                        <td>
+                          {ld[1].map &&
+                            ld[1].map((it, i) => (
+                              <div className={CLASS_TD}>{it.dechires}</div>
+                            ))}
+                        </td>
+                        <td>
+                          {ld[1].map &&
+                            ld[1].map((it, i) => (
+                              <div className={CLASS_TD}>{it.retours}</div>
+                            ))}
+                        </td>
+                        <td>
+                          {ld[1].map &&
+                            ld[1].map((it, i) => (
+                              <div className={CLASS_TD}>{it.ajouts}</div>
+                            ))}
+                        </td>
+                      </tr>
+                    ))}
+                </tbody>
+              </table>
+            </div>
+          }
         </>
       )}
+
       {!showRepportMode && (
-        <>
+        <div className="flex gap-4">
           <div className="flex  ">
             <div className="border-l pl-1">
               <div>Annee/年</div>
@@ -457,7 +449,12 @@ export default function BagsDataList({
               </div>
             )}
           </div>
-        </>
+          <RepportCard
+            data={repportData}
+            onUpdateShiftData={onUpdateShiftData}
+            onDeleteShiftData={onDeleteShiftData}
+          />
+        </div>
       )}
     </div>
   );

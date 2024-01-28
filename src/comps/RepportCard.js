@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CLASS_BTN, SHIFT_HOURS_ZH, SUPERVISORS } from "../helpers/flow";
 import { draw_load_table } from "../helpers/funcs_print";
 import ButtonPrint from "./ButtonPrint";
@@ -51,8 +51,38 @@ Superviseur班长: @Albert Kankombwe 
     rep_data.year = year;
   }
 
+  const [isSticky, setIsSticky] = useState(false);
+  const [headerOffset, setHeaderOffset] = useState(0);
+  const headerRef = useRef(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY;
+      const headerRect = headerRef.current.getBoundingClientRect();
+
+      const threshold = 100;
+
+      setIsSticky(scrollPosition > threshold);
+      setHeaderOffset(headerRect.left);
+    };
+
+    // Add scroll event listener
+    window.addEventListener("scroll", handleScroll);
+
+    // Remove event listener on component unmount
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
-    <div className="border mt-2 rounded-md p-1 h-min bg-neutral-100 shadow-md">
+    <div
+      ref={headerRef}
+      className={`border mt-2 rounded-md p-1 h-min bg-neutral-100 shadow-md ${
+        isSticky ? "fixed top-0" : ""
+      } `}
+      style={{ left: isSticky ? headerOffset + "px" : "auto" }}
+    >
       <div className=" text-sky-500">
         <div className="py-1 text-xl border-b mb-1">
           <div>Rapport {data && data.type}</div>

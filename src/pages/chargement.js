@@ -174,10 +174,7 @@ export default function Chargement() {
             showRepportMode={showRepportMode}
             onSetDataLevel={onSetDataLevel}
             loads_by_item={loads_by_item}
-          />
-
-          <RepportCard
-            data={repportData}
+            repportData={repportData}
             onUpdateShiftData={onUpdateShiftData}
             onDeleteShiftData={onDeleteShiftData}
           />
