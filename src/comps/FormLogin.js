@@ -15,6 +15,8 @@ export default function FormLogin({ onLogin }) {
     const mat = ref_mat.current.value;
     const pin = ref_pin.current.value;
 
+    console.log(mat, pin);
+
     onLogin(mat, pin);
   }
 
@@ -24,20 +26,13 @@ export default function FormLogin({ onLogin }) {
         <img src={LOGO} width={200} />
         <div>Matricule</div>
         <input
-          value={"L0501"}
           ref={ref_mat}
           type="text"
-          placeholder="matricule"
+          placeholder="matricule, ex: L0501"
           className={CLASS_INPUT_TEXT}
         />
         <div>PIN</div>
-        <input
-          value={"0000"}
-          ref={ref_pin}
-          type="password"
-          placeholder="0000"
-          className={CLASS_INPUT_TEXT}
-        />
+        <input ref={ref_pin} type="password" className={CLASS_INPUT_TEXT} />
         <div>
           <button
             onClick={(e) => onBtnLogin()}
