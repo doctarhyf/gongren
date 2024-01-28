@@ -4,7 +4,12 @@ import { TABLES_NAMES } from "../helpers/sb.config";
 import Loading from "../comps/Loading";
 import DateSelector from "./DateSelector";
 import { CLASS_BTN, CLASS_TD, MONTHS } from "../helpers/flow";
-import { formatFrenchDate } from "../helpers/func";
+import {
+  CorrectZeroMonthIndexDisplay,
+  customSortByDate,
+  customSortDaysArray,
+  formatFrenchDate,
+} from "../helpers/func";
 import ButtonPrint from "./ButtonPrint";
 
 function MyForm() {
@@ -93,7 +98,7 @@ export default function BagsDataList({
     shift: "",
   });
 
-  const [rapViewData, setRapViewData] = useState();
+  const [totalData, setTotalData] = useState();
   const [loadsbif, setloadsbif] = useState();
 
   function onDateSelected(new_date) {
@@ -124,15 +129,9 @@ export default function BagsDataList({
     let year_data =
       data.filter && data.filter((it, i) => it.code.includes(`${y}_${m}`));
 
-    year_data = year_data.sort((a, b) => {
-      const lastTwoCharsA = a.code.slice(-2);
-      const lastTwoCharsB = b.code.slice(-2);
+    year_data = year_data.sort(customSortByDate);
 
-      return lastTwoCharsA.localeCompare(lastTwoCharsB);
-    });
-
-    let final_data = {};
-
+    let total_data = {};
     let tot_sacs = 0;
     let tot_camions = 0;
     let tot_retours = 0;
@@ -155,18 +154,18 @@ export default function BagsDataList({
       const [team, shift, year, month, date] = it.code.split("_");
       const day = `${year}_${month}_${date}`;
 
-      if (final_data[day] == undefined) {
-        final_data[day] = [it];
+      if (total_data[day] == undefined) {
+        total_data[day] = [it];
       } else {
-        final_data[day].push(it);
+        total_data[day].push(it);
       }
 
-      let old = final_data[day];
+      let old = total_data[day];
 
-      final_data[day] = [...old.sort(customSortShifts)];
+      total_data[day] = [...old.sort(customSortShifts)];
     });
 
-    setRapViewData({
+    /* total_data = {
       sacs: tot_sacs,
       camions: tot_camions,
       t: (tot_sacs / 20).toFixed(2),
@@ -174,10 +173,12 @@ export default function BagsDataList({
       retours: tot_retours,
       dechires: tot_dechires,
       bonus: tot_bonus,
-    });
+    }; */
 
-    console.log("f data => ", final_data);
-    return final_data;
+    setTotalData(total_data);
+    console.log("total_data", total_data);
+
+    return total_data;
   }
 
   function stfy(d) {
@@ -219,6 +220,7 @@ export default function BagsDataList({
                           "shift",
                           "sacs",
                           "t",
+
                           "bonus",
                           "camions",
                           "dechires",
@@ -228,33 +230,35 @@ export default function BagsDataList({
                           <td className={CLASS_TD}>{t}</td>
                         ))}
                       </tr>
-                      <tr>
-                        {[
-                          "TOTAL",
-                          "",
-                          //"code",
-                          "",
-                          "",
-                          rapViewData.sacs,
-                          rapViewData.t,
-                          rapViewData.bonus,
-                          rapViewData.camions,
-                          rapViewData.dechires,
-                          rapViewData.retours,
-                          rapViewData.ajouts,
-                        ].map((t, i) => (
-                          <>
-                            {![1, 2, 3].includes(i) && (
-                              <td
-                                className={CLASS_TD}
-                                colSpan={i === 0 ? 4 : 1}
-                              >
-                                {t}
-                              </td>
-                            )}
-                          </>
-                        ))}
-                      </tr>
+                      {totalData && (
+                        <tr>
+                          {[
+                            "TOTAL",
+                            "",
+                            //"code",
+                            "",
+                            "",
+                            totalData.sacs,
+                            totalData.t,
+                            totalData.bonus,
+                            totalData.camions,
+                            totalData.dechires,
+                            totalData.retours,
+                            totalData.ajouts,
+                          ].map((t, i) => (
+                            <>
+                              {![1, 2, 3].includes(i) && (
+                                <td
+                                  className={CLASS_TD}
+                                  colSpan={i === 0 ? 4 : 1}
+                                >
+                                  {t}
+                                </td>
+                              )}
+                            </>
+                          ))}
+                        </tr>
+                      )}
                     </thead>
                     <tbody>
                       {loadsbif &&
@@ -399,7 +403,7 @@ export default function BagsDataList({
                     }}
                     className={CLASS_BTN}
                   >
-                    {month_data[0]}
+                    {CorrectZeroMonthIndexDisplay(month_data[0])}
                   </div>
                 ))}
               </div>
@@ -408,24 +412,26 @@ export default function BagsDataList({
             {monthData && (
               <div className="border-l pl-1">
                 <div>Jour/日</div>
-                {Object.entries(monthData).map((day_data, i) => (
-                  <div
-                    key={i}
-                    onClick={(e) => {
-                      onSetDataLevel("d", day_data);
-                      setShiftData(undefined);
-                      setDatePath((old) => ({
-                        ...old,
-                        d: day_data[0].split("-")[2],
-                        shift: "",
-                      }));
-                      setDayData(day_data[1]);
-                    }}
-                    className={CLASS_BTN}
-                  >
-                    {day_data[0]}
-                  </div>
-                ))}
+                {Object.entries(monthData)
+                  .sort(customSortDaysArray)
+                  .map((day_data, i) => (
+                    <div
+                      key={i}
+                      onClick={(e) => {
+                        onSetDataLevel("d", day_data);
+                        setShiftData(undefined);
+                        setDatePath((old) => ({
+                          ...old,
+                          d: day_data[0].split("-")[2],
+                          shift: "",
+                        }));
+                        setDayData(day_data[1]);
+                      }}
+                      className={CLASS_BTN}
+                    >
+                      {CorrectZeroMonthIndexDisplay(day_data[0])}
+                    </div>
+                  ))}
               </div>
             )}
 

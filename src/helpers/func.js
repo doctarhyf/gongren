@@ -306,6 +306,28 @@ export function ParseDayRepport(day_data) {
   return repport;
 }
 
+export const customSortByDate = (a, b) => {
+  const lastTwoCharsA = a.code.slice(-2);
+  const lastTwoCharsB = b.code.slice(-2);
+
+  return lastTwoCharsA.localeCompare(lastTwoCharsB);
+};
+
+export function CorrectZeroMonthIndexDisplay(dateStr, splitter = "-") {
+  let [y, m, d] = dateStr.split(splitter);
+  m = Number(m) + 1;
+  if (d === undefined) return `${y}/${m}`;
+  return `${y}/${m}/${d}`;
+}
+
+export const customSortDaysArray = (a, b) => {
+  const dateA = Number(a[0].split("-")[2]); //.code.slice(-2);
+  const dateB = Number(b[0].split("-")[2]); //.code.slice(-2);
+
+  console.log("lastTwoCharsA", dateA, "lastTwoCharsB", dateB);
+  return dateA - dateB; //lastTwoCharsA.localeCompare(lastTwoCharsB);
+};
+
 export function getRouelemtDaysLetters(year, monthIndex) {
   // Ensure the monthIndex is between 0 (January) and 11 (December)
   monthIndex = monthIndex - 1;
