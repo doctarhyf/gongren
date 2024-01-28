@@ -4,6 +4,7 @@ import { TABLES_NAMES } from "../helpers/sb.config";
 import Loading from "../comps/Loading";
 import DateSelector from "./DateSelector";
 import { CLASS_BTN, CLASS_TD, MONTHS } from "../helpers/flow";
+import excel from "../img/excel.png";
 import {
   CorrectZeroMonthIndexDisplay,
   customSortByDate,
@@ -12,6 +13,7 @@ import {
 } from "../helpers/func";
 import ButtonPrint from "./ButtonPrint";
 import RepportCard from "./RepportCard";
+import TableLoads from "./TableLoads";
 
 function MyForm() {
   return (
@@ -107,7 +109,7 @@ export default function BagsDataList({
 
   function onDateSelected(new_date) {
     setdate(new_date);
-
+    setTotalData(undefined);
     const { y: year, m: month } = new_date;
     const date_code = `${new_date.y}-${new_date.m}`;
     const data = loadsf[year] && loadsf[year][date_code];
@@ -188,6 +190,15 @@ export default function BagsDataList({
   function stfy(d) {
     return JSON.stringify(d).toString();
   }
+
+  function printLoadTabled(loasds, totals) {
+    console.log(loads, totals);
+  }
+
+  function downloadExcel(loads, totals) {
+    console.log(loads, totals);
+  }
+
   return (
     <div>
       <Loading isLoading={loading} />
@@ -205,142 +216,23 @@ export default function BagsDataList({
           {
             <div>
               <div className="flex">
-                <ButtonPrint title={"PRINT"} onClick={(e) => console.log(e)} />
+                <div className="flex gap-4">
+                  <ButtonPrint
+                    title={"PRINT"}
+                    onClick={(e) => printLoadTabled(loadsbif, totalData)}
+                  />
+                  <ButtonPrint
+                    icon={excel}
+                    title={"DOWNLOAD EXCEL"}
+                    onClick={(e) => downloadExcel(loadsbif, totalData)}
+                  />
+                </div>
               </div>
-              <table>
-                <thead>
-                  <tr>
-                    {[
-                      "id",
-                      "date",
-                      //"code",
-                      "equipe",
-                      "shift",
-                      "sacs",
-                      "t",
-
-                      "bonus",
-                      "camions",
-                      "dechires",
-                      "retours",
-                      "ajouts",
-                    ].map((t, i) => (
-                      <td className={CLASS_TD}>{t}</td>
-                    ))}
-                  </tr>
-                  {totalData && (
-                    <tr>
-                      {[
-                        "TOTAL",
-                        "",
-                        //"code",
-                        "",
-                        "",
-                        totalData.sacs,
-                        totalData.t,
-                        totalData.bonus,
-                        totalData.camions,
-                        totalData.dechires,
-                        totalData.retours,
-                        totalData.ajouts,
-                      ].map((t, i) => (
-                        <>
-                          {![1, 2, 3].includes(i) && (
-                            <td className={CLASS_TD} colSpan={i === 0 ? 4 : 1}>
-                              {t}
-                            </td>
-                          )}
-                        </>
-                      ))}
-                    </tr>
-                  )}
-                </thead>
-                <tbody>
-                  {loadsbif &&
-                    Object.entries(loadsbif).map((ld, i) => (
-                      <tr
-                        className={`p-0 ${
-                          i % 2 === 0 ? "bg-neutral-100" : ""
-                        } hover:bg-slate-200 hover:cursor-pointer`}
-                      >
-                        <td className={CLASS_TD}>{i}</td>
-                        <td className={CLASS_TD}>
-                          {ld[0].replaceAll("_", "/").replaceAll("/0/", "/1/")}
-                        </td>
-                        {/*  <td>
-                              {ld[1].map &&
-                                ld[1].map((it, i) => (
-                                  <div className={CLASS_TD}>{it.code}</div>
-                                ))}
-                            </td> */}
-                        <td>
-                          {ld[1].map &&
-                            ld[1].map((it, i) => (
-                              <div className={CLASS_TD}>
-                                {it.code.split("_")[0]}
-                              </div>
-                            ))}
-                        </td>
-                        <td>
-                          {ld[1].map &&
-                            ld[1].map((it, i) => (
-                              <div className={CLASS_TD}>
-                                {it.code.split("_")[1]}
-                              </div>
-                            ))}
-                        </td>
-                        <td>
-                          {ld[1].map &&
-                            ld[1].map((it, i) => (
-                              <div className={CLASS_TD}>{it.sacs}</div>
-                            ))}
-                        </td>
-                        <td>
-                          {ld[1].map &&
-                            ld[1].map((it, i) => (
-                              <div className={CLASS_TD}>
-                                {Number(it.sacs) / 20}
-                              </div>
-                            ))}
-                        </td>
-                        <td>
-                          {ld[1].map &&
-                            ld[1].map((it, i) => (
-                              <div className={CLASS_TD}>
-                                {Number(it.sacs) / 20 - 600 < 0
-                                  ? 0
-                                  : (Number(it.sacs) / 20 - 600).toFixed(2)}
-                              </div>
-                            ))}
-                        </td>
-                        <td>
-                          {ld[1].map &&
-                            ld[1].map((it, i) => (
-                              <div className={CLASS_TD}>{it.camions}</div>
-                            ))}
-                        </td>
-                        <td>
-                          {ld[1].map &&
-                            ld[1].map((it, i) => (
-                              <div className={CLASS_TD}>{it.dechires}</div>
-                            ))}
-                        </td>
-                        <td>
-                          {ld[1].map &&
-                            ld[1].map((it, i) => (
-                              <div className={CLASS_TD}>{it.retours}</div>
-                            ))}
-                        </td>
-                        <td>
-                          {ld[1].map &&
-                            ld[1].map((it, i) => (
-                              <div className={CLASS_TD}>{it.ajouts}</div>
-                            ))}
-                        </td>
-                      </tr>
-                    ))}
-                </tbody>
-              </table>
+              <TableLoads
+                date={date}
+                totalData={totalData}
+                loadsData={loadsbif}
+              />
             </div>
           }
         </>

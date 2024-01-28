@@ -1,5 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-import { CLASS_BTN, SHIFT_HOURS_ZH, SUPERVISORS } from "../helpers/flow";
+import {
+  CLASS_BTN,
+  CLASS_REPPORT_CARD,
+  SHIFT_HOURS_ZH,
+  SUPERVISORS,
+} from "../helpers/flow";
 import { draw_load_table } from "../helpers/funcs_print";
 import ButtonPrint from "./ButtonPrint";
 
@@ -13,6 +18,10 @@ export default function RepportCard({
   function onPrintDailyRepport(data) {
     draw_load_table(data);
     //console.log(data);
+  }
+
+  function onPrintShiftRepport(data) {
+    console.log(data);
   }
 
   function copyToClipboard(text) {
@@ -78,9 +87,7 @@ Superviseur班长: @Albert Kankombwe 
   return (
     <div
       ref={headerRef}
-      className={`border mt-2 rounded-md p-1 h-min bg-neutral-100 shadow-md ${
-        isSticky ? "fixed top-0" : ""
-      } `}
+      className={`${CLASS_REPPORT_CARD} ${isSticky ? "fixed top-0" : ""} `}
       style={{ left: isSticky ? headerOffset + "px" : "auto" }}
     >
       <div className=" text-sky-500">
@@ -195,6 +202,15 @@ Superviseur班长: @Albert Kankombwe 
           <ButtonPrint
             onClick={(e) => onPrintDailyRepport(data)}
             title={"PRINT DAILY REPPORT."}
+          />
+        </div>
+      )}
+
+      {data && data.tid === "s" && (
+        <div>
+          <ButtonPrint
+            onClick={(e) => onPrintShiftRepport(data)}
+            title={"PRINT SHIFT REPPORT."}
           />
         </div>
       )}
