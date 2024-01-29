@@ -28,8 +28,9 @@ import {
 } from "../helpers/func";
 import Loading from "../comps/Loading";
 import { GetRandomArray, doc, print_agents_rl } from "../helpers/funcs_print";
+import AgentsTable from "../comps/AgentsTable";
 
-function AgentsTable({
+/* function AgentsTable({
   agentsf,
   ref_sp_equipe,
   ref_sp_section,
@@ -257,7 +258,7 @@ function AgentsTable({
     </>
   );
 }
-
+ */
 export default function Equipes() {
   const [agents, setagents] = useState([]);
   const [agentsf, setagentsf] = useState([]);
