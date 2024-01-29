@@ -6,6 +6,7 @@ import * as SB from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
 import Loading from "./Loading";
 import shield from "../img/shield.png";
+import user from "../img/user.png";
 import ItemNotSelected from "./ItemNotSelected";
 
 export const AGENT_CARD_EVENT = {
@@ -88,12 +89,7 @@ export default function AgentCard({
       {agent && !agentCardEditMode && (
         <div className="agent-card p-2 border-neutral-400 border rounded-md ml-2">
           <div className="text-center">
-            <img
-              className="mx-auto"
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpeN_JyQ6AUHZ3TGvJhlkL17RF6DYel89sNJ0D7rTHfg&s"
-              width={80}
-              height={80}
-            />
+            <img className="mx-auto" src={user} width={80} height={80} />
           </div>
           <div>
             <table>
