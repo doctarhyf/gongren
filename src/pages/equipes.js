@@ -3,6 +3,8 @@ import React, { useEffect, useRef, useState } from "react";
 import {
   CLASS_BTN,
   CLASS_INPUT_TEXT,
+  CLASS_SELECT,
+  CLASS_SELECT_TITLE,
   CLASS_TD,
   EQUIPES,
   K_POSTE_AIDE_OPERATEUR,
@@ -410,71 +412,68 @@ export default function Equipes() {
       <Loading isLoading={loading} />
 
       {!loading && (
-        <table>
-          <tbody>
+        <>
+          <div>
             <div>
-              <tr>
-                <td>SECTION</td>
-                <td>
-                  <select
-                    name="section"
-                    ref={ref_section}
-                    defaultValue={SECTIONS[0]}
-                    onChange={onFilterAgents}
-                  >
-                    {SECTIONS.map((it, i) => (
-                      <option key={i}>{it}</option>
-                    ))}
-                  </select>
-                </td>
-              </tr>
-              <tr>
-                <td>EQUIPE</td>
-                <td>
-                  {" "}
-                  <select
-                    name="equipe"
-                    defaultValue={EQUIPES[0]}
-                    ref={ref_equipe}
-                    onChange={onFilterAgents}
-                  >
-                    {EQUIPES.map((it, i) => (
-                      <option key={i}>{it}</option>
-                    ))}
-                  </select>
-                </td>
-              </tr>
-            </div>
+              <span className={CLASS_SELECT_TITLE}>SECTION</span>
 
-            <tr>
-              <td>Date</td>
-              <td>
-                <div>
-                  Year:
-                  <select
-                    onChange={onFilterAgents}
-                    ref={ref_year}
-                    className={CLASS_INPUT_TEXT}
-                  >
-                    {[...Array(10)].map((it, i) => (
-                      <option key={i}>{new Date().getFullYear() + i}</option>
-                    ))}
-                  </select>
-                </div>
-                <div>
-                  Month:
-                  <select onChange={onFilterAgents} ref={ref_month}>
-                    {[...Array(12)].map((it, i) => (
-                      <option key={i} value={i}>
-                        {MONTHS[i]}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+              <select
+                className={CLASS_SELECT}
+                name="section"
+                ref={ref_section}
+                defaultValue={SECTIONS[0]}
+                onChange={onFilterAgents}
+              >
+                {SECTIONS.map((it, i) => (
+                  <option key={i}>{it}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <span className={CLASS_SELECT_TITLE}>EQUIPE</span>
+
+            <select
+              className={CLASS_SELECT}
+              name="equipe"
+              defaultValue={EQUIPES[0]}
+              ref={ref_equipe}
+              onChange={onFilterAgents}
+            >
+              {EQUIPES.map((it, i) => (
+                <option key={i}>{it}</option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <span className={CLASS_SELECT_TITLE}>Year:</span>
+            <select
+              onChange={onFilterAgents}
+              ref={ref_year}
+              className={CLASS_SELECT}
+            >
+              {[...Array(10)].map((it, i) => (
+                <option key={i}>{new Date().getFullYear() + i}</option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <span className={CLASS_SELECT_TITLE}>Month:</span>
+            <select
+              className={CLASS_SELECT}
+              onChange={onFilterAgents}
+              ref={ref_month}
+            >
+              {[...Array(12)].map((it, i) => (
+                <option key={i} value={i}>
+                  {MONTHS[i]}
+                </option>
+              ))}
+            </select>
+          </div>
+        </>
       )}
 
       <div>
