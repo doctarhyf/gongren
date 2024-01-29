@@ -90,6 +90,31 @@ export default function TableRLD({
     print_agent_roulement(doc, print_data);
   }
 
+  async function onCreateNewRLD(len) {
+    const rld = [...Array(len).fill("-")];
+    const [mc, agent_id, y, m] = monthCode.split("_");
+
+    const data = {
+      rl: rld.join(""),
+      month_code: monthCode,
+      agent_id: agent_id,
+    };
+
+    console.log(data);
+
+    const res = await SB.UpdateRoulement2(
+      monthCode,
+      data.rl,
+      (s) => {
+        onRoulementSaved({ agent_id: agent_id, month_code: monthCode });
+        console.log(s);
+      },
+      (e) => {
+        console.log(e);
+      }
+    );
+  }
+
   return (
     <div>
       <Loading isLoading={loading} />
@@ -115,16 +140,6 @@ export default function TableRLD({
                     />
                   </div>
                 )}
-                {/* {error && (
-                <div>
-                  <button
-                    onClick={(e) => createTimetableData()}
-                    className={CLASS_BTN}
-                  >
-                    NEW TITMETABLE
-                  </button>
-                </div>
-              )} */}
                 {editing && (
                   <div>
                     {" "}
@@ -164,13 +179,27 @@ export default function TableRLD({
                 <td className={CLASS_TD}>Num序号</td>
                 <td className={CLASS_TD}>Nom</td>
                 <td className={CLASS_TD}>Mat.工号</td>
-                {curAgentRld.map((d, i) => (
-                  <td key={i} className={CLASS_TD}>
-                    {21 + i > daysCount
-                      ? (daysCount - i - 20 - 1) * -1
-                      : 21 + i}
+                {!curAgentRld.map && (
+                  <td className={CLASS_TD} colSpan={daysLetters.length}>
+                    <div>The roulement data is empty or inexistant</div>
+                    <div>
+                      <button
+                        onClick={(e) => onCreateNewRLD(daysLetters.length)}
+                        className={CLASS_BTN}
+                      >
+                        CREATE NEW
+                      </button>
+                    </div>
                   </td>
-                ))}
+                )}
+                {curAgentRld.map &&
+                  curAgentRld.map((d, i) => (
+                    <td key={i} className={CLASS_TD}>
+                      {21 + i > daysCount
+                        ? (daysCount - i - 20 - 1) * -1
+                        : 21 + i}
+                    </td>
+                  ))}
               </tr>
             </>
           )}
@@ -181,24 +210,25 @@ export default function TableRLD({
               {curAgent && curAgent.nom} - {curAgent && curAgent.postnom}
             </td>
             <td className={CLASS_TD}>{curAgent && curAgent.matricule}</td>
-            {curAgentRld.map((rld, i) => (
-              <td className={CLASS_TD} key={i}>
-                {!editing && rld}
-                {editing && (
-                  <select
-                    onChange={(e) => onUpdateRLD(i, e.target.value)}
-                    className="text-xs p-0"
-                    defaultValue={rld}
-                  >
-                    {["J", "M", "P", "N", "R", "-"].map((it, i) => (
-                      <option className="text-xs" key={i}>
-                        {it}
-                      </option>
-                    ))}
-                  </select>
-                )}
-              </td>
-            ))}
+            {curAgentRld.map &&
+              curAgentRld.map((rld, i) => (
+                <td className={CLASS_TD} key={i}>
+                  {!editing && rld}
+                  {editing && (
+                    <select
+                      onChange={(e) => onUpdateRLD(i, e.target.value)}
+                      className="text-xs p-0"
+                      defaultValue={rld}
+                    >
+                      {["J", "M", "P", "N", "R", "-"].map((it, i) => (
+                        <option className="text-xs" key={i}>
+                          {it}
+                        </option>
+                      ))}
+                    </select>
+                  )}
+                </td>
+              ))}
           </tr>
           <td className="">
             <div>
