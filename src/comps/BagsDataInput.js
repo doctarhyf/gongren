@@ -133,7 +133,7 @@ export default function BagsDataInput({
         <div>
           <span className={CLASS_SELECT_TITLE}>DATE:</span>
 
-          {(upd && upd.date) || `${date.d}/${date.m}/${date.y}`}
+          {(upd && upd.date) || `${date.d}/${Number(date.m) + 1}/${date.y}`}
         </div>
         <div>
           <div>
