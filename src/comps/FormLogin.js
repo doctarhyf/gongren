@@ -15,7 +15,12 @@ export default function FormLogin({ onLogin }) {
     const mat = ref_mat.current.value;
     const pin = ref_pin.current.value;
 
-    console.log(mat, pin);
+    //console.log(mat, pin);
+
+    if (mat === "" || pin === "") {
+      alert(`Matricule and password cant be empty!`);
+      return;
+    }
 
     onLogin(mat, pin);
   }

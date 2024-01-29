@@ -30,6 +30,7 @@ import {
 import Loading from "../comps/Loading";
 import { GetRandomArray, doc, print_agents_rl } from "../helpers/funcs_print";
 import AgentsTable from "../comps/AgentsTable";
+import AgentsList from "../comps/AgentsList";
 
 export default function Equipes() {
   const [agents, setagents] = useState([]);
@@ -176,12 +177,18 @@ export default function Equipes() {
     setagentsf([...arr_agents_with_rld]);
   }
 
+  const [isCustomList, setIsCustomList] = useState(false);
+
   useEffect(() => {
     onFilterAgents();
   }, [selectedFilter]);
 
   function onSetFilter(e) {
     setSelectedFilter(e);
+  }
+
+  function onAgentClick(ag) {
+    console.log(ag);
   }
 
   const [showFilters, setShowFilters] = useState(false);
@@ -192,65 +199,80 @@ export default function Equipes() {
 
       {!loading && (
         <>
-          <div>
+          <div className="flex">
             <div>
-              <span className={CLASS_SELECT_TITLE}>SECTION</span>
-
-              <select
-                className={CLASS_SELECT}
-                name="section"
-                ref={ref_section}
-                defaultValue={SECTIONS[0]}
-                onChange={onFilterAgents}
-              >
-                {SECTIONS.map((it, i) => (
-                  <option key={i}>{it}</option>
-                ))}
-              </select>
+              <input
+                type="checkbox"
+                onChange={(e) => setIsCustomList(e.target.checked)}
+              />
+              Custom List{" "}
             </div>
-          </div>
 
-          <div>
-            <span className={CLASS_SELECT_TITLE}>EQUIPE</span>
+            <div className={` ${isCustomList ? "hidden" : "block"} `}>
+              <div>
+                <span className={CLASS_SELECT_TITLE}>SECTION</span>
 
-            <select
-              className={CLASS_SELECT}
-              name="equipe"
-              defaultValue={EQUIPES[0]}
-              ref={ref_equipe}
-              onChange={onFilterAgents}
-            >
-              {EQUIPES.map((it, i) => (
-                <option key={i}>{it}</option>
-              ))}
-            </select>
-          </div>
+                <select
+                  className={CLASS_SELECT}
+                  name="section"
+                  ref={ref_section}
+                  defaultValue={SECTIONS[0]}
+                  onChange={onFilterAgents}
+                >
+                  {SECTIONS.map((it, i) => (
+                    <option key={i}>{it}</option>
+                  ))}
+                </select>
+              </div>
 
-          <div>
-            <span className={CLASS_SELECT_TITLE}>Year:</span>
-            <select
-              onChange={onFilterAgents}
-              ref={ref_year}
-              className={CLASS_SELECT}
-            >
-              {[...Array(10)].map((it, i) => (
-                <option key={i}>{new Date().getFullYear() + i}</option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <span className={CLASS_SELECT_TITLE}>Month:</span>
-            <select
-              className={CLASS_SELECT}
-              onChange={onFilterAgents}
-              ref={ref_month}
-            >
-              {[...Array(12)].map((it, i) => (
-                <option key={i} value={i}>
-                  {MONTHS[i]}
-                </option>
-              ))}
-            </select>
+              <div>
+                <span className={CLASS_SELECT_TITLE}>EQUIPE</span>
+
+                <select
+                  className={CLASS_SELECT}
+                  name="equipe"
+                  defaultValue={EQUIPES[0]}
+                  ref={ref_equipe}
+                  onChange={onFilterAgents}
+                >
+                  {EQUIPES.map((it, i) => (
+                    <option key={i}>{it}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <span className={CLASS_SELECT_TITLE}>YEAR:</span>
+                <select
+                  onChange={onFilterAgents}
+                  ref={ref_year}
+                  className={CLASS_SELECT}
+                >
+                  {[...Array(10)].map((it, i) => (
+                    <option key={i}>{new Date().getFullYear() + i}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <span className={CLASS_SELECT_TITLE}>MONTH:</span>
+                <select
+                  className={CLASS_SELECT}
+                  onChange={onFilterAgents}
+                  ref={ref_month}
+                >
+                  {[...Array(12)].map((it, i) => (
+                    <option key={i} value={i}>
+                      {MONTHS[i]}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            <div className={` ${isCustomList ? "block" : "hidden"} `}>
+              <AgentsList onAgentClick={onAgentClick} />
+            </div>
           </div>
         </>
       )}
