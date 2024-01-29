@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import AgentsList from "../comps/AgentsList";
-import { MONTHS } from "../helpers/flow";
+import { CLASS_INPUT_TEXT, MONTHS } from "../helpers/flow";
 import * as SB from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
 
@@ -8,7 +8,7 @@ import TableRLD from "../comps/TableRLD";
 import { getDaysInMonth, getRouelemtDaysLetters } from "../helpers/func";
 
 export default function Roulements() {
-  const [curAgent, setCurAgent] = useState({ id: -1 });
+  const [curAgent, setCurAgent] = useState();
   const [roulement_data, set_roulement_data] = useState([]);
   const [curAgentRld, setCurAgentRld] = useState([]);
   const [monthCode, setMonthCode] = useState();
@@ -52,8 +52,9 @@ export default function Roulements() {
   async function onDateChange(id = -1) {
     seterror(undefined);
     setCurAgentRld([]);
-    const y = Number(ref_y.current.value);
-    const m_name = ref_m.current.value;
+
+    const y = Number(ref_y.current?.value) || new Date().getFullYear();
+    const m_name = ref_m.current?.value || MONTHS[new Date().getMonth()];
     const m = MONTHS.indexOf(m_name);
 
     const mc = `mc_${id}_${y}_${m}`;
@@ -160,28 +161,34 @@ export default function Roulements() {
     <div className="flex">
       <AgentsList key={rdk} onAgentClick={onAgentClick} curAgent={curAgent} />
       <div>
-        <div>
+        {curAgent && (
           <div>
-            Mois{" "}
-            <select ref={ref_m} onChange={(e) => onDateChange(curAgent.id)}>
-              {[...Array(12)].map((mois, i) => (
-                <option key={i}>{MONTHS[i]}</option>
-              ))}
-            </select>
-          </div>
-          <div>
-            Annee{" "}
-            <select ref={ref_y} onChange={(e) => onDateChange(curAgent.id)}>
-              {[...Array(10)].map((annee, i) => (
-                <option key={i}>{new Date().getFullYear() + i}</option>
-              ))}
-            </select>
-          </div>
+            <div>
+              Mois{" "}
+              <select
+                className={CLASS_INPUT_TEXT}
+                ref={ref_m}
+                onChange={(e) => onDateChange(curAgent.id)}
+              >
+                {[...Array(12)].map((mois, i) => (
+                  <option key={i}>{MONTHS[i]}</option>
+                ))}
+              </select>
+            </div>
+            <div>
+              Annee{" "}
+              <select ref={ref_y} onChange={(e) => onDateChange(curAgent.id)}>
+                {[...Array(10)].map((annee, i) => (
+                  <option key={i}>{new Date().getFullYear() + i}</option>
+                ))}
+              </select>
+            </div>
 
-          <div className="bg-slate-500 text-white rounded-full px-2 text-sm w-fit">
-            {monthCode}
+            <div className="bg-slate-500 text-white rounded-full px-2 text-sm w-fit">
+              {monthCode}
+            </div>
           </div>
-        </div>
+        )}
 
         <TableRLD
           onRoulementSaved={onRoulementSaved}

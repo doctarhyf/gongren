@@ -4,6 +4,7 @@ import { TABLES_NAMES } from "../helpers/sb.config";
 import Loading from "./Loading";
 import { CLASS_BTN, CLASS_TD, MONTHS } from "../helpers/flow";
 import pdf from "../img/pdf.png";
+import smile from "../img/smile.png";
 import {
   print_agent_roulement,
   doc,
@@ -117,131 +118,149 @@ export default function TableRLD({
 
   return (
     <div>
-      <Loading isLoading={loading} />
-      <table className="m-1">
-        {showHeader && (
-          <thead>
-            <tr>
-              <td
-                colSpan={curAgentRld.length + 3}
-                className={CLASS_TD}
-                /*  align="center" */
-              >
-                HORAIRE - {monthCode && MONTHS[monthCode.split("_")[3]]} /{" "}
-                {monthCode && monthCode.split("_")[2]}
-                {!error && !editing && (
-                  <div>
-                    Edit
-                    <input
-                      type="checkbox"
-                      className="toggle toggle-xs"
-                      checked={editing}
-                      onChange={(e) => setediting(e.target.checked)}
-                    />
-                  </div>
-                )}
-                {editing && (
-                  <div>
-                    {" "}
-                    <button className={CLASS_BTN} onClick={(e) => saveRLD()}>
-                      SAVE
-                    </button>
-                  </div>
-                )}
-                {!editing && (
-                  <div>
-                    <button
-                      onClick={printPDF}
-                      className={`${CLASS_BTN} flex text-sm my-2`}
-                    >
-                      <img src={pdf} width={20} height={30} /> IMPRIMER PDF
-                    </button>
-                  </div>
-                )}
-              </td>
-            </tr>
-          </thead>
-        )}
+      <div
+        className={`p-8 text-center justify-center  ${
+          curAgent ? "hidden" : "block"
+        } `}
+      >
+        <div className="flex justify-center content-center">
+          <img src={smile} width={60} />
+        </div>
+        <div>Please select an agent to start!</div>
+      </div>
 
-        <tbody>
-          {showDates && (
-            <>
-              <tr>
-                <td colSpan={3} className={CLASS_TD}></td>
+      {curAgent && (
+        <div className={` ${curAgent ? "block" : "hidden"}`}>
+          <Loading isLoading={loading} />
+          <table className="m-1">
+            {showHeader && (
+              <thead>
+                <tr>
+                  <td
+                    colSpan={curAgentRld.length + 3}
+                    className={CLASS_TD}
+                    /*  align="center" */
+                  >
+                    HORAIRE - {monthCode && MONTHS[monthCode.split("_")[3]]} /{" "}
+                    {monthCode && monthCode.split("_")[2]}
+                    {!error && !editing && (
+                      <div>
+                        Edit
+                        <input
+                          type="checkbox"
+                          className="toggle toggle-xs"
+                          checked={editing}
+                          onChange={(e) => setediting(e.target.checked)}
+                        />
+                      </div>
+                    )}
+                    {editing && (
+                      <div>
+                        {" "}
+                        <button
+                          className={CLASS_BTN}
+                          onClick={(e) => saveRLD()}
+                        >
+                          SAVE
+                        </button>
+                      </div>
+                    )}
+                    {!editing && (
+                      <div>
+                        <button
+                          onClick={printPDF}
+                          className={`${CLASS_BTN} flex text-sm my-2`}
+                        >
+                          <img src={pdf} width={20} height={30} /> IMPRIMER PDF
+                        </button>
+                      </div>
+                    )}
+                  </td>
+                </tr>
+              </thead>
+            )}
 
-                {daysLetters.map((d, i) => (
-                  <td key={i} className={CLASS_TD}>
-                    {d}
-                  </td>
-                ))}
-              </tr>
+            <tbody>
+              {showDates && (
+                <>
+                  <tr>
+                    <td colSpan={3} className={CLASS_TD}></td>
+
+                    {daysLetters.map((d, i) => (
+                      <td key={i} className={CLASS_TD}>
+                        {d}
+                      </td>
+                    ))}
+                  </tr>
+                  <tr>
+                    <td className={CLASS_TD}>Num序号</td>
+                    <td className={CLASS_TD}>Nom</td>
+                    <td className={CLASS_TD}>Mat.工号</td>
+                    {!curAgentRld.map && (
+                      <td className={CLASS_TD} colSpan={daysLetters.length}>
+                        <div>The roulement data is empty or inexistant</div>
+                        <div>
+                          <button
+                            onClick={(e) => onCreateNewRLD(daysLetters.length)}
+                            className={CLASS_BTN}
+                          >
+                            CREATE NEW
+                          </button>
+                        </div>
+                      </td>
+                    )}
+                    {curAgentRld.map &&
+                      curAgentRld.map((d, i) => (
+                        <td key={i} className={CLASS_TD}>
+                          {21 + i > daysCount
+                            ? (daysCount - i - 20 - 1) * -1
+                            : 21 + i}
+                        </td>
+                      ))}
+                  </tr>
+                </>
+              )}
+
               <tr>
-                <td className={CLASS_TD}>Num序号</td>
-                <td className={CLASS_TD}>Nom</td>
-                <td className={CLASS_TD}>Mat.工号</td>
-                {!curAgentRld.map && (
-                  <td className={CLASS_TD} colSpan={daysLetters.length}>
-                    <div>The roulement data is empty or inexistant</div>
-                    <div>
-                      <button
-                        onClick={(e) => onCreateNewRLD(daysLetters.length)}
-                        className={CLASS_BTN}
-                      >
-                        CREATE NEW
-                      </button>
-                    </div>
-                  </td>
-                )}
+                <td className={CLASS_TD}>{curAgent.id}</td>
+                <td className={CLASS_TD}>
+                  {curAgent && curAgent.nom} - {curAgent && curAgent.postnom}
+                </td>
+                <td className={CLASS_TD}>{curAgent && curAgent.matricule}</td>
                 {curAgentRld.map &&
-                  curAgentRld.map((d, i) => (
-                    <td key={i} className={CLASS_TD}>
-                      {21 + i > daysCount
-                        ? (daysCount - i - 20 - 1) * -1
-                        : 21 + i}
+                  curAgentRld.map((rld, i) => (
+                    <td className={CLASS_TD} key={i}>
+                      {!editing && rld}
+                      {editing && (
+                        <select
+                          onChange={(e) => onUpdateRLD(i, e.target.value)}
+                          className="text-xs p-0"
+                          defaultValue={rld}
+                        >
+                          {["J", "M", "P", "N", "R", "-"].map((it, i) => (
+                            <option className="text-xs" key={i}>
+                              {it}
+                            </option>
+                          ))}
+                        </select>
+                      )}
                     </td>
                   ))}
               </tr>
-            </>
-          )}
-
-          <tr>
-            <td className={CLASS_TD}>{curAgent.id}</td>
-            <td className={CLASS_TD}>
-              {curAgent && curAgent.nom} - {curAgent && curAgent.postnom}
-            </td>
-            <td className={CLASS_TD}>{curAgent && curAgent.matricule}</td>
-            {curAgentRld.map &&
-              curAgentRld.map((rld, i) => (
-                <td className={CLASS_TD} key={i}>
-                  {!editing && rld}
-                  {editing && (
-                    <select
-                      onChange={(e) => onUpdateRLD(i, e.target.value)}
-                      className="text-xs p-0"
-                      defaultValue={rld}
-                    >
-                      {["J", "M", "P", "N", "R", "-"].map((it, i) => (
-                        <option className="text-xs" key={i}>
-                          {it}
-                        </option>
-                      ))}
-                    </select>
-                  )}
-                </td>
-              ))}
-          </tr>
-          <td className="">
-            <div>
-              {" "}
-              Nb. Abs.:<b>0</b>
-            </div>
-            <div>
-              {" "}
-              Nb. Mal.:<b>0</b>
-            </div>
-          </td>
-        </tbody>
-      </table>
+              <td className="">
+                <div>
+                  {" "}
+                  Nb. Abs.:<b>0</b>
+                </div>
+                <div>
+                  {" "}
+                  Nb. Mal.:<b>0</b>
+                </div>
+              </td>
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 }
