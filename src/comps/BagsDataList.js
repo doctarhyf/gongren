@@ -107,6 +107,10 @@ export default function BagsDataList({
   const [totalData, setTotalData] = useState();
   const [loadsbif, setloadsbif] = useState();
 
+  useEffect(() => {
+    onDateSelected({ y: new Date().getFullYear(), m: new Date().getMonth() });
+  }, [showRepportMode]);
+
   function onDateSelected(new_date) {
     setdate(new_date);
     setTotalData(undefined);

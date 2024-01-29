@@ -144,15 +144,17 @@ export default function Chargement() {
           }}
         />
       </div>
-      <div>
-        SHOW REPPORT MODE
-        <input
-          type="checkbox"
-          className="toggle toggle-xs"
-          checked={showRepportMode}
-          onChange={(e) => setShowRepportMode(e.target.checked)}
-        />
-      </div>
+      {!addDataMode && (
+        <div>
+          SHOW REPPORT MODE
+          <input
+            type="checkbox"
+            className="toggle toggle-xs"
+            checked={showRepportMode}
+            onChange={(e) => setShowRepportMode(e.target.checked)}
+          />
+        </div>
+      )}
       {addDataMode && (
         <>
           <div>{shiftDataToUpdate && "updating ..."}</div>
