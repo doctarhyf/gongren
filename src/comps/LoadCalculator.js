@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Bon from "./Bon";
-import { CLASS_BTN } from "../helpers/flow";
+import { CLASS_BTN, CLASS_SELECT_TITLE } from "../helpers/flow";
 
 export default function LoadsCalculator({
   show,
@@ -34,9 +34,12 @@ export default function LoadsCalculator({
   return (
     <div className={` ${show ? "block" : "hidden"} `}>
       <div className="text-sky-500 border-b my-1">Calculator</div>
-      <div>Camions : {camions.length}</div>
       <div>
-        Sacs Total:{" "}
+        {" "}
+        <span className={CLASS_SELECT_TITLE}> Camions :</span> {camions.length}
+      </div>
+      <div>
+        <span className={CLASS_SELECT_TITLE}> Sacs Total: </span>
         {camions.reduce(
           (accumulator, currentValue) => accumulator + currentValue,
           0
@@ -44,7 +47,7 @@ export default function LoadsCalculator({
         Sacs
       </div>
       <div>
-        Tonnage Total:{" "}
+        <span className={CLASS_SELECT_TITLE}>Tonnage Total: </span>
         {camions.reduce(
           (accumulator, currentValue) => accumulator + currentValue,
           0

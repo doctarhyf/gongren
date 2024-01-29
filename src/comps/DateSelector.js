@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { MONTHS } from "../helpers/flow";
+import { CLASS_SELECT, CLASS_SELECT_TITLE, MONTHS } from "../helpers/flow";
 
 export default function DateSelector({ onDateSelected, defaultDate }) {
   const DATE_TYPE = { Y: "Year", M: "Month", D: "Day" };
@@ -30,8 +30,9 @@ export default function DateSelector({ onDateSelected, defaultDate }) {
   return (
     <div>
       <div>
-        Date Type:{" "}
+        <span className={CLASS_SELECT_TITLE}> Date Type: </span>
         <select
+          className={CLASS_SELECT}
           ref={ref_dtype}
           value={dateType}
           onChange={(e) => {
@@ -49,23 +50,31 @@ export default function DateSelector({ onDateSelected, defaultDate }) {
       </div>
 
       <div>
-        Year:{" "}
-        <select ref={ref_year} onChange={onDateChange}>
+        <span className={CLASS_SELECT_TITLE}>Year: </span>
+        <select className={CLASS_SELECT} ref={ref_year} onChange={onDateChange}>
           {[...Array(10)].map((it, i) => (
             <option>{2023 + i}</option>
           ))}
         </select>
         <div className={`${dateType !== "Y" ? "block" : "hidden"}`}>
-          Month:{" "}
-          <select ref={ref_month} onChange={onDateChange}>
+          <span className={CLASS_SELECT_TITLE}> Month: </span>
+          <select
+            className={CLASS_SELECT}
+            ref={ref_month}
+            onChange={onDateChange}
+          >
             {[...Array(12)].map((it, i) => (
               <option value={i}>{MONTHS[i]}</option>
             ))}
           </select>
         </div>
         <div className={` ${dateType === "D" ? "block" : "hidden"} `}>
-          Days:{" "}
-          <select ref={ref_day} onChange={onDateChange}>
+          <span className={CLASS_SELECT_TITLE}>Date: </span>
+          <select
+            className={CLASS_SELECT}
+            ref={ref_day}
+            onChange={onDateChange}
+          >
             {[...Array(31)].map((it, i) => (
               <option value={i + 1}>{i + 1}</option>
             ))}

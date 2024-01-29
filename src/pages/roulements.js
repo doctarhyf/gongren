@@ -1,6 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import AgentsList from "../comps/AgentsList";
-import { CLASS_INPUT_TEXT, MONTHS } from "../helpers/flow";
+import {
+  CLASS_INPUT_TEXT,
+  CLASS_SELECT,
+  CLASS_SELECT_TITLE,
+  CLASS_TD,
+  MONTHS,
+} from "../helpers/flow";
 import * as SB from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
 
@@ -164,9 +170,9 @@ export default function Roulements() {
         {curAgent && (
           <div>
             <div>
-              Mois{" "}
+              <span className={CLASS_SELECT_TITLE}> Mois</span>
               <select
-                className={CLASS_INPUT_TEXT}
+                className={CLASS_SELECT}
                 ref={ref_m}
                 onChange={(e) => onDateChange(curAgent.id)}
               >
@@ -176,8 +182,12 @@ export default function Roulements() {
               </select>
             </div>
             <div>
-              Annee{" "}
-              <select ref={ref_y} onChange={(e) => onDateChange(curAgent.id)}>
+              <span className={CLASS_SELECT_TITLE}>Annee</span>
+              <select
+                className={CLASS_SELECT}
+                ref={ref_y}
+                onChange={(e) => onDateChange(curAgent.id)}
+              >
                 {[...Array(10)].map((annee, i) => (
                   <option key={i}>{new Date().getFullYear() + i}</option>
                 ))}

@@ -1,6 +1,12 @@
 import React, { useRef, useState } from "react";
 import Loading from "./Loading";
-import { CLASS_BTN, SHIFTS_ZH } from "../helpers/flow";
+import {
+  CLASS_BTN,
+  CLASS_INPUT_TEXT,
+  CLASS_SELECT,
+  CLASS_SELECT_TITLE,
+  SHIFTS_ZH,
+} from "../helpers/flow";
 import { _ } from "../helpers/func";
 import * as SB from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
@@ -109,34 +115,40 @@ export default function BagsDataInput({
 
       <div className={` ${showCalculator ? "hidden" : "block"} `}>
         <div>
-          Team:
-          <select ref={ref_team}>
+          <span className={CLASS_SELECT_TITLE}>Team:</span>
+          <select className={CLASS_SELECT} ref={ref_team}>
             {["A", "B", "C", "D"].map((t, i) => (
               <option selected={upd && t === upd.team}>{t}</option>
             ))}
           </select>
         </div>
         <div>
-          SHIFT:
-          <select ref={ref_shift}>
+          <span className={CLASS_SELECT_TITLE}>SHIFT:</span>
+          <select className={CLASS_SELECT} ref={ref_shift}>
             {["M", "P", "N"].map((t, i) => (
               <option selected={upd && t === upd.shift}>{t}</option>
             ))}
           </select>
         </div>
-        <div>DATE: {(upd && upd.date) || `${date.d}/${date.m}/${date.y}`}</div>
-        <div className="border rounded-md ">
+        <div>
+          <span className={CLASS_SELECT_TITLE}>DATE:</span>
+
+          {(upd && upd.date) || `${date.d}/${date.m}/${date.y}`}
+        </div>
+        <div>
           <div>
-            SACS:{" "}
+            <span className={CLASS_SELECT_TITLE}>SACS:</span>
             <input
+              className={CLASS_INPUT_TEXT}
               ref={ref_sacs}
               type="text"
               defaultValue={(upd && upd.sacs) || 0}
             />
           </div>
           <div>
-            CAMIONS:{" "}
+            <span className={CLASS_SELECT_TITLE}>CAMIONS:</span>
             <input
+              className={CLASS_INPUT_TEXT}
               ref={ref_camions}
               type="text"
               defaultValue={(upd && upd.camions) || 0}
@@ -157,24 +169,27 @@ export default function BagsDataInput({
         </div>
 
         <div>
-          RETOURS:{" "}
+          <span className={CLASS_SELECT_TITLE}>RETOURS:</span>
           <input
+            className={CLASS_INPUT_TEXT}
             ref={ref_retours}
             type="text"
             defaultValue={(upd && upd.retours) || 0}
           />
         </div>
         <div>
-          AJOUTS:{" "}
+          <span className={CLASS_SELECT_TITLE}>AJOUTS:</span>
           <input
+            className={CLASS_INPUT_TEXT}
             ref={ref_ajouts}
             type="text"
             defaultValue={(upd && upd.ajouts) || 0}
           />
         </div>
         <div>
-          DECHIRES:{" "}
+          <span className={CLASS_SELECT_TITLE}>DECHIRES:</span>
           <input
+            className={CLASS_INPUT_TEXT}
             ref={ref_dechires}
             type="text"
             defaultValue={(upd && upd.dechires) || 0}

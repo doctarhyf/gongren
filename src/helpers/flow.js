@@ -35,6 +35,11 @@ export const CLASS_BTN =
 export const CLASS_INPUT_TEXT =
   "p-1 border rounded-md outline-none hover:border-sky-500 focus:border-purple-500";
 
+export const CLASS_SELECT =
+  "p-1 border rounded-md min-w-32 outline-none hover:border-sky-500 focus:border-purple-500";
+
+export const CLASS_SELECT_TITLE = `min-w-24 inline-block mr-2 pb-4 text-sm font-bold  text-end`;
+
 export const K_POSTE_NETTOYEUR = 0;
 export const K_POSTE_EXPLOITANT = 1;
 export const K_POSTE_OPERATEUR = 2;
