@@ -53,7 +53,7 @@ export default function DateSelector({ onDateSelected, defaultDate }) {
         <span className={CLASS_SELECT_TITLE}>Year: </span>
         <select className={CLASS_SELECT} ref={ref_year} onChange={onDateChange}>
           {[...Array(10)].map((it, i) => (
-            <option>{2023 + i}</option>
+            <option>{new Date().getFullYear() + i}</option>
           ))}
         </select>
         <div className={`${dateType !== "Y" ? "block" : "hidden"}`}>
