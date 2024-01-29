@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 
 import shield from "../img/shield.png";
 import sup from "../img/sup.png";
@@ -18,6 +18,7 @@ import {
   CLASS_TD,
   CLASS_BTN,
   K_POSTE_OPERATEUR,
+  CLASS_TODAY,
 } from "../helpers/flow";
 import ItemNotSelected from "./ItemNotSelected";
 
@@ -120,6 +121,16 @@ export default function AgentsTable({
     return final_data;
   }
 
+  const [dates, setdates] = useState([]);
+
+  useState(() => {
+    setdates(
+      [...Array(daysCount)].map((d, i) => {
+        return 21 + i > daysCount ? (daysCount - i - 20 - 1) * -1 : 21 + i;
+      })
+    );
+  }, [daysCount]);
+
   return (
     <>
       <div className={` ${agentsf.length > 0 ? "block" : "hidden"} `}>
@@ -145,7 +156,12 @@ export default function AgentsTable({
             <tr>
               <td className={CLASS_TD} colSpan={COL_SPAN}></td>
               {daysLetters.map((d, i) => (
-                <td key={i} className={CLASS_TD}>
+                <td
+                  key={i}
+                  className={`${CLASS_TD} ${
+                    i === dates.indexOf(new Date().getDate()) ? CLASS_TODAY : ""
+                  }  `}
+                >
                   {d}
                 </td>
               ))}
@@ -163,9 +179,20 @@ export default function AgentsTable({
               <td className={CLASS_TD}>
                 <b>Poste</b>
               </td>
-              {[...Array(daysCount)].map((d, i) => (
+              {/*  {[...Array(daysCount)].map((d, i) => (
                 <td key={i} className={CLASS_TD}>
                   {21 + i > daysCount ? (daysCount - i - 20 - 1) * -1 : 21 + i}
+                </td>
+              ))} */}
+
+              {dates.map((d, i) => (
+                <td
+                  key={i}
+                  className={`${CLASS_TD} ${
+                    i === dates.indexOf(new Date().getDate()) ? CLASS_TODAY : ""
+                  }  `}
+                >
+                  {d}
                 </td>
               ))}
             </tr>
@@ -202,7 +229,15 @@ export default function AgentsTable({
                   .slice(0, daysCount)
                   .split("")
                   .map((r, i) => (
-                    <td className={CLASS_TD}>{r}</td>
+                    <td
+                      className={`${CLASS_TD}   ${
+                        i === dates.indexOf(new Date().getDate())
+                          ? CLASS_TODAY
+                          : ""
+                      } `}
+                    >
+                      {r}{" "}
+                    </td>
                   ))}
               </tr>
             ))}

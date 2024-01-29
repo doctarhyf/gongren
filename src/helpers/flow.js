@@ -29,6 +29,7 @@ export const SHIFT_HOURS_ZH = {
 
 export const CLASS_REPPORT_CARD = `border mt-2 rounded-md p-1 h-min bg-neutral-100 shadow-md`;
 export const CLASS_TD = `p-1 border border-neutral-300`;
+export const CLASS_TODAY = `bg-sky-500 text-white font-bold`;
 export const CLASS_BTN =
   " mx-1 hover:bg-sky-500 hover:text-white border p-1 text-sky-400 border-transparent cursor-pointer rounded-md";
 

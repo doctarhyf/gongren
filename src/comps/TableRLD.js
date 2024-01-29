@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import * as SB from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
 import Loading from "./Loading";
-import { CLASS_BTN, CLASS_TD, MONTHS } from "../helpers/flow";
+import { CLASS_BTN, CLASS_TD, CLASS_TODAY, MONTHS } from "../helpers/flow";
 import pdf from "../img/pdf.png";
 import smile from "../img/smile.png";
 import {
@@ -27,7 +27,7 @@ export default function TableRLD({
   const [editing, setediting] = useState(false);
   const [loading, setloading] = useState(false);
   const [roulementData, setRoulementData] = useState(curAgentRld);
-
+  const [dates, setdates] = useState([]);
   const [showHeader, setShowHeader] = useState(true);
   const [showDates, setShowDates] = useState(true);
 
@@ -124,6 +124,14 @@ export default function TableRLD({
     );
   }
 
+  useState(() => {
+    let dates = [...Array(curAgentRld.length)].map((it, i) => {
+      return 21 + i > daysCount ? (daysCount - i - 20 - 1) * -1 : 21 + i;
+    });
+
+    setdates(dates);
+  }, [curAgentRld]);
+
   return (
     <div>
       <ItemNotSelected show={curAgent} itemName={"agent"} />
@@ -156,38 +164,6 @@ export default function TableRLD({
                   >
                     HORAIRE - {monthCode && MONTHS[monthCode.split("_")[3]]} /{" "}
                     {monthCode && monthCode.split("_")[2]}
-                    {/*  {!error && !editing && (
-                      <div>
-                        Edit
-                        <input
-                          type="checkbox"
-                          className="toggle toggle-xs"
-                          checked={editing}
-                          onChange={(e) => setediting(e.target.checked)}
-                        />
-                      </div>
-                    )} */}
-                    {/*  {editing && (
-                      <div>
-                        {" "}
-                        <button
-                          className={CLASS_BTN}
-                          onClick={(e) => saveRLD()}
-                        >
-                          SAVE
-                        </button>
-                      </div>
-                    )} */}
-                    {/*  {!editing && (
-                      <div>
-                        <button
-                          onClick={printPDF}
-                          className={`${CLASS_BTN} flex text-sm my-2`}
-                        >
-                          <img src={pdf} width={20} height={30} /> IMPRIMER PDF
-                        </button>
-                      </div>
-                    )} */}
                   </td>
                 </tr>
               </thead>
@@ -200,7 +176,14 @@ export default function TableRLD({
                     <td colSpan={3} className={CLASS_TD}></td>
 
                     {daysLetters.map((d, i) => (
-                      <td key={i} className={CLASS_TD}>
+                      <td
+                        key={i}
+                        className={`${CLASS_TD}  ${
+                          i === dates.indexOf(new Date().getDate())
+                            ? CLASS_TODAY
+                            : ""
+                        } `}
+                      >
                         {d}
                       </td>
                     ))}
@@ -222,12 +205,26 @@ export default function TableRLD({
                         </div>
                       </td>
                     )}
-                    {curAgentRld.map &&
+                    {/* {curAgentRld.map &&
                       curAgentRld.map((d, i) => (
-                        <td key={i} className={CLASS_TD}>
-                          {21 + i > daysCount
+                        <td key={i} className={`${CLASS_TD}  `}>
+                            {21 + i > daysCount
                             ? (daysCount - i - 20 - 1) * -1
-                            : 21 + i}
+                            : 21 + i}{" "} 
+                          dates
+                        </td>
+                      ))} */}
+                    {dates.map &&
+                      dates.map((d, i) => (
+                        <td
+                          key={i}
+                          className={`${CLASS_TD} ${
+                            i === dates.indexOf(new Date().getDate())
+                              ? CLASS_TODAY
+                              : ""
+                          } `}
+                        >
+                          {d}
                         </td>
                       ))}
                   </tr>
@@ -276,7 +273,14 @@ export default function TableRLD({
                 <td className={CLASS_TD}>{curAgent && curAgent.matricule}</td>
                 {curAgentRld.map &&
                   curAgentRld.map((rld, i) => (
-                    <td className={CLASS_TD} key={i}>
+                    <td
+                      className={`${CLASS_TD} ${
+                        i === dates.indexOf(new Date().getDate())
+                          ? CLASS_TODAY
+                          : ""
+                      } `}
+                      key={i}
+                    >
                       {!editing && rld}
                       {editing && (
                         <select
