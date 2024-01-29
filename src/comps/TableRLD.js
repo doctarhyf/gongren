@@ -11,6 +11,7 @@ import {
   getDayName,
 } from "../helpers/funcs_print.js";
 import { getRouelemtDaysLetters } from "../helpers/func.js";
+import ItemNotSelected from "./ItemNotSelected.js";
 
 const init = [...Array(31).fill("-")];
 
@@ -125,16 +126,7 @@ export default function TableRLD({
 
   return (
     <div>
-      <div
-        className={`p-8 text-center justify-center  ${
-          curAgent ? "hidden" : "block"
-        } `}
-      >
-        <div className="flex justify-center content-center">
-          <img src={smile} width={60} />
-        </div>
-        <div>Please select an agent to start!</div>
-      </div>
+      <ItemNotSelected show={curAgent} itemName={"agent"} />
 
       {curAgent && (
         <div className={` ${curAgent ? "block" : "hidden"}`}>

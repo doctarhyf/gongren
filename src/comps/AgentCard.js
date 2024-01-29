@@ -6,6 +6,7 @@ import * as SB from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
 import Loading from "./Loading";
 import shield from "../img/shield.png";
+import ItemNotSelected from "./ItemNotSelected";
 
 export const AGENT_CARD_EVENT = {
   DELETED: "ag_del",
@@ -206,7 +207,7 @@ export default function AgentCard({
           onFormCancel={onFormCancel}
         />
       )}
-      {agent === null && <div>Select an agent!</div>}
+      {agent === null && <ItemNotSelected show={agent} itemName={"agent"} />}
     </section>
   );
 }

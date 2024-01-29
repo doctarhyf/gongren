@@ -19,6 +19,7 @@ import {
   CLASS_BTN,
   K_POSTE_OPERATEUR,
 } from "../helpers/flow";
+import ItemNotSelected from "./ItemNotSelected";
 
 export default function AgentsTable({
   agentsf,
@@ -121,136 +122,144 @@ export default function AgentsTable({
 
   return (
     <>
-      <table>
-        <thead>
-          <tr>
-            <td
-              className={CLASS_TD}
-              colSpan={
-                agentsf[0] && agentsf[0].rld.rl.split("").length + COL_SPAN
-              }
-            >
-              <div className="text-2xl text-center">
-                Equipe <span ref={ref_sp_equipe}></span> -{" "}
-                <span ref={ref_sp_section}></span> /{" "}
-                <span ref={ref_sp_m}></span> - <span ref={ref_sp_y}></span>
-              </div>
-            </td>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td className={CLASS_TD} colSpan={COL_SPAN}></td>
-            {daysLetters.map((d, i) => (
-              <td key={i} className={CLASS_TD}>
-                {d}
-              </td>
-            ))}
-          </tr>
-          <tr>
-            <td className={` ${CLASS_TD} w-min `}>
-              <b>No</b>
-            </td>
-            <td className={CLASS_TD}>
-              <b>Nom et Postnom</b>
-            </td>
-            <td className={CLASS_TD}>
-              <b>Agent</b>
-            </td>
-            <td className={CLASS_TD}>
-              <b>Poste</b>
-            </td>
-            {[...Array(daysCount)].map((d, i) => (
-              <td key={i} className={CLASS_TD}>
-                {21 + i > daysCount ? (daysCount - i - 20 - 1) * -1 : 21 + i}
-              </td>
-            ))}
-          </tr>
-          {agentsf.map((ag, i) => (
-            <tr
-              key={i}
-              className={` ${
-                ag.chef_deq === "OUI" && "bg-neutral-200/60 font-bold"
-              }   ${ag.poste === "SUP" && "bg-neutral-200/60 font-bold"}  `}
-            >
-              <td className={` ${CLASS_TD} w-min `}>{i + 1}</td>
-              <td className={CLASS_TD}>
-                <div className="flex">
-                  {ag.nom} {ag.postnom}
-                  <b>{ag.mingzi}</b>
-                  {ag.chef_deq === "OUI" && (
-                    <span className="mx-2">
-                      <img alt="shield" src={shield} width={20} height={20} />
-                    </span>
-                  )}
-                  {ag.poste === "SUP" && (
-                    <span className="mx-2">
-                      <img alt="sup" src={sup} width={20} height={20} />
-                    </span>
-                  )}
+      <div className={` ${agentsf.length > 0 ? "block" : "hidden"} `}>
+        <table>
+          <thead>
+            <tr>
+              <td
+                className={CLASS_TD}
+                colSpan={
+                  agentsf[0] && agentsf[0].rld.rl.split("").length + COL_SPAN
+                }
+              >
+                <div className="text-2xl text-center">
+                  Equipe <span ref={ref_sp_equipe}></span> -{" "}
+                  <span ref={ref_sp_section}></span> /{" "}
+                  <span ref={ref_sp_m}></span> - <span ref={ref_sp_y}></span>
                 </div>
               </td>
-              <td className={CLASS_TD}>
-                {ag.contrat}
-                {ag.matricule && `- ${ag.matricule}`}
-              </td>
-              <td className={CLASS_TD}>{ag.poste}</td>
-              {ag.rld.rl
-                .slice(0, daysCount)
-                .split("")
-                .map((r, i) => (
-                  <td className={CLASS_TD}>{r}</td>
-                ))}
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
 
-      <tr>
-        <td className={COL_SPAN}>
-          {agentsf.length !== 0 && (
-            <div className="flex gap-4">
-              <button
-                onClick={(e) => printPDF(agentsf)}
-                className={`${CLASS_BTN} flex text-sm my-2`}
+          <tbody className="">
+            <tr>
+              <td className={CLASS_TD} colSpan={COL_SPAN}></td>
+              {daysLetters.map((d, i) => (
+                <td key={i} className={CLASS_TD}>
+                  {d}
+                </td>
+              ))}
+            </tr>
+            <tr>
+              <td className={` ${CLASS_TD} w-min `}>
+                <b>No</b>
+              </td>
+              <td className={CLASS_TD}>
+                <b>Nom et Postnom</b>
+              </td>
+              <td className={CLASS_TD}>
+                <b>Agent</b>
+              </td>
+              <td className={CLASS_TD}>
+                <b>Poste</b>
+              </td>
+              {[...Array(daysCount)].map((d, i) => (
+                <td key={i} className={CLASS_TD}>
+                  {21 + i > daysCount ? (daysCount - i - 20 - 1) * -1 : 21 + i}
+                </td>
+              ))}
+            </tr>
+            {agentsf.map((ag, i) => (
+              <tr
+                key={i}
+                className={` ${
+                  ag.chef_deq === "OUI" && "bg-neutral-200/60 font-bold"
+                }   ${ag.poste === "SUP" && "bg-neutral-200/60 font-bold"}  `}
               >
-                <img src={pdf} alt="pdf" width={20} height={30} /> PRINT LIST
-              </button>
-              <button
-                onClick={(e) => printAgentsRoulementPDF(agentsf)}
-                className={`${CLASS_BTN} flex text-sm my-2`}
-              >
-                <img alt="pdf" src={pdf} width={20} height={30} /> PRINT TABLE
-              </button>
-              <div>
-                <input type="checkbox" ref={ref_print_empty} />
-                PRINT EMPTY
+                <td className={` ${CLASS_TD} w-min `}>{i + 1}</td>
+                <td className={CLASS_TD}>
+                  <div className="flex">
+                    {ag.nom} {ag.postnom}
+                    <b>{ag.mingzi}</b>
+                    {ag.chef_deq === "OUI" && (
+                      <span className="mx-2">
+                        <img alt="shield" src={shield} width={20} height={20} />
+                      </span>
+                    )}
+                    {ag.poste === "SUP" && (
+                      <span className="mx-2">
+                        <img alt="sup" src={sup} width={20} height={20} />
+                      </span>
+                    )}
+                  </div>
+                </td>
+                <td className={CLASS_TD}>
+                  {ag.contrat}
+                  {ag.matricule && `- ${ag.matricule}`}
+                </td>
+                <td className={CLASS_TD}>{ag.poste}</td>
+                {ag.rld.rl
+                  .slice(0, daysCount)
+                  .split("")
+                  .map((r, i) => (
+                    <td className={CLASS_TD}>{r}</td>
+                  ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+        <tr>
+          <td className={COL_SPAN}>
+            {agentsf.length !== 0 && (
+              <div className="flex gap-4">
+                <button
+                  onClick={(e) => printPDF(agentsf)}
+                  className={`${CLASS_BTN} flex text-sm my-2`}
+                >
+                  <img src={pdf} alt="pdf" width={20} height={30} /> PRINT LIST
+                </button>
+                <button
+                  onClick={(e) => printAgentsRoulementPDF(agentsf)}
+                  className={`${CLASS_BTN} flex text-sm my-2`}
+                >
+                  <img alt="pdf" src={pdf} width={20} height={30} /> PRINT TABLE
+                </button>
+                <div>
+                  <input type="checkbox" ref={ref_print_empty} />
+                  PRINT EMPTY
+                </div>
               </div>
+            )}
+            <div>
+              {" "}
+              D'equipe:
+              <b>{chef_deq && `${chef_deq.nom} ${chef_deq.postnom}`}</b>
             </div>
-          )}
-          <div>
-            {" "}
-            D'equipe:
-            <b>{chef_deq && `${chef_deq.nom} ${chef_deq.postnom}`}</b>
-          </div>
-          <div>
-            {" "}
-            Operateurs:<b>{nb_op}</b>
-          </div>
-          <div>
-            {" "}
-            Aide Operateurs:<b>{nb_aide_op}</b>
-          </div>
-          <div>
-            {" "}
-            Chargeurs:<b>{nb_charg}</b>
-          </div>
-          <div>
-            {" "}
-            Nettoyeurs:<b>{nb_net}</b>
-          </div>
-        </td>
-      </tr>
+            <div>
+              {" "}
+              Operateurs:<b>{nb_op}</b>
+            </div>
+            <div>
+              {" "}
+              Aide Operateurs:<b>{nb_aide_op}</b>
+            </div>
+            <div>
+              {" "}
+              Chargeurs:<b>{nb_charg}</b>
+            </div>
+            <div>
+              {" "}
+              Nettoyeurs:<b>{nb_net}</b>
+            </div>
+          </td>
+        </tr>
+      </div>
+
+      <ItemNotSelected
+        show={agentsf.length > 0}
+        message={"Please select a team!"}
+      />
     </>
   );
 }
