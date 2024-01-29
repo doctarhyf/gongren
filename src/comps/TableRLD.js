@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as SB from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
 import Loading from "./Loading";
@@ -69,7 +69,14 @@ export default function TableRLD({
       }
     );
   }
+
+  const ref_print_empty = useRef();
+
   function printPDF(e) {
+    const print_empty = ref_print_empty.current.checked;
+
+    console.log("print_empty", print_empty);
+
     if (monthCode === undefined) {
       alert("monthCode is undefined!");
       return;
@@ -88,7 +95,7 @@ export default function TableRLD({
       matricule,
     };
 
-    print_agent_roulement(doc, print_data);
+    print_agent_roulement(doc, print_data, print_empty);
   }
 
   async function onCreateNewRLD(len) {
@@ -140,6 +147,10 @@ export default function TableRLD({
               >
                 <img src={pdf} width={20} height={30} /> IMPRIMER PDF
               </button>
+              <div>
+                <input type="checkbox" ref={ref_print_empty} />
+                PRINT EMPTY
+              </div>
             </div>
           )}
           <table className="m-1">

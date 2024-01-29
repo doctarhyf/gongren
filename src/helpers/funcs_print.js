@@ -330,7 +330,7 @@ function getDayName(dateString, oneLetter) {
   return oneLetter ? dayName[0] : dayName;
 }
 
-function print_agent_roulement(doc, agent_data) {
+function print_agent_roulement(doc, agent_data, print_empty) {
   // Delete all existing pages
   const pageCount = doc.internal.getNumberOfPages();
   for (let i = pageCount; i >= 1; i--) {
@@ -491,7 +491,7 @@ function print_agent_roulement(doc, agent_data) {
 
       drawTextInRect(
         doc,
-        el,
+        print_empty ? " " : el,
         FONT_SIZE,
         date_x,
         rld_data_y,
