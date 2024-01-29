@@ -4,7 +4,10 @@ import * as SB from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
 import AgentsNamesTable from "./AgentsNamesTable";
 import shield from "../img/shield.png";
-import { GroupBySectionAndEquipe } from "../helpers/func";
+import {
+  CustomSortByListPriority,
+  GroupBySectionAndEquipe,
+} from "../helpers/func";
 
 const PER_PAGE = 10;
 
@@ -47,12 +50,14 @@ export default function AgentsList({ onAgentClick, curAgent, onTeamClick }) {
     setagents([]);
     setagentf([]);
     setteams([]);
-    const items_raw = await SB.LoadAllItems(TABLES_NAMES.AGENTS);
+    let items_raw = await SB.LoadAllItems(TABLES_NAMES.AGENTS);
     setteams(GroupBySectionAndEquipe(items_raw));
     const items_len = items_raw.length;
     const num_pages = Math.ceil(items_len / PER_PAGE);
     setNumPages(num_pages);
 
+    items_raw = items_raw.sort(CustomSortByListPriority);
+    //console.log("atarow", items_raw[0]);
     let items = GetSplittedItemsIntoPages(items_raw, PER_PAGE);
     setagents(items);
 

@@ -32,7 +32,16 @@ export default function FormLogin({ onLogin }) {
           className={CLASS_INPUT_TEXT}
         />
         <div>PIN</div>
-        <input ref={ref_pin} type="password" className={CLASS_INPUT_TEXT} />
+        <input
+          ref={ref_pin}
+          type="password"
+          className={CLASS_INPUT_TEXT}
+          onKeyUp={(e) => {
+            if (e.key === "Enter") {
+              onBtnLogin();
+            }
+          }}
+        />
         <div>
           <button
             onClick={(e) => onBtnLogin()}
