@@ -96,22 +96,13 @@ export default function BagsDataInput({
     setShowCalculator(false);
   }
 
-  /* const upd = {
-    shift: shift.code[0], //SHIF_HOURS_ZH[shift.code[0]][1],
-    sacs: shift.sacs,
-    camions: shift.camions,
-    retours: shift.retours,
-    ajouts: shift.ajouts,
-    dechires: shift.dechires,
-  };*/
-
   const upd = dataToUpdate && JSON.parse(dataToUpdate.upd);
 
   console.log("upd => ", upd);
 
   return (
     <div className="flex flex-row-reverse">
-      <DateSelector onDateSelected={onDateSelected} />
+      <DateSelector onDateSelected={onDateSelected} hideSelectDateType={true} />
 
       <div className={` ${showCalculator ? "hidden" : "block"} `}>
         <div>

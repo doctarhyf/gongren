@@ -209,7 +209,11 @@ export default function BagsDataList({
 
       {showRepportMode && (
         <>
-          <DateSelector onDateSelected={onDateSelected} />
+          <DateSelector
+            hideSelectDateType={true}
+            defaultDateType={"Y"}
+            onDateSelected={onDateSelected}
+          />
           <div>Select date to view repport</div>
           {loads === undefined && (
             <div>

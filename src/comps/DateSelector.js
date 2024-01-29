@@ -1,10 +1,16 @@
 import { useRef, useState } from "react";
 import { CLASS_SELECT, CLASS_SELECT_TITLE, MONTHS } from "../helpers/flow";
+import { getDaysInMonth } from "../helpers/func";
 
-export default function DateSelector({ onDateSelected, defaultDate }) {
+export default function DateSelector({
+  onDateSelected,
+  defaultDate,
+  defaultDateType,
+  hideSelectDateType,
+}) {
   const DATE_TYPE = { Y: "Year", M: "Month", D: "Day" };
 
-  const [dateType, setDateType] = useState("D");
+  const [dateType, setDateType] = useState(defaultDateType || "D");
 
   const ref_year = useRef();
   const ref_month = useRef();
@@ -15,6 +21,29 @@ export default function DateSelector({ onDateSelected, defaultDate }) {
     const y = Number(_(ref_year));
     const m = Number(_(ref_month));
     const d = Number(_(ref_day));
+
+    const daysInMonth = getDaysInMonth(y, m);
+
+    // ref_day.current.
+
+    const newOptions = []; /* [
+      { value: "option1", label: "Option 1" },
+      { value: "option2", label: "Option 2" },
+      { value: "option3", label: "Option 3" },
+    ]; */
+
+    for (let x = 0; x < daysInMonth; x++) {
+      newOptions.push({ value: x + 1, label: x + 1 });
+    }
+
+    // Set the new options
+    ref_day.current.options.length = 0; // Clear existing options
+    newOptions.forEach((option) => {
+      const optionElement = document.createElement("option");
+      optionElement.value = option.value;
+      optionElement.text = option.label;
+      ref_day.current.add(optionElement);
+    });
 
     let date = { y: y, m: m, d: d, type: _(ref_dtype) };
 
@@ -29,7 +58,7 @@ export default function DateSelector({ onDateSelected, defaultDate }) {
   }
   return (
     <div>
-      <div>
+      <div className={` ${hideSelectDateType ? "hidden" : "block"} `}>
         <span className={CLASS_SELECT_TITLE}> Date Type: </span>
         <select
           className={CLASS_SELECT}
