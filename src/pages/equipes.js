@@ -213,9 +213,6 @@ export default function Equipes() {
     const agent_to_add = CheckAgentRLDData(ag, y, m);
     const agentsfz = agentsf[0];
 
-    console.log("agent_to_add", agent_to_add);
-    console.log("agentsfz", agentsfz);
-
     setCustomAgents((old) => [...old, agent_to_add]);
   }
 
@@ -236,6 +233,9 @@ export default function Equipes() {
                   onChange={(e) => {
                     const isCustom = e.target.checked;
                     setIsCustomList(isCustom);
+                    if (isCustom) {
+                      // setCustomAgents((old) => [...old, ...agentsf]);
+                    }
                   }}
                 />
                 Custom List{" "}
