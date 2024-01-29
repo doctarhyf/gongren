@@ -132,6 +132,16 @@ export default function TableRLD({
       {curAgent && (
         <div className={` ${curAgent ? "block" : "hidden"}`}>
           <Loading isLoading={loading} />
+          {!editing && (
+            <div>
+              <button
+                onClick={printPDF}
+                className={`${CLASS_BTN} flex text-sm my-2`}
+              >
+                <img src={pdf} width={20} height={30} /> IMPRIMER PDF
+              </button>
+            </div>
+          )}
           <table className="m-1">
             {showHeader && (
               <thead>
@@ -143,7 +153,7 @@ export default function TableRLD({
                   >
                     HORAIRE - {monthCode && MONTHS[monthCode.split("_")[3]]} /{" "}
                     {monthCode && monthCode.split("_")[2]}
-                    {!error && !editing && (
+                    {/*  {!error && !editing && (
                       <div>
                         Edit
                         <input
@@ -153,8 +163,8 @@ export default function TableRLD({
                           onChange={(e) => setediting(e.target.checked)}
                         />
                       </div>
-                    )}
-                    {editing && (
+                    )} */}
+                    {/*  {editing && (
                       <div>
                         {" "}
                         <button
@@ -164,8 +174,8 @@ export default function TableRLD({
                           SAVE
                         </button>
                       </div>
-                    )}
-                    {!editing && (
+                    )} */}
+                    {/*  {!editing && (
                       <div>
                         <button
                           onClick={printPDF}
@@ -174,7 +184,7 @@ export default function TableRLD({
                           <img src={pdf} width={20} height={30} /> IMPRIMER PDF
                         </button>
                       </div>
-                    )}
+                    )} */}
                   </td>
                 </tr>
               </thead>
@@ -222,7 +232,41 @@ export default function TableRLD({
               )}
 
               <tr>
-                <td className={CLASS_TD}>{curAgent.id}</td>
+                <td className={CLASS_TD}>
+                  <div>{curAgent.id}</div>
+                  <div>
+                    {!error && !editing && (
+                      <div>
+                        Edit
+                        <input
+                          type="checkbox"
+                          className="toggle toggle-xs"
+                          checked={editing}
+                          onChange={(e) => setediting(e.target.checked)}
+                        />
+                      </div>
+                    )}
+                  </div>
+                  <div>
+                    {editing && (
+                      <div>
+                        {" "}
+                        <button
+                          className={CLASS_BTN}
+                          onClick={(e) => saveRLD()}
+                        >
+                          SAVE
+                        </button>
+                        <button
+                          className={CLASS_BTN}
+                          onClick={(e) => setediting(false)}
+                        >
+                          CANCEL{" "}
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </td>
                 <td className={CLASS_TD}>
                   {curAgent && curAgent.nom} - {curAgent && curAgent.postnom}
                 </td>
