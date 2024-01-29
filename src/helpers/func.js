@@ -13,8 +13,6 @@ export const CustomSortByListPriority = (a, b) => {
   const ata = a.list_priority;
   const atb = b.list_priority;
 
-  console.log(ata, atb);
-
   return ata - atb;
 };
 
@@ -356,8 +354,6 @@ export function getRouelemtDaysLetters2(year, month) {
     // console.log(currentDate);
     currentDate.setDate(currentDate.getDate() + 1);
   }
-
-  console.log(startDate, endDate, dayNames);
 
   return dayNames;
 }

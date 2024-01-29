@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import shield from "../img/shield.png";
 import sup from "../img/sup.png";
@@ -30,6 +30,8 @@ export default function AgentsTable({
   ref_sp_y,
   list_title,
   daysLetters,
+  isCustomList,
+  customAgentsList,
 }) {
   const COL_SPAN = 4;
   const nb_op = CountAgentsByPostType(agentsf, K_POSTE_OPERATEUR);
@@ -37,6 +39,7 @@ export default function AgentsTable({
   const nb_net = CountAgentsByPostType(agentsf, K_POSTE_NETTOYEUR);
   const nb_aide_op = CountAgentsByPostType(agentsf, K_POSTE_AIDE_OPERATEUR);
   const chef_deq = agentsf.find((it, i) => it.chef_deq === "OUI");
+
   let daysCount = 31;
 
   if (agentsf.length > 0) {
@@ -131,6 +134,10 @@ export default function AgentsTable({
     );
   }, [daysCount]);
 
+  /*  useEffect(() => {
+    console.log("agt:isCustomList", isCustomList);
+  }, [isCustomList]); */
+
   return (
     <>
       <div className={` ${agentsf.length > 0 ? "block" : "hidden"} `}>
@@ -196,7 +203,7 @@ export default function AgentsTable({
                 </td>
               ))}
             </tr>
-            {agentsf.map((ag, i) => (
+            {(isCustomList ? customAgentsList : agentsf).map((ag, i) => (
               <tr
                 key={i}
                 className={` ${
@@ -255,7 +262,11 @@ export default function AgentsTable({
                   <img src={pdf} alt="pdf" width={20} height={30} /> PRINT LIST
                 </button>
                 <button
-                  onClick={(e) => printAgentsRoulementPDF(agentsf)}
+                  onClick={(e) =>
+                    printAgentsRoulementPDF(
+                      isCustomList ? customAgentsList : agentsf
+                    )
+                  }
                   className={`${CLASS_BTN} flex text-sm my-2`}
                 >
                   <img alt="pdf" src={pdf} width={20} height={30} /> PRINT TABLE

@@ -35,6 +35,9 @@ import AgentsList from "../comps/AgentsList";
 export default function Equipes() {
   const [agents, setagents] = useState([]);
   const [agentsf, setagentsf] = useState([]);
+  const [customAgents, setCustomAgents] = useState([]);
+  const [isCustomList, setIsCustomList] = useState(false);
+
   const [rld, setrld] = useState([]);
   const [loading, setloading] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState();
@@ -77,11 +80,7 @@ export default function Equipes() {
 
     let items = await LoadAllItems(TABLES_NAMES.AGENTS);
 
-    console.log("not sorted", items);
-
     items = items.sort(CustomSortByListPriority);
-
-    console.log("sorted ", items);
 
     let rlds = await LoadAllItems(TABLES_NAMES.AGENTS_RLD);
 
@@ -131,6 +130,34 @@ export default function Equipes() {
     return items;
   }
 
+  function CheckAgentRLDData(agent, y, m) {
+    const { id: agent_id } = agent;
+
+    let mc = `mc_${agent_id}_${y}_${m}`;
+
+    const roulement_data = rld.find((it, i) => it.month_code === mc);
+
+    agent.rld = roulement_data;
+
+    if (roulement_data === undefined) {
+      console.error(`rld for ${mc} is undefinded`);
+      const data = { rl: [...Array(31).fill("-")].join(""), month_code: mc };
+      agent.rld = data;
+    } else {
+      console.info(`rld for ${mc}\n`, agent);
+    }
+
+    return agent;
+  }
+
+  const CheckAgentRoulementData = (agent, i, arr, y, m) => {
+    console.log("old ag", agent);
+    const final_agent = { ...CheckAgentRLDData(agent, y, m) };
+    console.log("new ag", final_agent);
+
+    return final_agent;
+  };
+
   function onFilterAgents() {
     setagentsf([]);
     setDaysLetters([]);
@@ -139,7 +166,7 @@ export default function Equipes() {
     let m = ref_month.current.value;
 
     const dl = getRouelemtDaysLetters2(y, m);
-    console.log(dl);
+
     setDaysLetters(dl);
 
     const section = ref_section.current.value;
@@ -151,33 +178,26 @@ export default function Equipes() {
     ref_sp_m.current.textContent = MONTHS[m];
 
     const arr_agents = FilterAgents(agents, section, equipe, selectedFilter);
+    let arr_agents_with_rld = arr_agents.map((agent, index, arr) =>
+      CheckAgentRoulementData(agent, index, arr, y, m)
+    );
+    const custom_arr_with_rld = customAgents.map((agent, index, arr) =>
+      CheckAgentRoulementData(agent, index, arr, y, m)
+    );
 
-    let arr_agents_with_rld = [];
-
-    arr_agents.map((agent, i) => {
-      const { id: agent_id } = agent;
-
-      let mc = `mc_${agent_id}_${y}_${m}`;
-
-      const roulement_data = rld.find((it, i) => it.month_code === mc);
-
-      agent.rld = roulement_data;
-
-      if (roulement_data === undefined) {
-        console.error(`rld for ${mc} is undefinded`);
-        const data = { rl: [...Array(31).fill("-")].join(""), month_code: mc };
-        agent.rld = data;
-      } else {
-        console.info(`rld for ${mc}\n`, agent);
-      }
-      arr_agents_with_rld.push(agent);
-      return agent;
-    });
+    /* const custom_arr_agents = FilterAgents(
+      agents,
+      section,
+      equipe,
+      selectedFilter
+    );
+    let arr_agents_with_rld = arr_agents.map((agent, index, arr) =>
+      CheckAgentRoulementData(agent, index, arr, y, m)
+    ); */
 
     setagentsf([...arr_agents_with_rld]);
+    setCustomAgents(custom_arr_with_rld);
   }
-
-  const [isCustomList, setIsCustomList] = useState(false);
 
   useEffect(() => {
     onFilterAgents();
@@ -188,7 +208,15 @@ export default function Equipes() {
   }
 
   function onAgentClick(ag) {
-    console.log(ag);
+    let y = ref_year.current.value;
+    let m = ref_month.current.value;
+    const agent_to_add = CheckAgentRLDData(ag, y, m);
+    const agentsfz = agentsf[0];
+
+    console.log("agent_to_add", agent_to_add);
+    console.log("agentsfz", agentsfz);
+
+    setCustomAgents((old) => [...old, agent_to_add]);
   }
 
   const [showFilters, setShowFilters] = useState(false);
@@ -199,13 +227,27 @@ export default function Equipes() {
 
       {!loading && (
         <>
-          <div className="flex">
+          <div>
             <div>
-              <input
-                type="checkbox"
-                onChange={(e) => setIsCustomList(e.target.checked)}
-              />
-              Custom List{" "}
+              <div>
+                {" "}
+                <input
+                  type="checkbox"
+                  onChange={(e) => {
+                    const isCustom = e.target.checked;
+                    setIsCustomList(isCustom);
+                  }}
+                />
+                Custom List{" "}
+              </div>
+              <div>
+                <button
+                  className={CLASS_BTN}
+                  onClick={(e) => setCustomAgents([])}
+                >
+                  CLEAR CUSTOM LIST
+                </button>
+              </div>
             </div>
 
             <div className={` ${isCustomList ? "hidden" : "block"} `}>
@@ -315,6 +357,8 @@ export default function Equipes() {
           ref_sp_y={ref_sp_y}
           list_title={list_title}
           daysLetters={daysLetters}
+          isCustomList={isCustomList}
+          customAgentsList={customAgents}
         />
       </div>
     </div>
