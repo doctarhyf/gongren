@@ -9,6 +9,15 @@ const LOGOH = 66;
 // Default export is a4 paper, portrait, using millimeters for units
 const orientation = "landscape";
 
+export const CustomSortByListPriority = (a, b) => {
+  const ata = a.list_priority;
+  const atb = b.list_priority;
+
+  console.log(ata, atb);
+
+  return ata - atb;
+};
+
 export function formatFrenchDate(inputDate) {
   // Assuming inputDate is either a JavaScript Date object or a date string
   const date = new Date(inputDate);
