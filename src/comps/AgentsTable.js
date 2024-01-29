@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 
 import shield from "../img/shield.png";
 import sup from "../img/sup.png";
@@ -54,6 +54,8 @@ export default function AgentsTable({
     printPDF1(agents_array);
   }
 
+  const ref_print_empty = useRef();
+
   function printAgentsRoulementPDF(agents_array) {
     if (agents_array.length === 0) {
       alert("Agents list cant be empty!");
@@ -61,7 +63,9 @@ export default function AgentsTable({
     }
 
     const agents_rld_parsed_data = PrepareAgentsPrintRLD(agents_array); //GetRandomArray(20);
-    print_agents_rl(agents_rld_parsed_data);
+    const print_empty = ref_print_empty.current.checked;
+
+    print_agents_rl(agents_rld_parsed_data, print_empty);
   }
 
   function PrepareAgentsPrintRLD(array) {
@@ -210,16 +214,18 @@ export default function AgentsTable({
                 onClick={(e) => printPDF(agentsf)}
                 className={`${CLASS_BTN} flex text-sm my-2`}
               >
-                <img src={pdf} alt="pdf" width={20} height={30} /> IMPRIMER
-                LISTE
+                <img src={pdf} alt="pdf" width={20} height={30} /> PRINT LIST
               </button>
               <button
                 onClick={(e) => printAgentsRoulementPDF(agentsf)}
                 className={`${CLASS_BTN} flex text-sm my-2`}
               >
-                <img alt="pdf" src={pdf} width={20} height={30} /> IMPRIMER
-                ROULEMENT
+                <img alt="pdf" src={pdf} width={20} height={30} /> PRINT TABLE
               </button>
+              <div>
+                <input type="checkbox" ref={ref_print_empty} />
+                PRINT EMPTY
+              </div>
             </div>
           )}
           <div>

@@ -557,7 +557,7 @@ function print_agents_list_roulement(agents_rl) {
   doc.save("rl.pdf");
 }
 
-function print_agents_rl(agents_list) {
+function print_agents_rl(agents_list, print_empty) {
   const first_el = { ...agents_list[0] };
   const days_names_el = { ...agents_list[agents_list.length - 1] };
 
@@ -607,15 +607,18 @@ function print_agents_rl(agents_list) {
   final_data.forEach((cur_ag_data, i) => {
     let y = newPage ? idx * fsize + pm : rly + idx * fsize + fsize;
     const is_header_row = i === 1;
+    const is_day_nams_row = i === 0;
     if (is_header_row) {
       line_rects = draw_agent_single_line(
         doc,
+        false,
         {
           ...cur_ag_data,
           id: "No",
           nom: { fr: "AGENT/", zh: "员工" },
           matricule: "MAT.",
           contrat: "",
+          i: i,
         },
         rlx,
         y,
@@ -627,7 +630,8 @@ function print_agents_rl(agents_list) {
     } else {
       line_rects = draw_agent_single_line(
         doc,
-        cur_ag_data,
+        !is_day_nams_row && print_empty,
+        { ...cur_ag_data, i: i },
         rlx,
         y,
         pw,
@@ -649,7 +653,17 @@ function print_agents_rl(agents_list) {
   doc.save("rl.pdf");
 }
 
-function draw_agent_single_line(doc, agd, x, y, pw, pm, largest_w_data, dates) {
+function draw_agent_single_line(
+  doc,
+  print_empty,
+  agd,
+  x,
+  y,
+  pw,
+  pm,
+  largest_w_data,
+  dates
+) {
   const ph = 210;
 
   const pct = 1.2;
@@ -708,7 +722,16 @@ function draw_agent_single_line(doc, agd, x, y, pw, pm, largest_w_data, dates) {
   let box_data = dates ? dates : rld_data;
 
   box_data.forEach((el, i) => {
-    drawTextInRect2(doc, el, fsize, bx + i * box_w, by, box_w, box_h, true);
+    drawTextInRect2(
+      doc,
+      print_empty ? " " : el,
+      fsize,
+      bx + i * box_w,
+      by,
+      box_w,
+      box_h,
+      true
+    );
   });
 
   return rects;
