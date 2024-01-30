@@ -32,6 +32,7 @@ export default function AgentsTable({
   daysLetters,
   isCustomList,
   customAgentsList,
+  customAgentsTableName,
 }) {
   const COL_SPAN = 4;
   const nb_op = CountAgentsByPostType(agentsf, K_POSTE_OPERATEUR);
@@ -70,7 +71,7 @@ export default function AgentsTable({
     const agents_rld_parsed_data = PrepareAgentsPrintRLD(agents_array); //GetRandomArray(20);
     const print_empty = ref_print_empty.current.checked;
 
-    print_agents_rl(agents_rld_parsed_data, print_empty);
+    print_agents_rl(agents_rld_parsed_data, print_empty, customAgentsTableName);
   }
 
   function PrepareAgentsPrintRLD(array) {

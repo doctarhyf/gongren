@@ -217,6 +217,7 @@ export default function Equipes() {
   }
 
   const [showFilters, setShowFilters] = useState(false);
+  const [customTableName, setCustomTableName] = useState();
 
   return (
     <div>
@@ -240,6 +241,7 @@ export default function Equipes() {
                 />
                 Custom List{" "}
               </div>
+
               <div>
                 <button
                   className={CLASS_BTN}
@@ -248,6 +250,21 @@ export default function Equipes() {
                   CLEAR CUSTOM LIST
                 </button>
               </div>
+            </div>
+
+            <div
+              className={` ${CLASS_INPUT_TEXT} outline-none w-fit mb-1 ${
+                isCustomList ? "block" : "hidden"
+              } `}
+            >
+              <input
+                type="text"
+                value={customTableName}
+                onChange={(e) =>
+                  setCustomTableName(e.target.value.toUpperCase())
+                }
+                placeholder="list name"
+              />
             </div>
 
             <div className={` ${isCustomList ? "hidden" : "block"} `}>
@@ -359,6 +376,7 @@ export default function Equipes() {
           daysLetters={daysLetters}
           isCustomList={isCustomList}
           customAgentsList={customAgents}
+          customAgentsTableName={customTableName}
         />
       </div>
     </div>
