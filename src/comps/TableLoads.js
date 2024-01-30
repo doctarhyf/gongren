@@ -13,7 +13,6 @@ export default function TableLoads({ date, totalData, loadsData }) {
             "shift",
             "sacs",
             "t",
-
             "bonus",
             "camions",
             "dechires",

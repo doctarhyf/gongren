@@ -14,6 +14,8 @@ import {
 } from "../helpers/func";
 import RepportCard from "../comps/RepportCard";
 
+const bg = "bg-neutral-100";
+
 export default function Chargement() {
   const [date, setdate] = useState({});
 
