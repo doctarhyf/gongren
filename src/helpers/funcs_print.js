@@ -643,12 +643,26 @@ function print_agents_rl(agents_list, print_empty, team_name) {
   m -= 1;
   const next_m = Number(m) + 1 > 11 ? 1 : Number(m) + 1;
 
-  const month_names = `${getFrenchMonthName(
-    m
-  ).toUpperCase()} - ${getFrenchMonthName(next_m).toUpperCase()} ${y}`;
-  text_dims = doc.getTextDimensions(month_names);
+  const month_names_tokens = [
+    {
+      lat: `${getFrenchMonthName(m).toUpperCase()} - ${getFrenchMonthName(
+        next_m
+      ).toUpperCase()} ${y} / `,
+    },
+    { zh: "年" },
+    { lat: "" + y },
+    { zh: "月" },
+    { lat: "" + (Number(m) + 1) },
+  ];
+  text_dims = getTextTokensDimensions(doc, fsize, month_names_tokens);
 
-  doc.text(month_names, rect_title.x, rect_title.y + fsize / 2);
+  drawChineseEnglishTextLine(
+    doc,
+    rect_title.x,
+    rect_title.y + fsize / 2,
+    fsize,
+    month_names_tokens
+  );
 
   //===============================================
   let orig_rly = LOGO_H + pm + 10;

@@ -299,7 +299,9 @@ export default function Equipes() {
                   ))}
                 </select>
               </div>
+            </div>
 
+            <div>
               <div>
                 <span className={CLASS_SELECT_TITLE}>YEAR:</span>
                 <select
