@@ -223,7 +223,7 @@ export default function BagsDataList({
       loads.forEach((ld, i_ld) => {
         const ld_keys = Object.keys(ld);
         const ld_values = Object.values(ld);
-        const csv = `${date},${ld_values.join(",")},\n`;
+        const csv = `${i_ld === 0 ? date : ""},${ld_values.join(",")},\n`;
         cont += csv;
       });
 
