@@ -588,10 +588,15 @@ function print_agents_rl(agents_list, print_empty, team_name) {
 
   doc.setFontSize(fsize);
 
-  let title = `ATELIER CIMENT, EQUIPE: ${team_name ? team_name : ""}`;
+  let title_tokens = [
+    { lat: "ATELIER CIMENT / " },
+    { zh: " 水泥车间 " },
+    { lat: ", EQUIPE: " },
+    { lat: team_name || "_______________________" },
+  ];
 
   //=================================
-  let text_dims = doc.getTextDimensions(title);
+  let text_dims = getTextTokensDimensions(doc, fsize, title_tokens);
 
   let rect_title = {
     x: rect_logo.x,
@@ -600,18 +605,50 @@ function print_agents_rl(agents_list, print_empty, team_name) {
     h: text_dims.h,
   };
 
-  doc.text(title, rect_title.x, rect_title.y);
+  //doc.text(title, rect_title.x, rect_title.y);
+  drawChineseEnglishTextLine(
+    doc,
+    rect_title.x,
+    rect_title.y,
+    fsize,
+    title_tokens
+  );
+
+  const rules_tokens = [
+    { zh: "填表说明" },
+    { lat: ": " },
+    { zh: "出勤 " },
+    { lat: "(_/), " },
+    { zh: "旷空 " },
+    { lat: "(A), " },
+    { zh: "夜班 " },
+    { lat: "(N), " },
+    { zh: "休息 " },
+    { lat: "(R), " },
+    { zh: "病假 " },
+    { lat: "(M)" },
+  ];
+  //填表说明：出勤（✓）， 旷空（A）， 夜班（N）， 休息（R）， 休息（R），病假（M）
+  const zhdims = getTextTokensDimensions(doc, fsize, rules_tokens);
+  const zhx = pw - pm - zhdims.w;
+  drawChineseEnglishTextLine(
+    doc,
+    zhx,
+    rect_logo.y + rect_logo.h + fsize,
+    fsize,
+    rules_tokens
+  );
 
   let { year: y, month: m } = first_el;
   m -= 1;
   const next_m = Number(m) + 1 > 11 ? 1 : Number(m) + 1;
 
-  const months = `${getFrenchMonthName(m).toUpperCase()} - ${getFrenchMonthName(
-    next_m
-  ).toUpperCase()} ${y}`;
-  text_dims = doc.getTextDimensions(months);
+  const month_names = `${getFrenchMonthName(
+    m
+  ).toUpperCase()} - ${getFrenchMonthName(next_m).toUpperCase()} ${y}`;
+  text_dims = doc.getTextDimensions(month_names);
 
-  doc.text(months, rect_title.x, rect_title.y + fsize / 2);
+  doc.text(month_names, rect_title.x, rect_title.y + fsize / 2);
 
   //===============================================
   let orig_rly = LOGO_H + pm + 10;
@@ -678,7 +715,21 @@ function print_agents_rl(agents_list, print_empty, team_name) {
     }
   });
 
-  //console.log(line_rects);
+  const last_rect = line_rects[line_rects.length - 1];
+
+  drawChineseEnglishTextLine(doc, pm, last_rect.y + fsize + fsize, fsize, [
+    { lat: "RESPONSABLE DU SERVICE / " },
+    { zh: " 车间负责人" },
+  ]);
+
+  const sup_tokens = [{ lat: "SUPERVISEUR / " }, { zh: "班长" }];
+  const dims = getTextTokensDimensions(doc, fsize, sup_tokens);
+
+  let sup_x = pw - pm - dims.w;
+  let sup_y = last_rect.y + fsize + fsize;
+
+  drawChineseEnglishTextLine(doc, sup_x, sup_y, fsize, sup_tokens);
+
   doc.setFontSize(ofsize);
   doc.save("rl.pdf");
 }
