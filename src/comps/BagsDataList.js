@@ -210,9 +210,35 @@ export default function BagsDataList({
   }
 
   function genLoadsCSVData(data) {
+    /*
+            "日期",
+            "班组",
+            "产量(T)",
+            "设备原因",
+            "电气原因",
+            "停电原因",
+            "其它原因",
+            "备注"*/
+
     const days_entries = Object.entries(data);
+    const ld_keys = Object.keys(days_entries[1][1][0]);
+    const [
+      id,
+      created_at,
+      sacs,
+      retours,
+      ajouts,
+      code,
+      prob_machine,
+      prob_courant,
+      autre,
+      camions,
+      dechires,
+    ] = ld_keys;
+
+    //const headers = "Date," + ld_keys.join(",") + "\n";
     const headers =
-      "day," + Object.keys(days_entries[1][1][0]).join(",") + "\n";
+      "Date/日期,Equipe/班组,袋数,·T/产量,Ajouts/加袋数,Retours/卸袋数,Dechires/撕裂袋数,PROB. MACHINE/设备原因,PROB. ELEC./电气原因, AUTRE/其它原因, NOTE/备注";
     let cont = "";
 
     days_entries.forEach((it, i_it) => {
@@ -221,29 +247,42 @@ export default function BagsDataList({
       const data_len = loads.length;
 
       loads.forEach((ld, i_ld) => {
-        const ld_keys = Object.keys(ld);
         const ld_values = Object.values(ld);
-        const csv = `${i_ld === 0 ? date : ""},${ld_values.join(",")},\n`;
-        cont += csv;
-      });
+        const [
+          id,
+          created_at,
+          sacs,
+          retours,
+          ajouts,
+          code,
+          prob_machine,
+          prob_courant,
+          autre,
+          camions,
+          dechires,
+        ] = ld_values;
+        const [team, shift, y, m, d] = code.split("_");
 
-      //console.log(date, loads, data_len);
+        const values_line = `${i_ld === 0 ? date : ""},${team},${Number(
+          sacs
+        )},${
+          Number(sacs) / 20
+        },${ajouts}, ${retours}, ${dechires},${prob_machine},${prob_courant}, ${autre}\n`;
+
+        //const csv = `${i_ld === 0 ? date : ""},${ld_values.join(",")},\n`;
+        cont += values_line;
+      });
     });
 
     const csvString = headers + cont;
 
-    //console.log(final);
-
-    /*const headers = Object.keys(data).join(",") + "\n";
-     const values = Object.values(data).join(",");
-    const csvString = headers + values; */
     const csvData =
       "data:text/csv;charset=utf-8," + encodeURIComponent(csvString);
     return { csvString: csvString, csvData: csvData };
   }
 
   function downloadExcel(loads, totals) {
-    genLoadsCSVData(loads);
+    //genLoadsCSVData(loads);
     const link = document.createElement("a");
     link.href = genLoadsCSVData(loads).csvData;
     link.download = "data.csv";
