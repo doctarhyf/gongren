@@ -5,6 +5,7 @@ import Loading from "../comps/Loading";
 import DateSelector from "./DateSelector";
 import { CLASS_BTN, CLASS_TD, MONTHS } from "../helpers/flow";
 import excel from "../img/excel.png";
+import Papa from "papaparse";
 import {
   CorrectZeroMonthIndexDisplay,
   customSortByDate,
@@ -199,8 +200,56 @@ export default function BagsDataList({
     console.log(loads, totals);
   }
 
+  function genTotalCSVData(data) {
+    const headers = Object.keys(data).join(",") + "\n";
+    const values = Object.values(data).join(",");
+    const csvString = headers + values;
+    const csvData =
+      "data:text/csv;charset=utf-8," + encodeURIComponent(csvString);
+    return { csvString: csvString, csvData: csvData };
+  }
+
+  function genLoadsCSVData(data) {
+    const days_entries = Object.entries(data);
+    const headers =
+      "day," + Object.keys(days_entries[1][1][0]).join(",") + "\n";
+    let cont = "";
+
+    days_entries.forEach((it, i_it) => {
+      const date = it[0];
+      const loads = it[1];
+      const data_len = loads.length;
+
+      loads.forEach((ld, i_ld) => {
+        const ld_keys = Object.keys(ld);
+        const ld_values = Object.values(ld);
+        const csv = `${date},${ld_values.join(",")},\n`;
+        cont += csv;
+      });
+
+      //console.log(date, loads, data_len);
+    });
+
+    const csvString = headers + cont;
+
+    //console.log(final);
+
+    /*const headers = Object.keys(data).join(",") + "\n";
+     const values = Object.values(data).join(",");
+    const csvString = headers + values; */
+    const csvData =
+      "data:text/csv;charset=utf-8," + encodeURIComponent(csvString);
+    return { csvString: csvString, csvData: csvData };
+  }
+
   function downloadExcel(loads, totals) {
-    console.log(loads, totals);
+    genLoadsCSVData(loads);
+    const link = document.createElement("a");
+    link.href = genLoadsCSVData(loads).csvData;
+    link.download = "data.csv";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   }
 
   return (
