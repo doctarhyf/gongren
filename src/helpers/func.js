@@ -382,7 +382,7 @@ export function getRouelemtDaysLetters(year, monthIndex) {
     currentDate.setDate(currentDate.getDate() + 1);
   }
 
-  console.log(startDate, endDate);
+  //console.log(startDate, endDate);
 
   return dayNames;
 }

@@ -643,7 +643,7 @@ function print_agents_rl(agents_list, print_empty, team_name) {
   m -= 1;
   const next_m = Number(m) + 1 > 11 ? 0 : Number(m) + 1;
 
-  console.log("m", m, "next_m", next_m);
+  //console.log("m", m, "next_m", next_m);
 
   const month_names_tokens = [
     {
