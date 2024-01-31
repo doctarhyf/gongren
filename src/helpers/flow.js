@@ -57,7 +57,13 @@ export const USER_LEVEL = {
   SUPER: 3,
 };
 
-export const SECTIONS = ["BROYAGE", "ENSACHAGE", "NETTOYAGE", "N/A"];
+export const SECTIONS = [
+  "BROYAGE",
+  "ENSACHAGE",
+  "NETTOYAGE",
+  "CIMENTERIE",
+  "N/A",
+];
 export const POSTE = [
   "NET",
   "EXP",
@@ -80,6 +86,15 @@ export const EQUIPES = [
   "CHIN",
   "N/A",
 ];
+
+export const EQUIPES_NAMES = {
+  JR: "DU JOUR",
+  MEC: "MECANICIENS",
+  NET: "NETTOYEURS",
+  INT: "INTERPRETES",
+  CHIN: "CHIOISE",
+};
+
 export const CONTRATS = ["BNC", "KAY", "GCK"];
 export const NATIONALITIES = ["CD", "ZH"];
 
