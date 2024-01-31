@@ -586,6 +586,25 @@ function print_agents_rl(agents_list, print_empty, team_name) {
   draw_date(doc, pw, pm, fsize);
   let rect_logo = draw_logo(doc, LOGO_X, LOGO_Y, LOGO_W, LOGO_H);
 
+  //gck 公司水泥厂
+  const chinese_team_name = "";
+  const chinese_team_name_tokens = [
+    { lat: "GCK" },
+    { zh: `公司水泥线水泥${chinese_team_name}名单` },
+  ];
+
+  drawChineseEnglishTextLine(
+    doc,
+    rect_logo.x,
+    rect_logo.y + rect_logo.h + fsize / 2,
+    fsize,
+    chinese_team_name_tokens
+  );
+
+  console.log("team_name:", team_name);
+  console.log("chinese team name :", chinese_team_name);
+  console.log("chinese team name tokens", chinese_team_name_tokens);
+
   doc.setFontSize(fsize);
 
   let title_tokens = [
