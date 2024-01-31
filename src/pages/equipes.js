@@ -190,7 +190,13 @@ export default function Equipes() {
       CheckAgentRoulementData(agent, index, arr, y, m)
     );
 
-    setagentsf([...arr_agents_with_rld]);
+    let fianl_data = [...arr_agents_with_rld];
+
+    fianl_data.sort(CustomSortByListPriority);
+
+    console.log("ksort", fianl_data);
+
+    setagentsf(fianl_data);
     setCustomAgents(custom_arr_with_rld);
   }
 
