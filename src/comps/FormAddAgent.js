@@ -52,6 +52,7 @@ export default function FormAddAgent({
   const ref_matricule = useRef();
   const ref_chef_deq = useRef();
   const ref_list_priority = useRef();
+  const ref_tenue = useRef();
   const ref_page = useRef();
 
   const [loading, setloading] = useState(false);
@@ -75,6 +76,7 @@ export default function FormAddAgent({
       phone: _(ref_phone),
       matricule: _(ref_matricule),
       list_priority: _(ref_list_priority),
+      tenue: _(ref_tenue),
       //page: _(ref_page),
     };
 
@@ -114,6 +116,7 @@ export default function FormAddAgent({
         [ref_nationalite, "nationalite", agent.nationalite, NATIONALITIES],
         [ref_phone, "phone", agent.phone],
         [ref_list_priority, "liste priority", agent.list_priority],
+        [ref_tenue, "tenue(tenue,couleur,botte)", agent.tenue],
       ].map((agent_data, i) => (
         <tr key={i}>
           <td align="right" className="text-neutral-400 text-sm">
