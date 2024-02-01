@@ -1006,8 +1006,8 @@ function draw_load_table(data) {
 
 function draw_title(doc, y, pw, pm, fsize) {
   const text_tokens = [
-    { lat: "RAPPORT DU CHARGEMENT JOURNALIER/" },
-    { zh: "包装日报告" },
+    { lat: "RAPPORT DU CHARGEMENT JOURNALIER - " },
+    { zh: "每日装载报告" },
   ];
   const old_fsize = doc.getFontSize();
 

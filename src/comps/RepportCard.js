@@ -17,7 +17,7 @@ export default function RepportCard({
 
   function onPrintDailyRepport(data) {
     draw_load_table(data);
-    //console.log(data);
+    //console.log("print day rep", data);
   }
 
   function onPrintShiftRepport(data) {

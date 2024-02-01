@@ -1,6 +1,11 @@
 import { CLASS_TD } from "../helpers/flow";
+import { ParseDayRepport } from "../helpers/func";
+import ButtonPrint from "./ButtonPrint";
 
 export default function TableLoads({ date, totalData, loadsData }) {
+  function printDailRepport(data) {
+    console.log("table loads print daily rep", ParseDayRepport(data));
+  }
   return (
     <table>
       <thead>
@@ -62,7 +67,14 @@ export default function TableLoads({ date, totalData, loadsData }) {
             >
               <td className={CLASS_TD}>{i}</td>
               <td className={CLASS_TD}>
-                {ld[0].replaceAll("_", "/").replaceAll("/0/", "/1/")}
+                <div>
+                  {" "}
+                  {ld[0].replaceAll("_", "/").replaceAll("/0/", "/1/")}
+                </div>
+                <ButtonPrint
+                  title={"PRINT RPPORT"}
+                  onClick={(e) => printDailRepport(ld)}
+                />
               </td>
               {/*  <td>
                               {ld[1].map &&

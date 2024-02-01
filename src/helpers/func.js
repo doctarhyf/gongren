@@ -284,6 +284,8 @@ export function ParseMonthRepport(month_data) {
 export function ParseDayRepport(day_data) {
   const [y, m, d] = day_data[0].split("-");
 
+  console.log("ParseDayRepport", day_data);
+
   let repport = {
     type: "Journalier",
 
