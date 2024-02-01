@@ -53,7 +53,7 @@ function MyForm() {
 }
 
 export default function BagsDataList({
-  loadsf,
+  loadsf: loadsFiltered,
   showRepportMode,
   onSetDataLevel,
   loads_by_item,
@@ -77,8 +77,8 @@ export default function BagsDataList({
     shift: "",
   });
 
-  const [totalData, setTotalData] = useState();
-  const [loadsbif, setloadsbif] = useState();
+  const [yearTotals, setYearTotals] = useState();
+  const [loadsFilteredByYear, setLoadsFilteredByYear] = useState();
 
   useEffect(() => {
     init();
@@ -86,8 +86,8 @@ export default function BagsDataList({
 
   useEffect(() => {
     init();
-    console.log(loadsf);
-  }, [loadsf]);
+    console.log(loadsFiltered);
+  }, [loadsFiltered]);
 
   function init() {
     console.log("init bag data list");
@@ -96,8 +96,8 @@ export default function BagsDataList({
 
   function onDateSelected(new_date) {
     setdate(new_date);
-    setTotalData(undefined);
-    setloadsbif([]);
+    setYearTotals(undefined);
+    setLoadsFilteredByYear([]);
 
     setYearData([]);
     setMonthData([]);
@@ -106,14 +106,14 @@ export default function BagsDataList({
 
     const { y: year, m: month } = new_date;
     const date_code = `${new_date.y}-${new_date.m}`;
-    const data = loadsf[year] && loadsf[year][date_code];
+    const data = loadsFiltered[year] && loadsFiltered[year][date_code];
 
     setloads(data);
     if (data === undefined) {
-      setloadsbif([]);
+      setLoadsFilteredByYear([]);
       return;
     }
-    setloadsbif(SortLoadsByYearMonth(loads_by_item, year, month));
+    setLoadsFilteredByYear(SortLoadsByYearMonth(loads_by_item, year, month));
   }
 
   const customOrderShift = { M: 1, N: 3, P: 2 };
@@ -175,7 +175,7 @@ export default function BagsDataList({
       bonus: tot_bonus,
     };
 
-    setTotalData(total_data);
+    setYearTotals(total_data);
     console.log("total_data", total_data);
 
     return sorted_loads;
@@ -304,19 +304,23 @@ export default function BagsDataList({
                 <div className="flex gap-4">
                   <ButtonPrint
                     title={"PRINT"}
-                    onClick={(e) => printLoadTabled(loadsbif, totalData)}
+                    onClick={(e) =>
+                      printLoadTabled(loadsFilteredByYear, yearTotals)
+                    }
                   />
                   <ButtonPrint
                     icon={excel}
                     title={"DOWNLOAD EXCEL"}
-                    onClick={(e) => downloadExcel(loadsbif, totalData)}
+                    onClick={(e) =>
+                      downloadExcel(loadsFilteredByYear, yearTotals)
+                    }
                   />
                 </div>
               </div>
               <TableLoads
                 date={date}
-                totalData={totalData}
-                loadsData={loadsbif}
+                totalData={yearTotals}
+                loadsData={loadsFilteredByYear}
               />
             </div>
           }
@@ -328,7 +332,7 @@ export default function BagsDataList({
           <div className="flex  ">
             <div className="border-l pl-1">
               <div>Annee/年</div>
-              {Object.entries(loadsf).map((year_data, i) => (
+              {Object.entries(loadsFiltered).map((year_data, i) => (
                 <div
                   key={i}
                   onClick={(e) => {
