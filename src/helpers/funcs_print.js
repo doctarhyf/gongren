@@ -1137,10 +1137,10 @@ function draw_charg_table(doc, pw, ph, pm, rect_title, fsize, load_data) {
       ],
       [`${prime_n} FC`, -90],
     ],
-    ["NUIT", "DEQ M.", "", "", "", "", ""],
+    ["NUIT", "", "", "", "", "", ""],
     [
       ["TOTAL", "DU JOUR"],
-      "DEQ M.",
+      "",
       "",
       "",
       "",
