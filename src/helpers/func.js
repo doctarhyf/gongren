@@ -427,3 +427,11 @@ export function ParseShiftRepport(shift_data) {
   repport.upd = JSON.stringify(upd);
   return repport;
 }
+
+export function GetDatesPartsFromShiftCode(shift_code) {
+  if (shift_code === undefined) return;
+
+  const [t, s, y, m, d] = shift_code.split("_");
+
+  return { y: Number(y), m: Number(m), d: Number(d) };
+}

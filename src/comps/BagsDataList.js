@@ -290,6 +290,7 @@ export default function BagsDataList({
             hideSelectDateType={true}
             defaultDateType={"M"}
             onDateSelected={onDateSelected}
+            horizontal={true}
           />
           <div>Select date to view repport</div>
           {loads === undefined && (

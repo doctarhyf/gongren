@@ -7,7 +7,7 @@ import {
   CLASS_SELECT_TITLE,
   SHIFTS_ZH,
 } from "../helpers/flow";
-import { _ } from "../helpers/func";
+import { GetDatesPartsFromShiftCode, _ } from "../helpers/func";
 import * as SB from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
 import DateSelector from "./DateSelector";
@@ -40,9 +40,13 @@ export default function BagsDataInput({
     console.log(d);
   }
 
-  useEffect(() => {}, [date]);
+  useEffect(() => {
+    if (dataToUpdate) {
+      setdate(GetDatesPartsFromShiftCode(dataToUpdate.code));
+    }
+  }, []);
 
-  async function onSaveLoad() {
+  async function onSaveLoad(upd) {
     setloading(true);
     const team = _(ref_team);
 
@@ -65,22 +69,33 @@ export default function BagsDataInput({
 
     let res;
     if (dataToUpdate) {
-      res = await SB.UpdateItem(TABLES_NAMES.LOADS, {
-        ...load,
-        id: dataToUpdate.id,
-      });
+      console.log("updating ...");
+      res = await SB.UpdateItem(
+        TABLES_NAMES.LOADS,
+        {
+          ...load,
+          id: dataToUpdate.id,
+        },
+        (s) => {
+          onDataAdded(s);
+          setloading(false);
+        },
+        (e) => {
+          onError(e);
+          setloading(false);
+        }
+      );
     } else {
-      /* console.log("will save new data", load); */
       res = await SB.InsertItem(TABLES_NAMES.LOADS, load);
-    }
 
-    if (res === null) {
-      alert("Data added succssefully!");
-      onDataAdded && onDataAdded(load);
-    } else {
-      const err = JSON.stringify(res);
-      alert(err);
-      onError && onError(err);
+      console.log("ressss => ", res);
+      if (res === null) {
+        onDataAdded && onDataAdded();
+        setloading(false);
+      } else {
+        onError && onError(`Error adding bags data`, JSON.stringify(res));
+      }
+      setloading(false);
     }
 
     setloading(false);
@@ -96,9 +111,15 @@ export default function BagsDataInput({
   const upd = dataToUpdate && JSON.parse(dataToUpdate.upd);
 
   return (
-    <div className="flex flex-row-reverse">
-      <DateSelector onDateSelected={onDateSelected} hideSelectDateType={true} />
-
+    <div className="">
+      {dataToUpdate && (
+        <div className="my-1">
+          Updating ...
+          <span className="p-1 rounded-full bg-green-600 text-white text-sm uppercase">
+            {dataToUpdate.code}
+          </span>{" "}
+        </div>
+      )}
       <div className={` ${showCalculator ? "hidden" : "block"} `}>
         <div>
           <span className={CLASS_SELECT_TITLE}>Team:</span>
@@ -122,6 +143,17 @@ export default function BagsDataInput({
           {dataToUpdate && upd.date}
           {dataToUpdate && " - " && <b>, New Date : </b>}
           {`${date.d}/${Number(date.m)}/${date.y}`}
+        </div>
+
+        <div className="border rounded-md p-1">
+          <DateSelector
+            onDateSelected={onDateSelected}
+            hideSelectDateType={true}
+            horizontal={true}
+            defaultDate={
+              dataToUpdate && GetDatesPartsFromShiftCode(dataToUpdate.code)
+            }
+          />
         </div>
         <div>
           <div>
@@ -157,6 +189,16 @@ export default function BagsDataInput({
         </div>
 
         <div>
+          <span className={CLASS_SELECT_TITLE}>SACS DECHIRES:</span>
+          <input
+            className={CLASS_INPUT_TEXT}
+            ref={ref_dechires}
+            type="text"
+            defaultValue={(upd && upd.dechires) || 0}
+          />
+        </div>
+
+        <div>
           <span className={CLASS_SELECT_TITLE}>RETOURS:</span>
           <input
             className={CLASS_INPUT_TEXT}
@@ -174,17 +216,12 @@ export default function BagsDataInput({
             defaultValue={(upd && upd.ajouts) || 0}
           />
         </div>
-        <div>
-          <span className={CLASS_SELECT_TITLE}>DECHIRES:</span>
-          <input
-            className={CLASS_INPUT_TEXT}
-            ref={ref_dechires}
-            type="text"
-            defaultValue={(upd && upd.dechires) || 0}
-          />
-        </div>
+
         <div className="flex">
-          <button onClick={onSaveLoad} className={CLASS_BTN}>
+          <button
+            onClick={(e) => onSaveLoad(dataToUpdate)}
+            className={CLASS_BTN}
+          >
             SAVE
           </button>
           <button onClick={onCancel} className={CLASS_BTN}>
