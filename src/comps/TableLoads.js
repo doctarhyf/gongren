@@ -1,10 +1,13 @@
 import { CLASS_TD } from "../helpers/flow";
 import { ParseDayRepport } from "../helpers/func";
+import { draw_load_table } from "../helpers/funcs_print";
 import ButtonPrint from "./ButtonPrint";
 
 export default function TableLoads({ date, totalData, loadsData }) {
   function printDailRepport(data) {
-    console.log("table loads print daily rep", ParseDayRepport(data));
+    const dp = ParseDayRepport(data);
+    draw_load_table(dp);
+    console.log("table loads print daily rep", dp);
   }
   return (
     <table>

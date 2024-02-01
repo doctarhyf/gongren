@@ -282,7 +282,12 @@ export function ParseMonthRepport(month_data) {
 }
 
 export function ParseDayRepport(day_data) {
-  const [y, m, d] = day_data[0].split("-");
+  const date_str = day_data[0];
+  let [y, m, d] = date_str.split("-");
+
+  if (m === undefined && d === undefined && date_str.indexOf("_") !== -1) {
+    [y, m, d] = date_str.split("_");
+  }
 
   console.log("ParseDayRepport", day_data);
 
