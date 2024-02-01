@@ -47,6 +47,10 @@ export default function DateSelector({
 
     let date = { y: y, m: m, d: d, type: _(ref_dtype) };
 
+    ref_year.current.value = y;
+    ref_month.current.value = m;
+    ref_day.current.value = d;
+
     if (onDateSelected === undefined)
       console.error(`onDateSelected() is not defined!`);
     onDateSelected && onDateSelected(date);

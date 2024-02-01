@@ -48,34 +48,6 @@ function MyForm() {
           </tr>
         ))}
       </tbody>
-      {/* <tbody>
-                <tr>
-                  <td className={CLASS_TD}>Date</td>
-                  <td className={CLASS_TD}>Sacs</td>
-                  <td className={CLASS_TD}>Ajouts</td>
-                  <td className={CLASS_TD}>Retours</td>
-                </tr>
-                {Object.entries(loads).map((day, i) => (
-                  <tr>
-                    <td className={CLASS_TD}>{day[0]}</td>
-                    <td className={CLASS_TD}>
-                      {Object.values(day[1]).map((d, i) => (
-                        <tr className="p-0 border-collapse">
-                          <td className={CLASS_TD}>{d.code}</td>
-                          <td className={CLASS_TD}>{d.sacs}</td>
-                        </tr>
-                      ))}
-                    </td>
-                    <td className={CLASS_TD}>
-                      {Object.values(day[1]).map((d, i) => (
-                        <tr className="p-0 border-collapse">
-                          <td className={CLASS_TD}>{d.ajouts}</td>
-                        </tr>
-                      ))}
-                    </td>
-                  </tr>
-                ))}
-              </tbody> */}
     </table>
   );
 }
@@ -109,12 +81,29 @@ export default function BagsDataList({
   const [loadsbif, setloadsbif] = useState();
 
   useEffect(() => {
-    onDateSelected({ y: new Date().getFullYear(), m: new Date().getMonth() });
+    init();
   }, [showRepportMode]);
+
+  useEffect(() => {
+    init();
+    console.log(loadsf);
+  }, [loadsf]);
+
+  function init() {
+    console.log("init bag data list");
+    onDateSelected({ y: new Date().getFullYear(), m: new Date().getMonth() });
+  }
 
   function onDateSelected(new_date) {
     setdate(new_date);
     setTotalData(undefined);
+    setloadsbif([]);
+
+    setYearData([]);
+    setMonthData([]);
+    setDayData([]);
+    setShiftData(undefined);
+
     const { y: year, m: month } = new_date;
     const date_code = `${new_date.y}-${new_date.m}`;
     const data = loadsf[year] && loadsf[year][date_code];
@@ -418,22 +407,29 @@ export default function BagsDataList({
             {dayData && (
               <div className="border-l pl-1">
                 <div>Equipe/班次</div>
-                {Object.entries(dayData).map((shift_data, i) => (
-                  <div
-                    key={i}
-                    onClick={(e) => {
-                      onSetDataLevel("s", shift_data);
-                      setDatePath((old) => ({
-                        ...old,
-                        shift: shift_data[1].code,
-                      }));
-                      setShiftData(shift_data[1]);
-                    }}
-                    className={CLASS_BTN}
-                  >
-                    {shift_data[1].code}
-                  </div>
-                ))}
+                {Object.entries(dayData)
+                  .sort((a, b) => {
+                    const codeA = a[1].code.charAt(2);
+                    const codeB = b[1].code.charAt(2);
+
+                    return customOrderShift[codeA] - customOrderShift[codeB];
+                  })
+                  .map((shift_data, i) => (
+                    <div
+                      key={i}
+                      onClick={(e) => {
+                        onSetDataLevel("s", shift_data);
+                        setDatePath((old) => ({
+                          ...old,
+                          shift: shift_data[1].code,
+                        }));
+                        setShiftData(shift_data[1]);
+                      }}
+                      className={CLASS_BTN}
+                    >
+                      {shift_data[1].code}
+                    </div>
+                  ))}
               </div>
             )}
           </div>

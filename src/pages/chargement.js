@@ -36,6 +36,7 @@ export default function Chargement() {
     setloads([]);
     setRepportData({});
     set_loads_by_item([]);
+
     const d = await SB.LoadAllItems(TABLES_NAMES.LOADS);
 
     set_loads_by_item(d);
@@ -124,6 +125,7 @@ export default function Chargement() {
       const msg = `Error deleting ...\n${JSON.stringify(error)}`;
       alert(msg);
       console.log(msg);
+      loadData();
       return;
     }
 
@@ -166,6 +168,7 @@ export default function Chargement() {
             onDataAdded={(e) => {
               setAddDataMode(false);
               loadData();
+              alert(JSON.stringify(e));
             }}
             date={date}
           />

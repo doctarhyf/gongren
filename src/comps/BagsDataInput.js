@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Loading from "./Loading";
 import {
   CLASS_BTN,
@@ -37,7 +37,10 @@ export default function BagsDataInput({
 
   function onDateSelected(d) {
     setdate(d);
+    console.log(d);
   }
+
+  useEffect(() => {}, [date]);
 
   async function onSaveLoad() {
     setloading(true);
@@ -62,12 +65,6 @@ export default function BagsDataInput({
 
     let res;
     if (dataToUpdate) {
-      /* console.log(
-        `will update \nid : ${dataToUpdate.id}\nupd data : `,
-        load,
-        "\nold data ",
-        dataToUpdate
-      ); */
       res = await SB.UpdateItem(TABLES_NAMES.LOADS, {
         ...load,
         id: dataToUpdate.id,
@@ -85,7 +82,7 @@ export default function BagsDataInput({
       alert(err);
       onError && onError(err);
     }
-    console.log(res);
+
     setloading(false);
   }
 
@@ -97,8 +94,6 @@ export default function BagsDataInput({
   }
 
   const upd = dataToUpdate && JSON.parse(dataToUpdate.upd);
-
-  console.log("upd => ", upd);
 
   return (
     <div className="flex flex-row-reverse">
@@ -124,7 +119,9 @@ export default function BagsDataInput({
         <div>
           <span className={CLASS_SELECT_TITLE}>DATE:</span>
 
-          {(upd && upd.date) || `${date.d}/${Number(date.m) + 1}/${date.y}`}
+          {dataToUpdate && upd.date}
+          {dataToUpdate && " - " && <b>, New Date : </b>}
+          {`${date.d}/${Number(date.m)}/${date.y}`}
         </div>
         <div>
           <div>
