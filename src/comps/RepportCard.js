@@ -17,7 +17,7 @@ export default function RepportCard({
 
   function onPrintDailyRepport(data) {
     draw_load_table(data);
-    //console.log(data);
+    //console.log("print day rep", data);
   }
 
   function onPrintShiftRepport(data) {
@@ -188,7 +188,11 @@ Superviseur班长: @Albert Kankombwe 
           </div>
           <div>
             <button
-              onClick={(e) => onDeleteShiftData(data)}
+              onClick={(e) => {
+                if (window.confirm("Are you sure you wanna delete?")) {
+                  onDeleteShiftData(data);
+                }
+              }}
               className={CLASS_BTN}
             >
               DELETE

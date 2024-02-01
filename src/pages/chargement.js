@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { MONTHS } from "../helpers/flow";
+import { CLASS_BTN, MONTHS } from "../helpers/flow";
 import DateSelector from "../comps/DateSelector";
 import Loading from "../comps/Loading";
 import BagsDataInput from "../comps/BagsDataInput";
@@ -36,6 +36,7 @@ export default function Chargement() {
     setloads([]);
     setRepportData({});
     set_loads_by_item([]);
+
     const d = await SB.LoadAllItems(TABLES_NAMES.LOADS);
 
     set_loads_by_item(d);
@@ -117,24 +118,47 @@ export default function Chargement() {
   }
 
   async function onDeleteShiftData(data) {
-    console.log(`deleting shift data ...`, data);
+    setloading(true);
 
     const error = await SB.DeleteItem(TABLES_NAMES.LOADS, data);
     if (error) {
       const msg = `Error deleting ...\n${JSON.stringify(error)}`;
       alert(msg);
       console.log(msg);
+      loadData();
+      setloading(false);
+      setAddDataMode(false);
       return;
     }
 
     alert(`Load deleted!`);
     loadData();
+    setloading(false);
+    setAddDataMode(false);
+  }
+
+  function onAddDataClick() {
+    setShiftDataToUpdate(undefined);
+    setAddDataMode(true);
+  }
+
+  function onBagsDataAdded(upd) {
+    setAddDataMode(false);
+    loadData();
+
+    if (upd) {
+      alert("Data updated");
+
+      return;
+    }
+
+    alert("New data added!");
   }
 
   return (
     <div>
       <Loading isLoading={loading} />
-      <div>
+      {/* <div>
         ADD DATA
         <input
           type="checkbox"
@@ -145,10 +169,18 @@ export default function Chargement() {
             setAddDataMode(e.target.checked);
           }}
         />
-      </div>
+      </div> */}
+
+      <button
+        className={`${CLASS_BTN}  ${addDataMode ? "hidden" : "block"} `}
+        onClick={onAddDataClick}
+      >
+        ADD NEW DATA
+      </button>
+
       {!addDataMode && (
         <div>
-          SHOW REPPORT MODE
+          TOGGLE REPPORT MODE
           <input
             type="checkbox"
             className="toggle toggle-xs"
@@ -159,13 +191,13 @@ export default function Chargement() {
       )}
       {addDataMode && (
         <>
-          <div>{shiftDataToUpdate && "updating ..."}</div>
           <BagsDataInput
             onCancel={(e) => setAddDataMode(false)}
             dataToUpdate={shiftDataToUpdate}
-            onDataAdded={(e) => {
-              setAddDataMode(false);
-              loadData();
+            onDataAdded={onBagsDataAdded}
+            onError={(e) => {
+              console.log(e);
+              alert("Bags data input error!\n", JSON.stringify(e));
             }}
             date={date}
           />

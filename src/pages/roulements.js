@@ -51,6 +51,10 @@ export default function Roulements() {
     // setrdk(Math.random());
   }
 
+  function onTeamClick(agents_data) {
+    console.log(agents_data);
+  }
+
   function ParseRLD(rld) {
     return rld.rl && rld.rl.split("");
   }
@@ -165,7 +169,12 @@ export default function Roulements() {
 
   return (
     <div className="flex">
-      <AgentsList key={rdk} onAgentClick={onAgentClick} curAgent={curAgent} />
+      <AgentsList
+        key={rdk}
+        onAgentClick={onAgentClick}
+        onTeamClick={onTeamClick}
+        curAgent={curAgent}
+      />
       <div>
         {curAgent && (
           <div>

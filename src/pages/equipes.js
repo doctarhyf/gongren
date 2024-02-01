@@ -7,6 +7,7 @@ import {
   CLASS_SELECT_TITLE,
   CLASS_TD,
   EQUIPES,
+  EQUIPES_NAMES,
   K_POSTE_AIDE_OPERATEUR,
   K_POSTE_CHARGEUR,
   K_POSTE_NETTOYEUR,
@@ -140,7 +141,7 @@ export default function Equipes() {
     agent.rld = roulement_data;
 
     if (roulement_data === undefined) {
-      console.error(`rld for ${mc} is undefinded`);
+      //console.error(`rld for ${mc} is undefinded`);
       const data = { rl: [...Array(31).fill("-")].join(""), month_code: mc };
       agent.rld = data;
     } else {
@@ -151,14 +152,14 @@ export default function Equipes() {
   }
 
   const CheckAgentRoulementData = (agent, i, arr, y, m) => {
-    console.log("old ag", agent);
+    //console.log("old ag", agent);
     const final_agent = { ...CheckAgentRLDData(agent, y, m) };
-    console.log("new ag", final_agent);
+    //console.log("new ag", final_agent);
 
     return final_agent;
   };
 
-  function onFilterAgents() {
+  function onFilterAgents(e) {
     setagentsf([]);
     setDaysLetters([]);
 
@@ -171,6 +172,10 @@ export default function Equipes() {
 
     const section = ref_section.current.value;
     const equipe = ref_equipe.current.value;
+
+    const table_name = `${EQUIPES_NAMES[equipe] || equipe}, ${section}`;
+
+    setCustomTableName(table_name);
 
     ref_sp_section.current.textContent = section;
     ref_sp_equipe.current.textContent = equipe;
@@ -185,17 +190,13 @@ export default function Equipes() {
       CheckAgentRoulementData(agent, index, arr, y, m)
     );
 
-    /* const custom_arr_agents = FilterAgents(
-      agents,
-      section,
-      equipe,
-      selectedFilter
-    );
-    let arr_agents_with_rld = arr_agents.map((agent, index, arr) =>
-      CheckAgentRoulementData(agent, index, arr, y, m)
-    ); */
+    let fianl_data = [...arr_agents_with_rld];
 
-    setagentsf([...arr_agents_with_rld]);
+    fianl_data.sort(CustomSortByListPriority);
+
+    console.log("ksort", fianl_data);
+
+    setagentsf(fianl_data);
     setCustomAgents(custom_arr_with_rld);
   }
 

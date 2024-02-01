@@ -48,40 +48,12 @@ function MyForm() {
           </tr>
         ))}
       </tbody>
-      {/* <tbody>
-                <tr>
-                  <td className={CLASS_TD}>Date</td>
-                  <td className={CLASS_TD}>Sacs</td>
-                  <td className={CLASS_TD}>Ajouts</td>
-                  <td className={CLASS_TD}>Retours</td>
-                </tr>
-                {Object.entries(loads).map((day, i) => (
-                  <tr>
-                    <td className={CLASS_TD}>{day[0]}</td>
-                    <td className={CLASS_TD}>
-                      {Object.values(day[1]).map((d, i) => (
-                        <tr className="p-0 border-collapse">
-                          <td className={CLASS_TD}>{d.code}</td>
-                          <td className={CLASS_TD}>{d.sacs}</td>
-                        </tr>
-                      ))}
-                    </td>
-                    <td className={CLASS_TD}>
-                      {Object.values(day[1]).map((d, i) => (
-                        <tr className="p-0 border-collapse">
-                          <td className={CLASS_TD}>{d.ajouts}</td>
-                        </tr>
-                      ))}
-                    </td>
-                  </tr>
-                ))}
-              </tbody> */}
     </table>
   );
 }
 
 export default function BagsDataList({
-  loadsf,
+  loadsf: loadsFiltered,
   showRepportMode,
   onSetDataLevel,
   loads_by_item,
@@ -105,26 +77,43 @@ export default function BagsDataList({
     shift: "",
   });
 
-  const [totalData, setTotalData] = useState();
-  const [loadsbif, setloadsbif] = useState();
+  const [yearTotals, setYearTotals] = useState();
+  const [loadsFilteredByYear, setLoadsFilteredByYear] = useState();
 
   useEffect(() => {
-    onDateSelected({ y: new Date().getFullYear(), m: new Date().getMonth() });
+    init();
   }, [showRepportMode]);
+
+  useEffect(() => {
+    init();
+    console.log(loadsFiltered);
+  }, [loadsFiltered]);
+
+  function init() {
+    console.log("init bag data list");
+    onDateSelected({ y: new Date().getFullYear(), m: new Date().getMonth() });
+  }
 
   function onDateSelected(new_date) {
     setdate(new_date);
-    setTotalData(undefined);
+    setYearTotals(undefined);
+    setLoadsFilteredByYear([]);
+
+    setYearData([]);
+    setMonthData([]);
+    setDayData([]);
+    setShiftData(undefined);
+
     const { y: year, m: month } = new_date;
     const date_code = `${new_date.y}-${new_date.m}`;
-    const data = loadsf[year] && loadsf[year][date_code];
+    const data = loadsFiltered[year] && loadsFiltered[year][date_code];
 
     setloads(data);
     if (data === undefined) {
-      setloadsbif([]);
+      setLoadsFilteredByYear([]);
       return;
     }
-    setloadsbif(SortLoadsByYearMonth(loads_by_item, year, month));
+    setLoadsFilteredByYear(SortLoadsByYearMonth(loads_by_item, year, month));
   }
 
   const customOrderShift = { M: 1, N: 3, P: 2 };
@@ -186,7 +175,7 @@ export default function BagsDataList({
       bonus: tot_bonus,
     };
 
-    setTotalData(total_data);
+    setYearTotals(total_data);
     console.log("total_data", total_data);
 
     return sorted_loads;
@@ -282,7 +271,46 @@ export default function BagsDataList({
   }
 
   function downloadExcel(loads, totals) {
+    /*
+npm install xlsx
+
+import * as XLSX from 'xlsx';
+
+const ExcelGenerator = () => {
+  const handleGenerateExcel = () => {
+    // Sample data
+    const data = [
+      ['Name', 'Age', 'City'],
+      ['John Doe', 25, 'New York'],
+      ['Jane Smith', 30, 'San Francisco'],
+    ];
+
+    // Create a new workbook
+    const workbook = XLSX.utils.book_new();
+    const sheet = XLSX.utils.aoa_to_sheet(data);
+
+    // Add the sheet to the workbook
+    XLSX.utils.book_append_sheet(workbook, sheet, 'Sheet 1');
+
+    // Save the workbook as a blob
+    XLSX.write(workbook, { bookType: 'xlsx', type: 'blob' });
+
+    // Create a download link and trigger a click event to download the file
+    const blob = XLSX.write(workbook, { bookType: 'xlsx', type: 'blob' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'data.xlsx';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  };
+
+
+    */
+
     //genLoadsCSVData(loads);
+
     const link = document.createElement("a");
     link.href = genLoadsCSVData(loads).csvData;
     link.download = "data.csv";
@@ -301,6 +329,7 @@ export default function BagsDataList({
             hideSelectDateType={true}
             defaultDateType={"M"}
             onDateSelected={onDateSelected}
+            horizontal={true}
           />
           <div>Select date to view repport</div>
           {loads === undefined && (
@@ -315,19 +344,23 @@ export default function BagsDataList({
                 <div className="flex gap-4">
                   <ButtonPrint
                     title={"PRINT"}
-                    onClick={(e) => printLoadTabled(loadsbif, totalData)}
+                    onClick={(e) =>
+                      printLoadTabled(loadsFilteredByYear, yearTotals)
+                    }
                   />
                   <ButtonPrint
                     icon={excel}
                     title={"DOWNLOAD EXCEL"}
-                    onClick={(e) => downloadExcel(loadsbif, totalData)}
+                    onClick={(e) =>
+                      downloadExcel(loadsFilteredByYear, yearTotals)
+                    }
                   />
                 </div>
               </div>
               <TableLoads
                 date={date}
-                totalData={totalData}
-                loadsData={loadsbif}
+                totalData={yearTotals}
+                loadsData={loadsFilteredByYear}
               />
             </div>
           }
@@ -339,7 +372,7 @@ export default function BagsDataList({
           <div className="flex  ">
             <div className="border-l pl-1">
               <div>Annee/年</div>
-              {Object.entries(loadsf).map((year_data, i) => (
+              {Object.entries(loadsFiltered).map((year_data, i) => (
                 <div
                   key={i}
                   onClick={(e) => {
@@ -418,22 +451,29 @@ export default function BagsDataList({
             {dayData && (
               <div className="border-l pl-1">
                 <div>Equipe/班次</div>
-                {Object.entries(dayData).map((shift_data, i) => (
-                  <div
-                    key={i}
-                    onClick={(e) => {
-                      onSetDataLevel("s", shift_data);
-                      setDatePath((old) => ({
-                        ...old,
-                        shift: shift_data[1].code,
-                      }));
-                      setShiftData(shift_data[1]);
-                    }}
-                    className={CLASS_BTN}
-                  >
-                    {shift_data[1].code}
-                  </div>
-                ))}
+                {Object.entries(dayData)
+                  .sort((a, b) => {
+                    const codeA = a[1].code.charAt(2);
+                    const codeB = b[1].code.charAt(2);
+
+                    return customOrderShift[codeA] - customOrderShift[codeB];
+                  })
+                  .map((shift_data, i) => (
+                    <div
+                      key={i}
+                      onClick={(e) => {
+                        onSetDataLevel("s", shift_data);
+                        setDatePath((old) => ({
+                          ...old,
+                          shift: shift_data[1].code,
+                        }));
+                        setShiftData(shift_data[1]);
+                      }}
+                      className={CLASS_BTN}
+                    >
+                      {shift_data[1].code}
+                    </div>
+                  ))}
               </div>
             )}
           </div>

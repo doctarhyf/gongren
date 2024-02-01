@@ -161,12 +161,20 @@ export async function LoadItemWithColNameEqColVal(tableName, colName, colVal) {
   return data[0];
 }
 
-export async function UpdateItem(table_name, upd_data) {
+export async function UpdateItem(table_name, upd_data, onSuccess, onError) {
   const { data, error } = await supabase
     .from(table_name)
     .update(upd_data)
     .eq("id", upd_data.id)
     .select();
+
+  console.log("UpdateItem", data, error);
+
+  if (data && data.length === 1 && error === null) {
+    onSuccess(data);
+  } else {
+    onError(error);
+  }
 
   if (error) return error;
 

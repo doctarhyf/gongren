@@ -284,6 +284,8 @@ export function ParseMonthRepport(month_data) {
 export function ParseDayRepport(day_data) {
   const [y, m, d] = day_data[0].split("-");
 
+  console.log("ParseDayRepport", day_data);
+
   let repport = {
     type: "Journalier",
 
@@ -382,7 +384,7 @@ export function getRouelemtDaysLetters(year, monthIndex) {
     currentDate.setDate(currentDate.getDate() + 1);
   }
 
-  console.log(startDate, endDate);
+  //console.log(startDate, endDate);
 
   return dayNames;
 }
@@ -426,4 +428,12 @@ export function ParseShiftRepport(shift_data) {
 
   repport.upd = JSON.stringify(upd);
   return repport;
+}
+
+export function GetDatesPartsFromShiftCode(shift_code) {
+  if (shift_code === undefined) return;
+
+  const [t, s, y, m, d] = shift_code.split("_");
+
+  return { y: Number(y), m: Number(m), d: Number(d) };
 }

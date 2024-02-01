@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CLASS_SELECT, CLASS_SELECT_TITLE, MONTHS } from "../helpers/flow";
 import { getDaysInMonth } from "../helpers/func";
 
@@ -7,6 +7,7 @@ export default function DateSelector({
   defaultDate,
   defaultDateType,
   hideSelectDateType,
+  horizontal,
 }) {
   const DATE_TYPE = { Y: "Year", M: "Month", D: "Day" };
 
@@ -47,6 +48,10 @@ export default function DateSelector({
 
     let date = { y: y, m: m, d: d, type: _(ref_dtype) };
 
+    ref_year.current.value = y;
+    ref_month.current.value = m;
+    ref_day.current.value = d;
+
     if (onDateSelected === undefined)
       console.error(`onDateSelected() is not defined!`);
     onDateSelected && onDateSelected(date);
@@ -56,9 +61,16 @@ export default function DateSelector({
     if (ref === undefined) return;
     return ref.current.value;
   }
+
+  console.log("da def date => ", defaultDate);
+
   return (
-    <div>
-      <div className={` ${hideSelectDateType ? "hidden" : "block"} `}>
+    <div className={` flex `}>
+      <div
+        className={` w-fit bg-red-300 ${
+          hideSelectDateType ? "hidden" : "block"
+        } `}
+      >
         <span className={CLASS_SELECT_TITLE}> Date Type: </span>
         <select
           className={CLASS_SELECT}
@@ -78,11 +90,17 @@ export default function DateSelector({
         </select>
       </div>
 
-      <div>
+      <div className="w-fit">
         <span className={CLASS_SELECT_TITLE}>Year: </span>
         <select className={CLASS_SELECT} ref={ref_year} onChange={onDateChange}>
           {[...Array(10)].map((it, i) => (
-            <option>{new Date().getFullYear() + i}</option>
+            <option
+              selected={
+                defaultDate && defaultDate.y === new Date().getFullYear() + i
+              }
+            >
+              {new Date().getFullYear() + i}
+            </option>
           ))}
         </select>
         <div className={`${dateType !== "Y" ? "block" : "hidden"}`}>
@@ -93,7 +111,9 @@ export default function DateSelector({
             onChange={onDateChange}
           >
             {[...Array(12)].map((it, i) => (
-              <option value={i}>{MONTHS[i]}</option>
+              <option value={i} selected={defaultDate && defaultDate.m === i}>
+                {MONTHS[i]}
+              </option>
             ))}
           </select>
         </div>
@@ -105,7 +125,12 @@ export default function DateSelector({
             onChange={onDateChange}
           >
             {[...Array(31)].map((it, i) => (
-              <option value={i + 1}>{i + 1}</option>
+              <option
+                value={i + 1}
+                selected={defaultDate && defaultDate.d === i + 1}
+              >
+                {i + 1}
+              </option>
             ))}
           </select>
         </div>
