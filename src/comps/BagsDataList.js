@@ -271,7 +271,46 @@ export default function BagsDataList({
   }
 
   function downloadExcel(loads, totals) {
+    /*
+npm install xlsx
+
+import * as XLSX from 'xlsx';
+
+const ExcelGenerator = () => {
+  const handleGenerateExcel = () => {
+    // Sample data
+    const data = [
+      ['Name', 'Age', 'City'],
+      ['John Doe', 25, 'New York'],
+      ['Jane Smith', 30, 'San Francisco'],
+    ];
+
+    // Create a new workbook
+    const workbook = XLSX.utils.book_new();
+    const sheet = XLSX.utils.aoa_to_sheet(data);
+
+    // Add the sheet to the workbook
+    XLSX.utils.book_append_sheet(workbook, sheet, 'Sheet 1');
+
+    // Save the workbook as a blob
+    XLSX.write(workbook, { bookType: 'xlsx', type: 'blob' });
+
+    // Create a download link and trigger a click event to download the file
+    const blob = XLSX.write(workbook, { bookType: 'xlsx', type: 'blob' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'data.xlsx';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  };
+
+
+    */
+
     //genLoadsCSVData(loads);
+
     const link = document.createElement("a");
     link.href = genLoadsCSVData(loads).csvData;
     link.download = "data.csv";

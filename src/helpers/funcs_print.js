@@ -1036,9 +1036,13 @@ function draw_charg_table(doc, pw, ph, pm, rect_title, fsize, load_data) {
   const deq_p = loads.P?.sup?.nom || "";
   const deq_n = loads.N?.sup?.nom || "";
 
-  const cam_m = loads.M?.camions || "0";
-  const cam_p = loads.P?.camions || "0";
-  const cam_n = loads.N?.camions || "0";
+  const cam_m = Number(loads.M?.camions) || 0;
+  const cam_p = Number(loads.P?.camions) || 0;
+  const cam_n = Number(loads.N?.camions) || 0;
+
+  const cam_m_text = cam_m === 0 ? "" : `${cam_m} CAMIONS`;
+  const cam_p_text = cam_p === 0 ? "" : `${cam_p} CAMIONS`;
+  const cam_n_text = cam_n === 0 ? "" : `${cam_n} CAMIONS`;
 
   const sacs_m = loads.M?.sacs || "0";
   const sacs_p = loads.P?.sacs || "0";
@@ -1092,7 +1096,7 @@ function draw_charg_table(doc, pw, ph, pm, rect_title, fsize, load_data) {
       [deq_m, -90],
       "",
       "",
-      [`${cam_m} CAMIONS`, -90],
+      [`${cam_m_text}`, -90],
       [
         `${sacs_m} sacs`,
         ` `,
@@ -1109,7 +1113,7 @@ function draw_charg_table(doc, pw, ph, pm, rect_title, fsize, load_data) {
       [deq_p, -90],
       "",
       "",
-      [`${cam_p} CAMIONS`, -90],
+      [`${cam_p_text}`, -90],
       [
         `${sacs_p} sacs`,
         ` `,
@@ -1126,7 +1130,7 @@ function draw_charg_table(doc, pw, ph, pm, rect_title, fsize, load_data) {
       [deq_n, -90],
       "",
       "",
-      [`${cam_n} CAMIONS`, -90],
+      [`${cam_n_text}`, -90],
       [
         `${sacs_n} sacs`,
         ` `,
