@@ -171,7 +171,7 @@ export async function UpdateItem(table_name, upd_data, onSuccess, onError) {
   console.log("UpdateItem", data, error);
 
   if (data && data.length === 1 && error === null) {
-    onSuccess(data);
+    onSuccess && onSuccess(data);
   } else {
     onError(error);
   }
