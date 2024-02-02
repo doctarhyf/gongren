@@ -668,12 +668,12 @@ function print_agents_rl(agents_list, print_empty, team_name) {
     {
       lat: `${getFrenchMonthName(m).toUpperCase()} - ${getFrenchMonthName(
         next_m
-      ).toUpperCase()} ${y} / `,
+      ).toUpperCase()} ${y} , `,
     },
-    { zh: "年" },
     { lat: "" + y },
-    { zh: "月" },
+    { zh: "年" },
     { lat: "" + (Number(m) + 1) },
+    { zh: "月" },
   ];
   text_dims = getTextTokensDimensions(doc, fsize, month_names_tokens);
 
