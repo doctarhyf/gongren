@@ -65,13 +65,13 @@ export default function Equipes() {
 
   const FILTERS = [
     { name: "GCK AGENTS", ref: ref_gck_agents },
+    { name: "AGENTS ONLY, NO SUP", ref: ref_agents_only_no_sup },
     { name: "MOR AGENTS", ref: ref_mor_agents },
     { name: "FULL TEAM", ref: ref_full_team },
     { name: "ALL GCK STUFF", ref: ref_all_gck_stuff },
     { name: "ALL CD GCK STUFF", ref: ref_all_cd_stuff },
     { name: "ALL ZH GCK STUFF", ref: ref_all_zh_stuff },
     { name: "ALL SUPERVISORS", ref: ref_all_sup },
-    { name: "AGENTS ONLY, NO SUP", ref: ref_agents_only_no_sup },
   ];
 
   useEffect(() => {
