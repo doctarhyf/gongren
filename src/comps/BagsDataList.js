@@ -15,6 +15,7 @@ import {
 import ButtonPrint from "./ButtonPrint";
 import RepportCard from "./RepportCard";
 import TableLoads from "./TableLoads";
+import Excelexport from "./Excelexport";
 
 function MyForm() {
   return (
@@ -198,7 +199,7 @@ export default function BagsDataList({
     return { csvString: csvString, csvData: csvData };
   }
 
-  function genLoadsCSVData(data) {
+  function GenExcelLoadsData(data) {
     /*
             "日期",
             "班组",
@@ -210,7 +211,10 @@ export default function BagsDataList({
             "备注"*/
 
     const days_entries = Object.entries(data);
-    const ld_keys = Object.keys(days_entries[1][1][0]);
+    const first_element = days_entries[0][1][0];
+
+    const loading_keys = Object.keys(first_element);
+
     const [
       id,
       created_at,
@@ -223,12 +227,28 @@ export default function BagsDataList({
       autre,
       camions,
       dechires,
-    ] = ld_keys;
+    ] = loading_keys;
 
-    //const headers = "Date," + ld_keys.join(",") + "\n";
-    const headers =
+    const headers = `[
+      "Date/日期",
+      "Equipe/班组",
+      "Sacs/袋数",
+      "T,/产量",
+      "Ajouts/加袋数",
+      "Retours/卸袋数",
+      "Dechires/撕裂袋数",
+      "PROB. MACHINE/设备原因",
+      "PROB. ELEC./电气原因",
+      "NOTE/备注"
+    ]`;
+
+    /*const headers =
       "Date/日期,Equipe/班组,袋数,·T/产量,Ajouts/加袋数,Retours/卸袋数,Dechires/撕裂袋数,PROB. MACHINE/设备原因,PROB. ELEC./电气原因, AUTRE/其它原因, NOTE/备注";
-    let cont = "";
+    */
+
+    const num_days = days_entries.length;
+
+    let final_data = `[${headers},`;
 
     days_entries.forEach((it, i_it) => {
       const date = it[0];
@@ -252,71 +272,39 @@ export default function BagsDataList({
         ] = ld_values;
         const [team, shift, y, m, d] = code.split("_");
 
-        const values_line = `${i_ld === 0 ? date : ""},${team},${Number(
-          sacs
-        )},${
-          Number(sacs) / 20
-        },${ajouts}, ${retours}, ${dechires},${prob_machine},${prob_courant}, ${autre}\n`;
+        const data_id = `${i_ld === 0 ? date : ""}`;
+        const data_team = `${team}`;
+        const data_sacs = `${Number(sacs)}`;
+        const data_t = `${Number(sacs) / 20}`;
+        const data_ajouts = `${ajouts}`;
+        const data_retours = `${retours}`;
+        const data_dechires = `${dechires}`;
+        const data_prob_machines = `${prob_machine}`;
+        const data_prob_courant = `${prob_courant}`;
+        const data_autre = `${autre}`;
 
-        //const csv = `${i_ld === 0 ? date : ""},${ld_values.join(",")},\n`;
-        cont += values_line;
+        let line_data = `["${data_id}",
+        "${data_team}",
+        "${data_sacs}",
+        "${data_t}",
+        "${data_ajouts}",
+        "${data_retours}",
+        "${data_dechires}",
+        "${data_prob_machines}",
+        "${data_prob_courant}",
+      "${data_autre}"]`;
+
+        let trail = ",";
+        if (i_it === num_days - 1 && i_ld === data_len - 1) {
+          trail = "";
+        }
+        final_data += line_data + trail;
       });
     });
 
-    const csvString = headers + cont;
+    final_data += "]";
 
-    const csvData =
-      "data:text/csv;charset=utf-8," + encodeURIComponent(csvString);
-    return { csvString: csvString, csvData: csvData };
-  }
-
-  function downloadExcel(loads, totals) {
-    /*
-npm install xlsx
-
-import * as XLSX from 'xlsx';
-
-const ExcelGenerator = () => {
-  const handleGenerateExcel = () => {
-    // Sample data
-    const data = [
-      ['Name', 'Age', 'City'],
-      ['John Doe', 25, 'New York'],
-      ['Jane Smith', 30, 'San Francisco'],
-    ];
-
-    // Create a new workbook
-    const workbook = XLSX.utils.book_new();
-    const sheet = XLSX.utils.aoa_to_sheet(data);
-
-    // Add the sheet to the workbook
-    XLSX.utils.book_append_sheet(workbook, sheet, 'Sheet 1');
-
-    // Save the workbook as a blob
-    XLSX.write(workbook, { bookType: 'xlsx', type: 'blob' });
-
-    // Create a download link and trigger a click event to download the file
-    const blob = XLSX.write(workbook, { bookType: 'xlsx', type: 'blob' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'data.xlsx';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-  };
-
-
-    */
-
-    //genLoadsCSVData(loads);
-
-    const link = document.createElement("a");
-    link.href = genLoadsCSVData(loads).csvData;
-    link.download = "data.csv";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    return JSON.parse(final_data);
   }
 
   return (
@@ -348,13 +336,16 @@ const ExcelGenerator = () => {
                       printLoadTabled(loadsFilteredByYear, yearTotals)
                     }
                   />
-                  <ButtonPrint
+                  <Excelexport
+                    excelData={GenExcelLoadsData(loadsFilteredByYear)}
+                  />
+                  {/*   <ButtonPrint
                     icon={excel}
                     title={"DOWNLOAD EXCEL"}
                     onClick={(e) =>
                       downloadExcel(loadsFilteredByYear, yearTotals)
                     }
-                  />
+                  /> */}
                 </div>
               </div>
               <TableLoads

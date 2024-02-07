@@ -158,18 +158,6 @@ export default function Chargement() {
   return (
     <div>
       <Loading isLoading={loading} />
-      {/* <div>
-        ADD DATA
-        <input
-          type="checkbox"
-          className="toggle toggle-xs"
-          checked={addDataMode}
-          onChange={(e) => {
-            setShiftDataToUpdate(undefined);
-            setAddDataMode(e.target.checked);
-          }}
-        />
-      </div> */}
 
       <button
         className={`${CLASS_BTN}  ${addDataMode ? "hidden" : "block"} `}
