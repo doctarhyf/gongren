@@ -177,7 +177,7 @@ export default function Roulements() {
       />
       <div>
         {curAgent && (
-          <div>
+          <div className=" md:flex">
             <div>
               <span className={CLASS_SELECT_TITLE}> Mois</span>
               <select
@@ -190,6 +190,7 @@ export default function Roulements() {
                 ))}
               </select>
             </div>
+
             <div>
               <span className={CLASS_SELECT_TITLE}>Annee</span>
               <select
