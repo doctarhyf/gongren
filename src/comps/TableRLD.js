@@ -174,7 +174,6 @@ export default function TableRLD({
                 <>
                   <tr>
                     <td colSpan={3} className={CLASS_TD}></td>
-
                     {daysLetters.map((d, i) => (
                       <td
                         key={i}
@@ -213,8 +212,8 @@ export default function TableRLD({
                             : 21 + i}{" "} 
                           dates
                         </td>
-                      ))} */}
-                    {dates.map &&
+                      ))} }
+                   {/*  {dates.map &&
                       dates.map((d, i) => (
                         <td
                           key={i}
@@ -226,7 +225,7 @@ export default function TableRLD({
                         >
                           {d}
                         </td>
-                      ))}
+                      ))} */}
                   </tr>
                 </>
               )}

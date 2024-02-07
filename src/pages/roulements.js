@@ -177,7 +177,7 @@ export default function Roulements() {
       />
       <div>
         {curAgent && (
-          <div className=" md:flex">
+          <div className=" md:flex gap-4 justify-center items-center py-4">
             <div>
               <span className={CLASS_SELECT_TITLE}> Mois</span>
               <select
@@ -204,7 +204,7 @@ export default function Roulements() {
               </select>
             </div>
 
-            <div className="bg-slate-500 text-white rounded-full px-2 text-sm w-fit">
+            <div className="bg-slate-500 text-white rounded-full px-2 text-sm w-fit h-fit">
               {monthCode}
             </div>
           </div>
