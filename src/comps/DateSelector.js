@@ -62,8 +62,6 @@ export default function DateSelector({
     return ref.current.value;
   }
 
-  console.log("da def date => ", defaultDate);
-
   return (
     <div className={` flex `}>
       <div className={` w-fit  ${hideSelectDateType ? "hidden" : "block"} `}>

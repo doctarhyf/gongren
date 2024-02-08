@@ -18,6 +18,7 @@ import {
 } from "../helpers/func";
 import ItemNotSelected from "../comps/ItemNotSelected";
 import DateSelector from "../comps/DateSelector";
+import GetRoulemenDaysData from "../helpers/GetRoulemenDaysData.mjs";
 
 function TableRoulement({ agentData }) {
   const [roulementData, setRoulementData] = useState();
@@ -31,8 +32,10 @@ function TableRoulement({ agentData }) {
     const d = date.getDate();
 
     if (agentData) {
-      let mc = GenCurrentMonthCode(agentData.id, y, m, 25);
-      console.log(mc);
+      const roulementDaysData = GetRoulemenDaysData(y, m, d);
+      console.log(roulementDaysData);
+      //let mc = GenCurrentMonthCode(agentData.id, y, m, 25);
+      //console.log(mc);
     }
   }, [agentData]);
 
@@ -43,7 +46,13 @@ function TableRoulement({ agentData }) {
     );
   }
 
-  function onDateSelected({ y, m, d }) {}
+  function onDateSelected({ y, m, d }) {
+    const year = y;
+    const month = m + 1;
+    console.log(y, m, 21);
+    const roulementDaysData = GetRoulemenDaysData(year, month, 21);
+    console.log(roulementDaysData);
+  }
 
   if (agentData === undefined) {
     return <div></div>;
