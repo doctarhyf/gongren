@@ -66,11 +66,7 @@ export default function DateSelector({
 
   return (
     <div className={` flex `}>
-      <div
-        className={` w-fit bg-red-300 ${
-          hideSelectDateType ? "hidden" : "block"
-        } `}
-      >
+      <div className={` w-fit  ${hideSelectDateType ? "hidden" : "block"} `}>
         <span className={CLASS_SELECT_TITLE}> Date Type: </span>
         <select
           className={CLASS_SELECT}
@@ -90,19 +86,26 @@ export default function DateSelector({
         </select>
       </div>
 
-      <div className="w-fit">
-        <span className={CLASS_SELECT_TITLE}>Year: </span>
-        <select className={CLASS_SELECT} ref={ref_year} onChange={onDateChange}>
-          {[...Array(10)].map((it, i) => (
-            <option
-              selected={
-                defaultDate && defaultDate.y === new Date().getFullYear() + i
-              }
-            >
-              {new Date().getFullYear() + i}
-            </option>
-          ))}
-        </select>
+      <div className="w-fit md:flex">
+        <div>
+          <span className={CLASS_SELECT_TITLE}>Year: </span>
+          <select
+            className={CLASS_SELECT}
+            ref={ref_year}
+            onChange={onDateChange}
+          >
+            {[...Array(10)].map((it, i) => (
+              <option
+                selected={
+                  defaultDate && defaultDate.y === new Date().getFullYear() + i
+                }
+              >
+                {new Date().getFullYear() + i}
+              </option>
+            ))}
+          </select>
+        </div>
+
         <div className={`${dateType !== "Y" ? "block" : "hidden"}`}>
           <span className={CLASS_SELECT_TITLE}> Month: </span>
           <select
@@ -117,6 +120,7 @@ export default function DateSelector({
             ))}
           </select>
         </div>
+
         <div className={` ${dateType === "D" ? "block" : "hidden"} `}>
           <span className={CLASS_SELECT_TITLE}>Date: </span>
           <select

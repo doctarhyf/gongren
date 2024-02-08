@@ -435,10 +435,44 @@ export function ParseShiftRepport(shift_data) {
   return repport;
 }
 
+function isDateBetween20thAnd21st(year, month, day) {
+  // Create a Date object for the input date
+  const inputDate = new Date(year, month - 1, day); // Month is 0-based in JavaScript
+
+  // Get the current date
+  const currentDate = new Date();
+
+  // Get the 20th of the current month
+  const startRange = new Date(
+    currentDate.getFullYear(),
+    currentDate.getMonth(),
+    20
+  );
+
+  // Get the 21st of the next month
+  let endRange = new Date(
+    currentDate.getFullYear(),
+    currentDate.getMonth() + 1,
+    21
+  );
+
+  // Adjust the endRange if it goes to the next year
+  if (endRange.getMonth() === 0) {
+    endRange = new Date(currentDate.getFullYear() + 1, 0, 21);
+  }
+
+  // Check if the input date is between startRange and endRange
+  return inputDate >= startRange && inputDate <= endRange;
+}
+
 export function GetDatesPartsFromShiftCode(shift_code) {
   if (shift_code === undefined) return;
 
   const [t, s, y, m, d] = shift_code.split("_");
 
   return { y: Number(y), m: Number(m), d: Number(d) };
+}
+
+export function GenCurrentMonthCode(agent_id, year, month, day) {
+  return isDateBetween20thAnd21st(2024, 1, 8); //`mc_${agent_id}__${final_year}_${final_month}`;
 }

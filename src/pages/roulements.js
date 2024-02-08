@@ -11,17 +11,66 @@ import * as SB from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
 
 import TableRLD from "../comps/TableRLD";
-import { getDaysInMonth, getRouelemtDaysLetters } from "../helpers/func";
+import {
+  GenCurrentMonthCode,
+  getDaysInMonth,
+  getRouelemtDaysLetters,
+} from "../helpers/func";
+import ItemNotSelected from "../comps/ItemNotSelected";
+import DateSelector from "../comps/DateSelector";
+
+function TableRoulement({ agentData }) {
+  const [roulementData, setRoulementData] = useState();
+  const [curRoulementData, setCurRoulementData] = useState();
+  const [loading, setloading] = useState(false);
+  const date = new Date();
+
+  useEffect(() => {
+    const y = date.getFullYear();
+    const m = date.getMonth();
+    const d = date.getDate();
+
+    if (agentData) {
+      let mc = GenCurrentMonthCode(agentData.id, y, m, 25);
+      console.log(mc);
+    }
+  }, [agentData]);
+
+  function loadRoulement(monthCode) {
+    const d = SB.LoadItemWithColNameEqColVal(
+      TABLES_NAMES.AGENTS_RLD,
+      monthCode
+    );
+  }
+
+  function onDateSelected({ y, m, d }) {}
+
+  if (agentData === undefined) {
+    return <div></div>;
+  }
+
+  return (
+    <div>
+      <DateSelector
+        defaultDateType={"m"}
+        hideSelectDateType={true}
+        onDateSelected={onDateSelected}
+      />
+      <div>{JSON.stringify(agentData)}</div>
+    </div>
+  );
+}
 
 export default function Roulements() {
   const [curAgent, setCurAgent] = useState();
-  const [roulement_data, set_roulement_data] = useState([]);
+  const [agentsRoulementData, setAgentsRoulementData] = useState([]);
   const [curAgentRld, setCurAgentRld] = useState([]);
   const [monthCode, setMonthCode] = useState();
   const [error, seterror] = useState(false);
   const [rdk, setrdk] = useState(Math.random());
   const [lastDayDate, setLastDayDate] = useState(31);
   const [daysLetters, setDaysLetters] = useState([]);
+  //const [selectedAgentData, setSelectedAgentData] = useState();
 
   const ref_m = useRef();
   const ref_y = useRef();
@@ -40,15 +89,16 @@ export default function Roulements() {
 
   async function loadRoulement() {
     let data = await SB.LoadAllItems(TABLES_NAMES.AGENTS_RLD);
-    set_roulement_data(data);
+    setAgentsRoulementData(data);
     setrdk(Math.random());
     setCurAgentRld([]);
   }
 
   function onAgentClick(agent_data) {
     setCurAgent(agent_data);
-    onDateChange(agent_data.id);
-    // setrdk(Math.random());
+    //onDateChange(agent_data.id);
+    //let udata = { data: agent_data, rld: {} };
+    // let rld;
   }
 
   function onTeamClick(agents_data) {
@@ -70,7 +120,7 @@ export default function Roulements() {
     const mc = `mc_${id}_${y}_${m}`;
     setMonthCode(mc);
 
-    const data = roulement_data.find((it, i) => it.month_code === mc);
+    const data = agentsRoulementData.find((it, i) => it.month_code === mc);
 
     //const init_data = GetInitRLD(mc);
 
@@ -175,6 +225,12 @@ export default function Roulements() {
         onTeamClick={onTeamClick}
         curAgent={curAgent}
       />
+
+      <ItemNotSelected show={curAgent} />
+
+      <TableRoulement agentData={curAgent} />
+
+      {/*
       <div>
         {curAgent && (
           <div className=" md:flex gap-4 justify-center items-center py-4">
@@ -210,7 +266,7 @@ export default function Roulements() {
           </div>
         )}
 
-        <TableRLD
+         <TableRLD
           onRoulementSaved={onRoulementSaved}
           error={error !== undefined}
           daysCount={lastDayDate}
@@ -219,8 +275,11 @@ export default function Roulements() {
           curAgentRld={curAgentRld}
           monthCode={monthCode}
           daysLetters={daysLetters}
-        />
-      </div>
+        /> 
+
+
+
+      </div>*/}
     </div>
   );
 }
