@@ -47,10 +47,10 @@ export default function Home() {
   }
 
   return (
-    <div>
+    <div className="md:w-[980pt] md:mx-auto ">
       <Loading isLoading={loading} />
       <div>Agents count : {agents.length}</div>
-      <div>
+      <div className="w-fit ">
         {Object.entries(agents_by_teams).map((section, i) => (
           <details>
             <summary className="cursor-pointer">{section[0]}</summary>

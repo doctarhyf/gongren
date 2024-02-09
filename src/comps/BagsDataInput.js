@@ -7,7 +7,11 @@ import {
   CLASS_SELECT_TITLE,
   SHIFTS_ZH,
 } from "../helpers/flow";
-import { GetDatesPartsFromShiftCode, _ } from "../helpers/func";
+import {
+  GetDatesPartsFromShiftCode,
+  GetTodaysDateYMDObject,
+  _,
+} from "../helpers/func";
 import * as SB from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
 import DateSelector from "./DateSelector";
@@ -31,7 +35,7 @@ export default function BagsDataInput({
   const [date, setdate] = useState({
     y: new Date().getFullYear(),
     m: new Date().getMonth(),
-    d: new Date().getDay(),
+    d: new Date().getDate(),
   });
   const [showCalculator, setShowCalculator] = useState(false);
 
@@ -139,7 +143,6 @@ export default function BagsDataInput({
         </div>
         <div>
           <span className={CLASS_SELECT_TITLE}>DATE:</span>
-
           {dataToUpdate && upd.date}
           {dataToUpdate && " - " && <b>, New Date : </b>}
           {`${date.d}/${Number(date.m)}/${date.y}`}
@@ -151,7 +154,8 @@ export default function BagsDataInput({
             hideSelectDateType={true}
             horizontal={true}
             defaultDate={
-              dataToUpdate && GetDatesPartsFromShiftCode(dataToUpdate.code)
+              (dataToUpdate && GetDatesPartsFromShiftCode(dataToUpdate.code)) ||
+              GetTodaysDateYMDObject()
             }
           />
         </div>

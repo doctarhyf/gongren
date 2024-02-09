@@ -474,3 +474,11 @@ export function GetDatesPartsFromShiftCode(shift_code) {
 
   return { y: Number(y), m: Number(m), d: Number(d) };
 }
+
+export function GetTodaysDateYMDObject() {
+  const y = new Date().getFullYear();
+  const m = new Date().getMonth();
+  const d = new Date().getDate();
+
+  return { y: y, m: m, d: d };
+}

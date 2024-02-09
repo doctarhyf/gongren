@@ -200,6 +200,10 @@ export default function BagsDataList({
   }
 
   function GenExcelLoadsData(data) {
+    if (data === undefined) {
+      console.log("data is still null");
+      return;
+    }
     /*
             "日期",
             "班组",
