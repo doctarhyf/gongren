@@ -1,5 +1,5 @@
-import React from "react";
-import { CLASS_TD } from "../helpers/flow";
+import React, { useState } from "react";
+import { CLASS_BTN, CLASS_TD } from "../helpers/flow";
 import Loading from "./Loading";
 
 export default function AgentRoulementTable({
@@ -9,6 +9,8 @@ export default function AgentRoulementTable({
   loading,
   hideHeaders,
 }) {
+  const [editRoulement, setEditRoulement] = useState(false);
+
   return (
     <table>
       {!hideHeaders && (
@@ -16,7 +18,16 @@ export default function AgentRoulementTable({
           {" "}
           <tr>
             <td className={CLASS_TD}></td>
-            <td className={CLASS_TD}></td>
+            <td className={CLASS_TD}>
+              <div>
+                <input
+                  type="checkbox"
+                  value={editRoulement}
+                  onChange={(e) => setEditRoulement(!e.target.checked)}
+                />{" "}
+                EDIT ROULEMENT
+              </div>
+            </td>
             <td className={CLASS_TD}></td>
             {daysData &&
               daysData.daysNames.map((d, i) => (
@@ -41,9 +52,18 @@ export default function AgentRoulementTable({
 
         {!loading &&
           agentRoulementData.rl &&
-          agentRoulementData.rl
-            .split("")
-            .map((r, i) => <td className={CLASS_TD}>{r}</td>)}
+          agentRoulementData.rl.split("").map((r, i) => (
+            <td className={CLASS_TD}>
+              {editRoulement && r}{" "}
+              {!editRoulement && (
+                <select>
+                  {["J", "P", "N", "R", "-"].map((d, i) => (
+                    <option selected={d === r}>{d}</option>
+                  ))}
+                </select>
+              )}
+            </td>
+          ))}
 
         {loading && agentRoulementData.rl && (
           <td
