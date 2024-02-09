@@ -38,6 +38,7 @@ export default function BagsDataInput({
     d: new Date().getDate(),
   });
   const [showCalculator, setShowCalculator] = useState(false);
+  const [tonnage, settonnage] = useState(0);
 
   function onDateSelected(d) {
     setdate(d);
@@ -125,6 +126,31 @@ export default function BagsDataInput({
         </div>
       )}
       <div className={` ${showCalculator ? "hidden" : "block"} `}>
+        <div className=" border mt-2 border-red-500 rounded-md">
+          <div className="my-2 text-center text-sm ml-2 w-fit font-bold shadow-sm">
+            Veuillez commencer par choisir la date
+          </div>
+          <div>
+            <span className={CLASS_SELECT_TITLE}>DATE:</span>
+            {dataToUpdate && upd.date}
+            {dataToUpdate && " - " && <b>, New Date : </b>}
+            {`${date.d}/${Number(date.m)}/${date.y}`}
+          </div>
+
+          <div className="border rounded-md p-1">
+            <DateSelector
+              onDateSelected={onDateSelected}
+              hideSelectDateType={true}
+              horizontal={true}
+              defaultDate={
+                (dataToUpdate &&
+                  GetDatesPartsFromShiftCode(dataToUpdate.code)) ||
+                GetTodaysDateYMDObject()
+              }
+            />
+          </div>
+        </div>
+
         <div>
           <span className={CLASS_SELECT_TITLE}>Team:</span>
           <select className={CLASS_SELECT} ref={ref_team}>
@@ -141,33 +167,23 @@ export default function BagsDataInput({
             ))}
           </select>
         </div>
-        <div>
-          <span className={CLASS_SELECT_TITLE}>DATE:</span>
-          {dataToUpdate && upd.date}
-          {dataToUpdate && " - " && <b>, New Date : </b>}
-          {`${date.d}/${Number(date.m)}/${date.y}`}
-        </div>
 
-        <div className="border rounded-md p-1">
-          <DateSelector
-            onDateSelected={onDateSelected}
-            hideSelectDateType={true}
-            horizontal={true}
-            defaultDate={
-              (dataToUpdate && GetDatesPartsFromShiftCode(dataToUpdate.code)) ||
-              GetTodaysDateYMDObject()
-            }
-          />
-        </div>
         <div>
           <div>
             <span className={CLASS_SELECT_TITLE}>SACS:</span>
             <input
               className={CLASS_INPUT_TEXT}
+              onChange={(e) =>
+                settonnage(Number(Number(e.target.value) / 20).toFixed(2))
+              }
               ref={ref_sacs}
               type="text"
               defaultValue={(upd && upd.sacs) || 0}
             />
+          </div>
+          <div>
+            <span className={CLASS_SELECT_TITLE}>TONNAGE:</span>
+            {tonnage} T.
           </div>
           <div>
             <span className={CLASS_SELECT_TITLE}>CAMIONS:</span>
