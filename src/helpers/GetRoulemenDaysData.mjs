@@ -49,6 +49,21 @@ function GetMonthLastDate(year, month, day) {
   return lastDateOfMonth;
 }
 
+export const GFMN = GetFrenchMonthName;
+
+function GetFrenchMonthName(index) {
+  // Validate that the index is within the range [1, 12]
+  if (index < 1 || index > 12) {
+    return "Invalid month index";
+  }
+
+  // Create a date object with the desired month (1-based) and get the localized month name
+  const date = new Date(2000, index - 1, 1); // Using 2000 as an arbitrary year
+  const monthName = date.toLocaleString("fr-FR", { month: "long" });
+
+  return monthName;
+}
+
 export default function GetRoulemenDaysData(
   y = new Date().getFullYear(),
   m = new Date().getMonth() + 1,

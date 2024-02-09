@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { CLASS_BTN, CLASS_TD } from "../helpers/flow";
+import { CLASS_BTN, CLASS_TD, CLASS_TODAY } from "../helpers/flow";
 import Loading from "./Loading";
+import { GFMN } from "../helpers/GetRoulemenDaysData.mjs";
 
 export default function AgentRoulementTable({
   agentData,
@@ -18,6 +19,32 @@ export default function AgentRoulementTable({
       {!hideHeaders && (
         <>
           {" "}
+          {daysData && (
+            <tr>
+              <td colSpan={3} className={CLASS_TD}>
+                1
+              </td>
+              <td
+                align="center"
+                colSpan={daysData.firstMonthDates.length}
+                className={CLASS_TD}
+              >
+                <b>
+                  {GFMN(daysData.firstMonth)} - {daysData.date.y}
+                </b>
+              </td>
+              <td
+                align="center"
+                colSpan={daysData.secondMonthDates.length}
+                className={CLASS_TD}
+              >
+                <b>
+                  {" "}
+                  {GFMN(daysData.secondMonth)} - {daysData.date.y}
+                </b>
+              </td>
+            </tr>
+          )}
           <tr>
             <td className={CLASS_TD}></td>
             <td className={CLASS_TD}>
@@ -54,7 +81,16 @@ export default function AgentRoulementTable({
             <td className={CLASS_TD}></td>
             {daysData &&
               daysData.daysNames.map((d, i) => (
-                <td className={CLASS_TD}>{d}</td>
+                <td
+                  className={`${CLASS_TD}  ${
+                    i === daysData.dates.indexOf(new Date().getDate()) &&
+                    daysData.date.m === new Date().getMonth()
+                      ? CLASS_TODAY
+                      : ""
+                  } `}
+                >
+                  {d}
+                </td>
               ))}
           </tr>
           <tr>
@@ -62,10 +98,22 @@ export default function AgentRoulementTable({
             <td className={CLASS_TD}>Agent/员工</td>
             <td className={CLASS_TD}>Mat./工号</td>
             {daysData &&
-              daysData.dates.map((d, i) => <td className={CLASS_TD}>{d}</td>)}
+              daysData.dates.map((d, i) => (
+                <td
+                  className={`${CLASS_TD}  ${
+                    i === daysData.dates.indexOf(new Date().getDate()) &&
+                    daysData.date.m === new Date().getMonth()
+                      ? CLASS_TODAY
+                      : ""
+                  } `}
+                >
+                  {d}
+                </td>
+              ))}
           </tr>{" "}
         </>
       )}
+
       <tr>
         <td className={CLASS_TD}>1</td>
         <td className={`${CLASS_TD}   `}>
@@ -76,7 +124,14 @@ export default function AgentRoulementTable({
         {!loading &&
           agentRoulementData.rl &&
           agentRoulementData.rl.split("").map((r, i) => (
-            <td className={CLASS_TD}>
+            <td
+              className={`${CLASS_TD}  ${
+                i === daysData.dates.indexOf(new Date().getDate()) &&
+                daysData.date.m === new Date().getMonth()
+                  ? CLASS_TODAY
+                  : ""
+              } `}
+            >
               {!editRoulement && r}{" "}
               {editRoulement && (
                 <select
