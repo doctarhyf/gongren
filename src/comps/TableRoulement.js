@@ -7,6 +7,7 @@ import Loading from "./Loading";
 import { CLASS_TD } from "../helpers/flow";
 import AgentRoulementTable from "./AgentRoulementTable";
 import ButtonPrint from "./ButtonPrint";
+import { doc, print_agent_roulement } from "../helpers/funcs_print";
 
 export default function TableRoulement({ agentData }) {
   const [loading, setloading] = useState(false);
@@ -88,10 +89,6 @@ export default function TableRoulement({ agentData }) {
     setAgentRoulementData((old) => ({ ...old, rl: old_rl_array.join("") }));
   }
 
-  if (agentData === undefined) {
-    return <div></div>;
-  }
-
   function onSaveRoulement() {
     setloading(true);
     console.log(agentRoulementData);
@@ -111,7 +108,37 @@ export default function TableRoulement({ agentData }) {
     );
   }
 
-  function onPrintPDF() {}
+  const ref_print_empty = useRef();
+
+  function printPDF(monthCode, curAgent, curAgentRld) {
+    const print_empty = ref_print_empty.current.checked;
+
+    console.log("print_empty", print_empty);
+
+    if (monthCode === undefined) {
+      alert("monthCode is undefined!");
+      return;
+    }
+
+    const { nom, postnom, prenom, mingzi, poste, matricule } = curAgent;
+
+    const [mc, id, year, month] = monthCode.split("_");
+
+    const print_data = {
+      nom: { fr: `${nom} ${postnom} ${prenom}`, zh: `${mingzi}` },
+      rld: curAgentRld.join(""),
+      month: Number(month),
+      year: Number(year),
+      poste: poste,
+      matricule,
+    };
+
+    print_agent_roulement(doc, print_data, print_empty);
+  }
+
+  if (agentData === undefined) {
+    return <div></div>;
+  }
 
   return (
     <div>
@@ -123,7 +150,18 @@ export default function TableRoulement({ agentData }) {
           hideSelectDateType={true}
           onDateSelected={onDateSelected}
         />
-        <ButtonPrint onClick={onPrintPDF} />
+        <div>
+          <ButtonPrint
+            onClick={(e) =>
+              printPDF(
+                selectedMonthCode,
+                agentData,
+                agentRoulementData.rl.split("")
+              )
+            }
+          />
+          <input ref={ref_print_empty} type="checkbox" /> PRINT EMPTY?
+        </div>
       </div>
 
       <AgentRoulementTable
