@@ -8,11 +8,13 @@ function MainNav({ user, onMenuClick, curPage, onLogout }) {
   return (
     <section className="bg-sky-500 h-full md:h-fit w-44 md:w-full md:flex justify-between">
       <div className=" border-b md:flex gap-4 ">
-        <div className="p-1 min-w-[120pt] flex justify-center items-center ">
-          <img src={gck} height={40} />
+        <div>
+          <div className="p-1 min-w-[120pt] flex justify-center items-center ">
+            <img src={gck} height={40} />
+          </div>
+          <div className="text-white w-fit  pb-4 p-2 text-center">工人管理</div>
         </div>
-        <div className="text-white w-fit  pb-4 p-2 text-center">工人管理</div>
-        <div className="md:flex justify-center items-center md:border-r p-1">
+        <div className=" justify-center items-center md:border-r p-1">
           <div>
             Hello, <span>{user.display_name}</span>
           </div>
