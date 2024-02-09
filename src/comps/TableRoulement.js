@@ -4,14 +4,58 @@ import GetRoulemenDaysData from "../helpers/GetRoulemenDaysData.mjs";
 import { TABLES_NAMES } from "../helpers/sb.config";
 import DateSelector from "./DateSelector";
 import Loading from "./Loading";
+import { CLASS_TD } from "../helpers/flow";
+
+function Table({ agentData, daysData, agentRoulementData, loading }) {
+  return (
+    <table>
+      <tr>
+        <td className={CLASS_TD}></td>
+        <td className={CLASS_TD}></td>
+        <td className={CLASS_TD}></td>
+        {daysData &&
+          daysData.daysNames.map((d, i) => <td className={CLASS_TD}>{d}</td>)}
+      </tr>
+      <tr>
+        <td className={CLASS_TD}>No</td>
+        <td className={CLASS_TD}>Agent/员工</td>
+        <td className={CLASS_TD}>Mat./工号</td>
+        {daysData &&
+          daysData.dates.map((d, i) => <td className={CLASS_TD}>{d}</td>)}
+      </tr>
+      <tr>
+        <td className={CLASS_TD}>1</td>
+        <td className={`${CLASS_TD}   `}>
+          {agentData.nom} {agentData.postnom} {agentData.prenom}
+        </td>
+        <td className={CLASS_TD}>{agentData.matricule}</td>
+
+        {!loading &&
+          agentRoulementData.rl &&
+          agentRoulementData.rl
+            .split("")
+            .map((r, i) => <td className={CLASS_TD}>{r}</td>)}
+
+        {loading && agentRoulementData.rl && (
+          <td
+            className={CLASS_TD}
+            colSpan={agentRoulementData.rl.length}
+            align="center"
+          >
+            <Loading isLoading={loading} />
+          </td>
+        )}
+      </tr>
+    </table>
+  );
+}
 
 export default function TableRoulement({ agentData }) {
-  const [roulementData, setRoulementData] = useState();
-  const [curRoulementData, setCurRoulementData] = useState();
   const [loading, setloading] = useState(false);
   const [daysData, setDaysData] = useState();
   const [selectedDate, setSelectedDate] = useState();
   const [selectedMonthCode, setSelectedMonthCode] = useState();
+  const [agentRoulementData, setAgentRoulementData] = useState([]);
 
   useEffect(() => {
     if (agentData && selectedDate) {
@@ -34,7 +78,10 @@ export default function TableRoulement({ agentData }) {
       monthCode
     );
 
-    if (d === undefined) createNewRLData(monthCode);
+    setAgentRoulementData(d);
+    if (d === undefined) {
+      setAgentRoulementData(createNewRLData(monthCode));
+    }
     setloading(false);
   }
 
@@ -42,6 +89,7 @@ export default function TableRoulement({ agentData }) {
     setloading(true);
 
     let msg = `Creating new roulement date : ${monthCode}`;
+
     console.log(msg);
     alert(msg);
 
@@ -56,7 +104,11 @@ export default function TableRoulement({ agentData }) {
     msg = `New roulement data created : ${monthCode}`;
     console.log(msg);
     alert(msg);
+    loadRoulement(monthCode);
+    setSelectedMonthCode(monthCode);
     setloading(false);
+
+    return newData;
   }
 
   function onDateSelected(dateObj) {
@@ -79,9 +131,16 @@ export default function TableRoulement({ agentData }) {
         hideSelectDateType={true}
         onDateSelected={onDateSelected}
       />
-      <div>大ag:{JSON.stringify(agentData)}</div>
+      {/*  <div>大ag:{JSON.stringify(agentData)}</div>
       <div>days data: {JSON.stringify(daysData)}</div>
-      <div>Month code:{selectedMonthCode}</div>
+      <div>Month code:{selectedMonthCode}</div> */}
+
+      <Table
+        loading={loading}
+        agentData={agentData}
+        daysData={daysData}
+        agentRoulementData={agentRoulementData}
+      />
     </div>
   );
 }

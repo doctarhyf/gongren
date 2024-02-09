@@ -1,15 +1,7 @@
+const daysOfWeekFrench = ["D", "L", "M", "M", "J", "V", "S"];
+
 function GetFrenchDayNamesUntilEndOfMonth(year, month) {
   const day = 21;
-
-  const daysOfWeekFrench = [
-    "Dimanche",
-    "Lundi",
-    "Mardi",
-    "Mercredi",
-    "Jeudi",
-    "Vendredi",
-    "Samedi",
-  ];
 
   const dateArray = [];
   let currentDate = new Date(year, month - 1, day);
@@ -28,15 +20,6 @@ function GetFrenchDayNamesUntilEndOfMonth(year, month) {
 
 function GetFrenchDayNamesUntil20th(year, month) {
   const day = 1;
-  const daysOfWeekFrench = [
-    "Dimanche",
-    "Lundi",
-    "Mardi",
-    "Mercredi",
-    "Jeudi",
-    "Vendredi",
-    "Samedi",
-  ];
 
   const dateArray = [];
   let currentDate = new Date(year, month - 1, day);
@@ -115,6 +98,8 @@ export default function GetRoulemenDaysData(
     secondMonth
   );
 
+  const daysNames = [...firstMonthDaysNames, ...secondMonthDaysNames];
+
   let firstMonthDates = [...Array(firstMonthRoulementDaysCount)].map(
     (d, i) => i + 21
   );
@@ -138,6 +123,7 @@ export default function GetRoulemenDaysData(
     secondMonthDates: secondMonthDates,
     dates: dates,
     defaultRoulementData: defaultRoulementData,
+    daysNames: daysNames,
   };
 
   console.log(dateObj);
