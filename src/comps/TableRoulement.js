@@ -76,8 +76,38 @@ export default function TableRoulement({ agentData }) {
     setDaysData(GetRoulemenDaysData(y, m, d));
   }
 
+  function onChangeRoulement(idx, newVal) {
+    console.log(`IDX: ${idx}, newVal: ${newVal}`);
+    console.log(agentRoulementData);
+    let { id, created_at, rl, month_code, agent_id } = agentRoulementData;
+
+    let old_rl_array = rl.split("");
+    old_rl_array[idx] = newVal;
+
+    setAgentRoulementData((old) => ({ ...old, rl: old_rl_array.join("") }));
+  }
+
   if (agentData === undefined) {
     return <div></div>;
+  }
+
+  function onSaveRoulement() {
+    setloading(true);
+    console.log(agentRoulementData);
+    SB.UpdateRoulement2(
+      selectedMonthCode,
+      agentRoulementData.rl,
+      (s) => {
+        console.log("Roulement saved", s);
+        alert("Roulement saved!");
+        setloading(false);
+      },
+      (e) => {
+        console.log(e);
+        alert("Error saving!", JSON.stringify(e));
+        setloading(false);
+      }
+    );
   }
 
   return (
@@ -90,11 +120,13 @@ export default function TableRoulement({ agentData }) {
       />
 
       <AgentRoulementTable
+        onChangeRoulement={onChangeRoulement}
         hideHeaders={false}
         loading={loading}
         agentData={agentData}
         daysData={daysData}
         agentRoulementData={agentRoulementData}
+        onSaveRoulement={onSaveRoulement}
       />
     </div>
   );

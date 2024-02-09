@@ -8,6 +8,8 @@ export default function AgentRoulementTable({
   agentRoulementData,
   loading,
   hideHeaders,
+  onChangeRoulement,
+  onSaveRoulement,
 }) {
   const [editRoulement, setEditRoulement] = useState(false);
 
@@ -20,12 +22,33 @@ export default function AgentRoulementTable({
             <td className={CLASS_TD}></td>
             <td className={CLASS_TD}>
               <div>
-                <input
-                  type="checkbox"
-                  value={editRoulement}
-                  onChange={(e) => setEditRoulement(!e.target.checked)}
-                />{" "}
-                EDIT ROULEMENT
+                <button
+                  className={`${CLASS_BTN} ${
+                    !editRoulement ? "block" : "hidden"
+                  } `}
+                  onClick={(e) => setEditRoulement(true)}
+                >
+                  UPDATE
+                </button>
+                <button
+                  className={`${CLASS_BTN} ${
+                    editRoulement ? "block" : "hidden"
+                  } `}
+                  onClick={(e) => {
+                    setEditRoulement(false);
+                    onSaveRoulement();
+                  }}
+                >
+                  SAVE
+                </button>
+                <button
+                  className={`${CLASS_BTN} ${
+                    editRoulement ? "block" : "hidden"
+                  } `}
+                  onClick={(e) => setEditRoulement(false)}
+                >
+                  CANCEL
+                </button>
               </div>
             </td>
             <td className={CLASS_TD}></td>
@@ -54,11 +77,11 @@ export default function AgentRoulementTable({
           agentRoulementData.rl &&
           agentRoulementData.rl.split("").map((r, i) => (
             <td className={CLASS_TD}>
-              {editRoulement && r}{" "}
-              {!editRoulement && (
+              {!editRoulement && r}{" "}
+              {editRoulement && (
                 <select
                   defaultValue={r}
-                  onChange={(e) => console.log(i, e.target.value)}
+                  onChange={(e) => onChangeRoulement(i, e.target.value)}
                 >
                   {["J", "P", "N", "R", "-"].map((d, i) => (
                     <option selected={d === r}>{d}</option>
