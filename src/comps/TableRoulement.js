@@ -9,15 +9,32 @@ import AgentRoulementTable from "./AgentRoulementTable";
 import ButtonPrint from "./ButtonPrint";
 import { doc, print_agent_roulement } from "../helpers/funcs_print";
 
+const ERRORS = {
+  AGENT_DATA_UNDEFINED: { code: "no_ag_data", msg: "agentData is undefined!" },
+  SELECTED_DATE_UNDEFINED: {
+    code: "no_date_selected",
+    msg: "selectedDate is undefined!",
+  },
+};
+
 export default function TableRoulement({ agentData }) {
   const [loading, setloading] = useState(false);
   const [daysData, setDaysData] = useState();
   const [selectedDate, setSelectedDate] = useState();
   const [selectedMonthCode, setSelectedMonthCode] = useState();
   const [agentRoulementData, setAgentRoulementData] = useState([]);
+  const [errors, seterror] = useState([]);
 
   useEffect(() => {
-    if (agentData && selectedDate) {
+    let errors = [];
+    if (agentData === undefined) errors.push(ERRORS.AGENT_DATA_UNDEFINED);
+    if (selectedDate === undefined) errors.push(ERRORS.SELECTED_DATE_UNDEFINED);
+
+    seterror(errors);
+
+    const no_errors = errors.length === 0;
+
+    if (no_errors) {
       const monthCode = `mc_${agentData.id}_${selectedDate.y}_${
         selectedDate.m - 1
       }`;
@@ -25,7 +42,7 @@ export default function TableRoulement({ agentData }) {
 
       loadRoulement(monthCode);
     } else {
-      console.log("AgentData not provided, cant load rld");
+      console.log(errors);
     }
   }, [agentData, selectedDate]);
 
@@ -150,7 +167,7 @@ export default function TableRoulement({ agentData }) {
           hideSelectDateType={true}
           onDateSelected={onDateSelected}
         />
-        <div>
+        <div className="md:flex gap-2">
           <ButtonPrint
             onClick={(e) =>
               printPDF(
@@ -160,7 +177,9 @@ export default function TableRoulement({ agentData }) {
               )
             }
           />
-          <input ref={ref_print_empty} type="checkbox" /> PRINT EMPTY?
+          <div className="flex cursor-pointer justify-center items-center gap-1 text-xs">
+            <input ref={ref_print_empty} type="checkbox" /> PRINT EMPTY TABLE
+          </div>
         </div>
       </div>
 
@@ -172,6 +191,7 @@ export default function TableRoulement({ agentData }) {
         daysData={daysData}
         agentRoulementData={agentRoulementData}
         onSaveRoulement={onSaveRoulement}
+        errors={errors}
       />
     </div>
   );

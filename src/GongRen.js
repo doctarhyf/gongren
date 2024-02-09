@@ -16,7 +16,7 @@ export default function GongRen({ user, onLogout }) {
     setCurPage(menu_item.path);
   }
   return (
-    <div className=" h-[100vh] flex ">
+    <div className=" h-[100vh] flex md:flex-col ">
       <MainNav
         user={user}
         onMenuClick={onMenuClick}
