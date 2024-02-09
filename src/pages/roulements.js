@@ -19,56 +19,7 @@ import {
 import ItemNotSelected from "../comps/ItemNotSelected";
 import DateSelector from "../comps/DateSelector";
 import GetRoulemenDaysData from "../helpers/GetRoulemenDaysData.mjs";
-
-function TableRoulement({ agentData }) {
-  const [roulementData, setRoulementData] = useState();
-  const [curRoulementData, setCurRoulementData] = useState();
-  const [loading, setloading] = useState(false);
-  const date = new Date();
-
-  useEffect(() => {
-    const y = date.getFullYear();
-    const m = date.getMonth();
-    const d = date.getDate();
-
-    if (agentData) {
-      const roulementDaysData = GetRoulemenDaysData(y, m, d);
-      console.log(roulementDaysData);
-      //let mc = GenCurrentMonthCode(agentData.id, y, m, 25);
-      //console.log(mc);
-    }
-  }, [agentData]);
-
-  function loadRoulement(monthCode) {
-    const d = SB.LoadItemWithColNameEqColVal(
-      TABLES_NAMES.AGENTS_RLD,
-      monthCode
-    );
-  }
-
-  function onDateSelected({ y, m, d }) {
-    const year = y;
-    const month = m + 1;
-    console.log(y, m, 21);
-    const roulementDaysData = GetRoulemenDaysData(year, month, 21);
-    console.log(roulementDaysData);
-  }
-
-  if (agentData === undefined) {
-    return <div></div>;
-  }
-
-  return (
-    <div>
-      <DateSelector
-        defaultDateType={"m"}
-        hideSelectDateType={true}
-        onDateSelected={onDateSelected}
-      />
-      <div>{JSON.stringify(agentData)}</div>
-    </div>
-  );
-}
+import TableRoulement from "../comps/TableRoulement";
 
 export default function Roulements() {
   const [curAgent, setCurAgent] = useState();
@@ -79,7 +30,6 @@ export default function Roulements() {
   const [rdk, setrdk] = useState(Math.random());
   const [lastDayDate, setLastDayDate] = useState(31);
   const [daysLetters, setDaysLetters] = useState([]);
-  //const [selectedAgentData, setSelectedAgentData] = useState();
 
   const ref_m = useRef();
   const ref_y = useRef();
@@ -105,9 +55,6 @@ export default function Roulements() {
 
   function onAgentClick(agent_data) {
     setCurAgent(agent_data);
-    //onDateChange(agent_data.id);
-    //let udata = { data: agent_data, rld: {} };
-    // let rld;
   }
 
   function onTeamClick(agents_data) {

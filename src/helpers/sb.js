@@ -161,6 +161,14 @@ export async function LoadItemWithColNameEqColVal(tableName, colName, colVal) {
   return data[0];
 }
 
+export async function LoadRoulementData(month_code) {
+  return await LoadItemWithColNameEqColVal(
+    TABLES_NAMES.AGENTS_RLD,
+    "month_code",
+    month_code
+  );
+}
+
 export async function UpdateItem(table_name, upd_data, onSuccess, onError) {
   const { data, error } = await supabase
     .from(table_name)

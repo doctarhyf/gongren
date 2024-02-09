@@ -66,8 +66,17 @@ function GetMonthLastDate(year, month, day) {
   return lastDateOfMonth;
 }
 
-export default function GetRoulemenDaysData(y, m, d) {
-  //month are 1 baseed, Feb is 2
+export default function GetRoulemenDaysData(
+  y = new Date().getFullYear(),
+  m = new Date().getMonth() + 1,
+  d = 21
+) {
+  // console.log("GetRoulemenDaysData", y, m, d);
+
+  if (m > 12 || m < 1) {
+    console.error("GetRoulemenDaysData", "Month cant be < 1 or > 12");
+    return;
+  }
 
   let currentYear = y;
   let nextYear = currentYear + 1;
@@ -106,6 +115,13 @@ export default function GetRoulemenDaysData(y, m, d) {
     secondMonth
   );
 
+  let firstMonthDates = [...Array(firstMonthRoulementDaysCount)].map(
+    (d, i) => i + 21
+  );
+  let secondMonthDates = [...Array(20)].map((d, i) => i + 1);
+  const dates = [...firstMonthDates, ...secondMonthDates];
+  const defaultRoulementData = [...Array(dates.length).fill("-")].join("");
+
   const dateObj = {
     date: { y: y, m: m, d: d },
     firstMonth: firstMonth,
@@ -118,8 +134,13 @@ export default function GetRoulemenDaysData(y, m, d) {
     totalRoulementDaysCount: totalRoulementDaysCount,
     firstMonthDaysNames: firstMonthDaysNames,
     secondMonthDaysNames: secondMonthDaysNames,
+    firstMonthDates: firstMonthDates,
+    secondMonthDates: secondMonthDates,
+    dates: dates,
+    defaultRoulementData: defaultRoulementData,
   };
 
-  //console.log(dateObj);
+  console.log(dateObj);
+
   return dateObj;
 }
