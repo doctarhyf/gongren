@@ -6,6 +6,7 @@ import DateSelector from "./DateSelector";
 import Loading from "./Loading";
 import { CLASS_TD } from "../helpers/flow";
 import AgentRoulementTable from "./AgentRoulementTable";
+import ButtonPrint from "./ButtonPrint";
 
 export default function TableRoulement({ agentData }) {
   const [loading, setloading] = useState(false);
@@ -110,14 +111,20 @@ export default function TableRoulement({ agentData }) {
     );
   }
 
+  function onPrintPDF() {}
+
   return (
     <div>
       <Loading isLoading={loading} />
-      <DateSelector
-        defaultDateType={"m"}
-        hideSelectDateType={true}
-        onDateSelected={onDateSelected}
-      />
+
+      <div>
+        <DateSelector
+          defaultDateType={"m"}
+          hideSelectDateType={true}
+          onDateSelected={onDateSelected}
+        />
+        <ButtonPrint onClick={onPrintPDF} />
+      </div>
 
       <AgentRoulementTable
         onChangeRoulement={onChangeRoulement}

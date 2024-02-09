@@ -135,6 +135,12 @@ export default function AgentRoulementTable({
               {!editRoulement && r}{" "}
               {editRoulement && (
                 <select
+                  className={`${CLASS_TD} texts-xs  ${
+                    i === daysData.dates.indexOf(new Date().getDate()) &&
+                    daysData.date.m === new Date().getMonth()
+                      ? "text-green-500"
+                      : ""
+                  } `}
                   defaultValue={r}
                   onChange={(e) => onChangeRoulement(i, e.target.value)}
                 >
