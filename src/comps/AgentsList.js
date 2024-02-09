@@ -127,7 +127,7 @@ export default function AgentsList({ onAgentClick, curAgent, onTeamClick }) {
                 <button
                   onClick={(e) => onAgentClick(agent)}
                   key={i}
-                  className={` block w-full hover:text-white hover:bg-sky-500  p-1 border rounded-md border-sky-300 hover:border-sky-500 cursor-pointer mb-1
+                  className={` block w-full hover:text-white hover:bg-sky-500 border border-neutral-50  p-2  rounded-md border-b-sky-300 hover:border-sky-500 cursor-pointer mb-1
             
             ${
               curAgent && agent.id === curAgent.id
@@ -138,12 +138,22 @@ export default function AgentsList({ onAgentClick, curAgent, onTeamClick }) {
             `}
                 >
                   <div className="flex   justify-between">
-                    {agent.nom} {agent.postnom} {agent.prenom} {agent.mingzi}
-                    {agent.chef_deq === "OUI" && (
-                      <span className="mx-2">
-                        <img src={shield} width={20} height={20} />
-                      </span>
-                    )}
+                    <div>
+                      <div>
+                        {agent.nom} {agent.postnom} {agent.prenom}{" "}
+                        {agent.mingzi}
+                      </div>
+                      <div className="text-xs text-neutral-300">
+                        <div>
+                          {agent.section} - {agent.equipe}
+                        </div>
+                      </div>
+                      {agent.chef_deq === "OUI" && (
+                        <span className="mx-2">
+                          <img src={shield} width={20} height={20} />
+                        </span>
+                      )}
+                    </div>
                   </div>
                 </button>
               ))}
