@@ -177,7 +177,7 @@ export default function BagsDataInput({
                 settonnage(Number(Number(e.target.value) / 20).toFixed(2))
               }
               ref={ref_sacs}
-              type="text"
+              type="number"
               defaultValue={(upd && upd.sacs) || 0}
             />
           </div>
