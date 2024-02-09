@@ -5,50 +5,7 @@ import { TABLES_NAMES } from "../helpers/sb.config";
 import DateSelector from "./DateSelector";
 import Loading from "./Loading";
 import { CLASS_TD } from "../helpers/flow";
-
-function Table({ agentData, daysData, agentRoulementData, loading }) {
-  return (
-    <table>
-      <tr>
-        <td className={CLASS_TD}></td>
-        <td className={CLASS_TD}></td>
-        <td className={CLASS_TD}></td>
-        {daysData &&
-          daysData.daysNames.map((d, i) => <td className={CLASS_TD}>{d}</td>)}
-      </tr>
-      <tr>
-        <td className={CLASS_TD}>No</td>
-        <td className={CLASS_TD}>Agent/员工</td>
-        <td className={CLASS_TD}>Mat./工号</td>
-        {daysData &&
-          daysData.dates.map((d, i) => <td className={CLASS_TD}>{d}</td>)}
-      </tr>
-      <tr>
-        <td className={CLASS_TD}>1</td>
-        <td className={`${CLASS_TD}   `}>
-          {agentData.nom} {agentData.postnom} {agentData.prenom}
-        </td>
-        <td className={CLASS_TD}>{agentData.matricule}</td>
-
-        {!loading &&
-          agentRoulementData.rl &&
-          agentRoulementData.rl
-            .split("")
-            .map((r, i) => <td className={CLASS_TD}>{r}</td>)}
-
-        {loading && agentRoulementData.rl && (
-          <td
-            className={CLASS_TD}
-            colSpan={agentRoulementData.rl.length}
-            align="center"
-          >
-            <Loading isLoading={loading} />
-          </td>
-        )}
-      </tr>
-    </table>
-  );
-}
+import AgentRoulementTable from "./AgentRoulementTable";
 
 export default function TableRoulement({ agentData }) {
   const [loading, setloading] = useState(false);
@@ -131,11 +88,9 @@ export default function TableRoulement({ agentData }) {
         hideSelectDateType={true}
         onDateSelected={onDateSelected}
       />
-      {/*  <div>大ag:{JSON.stringify(agentData)}</div>
-      <div>days data: {JSON.stringify(daysData)}</div>
-      <div>Month code:{selectedMonthCode}</div> */}
 
-      <Table
+      <AgentRoulementTable
+        hideHeaders={false}
         loading={loading}
         agentData={agentData}
         daysData={daysData}
