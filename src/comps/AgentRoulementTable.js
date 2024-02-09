@@ -56,7 +56,10 @@ export default function AgentRoulementTable({
             <td className={CLASS_TD}>
               {editRoulement && r}{" "}
               {!editRoulement && (
-                <select>
+                <select
+                  defaultValue={r}
+                  onChange={(e) => console.log(i, e.target.value)}
+                >
                   {["J", "P", "N", "R", "-"].map((d, i) => (
                     <option selected={d === r}>{d}</option>
                   ))}
