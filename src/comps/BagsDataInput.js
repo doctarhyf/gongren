@@ -107,9 +107,9 @@ export default function BagsDataInput({
   }
 
   function onSaveTotalSacs(sacs, camions) {
-    console.log(`Sacs: ${sacs} sacs, ${sacs / 20} tons`);
     ref_sacs.current.value = sacs;
     ref_camions.current.value = camions;
+    settonnage(Number(sacs) / 20);
     setShowCalculator(false);
   }
 
@@ -185,26 +185,23 @@ export default function BagsDataInput({
             <span className={CLASS_SELECT_TITLE}>TONNAGE:</span>
             {tonnage} T.
           </div>
-          <div>
-            <span className={CLASS_SELECT_TITLE}>CAMIONS:</span>
-            <input
-              className={CLASS_INPUT_TEXT}
-              ref={ref_camions}
-              type="text"
-              defaultValue={(upd && upd.camions) || 0}
-            />
-          </div>
-
-          <div className="form-control">
-            <label className="label cursor-pointer">
-              <span className="label-text">AFFICHER CALCULATEUR DE BONS</span>
+          <div className="md:flex">
+            <div>
+              <span className={CLASS_SELECT_TITLE}>CAMIONS:</span>
               <input
-                type="checkbox"
-                onChange={(e) => setShowCalculator(e.target.checked)}
-                className="toggle"
-                checked={showCalculator}
+                className={CLASS_INPUT_TEXT}
+                ref={ref_camions}
+                type="text"
+                defaultValue={(upd && upd.camions) || 0}
               />
-            </label>
+            </div>
+
+            <button
+              className={CLASS_BTN}
+              onClick={(e) => setShowCalculator(true)}
+            >
+              AFFICHER CALCULATEUR DE BONS
+            </button>
           </div>
         </div>
 
