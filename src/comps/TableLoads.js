@@ -15,7 +15,7 @@ export default function TableLoads({ date, totalData, loadsData }) {
         <tr>
           <td className={CLASS_TD} align="center" colSpan={11}>
             <b>
-              {MONTHS[date.m]} - {date.y}
+              RAPPORT CHARGEMENT, {MONTHS[date.m].toUpperCase()} - {date.y}
             </b>
           </td>
         </tr>

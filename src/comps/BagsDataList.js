@@ -16,6 +16,7 @@ import ButtonPrint from "./ButtonPrint";
 import RepportCard from "./RepportCard";
 import TableLoads from "./TableLoads";
 import Excelexport from "./Excelexport";
+import TableLoadsTotals from "./TableLoadsTotal";
 
 function MyForm() {
   return (
@@ -77,18 +78,14 @@ export default function BagsDataList({
     d: "",
     shift: "",
   });
+  const [showTotals, setShowTotals] = useState(false);
 
   const [yearTotals, setYearTotals] = useState();
   const [loadsFilteredByYear, setLoadsFilteredByYear] = useState();
 
   useEffect(() => {
     init();
-  }, [showRepportMode]);
-
-  useEffect(() => {
-    init();
-    //console.log(loadsFiltered);
-  }, [loadsFiltered]);
+  }, [loadsFiltered, showRepportMode]);
 
   function init() {
     //console.log("init bag data list");
@@ -341,29 +338,39 @@ export default function BagsDataList({
             <div>
               <div className="flex">
                 <div className="flex gap-4">
-                  <ButtonPrint
-                    title={"PRINT"}
-                    onClick={(e) =>
-                      printLoadTabled(loadsFilteredByYear, yearTotals)
-                    }
-                  />
-                  <Excelexport
-                    excelData={GenExcelLoadsData(loadsFilteredByYear)}
-                  />
-                  {/*   <ButtonPrint
-                    icon={excel}
-                    title={"DOWNLOAD EXCEL"}
-                    onClick={(e) =>
-                      downloadExcel(loadsFilteredByYear, yearTotals)
-                    }
-                  /> */}
+                  {!showTotals && (
+                    <>
+                      <ButtonPrint
+                        title={"PRINT"}
+                        onClick={(e) =>
+                          printLoadTabled(loadsFilteredByYear, yearTotals)
+                        }
+                      />
+                      <Excelexport
+                        excelData={GenExcelLoadsData(loadsFilteredByYear)}
+                      />
+                    </>
+                  )}
+                  <button
+                    onClick={(e) => setShowTotals(!showTotals)}
+                    className={CLASS_BTN}
+                  >
+                    SHOW/HIDE TOTALS
+                  </button>
                 </div>
               </div>
-              <TableLoads
-                date={date}
-                totalData={yearTotals}
-                loadsData={loadsFilteredByYear}
-              />
+              <div className="">
+                {showTotals && (
+                  <TableLoadsTotals data={loadsFilteredByYear} date={date} />
+                )}
+                {!showTotals && (
+                  <TableLoads
+                    date={date}
+                    totalData={yearTotals}
+                    loadsData={loadsFilteredByYear}
+                  />
+                )}
+              </div>
             </div>
           }
         </>
