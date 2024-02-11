@@ -98,6 +98,7 @@ export default function BagsDataList({
   function onDateSelected(new_date) {
     console.log(`New date selected : ${JSON.stringify(new_date)}`);
 
+    setTotalData([]);
     setdate(new_date);
     setYearTotals(undefined);
     setLoadsFilteredByYear([]);
@@ -116,7 +117,100 @@ export default function BagsDataList({
       setLoadsFilteredByYear([]);
       return;
     }
-    setLoadsFilteredByYear(SortLoadsByYearMonth(loads_by_item, year, month));
+    const sortedData = SortLoadsByYearMonth(loads_by_item, year, month);
+    setLoadsFilteredByYear(sortedData);
+    setTotalData(ParseTotalsData(sortedData));
+  }
+
+  const [totalData, setTotalData] = useState([]);
+
+  function ParseTotalsData(data) {
+    let totalsData = {
+      A: {
+        sacs: 0,
+        retours: 0,
+        ajouts: 0,
+        tonnage: 0,
+        camions: 26,
+        dechires: 17,
+        bonus: 0,
+      },
+      B: {
+        sacs: 0,
+        retours: 0,
+        ajouts: 0,
+        tonnage: 0,
+        camions: 26,
+        dechires: 17,
+        bonus: 0,
+      },
+      C: {
+        sacs: 0,
+        retours: 0,
+        ajouts: 0,
+        tonnage: 0,
+        camions: 26,
+        dechires: 17,
+        bonus: 0,
+      },
+      D: {
+        sacs: 0,
+        retours: 0,
+        ajouts: 0,
+        tonnage: 0,
+        camions: 26,
+        dechires: 17,
+        bonus: 0,
+      },
+      TOTAL: {
+        sacs: 0,
+        retours: 0,
+        ajouts: 0,
+        tonnage: 0,
+        camions: 26,
+        dechires: 17,
+        bonus: 0,
+      },
+    };
+
+    const entries = Object.entries(data);
+    const no_data = entries.length === 0;
+
+    entries.forEach((d_entry, di) => {
+      const d = d_entry[0];
+      const d_data = d_entry[1];
+
+      d_data.forEach((s_data, si) => {
+        const { sacs, retours, ajouts, code, camions, dechires } = s_data;
+        const [t, s, y, m, d] = code.split("_");
+
+        let new_sacs = Number(sacs);
+        let new_tonnage = Number(sacs) / 20;
+        let new_retours = Number(retours);
+        let new_ajouts = Number(ajouts);
+        let new_camions = Number(camions);
+        let new_dechires = Number(dechires);
+        let new_bonus = new_tonnage < 600 ? 0 : new_tonnage - 600;
+
+        totalsData[t].sacs += new_sacs;
+        totalsData[t].tonnage += new_tonnage;
+        totalsData[t].retours += new_retours;
+        totalsData[t].ajouts += new_ajouts;
+        totalsData[t].camions += new_camions;
+        totalsData[t].dechires += new_dechires;
+        totalsData[t].bonus += new_bonus;
+
+        totalsData.TOTAL.sacs += new_sacs;
+        totalsData.TOTAL.tonnage += new_tonnage;
+        totalsData.TOTAL.retours += new_retours;
+        totalsData.TOTAL.ajouts += new_ajouts;
+        totalsData.TOTAL.camions += new_camions;
+        totalsData.TOTAL.dechires += new_dechires;
+        totalsData.TOTAL.bonus += new_bonus;
+      });
+    });
+
+    return totalsData;
   }
 
   const customOrderShift = { M: 1, N: 3, P: 2 };
@@ -315,6 +409,10 @@ export default function BagsDataList({
     return JSON.parse(final_data);
   }
 
+  function printTotalsTable(data) {
+    console.log(totalData);
+  }
+
   return (
     <div>
       <Loading isLoading={loading} />
@@ -337,20 +435,7 @@ export default function BagsDataList({
           {
             <div>
               <div className="flex">
-                <div className="flex gap-4">
-                  {!showTotals && (
-                    <>
-                      <ButtonPrint
-                        title={"PRINT"}
-                        onClick={(e) =>
-                          printLoadTabled(loadsFilteredByYear, yearTotals)
-                        }
-                      />
-                      <Excelexport
-                        excelData={GenExcelLoadsData(loadsFilteredByYear)}
-                      />
-                    </>
-                  )}
+                <div>
                   <button
                     onClick={(e) => setShowTotals(!showTotals)}
                     className={CLASS_BTN}
@@ -361,14 +446,39 @@ export default function BagsDataList({
               </div>
               <div className="">
                 {showTotals && (
-                  <TableLoadsTotals data={loadsFilteredByYear} date={date} />
+                  <>
+                    <div>
+                      <ButtonPrint
+                        title={"PRINT TOTAL"}
+                        onClick={(e) => printTotalsTable(loadsFilteredByYear)}
+                      />
+                    </div>
+                    <TableLoadsTotals totalData={totalData} date={date} />
+                  </>
                 )}
                 {!showTotals && (
-                  <TableLoads
-                    date={date}
-                    totalData={yearTotals}
-                    loadsData={loadsFilteredByYear}
-                  />
+                  <>
+                    <div className="flex gap-4">
+                      {!showTotals && (
+                        <>
+                          <ButtonPrint
+                            title={"PRINT"}
+                            onClick={(e) =>
+                              printLoadTabled(loadsFilteredByYear, yearTotals)
+                            }
+                          />
+                          <Excelexport
+                            excelData={GenExcelLoadsData(loadsFilteredByYear)}
+                          />
+                        </>
+                      )}
+                    </div>
+                    <TableLoads
+                      date={date}
+                      totalData={yearTotals}
+                      loadsData={loadsFilteredByYear}
+                    />
+                  </>
                 )}
               </div>
             </div>
