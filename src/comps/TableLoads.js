@@ -1,4 +1,4 @@
-import { CLASS_TD } from "../helpers/flow";
+import { CLASS_TD, MONTHS } from "../helpers/flow";
 import { ParseDayRepport } from "../helpers/func";
 import { draw_load_table } from "../helpers/funcs_print";
 import ButtonPrint from "./ButtonPrint";
@@ -12,6 +12,13 @@ export default function TableLoads({ date, totalData, loadsData }) {
   return (
     <table>
       <thead>
+        <tr>
+          <td className={CLASS_TD} align="center" colSpan={11}>
+            <b>
+              {MONTHS[date.m]} - {date.y}
+            </b>
+          </td>
+        </tr>
         <tr>
           {[
             "id",

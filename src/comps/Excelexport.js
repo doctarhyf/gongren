@@ -73,11 +73,20 @@ export default function Excelexport({
 
   return (
     <div>
-      <ButtonPrint
-        icon={excel_icon}
-        title={title}
-        onClick={(e) => exportToExcel(fileName)}
-      />
+      <div className={` ${excelData ? "block" : "hidden"} `}>
+        <ButtonPrint
+          icon={excel_icon}
+          title={title}
+          onClick={(e) => exportToExcel(fileName)}
+        />
+      </div>
+      <div
+        className={`text-xs text-white bg-red-500 rounded-md p-1 ${
+          !excelData ? "block" : "hidden"
+        } `}
+      >
+        NO EXCEL DATA
+      </div>
     </div>
   );
 }

@@ -87,15 +87,20 @@ export default function BagsDataList({
 
   useEffect(() => {
     init();
-    console.log(loadsFiltered);
+    //console.log(loadsFiltered);
   }, [loadsFiltered]);
 
   function init() {
-    console.log("init bag data list");
-    onDateSelected({ y: new Date().getFullYear(), m: new Date().getMonth() });
+    //console.log("init bag data list");
+    onDateSelected({
+      y: new Date().getFullYear(),
+      m: new Date().getMonth() - 1,
+    });
   }
 
   function onDateSelected(new_date) {
+    console.log(`New date selected : ${JSON.stringify(new_date)}`);
+
     setdate(new_date);
     setYearTotals(undefined);
     setLoadsFilteredByYear([]);
@@ -215,6 +220,8 @@ export default function BagsDataList({
             "备注"*/
 
     const days_entries = Object.entries(data);
+
+    if (days_entries.length === 0) return;
     const first_element = days_entries[0][1][0];
 
     const loading_keys = Object.keys(first_element);
