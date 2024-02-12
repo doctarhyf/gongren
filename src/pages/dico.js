@@ -128,7 +128,7 @@ export default function Dico() {
         console.error("Error deleting file:", error);
       } else {
         console.log("File deleted successfully:", data);
-        // onFileDeleteSuccess(data);
+        onFileDeleteSuccess(data);
       }
     } catch (e) {
       console.error("An unexpected error occurred:", e);

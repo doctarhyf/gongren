@@ -8,7 +8,7 @@ export default function WordCard({ word, onUpdateWord, onDeleteWord }) {
   const [publicUrl, setPublicUrl] = useState("");
   const [loading, setloading] = useState(true);
   useEffect(() => {
-    getPublicUrl(word.pics[0]);
+    word && getPublicUrl(word.pics[0]);
   }, [word]);
   if (word === undefined) {
     return <div>-</div>;
