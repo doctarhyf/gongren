@@ -5,7 +5,13 @@ import { TABLES_NAMES } from "../helpers/sb.config";
 import ImageUpload from "../comps/ImageUpload";
 import Loading from "../comps/Loading";
 
-export default function FormNewWord({ upd, onCancel }) {
+export default function FormNewWord({
+  upd,
+  onCancel,
+  onWordUpdateSuccess,
+  onWordSaved,
+  onWordUpdateError,
+}) {
   const [imgUploaded, setImgUploaded] = useState(false);
   const [word, setword] = useState({
     zh: "",
@@ -40,21 +46,24 @@ export default function FormNewWord({ upd, onCancel }) {
         TABLES_NAMES.DICO,
         word,
         (s) => {
-          alert("Success\n", JSON.stringify(s));
+          //alert("Word Update Success\n", JSON.stringify(s));
           console.log(s);
           setLoading(false);
+          onWordUpdateSuccess(s);
         },
         (e) => {
-          alert("Error \n", JSON.stringify(e));
+          //alert("Word Update Error \n", JSON.stringify(e));
           console.log(e);
           setLoading(false);
+          onWordUpdateError(e);
         }
       );
     } else {
       const res = await SB.InsertItem(TABLES_NAMES.DICO, word);
 
       if (res === null) {
-        alert("New word saved!");
+        //alert("New word saved!");
+        onWordSaved(res);
         setLoading(false);
       }
     }
@@ -122,14 +131,20 @@ export default function FormNewWord({ upd, onCancel }) {
           onImageUploadSuccsess={onImageUploadSuccsess}
           onImageUploadError={onImageUploadError}
         />
-        <div className={` ${imgUploaded ? "block" : "hidden"} `}>
-          <button onClick={onSaveNewWord} className={CLASS_BTN}>
+        <div>
+          <button
+            className={` ${CLASS_BTN} ${
+              imgUploaded || upd ? "block" : "hidden"
+            } `}
+            onClick={onSaveNewWord}
+          >
             SAVE
           </button>
+          <button onClick={onCancel} className={CLASS_BTN}>
+            CANCEL
+          </button>
         </div>
-        <button onClick={onCancel} className={CLASS_BTN}>
-          CANCEL
-        </button>
+
         <Loading isLoading={loading} center />
       </div>
     </div>

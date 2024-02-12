@@ -176,6 +176,7 @@ export default function Dico() {
   const [showFormNewWord, setShowFomrNewWord] = useState(false);
   const [selectedWord, setSelectedWord] = useState();
   const [upd, setupd] = useState();
+  const [rdk, setrdk] = useState(Math.random());
 
   function onSelectWord(word) {
     console.log(word);
@@ -189,16 +190,36 @@ export default function Dico() {
     setShowFomrNewWord(true);
   }
 
+  function init() {
+    setrdk(Math.random());
+    setSelectedWord(undefined);
+  }
+
   return (
     <div className="md:flex gap-4 mt-4">
       <div>
         <button onClick={(e) => setShowFomrNewWord(true)} className={CLASS_BTN}>
           ADD NEW WORD
         </button>
-        <WordsList onSelectWord={onSelectWord} />
+        <WordsList key={rdk} onSelectWord={onSelectWord} />
       </div>
       {showFormNewWord && (
         <FormNewWord
+          onWordUpdateError={(e) => {
+            alert("Word update error!\n" + JSON.stringify(e));
+            setShowFomrNewWord(false);
+            init();
+          }}
+          onWordUpdateSuccess={(e) => {
+            alert("Word update success");
+            setShowFomrNewWord(false);
+            init();
+          }}
+          onWordSaved={(e) => {
+            alert("Word saved success!");
+            setShowFomrNewWord(false);
+            init();
+          }}
           onCancel={(e) => {
             setShowFomrNewWord(false);
             setupd(undefined);
