@@ -98,7 +98,7 @@ export default function Dico() {
   }
 
   async function onDeleteWord(word) {
-    deleteFile(word.pics[0], (s) => {
+    deleteFile(word.pics[0].replace("dico/", ""), (s) => {
       if (window.confirm('Delete "' + word.zh + '"')) {
         delWordRecd(word);
       }
@@ -117,6 +117,8 @@ export default function Dico() {
   }
 
   async function deleteFile(filePath, onFileDeleteSuccess) {
+    console.log(`Deleting file : ${filePath}`);
+
     try {
       const { data, error } = await supabase.storage
         .from("dico") // Replace 'your-bucket-name' with your actual bucket name
@@ -126,7 +128,7 @@ export default function Dico() {
         console.error("Error deleting file:", error);
       } else {
         console.log("File deleted successfully:", data);
-        onFileDeleteSuccess(data);
+        // onFileDeleteSuccess(data);
       }
     } catch (e) {
       console.error("An unexpected error occurred:", e);

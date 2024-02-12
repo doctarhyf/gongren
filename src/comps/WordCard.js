@@ -80,6 +80,7 @@ export default function WordCard({ word, onUpdateWord, onDeleteWord }) {
               <img src={publicUrl} />
             </a>
           </div>
+          <div>{word.pics}</div>
           <Loading isLoading={loading} center />
         </div>
       </div>
