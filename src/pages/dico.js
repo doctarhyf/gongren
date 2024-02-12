@@ -5,66 +5,8 @@ import { TABLES_NAMES, supabase } from "../helpers/sb.config";
 import Loading from "../comps/Loading";
 import { _ } from "../helpers/func";
 import * as SB from "../helpers/sb";
-
-function ImageUpload({
-  fileName,
-  onImageUploadSuccsess,
-  onImageUploadError,
-  onImageUploadStart,
-  bucketName = "dico",
-}) {
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-
-  const handleFileChange = (event) => {
-    setSelectedFile(event.target.files[0]);
-  };
-
-  const handleUpload = async () => {
-    if (!selectedFile) {
-      setError("Please select a file to upload!");
-      return;
-    }
-
-    onImageUploadStart && onImageUploadStart(selectedFile);
-    setLoading(true);
-    setError(null);
-
-    try {
-      const { data, error } = await supabase.storage
-        .from(bucketName) // Replace with your bucket name
-        .upload(fileName || selectedFile.name, selectedFile);
-
-      if (error) {
-        onImageUploadError(error);
-        throw error;
-      }
-
-      console.log("Image uploaded successfully:", data);
-
-      onImageUploadSuccsess(data);
-    } catch (error) {
-      setError(error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  return (
-    <div>
-      <input type="file" onChange={handleFileChange} />
-      <Loading isLoading={loading} />
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      <button
-        className={` ${CLASS_BTN} text-xs ${loading ? "hidden" : "block"} `}
-        onClick={handleUpload}
-      >
-        Upload Photo
-      </button>
-    </div>
-  );
-}
+import FormNewWord from "../comps/FormNewWord";
+import ItemNotSelected from "../comps/ItemNotSelected";
 
 const SBBukcet = () => {
   const [publicUrls, setPublicUrls] = useState([]);
@@ -123,130 +65,151 @@ const SBBukcet = () => {
   );
 };
 
-function FormNewWord({ upd }) {
-  const [imgUploaded, setImgUploaded] = useState(false);
-  const [word, setword] = useState({
-    zh: "",
-    py: "",
-    lat: "",
-    tags: "",
-    pics: [],
-  });
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    if (upd) {
-      setword((old) => ({ ...old, zh: "cool upd" }));
-    }
-  }, []);
-
-  useEffect(() => {
-    console.log(word);
-  }, [word]);
-
-  function onChange(e) {
-    const { name, value } = e.target;
-    setword((old) => ({ ...old, [name]: value }));
-  }
-
-  async function onSaveNewWord() {
-    console.log(word);
-    setLoading(true);
-    const res = await SB.InsertItem(TABLES_NAMES.DICO, word);
-
-    if (res === null) {
-      alert("New word saved!");
-    }
-
-    setLoading(false);
-  }
-
-  function onCancel() {}
-
-  function onImageUploadSuccsess(res) {
-    console.log("onImageUploadSuccsess", res);
-    setImgUploaded(true);
-    setword((old) => ({ ...old, pics: [...old.pics, res.fullPath] }));
-    console.log(word);
-  }
-
-  function onImageUploadError(e) {
-    console.log("onImageUploadError", e);
-  }
-
-  function onImageUploadStart(file) {
-    console.log("onImageUploadStart", file);
-  }
-
-  return (
-    <div>
-      <div>New Word</div>
-      <div className="flex flex-col w-min gap-2">
-        <input
-          className={CLASS_INPUT_TEXT}
-          name="zh"
-          value={word.zh || ""}
-          onChange={onChange}
-          type="text"
-          placeholder="中文"
-        />
-        <input
-          className={CLASS_INPUT_TEXT}
-          name="py"
-          type="text"
-          value={word.py || ""}
-          onChange={onChange}
-          placeholder="Pinyin"
-        />
-        <input
-          className={CLASS_INPUT_TEXT}
-          name="lat"
-          value={word.lat || ""}
-          onChange={onChange}
-          type="text"
-          placeholder="Definition"
-        />
-        <input
-          className={CLASS_INPUT_TEXT}
-          name="tags"
-          value={word.tags || ""}
-          onChange={onChange}
-          type="text"
-          placeholder="tags"
-        />
-        <div className=" font-serif text-sm italic ">
-          Separate tags with the caracter <span className=" kbd ">";"</span>
-        </div>
-        <div>PHOTO</div>
-        <ImageUpload
-          onImageUploadStart={onImageUploadStart}
-          onImageUploadSuccsess={onImageUploadSuccsess}
-          onImageUploadError={onImageUploadError}
-        />
-        <div className={` ${imgUploaded ? "block" : "hidden"} `}>
-          <button onClick={onSaveNewWord} className={CLASS_BTN}>
-            SAVE
-          </button>
-          <button onClick={onCancel} className={CLASS_BTN}>
-            CANCEL
-          </button>
-        </div>
-        <Loading isLoading={loading} center />
-      </div>
-    </div>
-  );
-}
-
 const SECTIONS = {
   NEW_WORD: { id: 0, title: "Add New Word" },
   WORDS_LIST: { id: 0, title: "Add New Word" },
 };
 
-export default function Dico() {
-  const [section, setsection] = useState(SECTIONS.NEW_WORD);
+function WordsList({ onSelectWord }) {
+  const [words, setwords] = useState([]);
+  const [wordsf, setwordsf] = useState([]);
+  const [loading, setloading] = useState(false);
+  const [q, setq] = useState("");
+
+  useEffect(() => {
+    loadWords();
+  }, []);
+
+  async function loadWords() {
+    setloading(true);
+    const res = await SB.LoadAllItems(TABLES_NAMES.DICO);
+
+    setwords(res);
+    setwordsf([...res]);
+    setloading(false);
+  }
+
+  function onSearch(e) {
+    const v = e.target.value && e.target.value.toLowerCase();
+    setq(v);
+
+    if (v.trim() === "") {
+      setwordsf([...words]);
+      return;
+    }
+
+    const f = words.filter((w, i) => {
+      return (
+        w.zh.toLowerCase().includes(v) ||
+        w.py.toLowerCase().includes(v) ||
+        w.lat.toLowerCase().includes(v)
+      );
+    });
+
+    setwordsf(f);
+  }
+
   return (
     <div>
-      <FormNewWord />
+      <Loading isLoading={loading} />
+      <input
+        type="search"
+        value={q}
+        onChange={onSearch}
+        className={CLASS_INPUT_TEXT}
+      />
+      <ul>
+        {wordsf.map((w, i) => (
+          <li>
+            <button onClick={(e) => onSelectWord(w)} className={CLASS_BTN}>
+              {w.zh} - <span>{w.lat}</span>
+            </button>
+          </li>
+        ))}
+
+        {wordsf.length === 0 && <div>No words!</div>}
+      </ul>
+    </div>
+  );
+}
+
+function WordCard({ word, onUpdateWord }) {
+  if (word === undefined) {
+    return <div>-</div>;
+  }
+
+  const words_data = Object.entries(word);
+
+  return (
+    <div className=" bg-neutral-200 border-neutral-300 mt-2 border shadow-md rounded-md p-2 ">
+      <div className="text-sky-500 text-lg">{word.zh}</div>
+      <div>
+        {words_data.map(
+          (it, i) =>
+            !["pics", "id", "created_at", "tags"].includes(it[0]) && (
+              <div>
+                <span className="text-sky-500">{it[0]}:</span> - {it[1]}
+              </div>
+            )
+        )}
+
+        <div className="flex gap-2">
+          <span className="text-sky-500">tags:</span>{" "}
+          {word.tags.split(";").map((t, i) => (
+            <span className="text-xs cursor-pointer px-2 text-white p-1 rounded-full bg-sky-400 hover:bg-sky-500 ">
+              {t}
+            </span>
+          ))}
+        </div>
+        <div>
+          <span className="text-sky-500">Pictures:</span> {word.pics}
+        </div>
+      </div>
+      <button className={CLASS_BTN} onClick={(e) => onUpdateWord(word)}>
+        UPDATE
+      </button>
+    </div>
+  );
+}
+export default function Dico() {
+  const [section, setsection] = useState(SECTIONS.NEW_WORD);
+  const [showFormNewWord, setShowFomrNewWord] = useState(false);
+  const [selectedWord, setSelectedWord] = useState();
+  const [upd, setupd] = useState();
+
+  function onSelectWord(word) {
+    console.log(word);
+    setSelectedWord(word);
+    setShowFomrNewWord(false);
+    setupd(undefined);
+  }
+
+  function onUpdateWord(word) {
+    setupd(word);
+    setShowFomrNewWord(true);
+  }
+
+  return (
+    <div className="md:flex gap-4 mt-4">
+      <div>
+        <button onClick={(e) => setShowFomrNewWord(true)} className={CLASS_BTN}>
+          ADD NEW WORD
+        </button>
+        <WordsList onSelectWord={onSelectWord} />
+      </div>
+      {showFormNewWord && (
+        <FormNewWord
+          onCancel={(e) => {
+            setShowFomrNewWord(false);
+            setupd(undefined);
+          }}
+          upd={upd}
+        />
+      )}
+      {!showFormNewWord && (
+        <WordCard word={selectedWord} onUpdateWord={onUpdateWord} />
+      )}
+      <ItemNotSelected show={selectedWord} message={"Selected a word"} />
     </div>
   );
 }
