@@ -133,7 +133,7 @@ function WordsList({ onSelectWord }) {
   );
 }
 
-function WordCard({ word, onUpdateWord }) {
+function WordCard({ word, onUpdateWord, onDeleteWord }) {
   if (word === undefined) {
     return <div>-</div>;
   }
@@ -168,6 +168,9 @@ function WordCard({ word, onUpdateWord }) {
       <button className={CLASS_BTN} onClick={(e) => onUpdateWord(word)}>
         UPDATE
       </button>
+      <button className={CLASS_BTN} onClick={(e) => onDeleteWord(word)}>
+        DELETE
+      </button>
     </div>
   );
 }
@@ -193,6 +196,18 @@ export default function Dico() {
   function init() {
     setrdk(Math.random());
     setSelectedWord(undefined);
+  }
+
+  async function onDeleteWord(word) {
+    if (window.confirm('Delete "' + word.zh + '"')) {
+      const res = await SB.DeleteItem(TABLES_NAMES.DICO, word);
+      console.log("del res ", res);
+      if (res === null) {
+        alert("Word deleted");
+        init();
+      }
+    }
+    console.log("deleting ", word);
   }
 
   return (
@@ -228,7 +243,11 @@ export default function Dico() {
         />
       )}
       {!showFormNewWord && (
-        <WordCard word={selectedWord} onUpdateWord={onUpdateWord} />
+        <WordCard
+          word={selectedWord}
+          onUpdateWord={onUpdateWord}
+          onDeleteWord={onDeleteWord}
+        />
       )}
       <ItemNotSelected show={selectedWord} message={"Selected a word"} />
     </div>
