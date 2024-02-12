@@ -18,7 +18,7 @@ export default function FormNewWord({ upd, onCancel }) {
 
   useEffect(() => {
     if (upd) {
-      setword((old) => ({ ...old, zh: "cool upd" }));
+      setword({ ...upd });
     }
   }, []);
 
@@ -34,10 +34,29 @@ export default function FormNewWord({ upd, onCancel }) {
   async function onSaveNewWord() {
     console.log(word);
     setLoading(true);
-    const res = await SB.InsertItem(TABLES_NAMES.DICO, word);
 
-    if (res === null) {
-      alert("New word saved!");
+    if (upd) {
+      const res = await SB.UpdateItem(
+        TABLES_NAMES.DICO,
+        word,
+        (s) => {
+          alert("Success\n", JSON.stringify(s));
+          console.log(s);
+          setLoading(false);
+        },
+        (e) => {
+          alert("Error \n", JSON.stringify(e));
+          console.log(e);
+          setLoading(false);
+        }
+      );
+    } else {
+      const res = await SB.InsertItem(TABLES_NAMES.DICO, word);
+
+      if (res === null) {
+        alert("New word saved!");
+        setLoading(false);
+      }
     }
 
     setLoading(false);
