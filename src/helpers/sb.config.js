@@ -11,4 +11,5 @@ export const TABLES_NAMES = {
   TEST: "test",
   LOADS: "loads",
   USERS: "user_login",
+  DICO: "dico",
 };

@@ -71,7 +71,7 @@ function App() {
         </div>
       </dialog>
 
-      <Loading isLoading={loading} />
+      <Loading isLoading={loading} center />
     </>
   );
 }
