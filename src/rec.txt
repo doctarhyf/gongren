@@ -1,0 +1,114 @@
+import React, { useState } from 'react';
+import AudioPlayer from 'react-audio-player';
+
+const MicrophoneRecorder = ({ onAudioRecorded }) => {
+  const [audioStream, setAudioStream] = useState(null);
+  const [recording, setRecording] = useState(false);
+  const [recordedAudioBlob, setRecordedAudioBlob] = useState(null);
+
+  const startRecording = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      setAudioStream(stream);
+      setRecording(true);
+    } catch (error) {
+      console.error('Error accessing microphone:', error.message);
+    }
+  };
+
+  const stopRecording = () => {
+    if (audioStream) {
+      const tracks = audioStream.getTracks();
+      tracks.forEach((track) => track.stop());
+      setAudioStream(null);
+      setRecording(false);
+    }
+  };
+
+  const handleAudioRecorded = (blob) => {
+    setRecordedAudioBlob(blob);
+    onAudioRecorded(blob);
+  };
+
+  return (
+    <div>
+      <button onClick={startRecording} disabled={recording}>
+        Start Recording
+      </button>
+      <button onClick={stopRecording} disabled={!recording}>
+        Stop Recording
+      </button>
+
+      {recordedAudioBlob && (
+        <div>
+          <p>Recorded Audio:</p>
+          <AudioPlayer src={URL.createObjectURL(recordedAudioBlob)} controls />
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default MicrophoneRecorder;
+
+
+
+import React from 'react';
+import MicrophoneRecorder from './MicrophoneRecorder';
+import saveAudioToSupabase from './saveAudioToSupabase';
+
+const YourComponent = () => {
+  const handleAudioRecorded = async (blob) => {
+    // Save the recorded audio to Supabase Storage
+    try {
+      await saveAudioToSupabase(blob, 'recorded_audio.wav');
+      console.log('Audio saved to Supabase successfully!');
+    } catch (error) {
+      console.error('Error saving audio to Supabase:', error.message);
+    }
+  };
+
+  return (
+    <div>
+      <MicrophoneRecorder onAudioRecorded={handleAudioRecorded} />
+    </div>
+  );
+};
+
+export default YourComponent;
+
+import { createClient } from '@supabase/supabase-js';
+
+const supabaseUrl = 'YOUR_SUPABASE_URL';
+const supabaseKey = 'YOUR_SUPABASE_KEY';
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+const saveAudioToSupabase = async (file, fileName) => {
+  try {
+    const { data, error } = await supabase.storage
+      .from('YOUR_STORAGE_BUCKET_NAME')
+      .upload(fileName, file, { cacheControl: '3600' });
+
+    if (error) {
+      throw error;
+    }
+
+    return data;
+  } catch (error) {
+    console.error('Error saving audio to Supabase:', error.message);
+    throw error;
+  }
+};
+
+export default saveAudioToSupabase;
+
+
+
+
+
+
+
+
+
+
+
