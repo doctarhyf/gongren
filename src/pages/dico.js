@@ -134,11 +134,35 @@ function WordsList({ onSelectWord }) {
 }
 
 function WordCard({ word, onUpdateWord, onDeleteWord }) {
+  const [publicUrl, setPublicUrl] = useState("");
+
   if (word === undefined) {
     return <div>-</div>;
   }
 
   const words_data = Object.entries(word);
+
+  async function getPublicUrl(filePath) {
+    filePath = filePath.replace("dico/", "");
+    console.log("Getting public url of : ", filePath);
+    try {
+      const { data, error } = await supabase.storage
+        .from("dico") // Replace 'your-bucket-name' with your actual bucket name
+        .createSignedUrl(filePath, 60); // 60 seconds validity, adjust as needed
+
+      if (error) {
+        console.error("Error getting public URL:", error);
+      } else {
+        console.log("Public URL:", data.signedURL);
+        console.log(data);
+        setPublicUrl(data.signedUrl);
+      }
+    } catch (e) {
+      console.error("An unexpected error occurred:", e);
+    }
+  }
+
+  getPublicUrl(word.pics[0]);
 
   return (
     <div className=" bg-neutral-200 border-neutral-300 mt-2 border shadow-md rounded-md p-2 ">
@@ -155,14 +179,24 @@ function WordCard({ word, onUpdateWord, onDeleteWord }) {
 
         <div className="flex gap-2">
           <span className="text-sky-500">tags:</span>{" "}
-          {word.tags.split(";").map((t, i) => (
-            <span className="text-xs cursor-pointer px-2 text-white p-1 rounded-full bg-sky-400 hover:bg-sky-500 ">
-              {t}
-            </span>
-          ))}
+          {word.tags
+            .split(";")
+            .map(
+              (t, i) =>
+                i < word.tags.split(";").length - 1 && (
+                  <span className="text-xs cursor-pointer px-2 text-white p-1 rounded-full bg-sky-400 hover:bg-sky-500 ">
+                    {t}
+                  </span>
+                )
+            )}
         </div>
         <div>
-          <span className="text-sky-500">Pictures:</span> {word.pics}
+          <div>
+            <span className="text-sky-500">Pictures:</span>
+          </div>{" "}
+          <div className="w-[180pt] h-[180pt] object-contain object-center overflow-hidden">
+            <img src={publicUrl} />
+          </div>
         </div>
       </div>
       <button className={CLASS_BTN} onClick={(e) => onUpdateWord(word)}>
@@ -197,6 +231,7 @@ export default function Dico() {
   function init() {
     setrdk(Math.random());
     setSelectedWord(undefined);
+    setShowFomrNewWord(false);
   }
 
   async function onDeleteWord(word) {
@@ -240,6 +275,15 @@ export default function Dico() {
       <div>
         <button onClick={(e) => setShowFomrNewWord(true)} className={CLASS_BTN}>
           ADD NEW WORD
+        </button>
+        <button
+          onClick={(e) => {
+            setShowFomrNewWord(true);
+            init();
+          }}
+          className={CLASS_BTN}
+        >
+          RELOAD
         </button>
         <WordsList key={rdk} onSelectWord={onSelectWord} />
       </div>
