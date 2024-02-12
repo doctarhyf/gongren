@@ -174,6 +174,7 @@ function WordCard({ word, onUpdateWord, onDeleteWord }) {
     </div>
   );
 }
+
 export default function Dico() {
   const [section, setsection] = useState(SECTIONS.NEW_WORD);
   const [showFormNewWord, setShowFomrNewWord] = useState(false);
@@ -199,15 +200,39 @@ export default function Dico() {
   }
 
   async function onDeleteWord(word) {
-    if (window.confirm('Delete "' + word.zh + '"')) {
-      const res = await SB.DeleteItem(TABLES_NAMES.DICO, word);
-      console.log("del res ", res);
-      if (res === null) {
-        alert("Word deleted");
-        init();
+    deleteFile(word.pics[0], (s) => {
+      if (window.confirm('Delete "' + word.zh + '"')) {
+        delWordRecd(word);
       }
+
+      console.log("word file : ", word.pics, " deleted!");
+    });
+  }
+
+  async function delWordRecd(word) {
+    const res = await SB.DeleteItem(TABLES_NAMES.DICO, word);
+    console.log("del res ", res);
+    if (res === null) {
+      alert("Word deleted");
+      init();
     }
-    console.log("deleting ", word);
+  }
+
+  async function deleteFile(filePath, onFileDeleteSuccess) {
+    try {
+      const { data, error } = await supabase.storage
+        .from("dico") // Replace 'your-bucket-name' with your actual bucket name
+        .remove([filePath]);
+
+      if (error) {
+        console.error("Error deleting file:", error);
+      } else {
+        console.log("File deleted successfully:", data);
+        onFileDeleteSuccess(data);
+      }
+    } catch (e) {
+      console.error("An unexpected error occurred:", e);
+    }
   }
 
   return (
