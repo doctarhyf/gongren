@@ -32,6 +32,7 @@ import Loading from "../comps/Loading";
 import { GetRandomArray, doc, print_agents_rl } from "../helpers/funcs_print";
 import AgentsTable from "../comps/AgentsTable";
 import AgentsList from "../comps/AgentsList";
+import TeamStats from "../comps/TeamStats";
 
 export default function Equipes() {
   const [agents, setagents] = useState([]);
@@ -228,120 +229,124 @@ export default function Equipes() {
     <div>
       <Loading isLoading={loading} />
 
-      {!loading && (
-        <>
-          <div>
+      <div className="flex">
+        {!loading && (
+          <>
             <div>
               <div>
-                {" "}
+                <div>
+                  {" "}
+                  <input
+                    type="checkbox"
+                    onChange={(e) => {
+                      const isCustom = e.target.checked;
+                      setIsCustomList(isCustom);
+                      if (isCustom) {
+                        // setCustomAgents((old) => [...old, ...agentsf]);
+                      }
+                    }}
+                  />
+                  Custom List{" "}
+                </div>
+
+                <div>
+                  <button
+                    className={CLASS_BTN}
+                    onClick={(e) => setCustomAgents([])}
+                  >
+                    CLEAR CUSTOM LIST
+                  </button>
+                </div>
+              </div>
+
+              <div
+                className={` ${CLASS_INPUT_TEXT} outline-none w-fit mb-1 ${
+                  isCustomList ? "block" : "hidden"
+                } `}
+              >
                 <input
-                  type="checkbox"
-                  onChange={(e) => {
-                    const isCustom = e.target.checked;
-                    setIsCustomList(isCustom);
-                    if (isCustom) {
-                      // setCustomAgents((old) => [...old, ...agentsf]);
-                    }
-                  }}
+                  type="text"
+                  value={customTableName}
+                  onChange={(e) =>
+                    setCustomTableName(e.target.value.toUpperCase())
+                  }
+                  placeholder="list name"
                 />
-                Custom List{" "}
+              </div>
+
+              <div className={` ${isCustomList ? "hidden" : "block"} `}>
+                <div>
+                  <span className={CLASS_SELECT_TITLE}>SECTION</span>
+
+                  <select
+                    className={CLASS_SELECT}
+                    name="section"
+                    ref={ref_section}
+                    defaultValue={SECTIONS[0]}
+                    onChange={onFilterAgents}
+                  >
+                    {SECTIONS.map((it, i) => (
+                      <option key={i}>{it}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <span className={CLASS_SELECT_TITLE}>EQUIPE</span>
+
+                  <select
+                    className={CLASS_SELECT}
+                    name="equipe"
+                    defaultValue={EQUIPES[0]}
+                    ref={ref_equipe}
+                    onChange={onFilterAgents}
+                  >
+                    {EQUIPES.map((it, i) => (
+                      <option key={i}>{it}</option>
+                    ))}
+                  </select>
+                </div>
               </div>
 
               <div>
-                <button
-                  className={CLASS_BTN}
-                  onClick={(e) => setCustomAgents([])}
-                >
-                  CLEAR CUSTOM LIST
-                </button>
-              </div>
-            </div>
+                <div>
+                  <span className={CLASS_SELECT_TITLE}>YEAR:</span>
+                  <select
+                    onChange={onFilterAgents}
+                    ref={ref_year}
+                    className={CLASS_SELECT}
+                  >
+                    {[...Array(10)].map((it, i) => (
+                      <option key={i}>{new Date().getFullYear() + i}</option>
+                    ))}
+                  </select>
+                </div>
 
-            <div
-              className={` ${CLASS_INPUT_TEXT} outline-none w-fit mb-1 ${
-                isCustomList ? "block" : "hidden"
-              } `}
-            >
-              <input
-                type="text"
-                value={customTableName}
-                onChange={(e) =>
-                  setCustomTableName(e.target.value.toUpperCase())
-                }
-                placeholder="list name"
-              />
-            </div>
-
-            <div className={` ${isCustomList ? "hidden" : "block"} `}>
-              <div>
-                <span className={CLASS_SELECT_TITLE}>SECTION</span>
-
-                <select
-                  className={CLASS_SELECT}
-                  name="section"
-                  ref={ref_section}
-                  defaultValue={SECTIONS[0]}
-                  onChange={onFilterAgents}
-                >
-                  {SECTIONS.map((it, i) => (
-                    <option key={i}>{it}</option>
-                  ))}
-                </select>
+                <div>
+                  <span className={CLASS_SELECT_TITLE}>MONTH:</span>
+                  <select
+                    className={CLASS_SELECT}
+                    onChange={onFilterAgents}
+                    ref={ref_month}
+                  >
+                    {[...Array(12)].map((it, i) => (
+                      <option key={i} value={i}>
+                        {MONTHS[i]}
+                      </option>
+                    ))}
+                  </select>
+                </div>
               </div>
 
-              <div>
-                <span className={CLASS_SELECT_TITLE}>EQUIPE</span>
-
-                <select
-                  className={CLASS_SELECT}
-                  name="equipe"
-                  defaultValue={EQUIPES[0]}
-                  ref={ref_equipe}
-                  onChange={onFilterAgents}
-                >
-                  {EQUIPES.map((it, i) => (
-                    <option key={i}>{it}</option>
-                  ))}
-                </select>
+              <div className={` ${isCustomList ? "block" : "hidden"} `}>
+                <AgentsList onAgentClick={onAgentClick} />
               </div>
             </div>
+          </>
+        )}
 
-            <div>
-              <div>
-                <span className={CLASS_SELECT_TITLE}>YEAR:</span>
-                <select
-                  onChange={onFilterAgents}
-                  ref={ref_year}
-                  className={CLASS_SELECT}
-                >
-                  {[...Array(10)].map((it, i) => (
-                    <option key={i}>{new Date().getFullYear() + i}</option>
-                  ))}
-                </select>
-              </div>
-
-              <div>
-                <span className={CLASS_SELECT_TITLE}>MONTH:</span>
-                <select
-                  className={CLASS_SELECT}
-                  onChange={onFilterAgents}
-                  ref={ref_month}
-                >
-                  {[...Array(12)].map((it, i) => (
-                    <option key={i} value={i}>
-                      {MONTHS[i]}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-
-            <div className={` ${isCustomList ? "block" : "hidden"} `}>
-              <AgentsList onAgentClick={onAgentClick} />
-            </div>
-          </div>
-        </>
-      )}
+        <TeamStats agentsf={agentsf} />
+      </div>
 
       <div>
         <button

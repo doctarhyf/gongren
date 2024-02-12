@@ -35,11 +35,11 @@ export default function AgentsTable({
   customAgentsTableName,
 }) {
   const COL_SPAN = 4;
-  const nb_op = CountAgentsByPostType(agentsf, K_POSTE_OPERATEUR);
+  /*  const nb_op = CountAgentsByPostType(agentsf, K_POSTE_OPERATEUR);
   const nb_charg = CountAgentsByPostType(agentsf, K_POSTE_CHARGEUR);
   const nb_net = CountAgentsByPostType(agentsf, K_POSTE_NETTOYEUR);
   const nb_aide_op = CountAgentsByPostType(agentsf, K_POSTE_AIDE_OPERATEUR);
-  const chef_deq = agentsf.find((it, i) => it.chef_deq === "OUI");
+  const chef_deq = agentsf.find((it, i) => it.chef_deq === "OUI"); */
 
   let daysCount = 31;
 
@@ -278,27 +278,6 @@ export default function AgentsTable({
                 </div>
               </div>
             )}
-            <div>
-              {" "}
-              D'equipe:
-              <b>{chef_deq && `${chef_deq.nom} ${chef_deq.postnom}`}</b>
-            </div>
-            <div>
-              {" "}
-              Operateurs:<b>{nb_op}</b>
-            </div>
-            <div>
-              {" "}
-              Aide Operateurs:<b>{nb_aide_op}</b>
-            </div>
-            <div>
-              {" "}
-              Chargeurs:<b>{nb_charg}</b>
-            </div>
-            <div>
-              {" "}
-              Nettoyeurs:<b>{nb_net}</b>
-            </div>
           </td>
         </tr>
       </div>
