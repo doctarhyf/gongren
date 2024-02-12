@@ -195,7 +195,10 @@ function WordCard({ word, onUpdateWord, onDeleteWord }) {
             <span className="text-sky-500">Pictures:</span>
           </div>{" "}
           <div className="w-[180pt] h-[180pt] object-contain object-center overflow-hidden">
-            <img src={publicUrl} />
+            <a href={publicUrl} target="_blank">
+              {" "}
+              <img src={publicUrl} />
+            </a>
           </div>
         </div>
       </div>
