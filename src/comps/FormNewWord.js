@@ -5,6 +5,25 @@ import { TABLES_NAMES } from "../helpers/sb.config";
 import ImageUpload from "../comps/ImageUpload";
 import Loading from "../comps/Loading";
 
+function PYKBD({ show, onType, onHidePYKBD }) {
+  return (
+    <div className={` ${show ? "block" : "hidden"} `}>
+      <button
+        onClick={onHidePYKBD}
+        className="text-white bg-red-500 text-xs rounded-full w-6 h-6"
+      >
+        X
+      </button>
+      <button className={CLASS_BTN} onClick={(e) => onType("A")}>
+        A
+      </button>
+      <button className={CLASS_BTN} onClick={(e) => onType("B")}>
+        B
+      </button>
+    </div>
+  );
+}
+
 export default function FormNewWord({
   upd,
   onCancel,
@@ -12,7 +31,6 @@ export default function FormNewWord({
   onWordSaved,
   onWordUpdateError,
 }) {
-  const [imgUploaded, setImgUploaded] = useState(false);
   const [word, setword] = useState({
     zh: "",
     py: "",
@@ -21,6 +39,7 @@ export default function FormNewWord({
     pics: [],
   });
   const [loading, setLoading] = useState(false);
+  const [pyfocused, setpyfocused] = useState(false);
 
   useEffect(() => {
     if (upd) {
@@ -73,7 +92,7 @@ export default function FormNewWord({
 
   function onImageUploadSuccsess(res) {
     console.log("onImageUploadSuccsess", res);
-    setImgUploaded(true);
+
     setword((old) => ({ ...old, pics: [...old.pics, res.fullPath] }));
     console.log(word);
   }
@@ -84,6 +103,11 @@ export default function FormNewWord({
 
   function onImageUploadStart(file) {
     console.log("onImageUploadStart", file);
+  }
+
+  function onTypePy(py) {
+    let npy = word.py + py;
+    setword((old) => ({ ...old, py: npy }));
   }
 
   return (
@@ -101,11 +125,20 @@ export default function FormNewWord({
         <input
           className={CLASS_INPUT_TEXT}
           name="py"
+          onFocus={(e) => setpyfocused(true)}
+          // onBlur={}//(e) => //setpyfocused(false)}
           type="text"
           value={word.py || ""}
           onChange={onChange}
           placeholder="Pinyin"
         />
+
+        <PYKBD
+          onHidePYKBD={(e) => setpyfocused(false)}
+          show={pyfocused}
+          onType={onTypePy}
+        />
+
         <input
           className={CLASS_INPUT_TEXT}
           name="lat"
@@ -132,12 +165,7 @@ export default function FormNewWord({
           onImageUploadError={onImageUploadError}
         />
         <div>
-          <button
-            className={` ${CLASS_BTN} ${
-              imgUploaded || upd ? "block" : "hidden"
-            } `}
-            onClick={onSaveNewWord}
-          >
+          <button className={` ${CLASS_BTN}  `} onClick={onSaveNewWord}>
             SAVE
           </button>
           <button onClick={onCancel} className={CLASS_BTN}>
