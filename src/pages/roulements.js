@@ -185,57 +185,6 @@ export default function Roulements() {
       <ItemNotSelected show={curAgent} />
 
       <TableRoulement agentData={curAgent} />
-
-      {/*
-      <div>
-        {curAgent && (
-          <div className=" md:flex gap-4 justify-center items-center py-4">
-            <div>
-              <span className={CLASS_SELECT_TITLE}> Mois</span>
-              <select
-                className={CLASS_SELECT}
-                ref={ref_m}
-                onChange={(e) => onDateChange(curAgent.id)}
-              >
-                {[...Array(12)].map((mois, i) => (
-                  <option key={i}>{MONTHS[i]}</option>
-                ))}
-              </select>
-            </div>
-
-            <div>
-              <span className={CLASS_SELECT_TITLE}>Annee</span>
-              <select
-                className={CLASS_SELECT}
-                ref={ref_y}
-                onChange={(e) => onDateChange(curAgent.id)}
-              >
-                {[...Array(10)].map((annee, i) => (
-                  <option key={i}>{new Date().getFullYear() + i}</option>
-                ))}
-              </select>
-            </div>
-
-            <div className="bg-slate-500 text-white rounded-full px-2 text-sm w-fit h-fit">
-              {monthCode}
-            </div>
-          </div>
-        )}
-
-         <TableRLD
-          onRoulementSaved={onRoulementSaved}
-          error={error !== undefined}
-          daysCount={lastDayDate}
-          key={rdk}
-          curAgent={curAgent}
-          curAgentRld={curAgentRld}
-          monthCode={monthCode}
-          daysLetters={daysLetters}
-        /> 
-
-
-
-      </div>*/}
     </div>
   );
 }

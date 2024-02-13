@@ -2,6 +2,30 @@ import React, { useState } from "react";
 import { MAIN_MENU, USER_LEVEL } from "../helpers/flow";
 import gck from "../img/gck.png";
 
+function UserInfo({ user }) {
+  return (
+    <div className="flex">
+      <div>
+        <div className="text-white text-xl font-bold w-fit  pb-4 p-2 text-center">
+          工人管理
+        </div>
+      </div>
+      <div className=" justify-center text-xs uppercase  items-center  p-1 mr-2 ">
+        <div>
+          Hello, <span className="text-white">{user.display_name}</span>
+        </div>
+        <div>
+          User level :{" "}
+          <span className="text-white">
+            {" "}
+            {Object.keys(USER_LEVEL)[user.user_level]}
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function MainNav({ user, onMenuClick, curPage, onLogout }) {
   // console.log(user);
   const [hidden, sethidden] = useState(true);
@@ -16,18 +40,8 @@ function MainNav({ user, onMenuClick, curPage, onLogout }) {
       </div>
 
       <div className={` ${hidden ? "hidden" : "block"} md:block `}>
-        <div className=" border-b md:flex gap-4 ">
-          <div>
-            <div className="text-white w-fit  pb-4 p-2 text-center">
-              工人管理
-            </div>
-          </div>
-          <div className=" justify-center items-center md:border-r p-1">
-            <div>
-              Hello, <span>{user.display_name}</span>
-            </div>
-            <div>User level : {Object.keys(USER_LEVEL)[user.user_level]}</div>
-          </div>
+        <div className=" border-b md:flex gap-4 items-center mx-auto md:mr-0  justify-end w-fit  ">
+          <UserInfo user={user} />
         </div>
 
         <div className={`md:flex  items-center justify-between `}>
@@ -47,7 +61,7 @@ function MainNav({ user, onMenuClick, curPage, onLogout }) {
                  hover:text-sky-500 
                  hover:bg-white 
                  w-full  
-                 rounded-md p-2 `}
+                 rounded-md px-1 `}
                   >
                     {menu_item.name}
                   </button>
