@@ -7,7 +7,7 @@ function UserInfo({ user }) {
     <div className="flex">
       <div>
         <div className="text-white text-xl font-bold w-fit  pb-4 p-2 text-center">
-          工人管理
+          水泥车间
         </div>
       </div>
       <div className=" justify-center text-xs uppercase  items-center  p-1 mr-2 ">
@@ -15,11 +15,7 @@ function UserInfo({ user }) {
           Hello, <span className="text-white">{user.display_name}</span>
         </div>
         <div>
-          User level :{" "}
-          <span className="text-white">
-            {" "}
-            {Object.keys(USER_LEVEL)[user.user_level]}
-          </span>
+          User level : <span className="text-white"> {user.user_level}</span>
         </div>
       </div>
     </div>
