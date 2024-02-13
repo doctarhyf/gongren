@@ -22,9 +22,9 @@ const MARG = 15;
 
 export const SHIFTS_ZH = ["白班", "中班", "夜班"];
 export const SHIFT_HOURS_ZH = {
-  M: ["Matin", "白班", "07h00 - 15h00"],
-  P: ["Matin", "中班", "15h00 - 23h00"],
-  N: ["Matin", "夜班", "23h00 - 07h00"],
+  M: ["MATIN", "白班", "07h00 - 15h00"],
+  P: ["APREM", "中班", "15h00 - 23h00"],
+  N: ["NUIT", "夜班", "23h00 - 07h00"],
 };
 
 export const CLASS_REPPORT_CARD = `border mt-2 rounded-md p-1 h-min bg-neutral-100 shadow-md`;

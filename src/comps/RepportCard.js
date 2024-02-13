@@ -7,6 +7,7 @@ import {
 } from "../helpers/flow";
 import { draw_load_table } from "../helpers/funcs_print";
 import ButtonPrint from "./ButtonPrint";
+import { ParseDayRepport } from "../helpers/func";
 
 export default function RepportCard({
   data,
@@ -22,31 +23,41 @@ export default function RepportCard({
 
   function onPrintShiftRepport(data) {
     console.log(data);
+    alert("Will be impemented!\n" + JSON.stringify(data));
   }
 
-  function copyToClipboard(text) {
+  function copyToClipboard(shift_data) {
+    const text = GenShiftRepportText(shift_data);
+
     navigator.clipboard
       .writeText(text)
       .then(() => {
-        console.log("Text copied to clipboard: " + text);
+        console.log("Text copied to clipboard: \n" + text);
+        alert("Text copied to clipboard: \n" + text);
       })
       .catch((err) => {
-        console.error("Unable to copy text to clipboard", err);
+        console.error("Unable to copy text to clipboard \n", err);
+        alert("Unable to copy text to clipboard \n", err);
       });
   }
 
-  function onCopyText() {
-    let txt = `•EMBALLAGE CIMENT水泥包装
-2024年1月26日
-Équipe班：A
-Superviseur班长: @Albert Kankombwe 
-     •MATIN白班
-装车26辆/Camions Chargés 
-袋子用12 495个/Sacs Utilisés 
-共计624.75吨/Tonne 
-撕裂的袋子20个/Sacs déchirés`;
-    copyToClipboard(txt);
-    alert(`Text copied!`);
+  function GenShiftRepportText(data) {
+    const dt = JSON.parse(data.upd);
+    const { shift, team, date, sacs, dechires, camions } = dt;
+    const [d, m, y] = date;
+    const { nom, zh } = SUPERVISORS[team];
+    const shift_data = SHIFT_HOURS_ZH[shift];
+    const tonnage = Number(sacs) / 20;
+
+    return `•EMBALLAGE CIMENT水泥包装
+${y}年${m + 1}月${d}日
+Équipe班：${team}
+Superviseur班长: @${nom} ${zh} 
+     •${shift_data}
+装车${camions}辆/Camions Chargés 
+袋子用${sacs}个/Sacs Utilisés 
+共计${tonnage.toFixed(2)}吨/Tonne 
+撕裂的袋子${dechires}个/Sacs déchirés`;
   }
 
   let rep_data = undefined;
@@ -170,7 +181,10 @@ Superviseur班长: @Albert Kankombwe 
             </div>
           </div>
           <div>
-            <button className={CLASS_BTN} onClick={(e) => onCopyText()}>
+            <button
+              className={CLASS_BTN}
+              onClick={(e) => copyToClipboard(data)}
+            >
               COPY
             </button>
           </div>
