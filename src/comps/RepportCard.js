@@ -5,7 +5,7 @@ import {
   SHIFT_HOURS_ZH,
   SUPERVISORS,
 } from "../helpers/flow";
-import { draw_load_table } from "../helpers/funcs_print";
+import { doc, draw_load_table, printShiftData } from "../helpers/funcs_print";
 import ButtonPrint from "./ButtonPrint";
 import { ParseDayRepport } from "../helpers/func";
 
@@ -22,8 +22,10 @@ export default function RepportCard({
   }
 
   function onPrintShiftRepport(data) {
-    console.log(data);
+    const text = GenShiftRepportText(data);
+    console.log(text);
     alert("Will be impemented!\n" + JSON.stringify(data));
+    printShiftData(doc, text);
   }
 
   function copyToClipboard(shift_data) {

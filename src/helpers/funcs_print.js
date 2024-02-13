@@ -1004,6 +1004,13 @@ function draw_load_table(data) {
   doc.save(fname);
 }
 
+export function printShiftData(doc, text) {
+  let rect = drawLogo(doc);
+
+  doc.text(PAGE_MARG, rect.y + rect.h + 8, text);
+  doc.save("sr.pdf");
+}
+
 function draw_title(doc, y, pw, pm, fsize) {
   const text_tokens = [
     { lat: "RAPPORT DU CHARGEMENT JOURNALIER" },
