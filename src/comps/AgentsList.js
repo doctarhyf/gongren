@@ -84,8 +84,11 @@ export default function AgentsList({ onAgentClick, curAgent, onTeamClick }) {
 
     let agents_filtered = agents.filter((agent, i) => {
       const check_nom = agent.nom.toLowerCase().includes(query);
+      const check_postnom = agent.postnom.toLowerCase().includes(query);
+      const check_prenom = agent.prenom.toLowerCase().includes(query);
+      const check_mingzi = agent.mingzi.toLowerCase().includes(query);
 
-      return check_nom;
+      return check_nom || check_postnom || check_prenom || check_mingzi; //check_nom || check_postnom || check_prenom || check_mingzi;
     });
 
     setagentf(agents_filtered);
