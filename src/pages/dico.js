@@ -98,6 +98,11 @@ export default function Dico() {
   }
 
   async function onDeleteWord(word) {
+    const links = word.pics;
+    if (links.length === 0) {
+      delWordRecd(word);
+      return;
+    }
     deleteFile(word.pics[0].replace("dico/", ""), (s) => {
       if (window.confirm('Delete "' + word.zh + '"')) {
         delWordRecd(word);

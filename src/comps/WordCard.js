@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import * as SB from "../helpers/sb";
 import { TABLES_NAMES, supabase } from "../helpers/sb.config";
 import Loading from "./Loading";
-import { CLASS_BTN, CLASS_INPUT_TEXT } from "../helpers/flow";
+import { CLASS_BTN, CLASS_INPUT_TEXT, NO_IMAGE } from "../helpers/flow";
 
 export default function WordCard({ word, onUpdateWord, onDeleteWord }) {
   const [publicUrl, setPublicUrl] = useState("");
@@ -18,7 +18,7 @@ export default function WordCard({ word, onUpdateWord, onDeleteWord }) {
 
   async function getPublicUrl(filePath) {
     setloading(true);
-    filePath = filePath.replace("dico/", "");
+    filePath = filePath && filePath.replace("dico/", "");
     console.log("Getting public url of : ", filePath);
     try {
       const { data, error } = await supabase.storage
@@ -28,6 +28,7 @@ export default function WordCard({ word, onUpdateWord, onDeleteWord }) {
       if (error) {
         console.error("Error getting public URL:", error);
         setloading(false);
+        setPublicUrl(NO_IMAGE);
       } else {
         console.log("Public URL:", data.signedURL);
         console.log(data);
@@ -80,7 +81,15 @@ export default function WordCard({ word, onUpdateWord, onDeleteWord }) {
               <img src={publicUrl} />
             </a>
           </div>
-          {/*  <div>{word.pics}</div> */}
+          <div>
+            {word.pics.map((p, i) => (
+              <div>
+                <div>
+                  No{i + 1} : {p}
+                </div>
+              </div>
+            ))}
+          </div>{" "}
           <Loading isLoading={loading} center />
         </div>
       </div>
