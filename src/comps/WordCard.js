@@ -60,7 +60,7 @@ export default function WordCard({ word, onUpdateWord, onDeleteWord }) {
             .split(";")
             .map(
               (t, i) =>
-                i < word.tags.split(";").length - 1 && (
+                t.length > 0 && (
                   <span className="text-xs cursor-pointer px-2 text-white p-1 rounded-full bg-sky-400 hover:bg-sky-500 ">
                     {t}
                   </span>

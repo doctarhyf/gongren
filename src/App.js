@@ -10,12 +10,16 @@ import { TABLES_NAMES } from "./helpers/sb.config";
 import FormLogin from "./comps/FormLogin";
 import GongRen from "./GongRen";
 import { useCookies } from "react-cookie";
+import { createContext } from "react";
+
+export const ModalContext = createContext();
 
 function App() {
   const [user, setuser] = useState();
   const [loading, setloading] = useState(false);
   const [error, seterror] = useState(undefined);
   const [cookies, setCookie, removeCookie] = useCookies(["gr_user"]);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     const myCookieValue = cookies.gr_user;
@@ -53,7 +57,29 @@ function App() {
     setuser(undefined);
   }
 
-  if (user) return <GongRen user={user} onLogout={onLogout} />;
+  if (user)
+    return (
+      <ModalContext.Provider value={[showModal, setShowModal]}>
+        <div>
+          <div
+            className={` flex flex-col justify-center items-center bg-black/60 backdrop-blur-md text-white  absolute h-full w-full ${
+              showModal ? "absolute" : "hidden"
+            } `}
+          >
+            <div>Modal cont</div>
+            <div>
+              <button
+                onClick={(e) => setShowModal(false)}
+                className={CLASS_BTN}
+              >
+                OK
+              </button>
+            </div>
+          </div>
+          <GongRen user={user} onLogout={onLogout} />
+        </div>
+      </ModalContext.Provider>
+    );
   return (
     <>
       <FormLogin onLogin={onLogin} />
