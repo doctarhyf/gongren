@@ -35,7 +35,11 @@ function MainNav({ user, onMenuClick, curPage, onLogout }) {
         <img src={gck} height={20} />
       </div>
 
-      <div className={` ${hidden ? "hidden" : "block"} md:block `}>
+      <div
+        className={` ${
+          hidden ? "hidden" : "block"
+        } md:block transition ease-in-out delay-150 duration-300 `}
+      >
         <div className=" border-b md:flex gap-4 items-center mx-auto md:mr-0  justify-end w-fit  ">
           <UserInfo user={user} />
         </div>

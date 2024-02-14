@@ -93,7 +93,7 @@ export default function FormNewWord({
   function onImageUploadSuccsess(res) {
     console.log("onImageUploadSuccsess", res);
 
-    setword([res.fullPath]); //((old) => ({ ...old, pics: [...old.pics, res.fullPath] }));
+    setword((old) => ({ ...old, pics: [res.fullPath] }));
     console.log(word);
   }
 
