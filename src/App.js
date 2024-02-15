@@ -20,6 +20,8 @@ function App() {
   const [error, seterror] = useState(undefined);
   const [cookies, setCookie, removeCookie] = useCookies(["gr_user"]);
   const [showModal, setShowModal] = useState(false);
+  const [modalData, setModalData] = useState("");
+  const [modalType, setModalType] = useState("img");
 
   useEffect(() => {
     const myCookieValue = cookies.gr_user;
@@ -57,23 +59,36 @@ function App() {
     setuser(undefined);
   }
 
-  const [modalUrl, setModalUrl] = useState("");
   function showImage(url) {
+    setModalType("img");
+    setModalData(url);
     setShowModal(true);
-    setModalUrl(url);
+  }
+
+  function showData(data) {
+    setModalType("data");
+    setModalData(data);
+    setShowModal(true);
   }
 
   if (user)
     return (
-      <ModalContext.Provider value={[showImage]}>
+      <ModalContext.Provider value={[showImage, showData]}>
         <div>
           <div
-            className={` flex flex-col justify-center items-center bg-black/60 backdrop-blur-md text-white  absolute h-full w-full ${
+            className={`  flex flex-col justify-center items-center bg-black/60 backdrop-blur-md text-white  absolute h-full w-full ${
               showModal ? "absolute" : "hidden"
             } `}
           >
             <div>
-              <img src={modalUrl} alt={modalUrl} />
+              {modalType === "img" && <img src={modalData} alt={modalData} />}
+              {modalType === "data" &&
+                Object.entries(modalData).map(([k, v], i) => (
+                  <div key={i}>
+                    <span className="text-sky-500">{k}: </span>
+                    <span>{v}</span>
+                  </div>
+                ))}
             </div>
             <div>
               <button

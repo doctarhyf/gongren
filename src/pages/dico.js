@@ -140,10 +140,14 @@ export default function Dico() {
     }
   }
 
+  function onOkay(word) {
+    setSelectedWord(undefined);
+  }
+
   return (
     <div className="md:flex gap-4 mt-4">
       {!showFormNewWord && (
-        <div>
+        <div className={` ${selectedWord ? "hidden" : "block"} `}>
           <button
             onClick={(e) => setShowFomrNewWord(true)}
             className={CLASS_BTN}
@@ -191,9 +195,12 @@ export default function Dico() {
           word={selectedWord}
           onUpdateWord={onUpdateWord}
           onDeleteWord={onDeleteWord}
+          onOkay={onOkay}
         />
       )}
-      <ItemNotSelected show={selectedWord} message={"Selected a word"} />
+      <div className=" hidden md:block ">
+        <ItemNotSelected show={selectedWord} message={"Selected a word"} />
+      </div>
     </div>
   );
 }

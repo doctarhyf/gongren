@@ -5,10 +5,10 @@ import Loading from "./Loading";
 import { CLASS_BTN, CLASS_INPUT_TEXT, NO_IMAGE } from "../helpers/flow";
 import { ModalContext } from "../App";
 
-export default function WordCard({ word, onUpdateWord, onDeleteWord }) {
+export default function WordCard({ word, onUpdateWord, onDeleteWord, onOkay }) {
   const [publicUrl, setPublicUrl] = useState("");
   const [loading, setloading] = useState(true);
-  const [showImage] = useContext(ModalContext);
+  const [showImage, showData] = useContext(ModalContext);
 
   useEffect(() => {
     word && getPublicUrl(word.pics[0]);
@@ -75,12 +75,15 @@ export default function WordCard({ word, onUpdateWord, onDeleteWord }) {
             <span className="text-sky-500">Pictures:</span>
           </div>{" "}
           <div
-            className={` ${
+            className={`  my-2 ${
               loading ? "hidden" : "block"
-            } w-[180pt] max-h-[180pt] object-contain object-center overflow-hidden`}
+            } w-[180pt]  object-contain object-center overflow-hidden`}
           >
             {/* <a href={publicUrl} target="_blank"> */}
-            <button className={CLASS_BTN} onClick={(e) => showImage(publicUrl)}>
+            <button
+              className={`  ${CLASS_BTN}   `}
+              onClick={(e) => showImage(publicUrl)}
+            >
               <img src={publicUrl} />
             </button>
             {/*  </a> */}
@@ -102,6 +105,9 @@ export default function WordCard({ word, onUpdateWord, onDeleteWord }) {
       </button>
       <button className={CLASS_BTN} onClick={(e) => onDeleteWord(word)}>
         DELETE
+      </button>
+      <button className={CLASS_BTN} onClick={(e) => onOkay(word)}>
+        OK
       </button>
     </div>
   );
