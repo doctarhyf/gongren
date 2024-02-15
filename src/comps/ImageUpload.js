@@ -12,7 +12,7 @@ export function compressImage(file) {
       const canvas = document.createElement("canvas");
       const context = canvas.getContext("2d");
 
-      const targetWidth = 180;
+      const targetWidth = 280;
       const targetHeight = (image.height / image.width) * targetWidth;
 
       canvas.width = targetWidth;
