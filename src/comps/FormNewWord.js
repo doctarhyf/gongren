@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { CLASS_BTN, CLASS_INPUT_TEXT } from "../helpers/flow";
+import {
+  CLASS_BTN,
+  CLASS_INPUT_TEXT,
+  pinyinVowelsWithTones,
+} from "../helpers/flow";
 import * as SB from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
 import ImageUpload from "../comps/ImageUpload";
@@ -8,18 +12,32 @@ import Loading from "../comps/Loading";
 function PYKBD({ show, onType, onHidePYKBD }) {
   return (
     <div className={` ${show ? "block" : "hidden"} `}>
-      <button
-        onClick={onHidePYKBD}
-        className="text-white bg-red-500 text-xs rounded-full w-6 h-6"
-      >
-        X
-      </button>
-      <button className={CLASS_BTN} onClick={(e) => onType("A")}>
+      <div>
+        <button
+          onClick={onHidePYKBD}
+          className="text-white bg-red-500 text-xs rounded-full w-6 h-6"
+        >
+          X
+        </button>
+      </div>
+
+      <div>
+        {pinyinVowelsWithTones.map((pyletter_array, i) => (
+          <div key={i}>
+            {pyletter_array.map((py, i) => (
+              <button key={i} className={CLASS_BTN} onClick={(e) => onType(py)}>
+                {py}
+              </button>
+            ))}
+          </div>
+        ))}
+      </div>
+      {/* <button className={CLASS_BTN} onClick={(e) => onType("A")}>
         A
       </button>
       <button className={CLASS_BTN} onClick={(e) => onType("B")}>
         B
-      </button>
+      </button> */}
     </div>
   );
 }

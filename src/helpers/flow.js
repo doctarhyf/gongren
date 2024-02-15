@@ -146,3 +146,12 @@ export const MONTHS = [
   "Novembre",
   "Décembre",
 ];
+
+export const pinyinVowelsWithTones = [
+  ["ā", "á", "ǎ", "à"], // For 'a'
+  ["ē", "é", "ě", "è"], // For 'e'
+  ["ī", "í", "ǐ", "ì"], // For 'i'
+  ["ō", "ó", "ǒ", "ò"], // For 'o'
+  ["ū", "ú", "ǔ", "ù"], // For 'u'
+  ["ǖ", "ǘ", "ǚ", "ǜ"], // For 'ü'
+];
