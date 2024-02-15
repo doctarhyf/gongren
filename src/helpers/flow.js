@@ -124,7 +124,7 @@ export const MAIN_MENU = [
     user_level: USER_LEVEL.SUPERVISOR,
   },
 
-  { name: "Magasin", path: "/magasin", el: Magasin, user_level: 0 },
+  /* { name: "Magasin", path: "/magasin", el: Magasin, user_level: 0 }, */
   { name: "Dico", path: "/dico", el: Dico, user_level: 0 },
   { name: "Sacs", path: "/sacs", el: Sacs, user_level: 0 },
 

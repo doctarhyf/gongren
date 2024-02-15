@@ -12,4 +12,5 @@ export const TABLES_NAMES = {
   LOADS: "loads",
   USERS: "users_gongren",
   DICO: "dico",
+  SACS: "sacs",
 };

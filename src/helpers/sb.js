@@ -102,6 +102,17 @@ export async function LoadAllItems(tableName) {
   return data;
 }
 
+export async function LoadAllItems2(tableName, onSuccess, onError) {
+  let { data, error } = await supabase.from(tableName).select("*");
+
+  if (error) {
+    onError(error);
+    return;
+  }
+
+  onSuccess(data);
+}
+
 export async function GetUser(matricule, pin) {
   let { data, error } = await supabase
     .from(TABLES_NAMES.USERS)
