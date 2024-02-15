@@ -142,21 +142,26 @@ export default function Dico() {
 
   return (
     <div className="md:flex gap-4 mt-4">
-      <div>
-        <button onClick={(e) => setShowFomrNewWord(true)} className={CLASS_BTN}>
-          ADD NEW WORD
-        </button>
-        <button
-          onClick={(e) => {
-            setShowFomrNewWord(true);
-            init();
-          }}
-          className={CLASS_BTN}
-        >
-          RELOAD
-        </button>
-        <WordsList key={rdk} onSelectWord={onSelectWord} />
-      </div>
+      {!showFormNewWord && (
+        <div>
+          <button
+            onClick={(e) => setShowFomrNewWord(true)}
+            className={CLASS_BTN}
+          >
+            ADD NEW WORD
+          </button>
+          <button
+            onClick={(e) => {
+              setShowFomrNewWord(true);
+              init();
+            }}
+            className={CLASS_BTN}
+          >
+            RELOAD
+          </button>
+          <WordsList key={rdk} onSelectWord={onSelectWord} />
+        </div>
+      )}
       {showFormNewWord && (
         <FormNewWord
           onWordUpdateError={(e) => {

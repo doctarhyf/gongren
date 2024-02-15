@@ -57,16 +57,24 @@ function App() {
     setuser(undefined);
   }
 
+  const [modalUrl, setModalUrl] = useState("");
+  function showImage(url) {
+    setShowModal(true);
+    setModalUrl(url);
+  }
+
   if (user)
     return (
-      <ModalContext.Provider value={[showModal, setShowModal]}>
+      <ModalContext.Provider value={[showImage]}>
         <div>
           <div
             className={` flex flex-col justify-center items-center bg-black/60 backdrop-blur-md text-white  absolute h-full w-full ${
               showModal ? "absolute" : "hidden"
             } `}
           >
-            <div>Modal cont</div>
+            <div>
+              <img src={modalUrl} alt={modalUrl} />
+            </div>
             <div>
               <button
                 onClick={(e) => setShowModal(false)}

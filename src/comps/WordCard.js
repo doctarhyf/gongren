@@ -1,12 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import * as SB from "../helpers/sb";
 import { TABLES_NAMES, supabase } from "../helpers/sb.config";
 import Loading from "./Loading";
 import { CLASS_BTN, CLASS_INPUT_TEXT, NO_IMAGE } from "../helpers/flow";
+import { ModalContext } from "../App";
 
 export default function WordCard({ word, onUpdateWord, onDeleteWord }) {
   const [publicUrl, setPublicUrl] = useState("");
   const [loading, setloading] = useState(true);
+  const [showImage] = useContext(ModalContext);
+
   useEffect(() => {
     word && getPublicUrl(word.pics[0]);
   }, [word]);
@@ -74,12 +77,13 @@ export default function WordCard({ word, onUpdateWord, onDeleteWord }) {
           <div
             className={` ${
               loading ? "hidden" : "block"
-            } w-[180pt] h-[180pt] object-contain object-center overflow-hidden`}
+            } w-[180pt] max-h-[180pt] object-contain object-center overflow-hidden`}
           >
-            <a href={publicUrl} target="_blank">
-              {" "}
+            {/* <a href={publicUrl} target="_blank"> */}
+            <button className={CLASS_BTN} onClick={(e) => showImage(publicUrl)}>
               <img src={publicUrl} />
-            </a>
+            </button>
+            {/*  </a> */}
           </div>
           <div>
             {word.pics.map((p, i) => (
