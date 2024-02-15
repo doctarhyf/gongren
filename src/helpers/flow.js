@@ -155,3 +155,15 @@ export const pinyinVowelsWithTones = [
   ["ū", "ú", "ǔ", "ù"], // For 'u'
   ["ǖ", "ǘ", "ǚ", "ǜ"], // For 'ü'
 ];
+
+// Format date in French
+export const dateFormatter = new Intl.DateTimeFormat("fr-FR", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+  weekday: "long",
+  hour: "numeric",
+  minute: "numeric",
+  second: "numeric",
+  timeZone: "UTC", // You can adjust the timezone accordingly
+});

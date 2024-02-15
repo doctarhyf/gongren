@@ -1,10 +1,35 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import useDataLoader from "../hooks/useDataLoader";
 import { TABLES_NAMES } from "../helpers/sb.config";
-import { CLASS_BTN, CLASS_TD } from "../helpers/flow";
+import {
+  CLASS_BTN,
+  CLASS_INPUT_TEXT,
+  CLASS_TD,
+  dateFormatter,
+} from "../helpers/flow";
 
 export default function Sacs() {
   const [records, loading, error] = useDataLoader(TABLES_NAMES.SACS);
+  const [addingNewRecord, setAddingNewRecord] = useState(false);
+  const [newrec, setnewrec] = useState();
+  const def_obj = {
+    //id: 1,
+    //created_at: "2024-02-15T10:46:18.549578+00:00",
+    equipe: "",
+    sacs: 0,
+    agent_mag: "",
+    chef_deq: "",
+  };
+
+  const ref_team = useRef();
+  const ref_sacs = useRef();
+  const ref_ag_mag = useRef();
+  const ref_chef_deq = useRef();
+
+  function saveNewRecord() {
+    console.log(this);
+    setAddingNewRecord(false);
+  }
 
   return (
     <div>
@@ -21,12 +46,58 @@ export default function Sacs() {
             {Object.values(records).map((it, i) => (
               <tr>
                 {Object.values(it).map((v, i) => (
-                  <td className={CLASS_TD}>{v}</td>
+                  <td className={CLASS_TD}>
+                    {i === 1 ? dateFormatter.format(new Date(v)) : v}
+                  </td>
                 ))}
               </tr>
             ))}
+            <tr className={` ${addingNewRecord ? "" : "hidden"} `}>
+              <td className={CLASS_TD}></td>
+              <td className={CLASS_TD}></td>
+              <td className={CLASS_TD}>
+                <select ref={ref_team}>
+                  {["A", "B", "C", "D"].map((t, i) => (
+                    <option key={i}>{t}</option>
+                  ))}
+                </select>
+              </td>
+              <td className={CLASS_TD}>
+                <input
+                  type="number"
+                  className={CLASS_INPUT_TEXT}
+                  ref={ref_sacs}
+                />
+              </td>
+              <td className={CLASS_TD}>
+                <input
+                  type="text"
+                  className={CLASS_INPUT_TEXT}
+                  ref={ref_ag_mag}
+                />
+              </td>
+              <td className={CLASS_TD}>
+                <input
+                  type="text"
+                  className={CLASS_INPUT_TEXT}
+                  ref={ref_chef_deq}
+                />
+              </td>
+            </tr>
           </table>
         )}
+        <button
+          className={CLASS_BTN}
+          onClick={(e) => {
+            if (!addingNewRecord) {
+              setAddingNewRecord(true);
+            } else {
+              saveNewRecord();
+            }
+          }}
+        >
+          {addingNewRecord ? "SAVE RECORD" : "ADD NEW RECORD"}
+        </button>
       </div>
       <div>{error && JSON.stringify(error)}</div>
     </div>
