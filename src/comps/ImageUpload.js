@@ -41,32 +41,6 @@ export function compressImage(file) {
     image.src = URL.createObjectURL(file);
   });
 }
-/* 
-// imageUploader.js
-import { createClient } from '@supabase/supabase-js';
-
-const supabaseUrl = 'YOUR_SUPABASE_URL';
-const supabaseKey = 'YOUR_SUPABASE_KEY';
-const supabase = createClient(supabaseUrl, supabaseKey);
-
-export async function uploadImage(file) {
-  try {
-    const compressedFile = await compressImage(file);
-
-    const { data, error } = await supabase.storage.from('your-bucket-name').upload(file.name, compressedFile);
-
-    if (error) {
-      console.error('Error uploading compressed image:', error);
-      throw error;
-    }
-
-    console.log('Compressed image uploaded successfully:', data);
-    return data;
-  } catch (error) {
-    console.error('An unexpected error occurred:', error);
-    throw error;
-  }
-} */
 
 export default function ImageUpload({
   fileName,
@@ -80,6 +54,20 @@ export default function ImageUpload({
   const [error, setError] = useState(null);
 
   const handleFileChange = (event) => {
+    setError(null);
+    const file = event.target.files[0];
+    const allowed_types = ["image/jpeg", "image/gif", "image/png"];
+    const { type } = file;
+
+    if (!allowed_types.includes(type)) {
+      setError(
+        `File type: " ${type} ", not allowed!. Allowed types: ${allowed_types.join(
+          ", "
+        )}. Please chose a picture file!`
+      );
+      return;
+    }
+
     setSelectedFile(event.target.files[0]);
   };
 
@@ -93,11 +81,16 @@ export default function ImageUpload({
     setLoading(true);
     setError(null);
 
+    const fileExtension = selectedFile.name.split(".").pop();
+    const uniqueFilename = `file_${Date.now()}_${generateUniqueId()}.${fileExtension}`;
+
+    console.log("unique file name : ", uniqueFilename);
+
     try {
       const compressedFile = await compressImage(selectedFile);
       const { data, error } = await supabase.storage
         .from(bucketName) // Replace with your bucket name
-        .upload(fileName || selectedFile.name, compressedFile); //selectedFile);
+        .upload(fileName || uniqueFilename, compressedFile); //selectedFile);
 
       if (error) {
         onImageUploadError(error);
@@ -106,7 +99,7 @@ export default function ImageUpload({
 
       console.log("Image uploaded successfully:", data);
 
-      onImageUploadSuccsess(data);
+      onImageUploadSuccsess(data, uniqueFilename);
     } catch (error) {
       setError(error.message);
     } finally {
@@ -114,17 +107,31 @@ export default function ImageUpload({
     }
   };
 
+  const generateUniqueId = () => {
+    return Math.random().toString(36).substr(2, 9);
+  };
+
   return (
     <div>
-      <input type="file" onChange={handleFileChange} />
+      <input
+        type="file"
+        onChange={handleFileChange}
+        accept=".jpg, .jpeg, .png, .gif"
+      />
       <Loading isLoading={loading} />
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      <button
-        className={` ${CLASS_BTN} text-xs ${loading ? "hidden" : "block"} `}
-        onClick={handleUpload}
-      >
-        Upload Photo
-      </button>
+      {error && (
+        <p className="bg-red-500 text-white text-sm p-1 rounded-md m-1">
+          {error}
+        </p>
+      )}
+      {error === null && (
+        <button
+          className={` ${CLASS_BTN} text-xs ${loading ? "hidden" : "block"} `}
+          onClick={handleUpload}
+        >
+          Upload Photo
+        </button>
+      )}
     </div>
   );
 }
