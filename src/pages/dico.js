@@ -198,9 +198,11 @@ export default function Dico() {
           onOkay={onOkay}
         />
       )}
-      <div className=" hidden md:block ">
-        <ItemNotSelected show={selectedWord} message={"Selected a word"} />
-      </div>
+      {!showFormNewWord && (
+        <div className=" hidden md:block ">
+          <ItemNotSelected show={selectedWord} message={"Selected a word"} />
+        </div>
+      )}
     </div>
   );
 }
