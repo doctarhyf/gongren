@@ -7,6 +7,7 @@ import { CLASS_BTN, CLASS_INPUT_TEXT } from "../helpers/flow";
 function Tags({ tags, onTagClick }) {
   const [selectedTags, setSelectedTags] = useState([]);
   const [firstClick, setFirstClick] = useState(false);
+  const [showTags, setShowTags] = useState(true);
 
   useEffect(() => {
     if (firstClick) {
@@ -26,21 +27,31 @@ function Tags({ tags, onTagClick }) {
     }
   }
 
+  function onChange(e) {
+    setShowTags(e.target.checked);
+  }
+
   return (
     <div className="flex gap-2 my-2 flex-wrap">
-      {tags.map((t, i) => (
-        <button
-          onClick={(e) => onClick(t)}
-          key={i}
-          className={`p-1 hover:text-sky-500 hover:border-sky-400  text-xs rounded-full px-2  ${
-            selectedTags.includes(t)
-              ? "text-white border-none bg-sky-500"
-              : "text-black border"
-          }`}
-        >
-          {t}
-        </button>
-      ))}
+      <div>
+        <input type="checkbox" onChange={onChange} />
+        SHOW/HIDE TAGS
+      </div>
+      <div className={` ${showTags ? "block" : "hidden"} `}>
+        {tags.map((t, i) => (
+          <button
+            onClick={(e) => onClick(t)}
+            key={i}
+            className={`p-1 hover:text-sky-500 hover:border-sky-400  text-xs rounded-full px-2  ${
+              selectedTags.includes(t)
+                ? "text-white border-none bg-sky-500"
+                : "text-black border"
+            }`}
+          >
+            {t}
+          </button>
+        ))}
+      </div>
     </div>
   );
 }
@@ -102,6 +113,8 @@ export default function WordsList({ onSelectWord }) {
   function onTagClick(selectedTags) {
     const selectedTagsArrayEmpty = selectedTags.length === 0;
 
+    console.log(selectedTags);
+
     if (selectedTagsArrayEmpty) {
       setwordsf([...words]);
       return;
@@ -113,19 +126,6 @@ export default function WordsList({ onSelectWord }) {
       selectedTags.forEach((t, i) => {
         tagFound = word.tags.indexOf(t) !== -1;
       });
-      // word.tags.indexOf("plasma");
-
-      /* const word_tags = w.tags.split(";");
-      let includes = false;
-      word_tags.forEach((t, i) => {
-        t = t.trim();
-        if (t !== "") {
-          console.log("t=> ", t);
-          includes = tags.includes(t);
-        }
-      });
-
-      return includes; */
 
       return tagFound;
     });
