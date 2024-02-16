@@ -144,12 +144,12 @@ export default function FormNewWord({
           onChange={onChange}
           type="text"
           placeholder="中文"
+          onBlur={(e) => setpyfocused(false)}
         />
         <input
           className={CLASS_INPUT_TEXT}
           name="py"
           onFocus={(e) => setpyfocused(true)}
-          // onBlur={}//(e) => //setpyfocused(false)}
           type="text"
           value={word.py || ""}
           onChange={onChange}
@@ -169,6 +169,7 @@ export default function FormNewWord({
           onChange={onChange}
           type="text"
           placeholder="Definition"
+          onBlur={(e) => setpyfocused(false)}
         />
         <input
           className={CLASS_INPUT_TEXT}
@@ -177,6 +178,7 @@ export default function FormNewWord({
           onChange={onChange}
           type="text"
           placeholder="tags"
+          onBlur={(e) => setpyfocused(false)}
         />
         <div className=" font-serif text-xs text-neutral-400 italic ">
           Separate tags with the caracter <span className=" kbd ">";"</span>

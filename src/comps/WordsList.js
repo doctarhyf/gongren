@@ -113,8 +113,6 @@ export default function WordsList({ onSelectWord }) {
   function onTagClick(selectedTags) {
     const selectedTagsArrayEmpty = selectedTags.length === 0;
 
-    console.log(selectedTags);
-
     if (selectedTagsArrayEmpty) {
       setwordsf([...words]);
       return;

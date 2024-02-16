@@ -46,13 +46,14 @@ export default function WordCard({ word, onUpdateWord, onDeleteWord, onOkay }) {
 
   return (
     <div className="  mt-2  p-2 ">
-      <div className="text-sky-500 text-lg">{word.zh}</div>
+      <div className="text-sky-500 text-3xl">{word.zh}</div>
       <div>
         {words_data.map(
           (it, i) =>
             !["pics", "id", "created_at", "tags"].includes(it[0]) && (
               <div>
-                <span className="text-sky-500">{it[0]}:</span> - {it[1]}
+                <span className="text-sky-500">{it[0]}:</span> -{" "}
+                <span className="  ">{it[1]}</span>
               </div>
             )
         )}
