@@ -6,12 +6,16 @@ import { CLASS_BTN, CLASS_INPUT_TEXT } from "../helpers/flow";
 
 function Tags({ tags, onTagClick }) {
   const [selectedTags, setSelectedTags] = useState([]);
+  const [firstClick, setFirstClick] = useState(false);
 
   useEffect(() => {
-    console.log(selectedTags);
+    if (firstClick) {
+      onTagClick(selectedTags);
+    }
   }, [selectedTags]);
 
   function onClick(tag) {
+    setFirstClick(true);
     const idx = selectedTags.findIndex((it, i) => it === tag);
     const old_a = [...selectedTags];
     if (idx === -1) {
@@ -19,12 +23,11 @@ function Tags({ tags, onTagClick }) {
     } else {
       old_a.splice(idx, 1);
       setSelectedTags(old_a);
-      onTagClick(selectedTags);
     }
   }
 
   return (
-    <div className="flex gap-2 my-2">
+    <div className="flex gap-2 my-2 flex-wrap">
       {tags.map((t, i) => (
         <button
           onClick={(e) => onClick(t)}
@@ -47,6 +50,7 @@ export default function WordsList({ onSelectWord }) {
   const [wordsf, setwordsf] = useState([]);
   const [loading, setloading] = useState(false);
   const [q, setq] = useState("");
+  const [tags, setTags] = useState([]);
 
   useEffect(() => {
     loadWords();
@@ -54,7 +58,21 @@ export default function WordsList({ onSelectWord }) {
 
   async function loadWords() {
     setloading(true);
+    setTags([]);
     const res = await SB.LoadAllItems(TABLES_NAMES.DICO);
+
+    let new_tags = {};
+    res.forEach((it, i) => {
+      const tags = it.tags.split(";");
+      tags.forEach((t, i) => {
+        t = t.trim();
+        if (t !== "") new_tags[t] = t;
+      });
+    });
+
+    new_tags = Object.keys(new_tags);
+
+    setTags(new_tags);
 
     setwords(res);
     setwordsf([...res]);
@@ -81,8 +99,38 @@ export default function WordsList({ onSelectWord }) {
     setwordsf(f);
   }
 
-  function onTagClick(tag) {
-    console.log(tag);
+  function onTagClick(selectedTags) {
+    const selectedTagsArrayEmpty = selectedTags.length === 0;
+
+    if (selectedTagsArrayEmpty) {
+      setwordsf([...words]);
+      return;
+    }
+
+    const filteredWord = words.filter((word, i) => {
+      let tagFound = false; // word.tags.indexOf("plasma") !== -1;
+
+      selectedTags.forEach((t, i) => {
+        tagFound = word.tags.indexOf(t) !== -1;
+      });
+      // word.tags.indexOf("plasma");
+
+      /* const word_tags = w.tags.split(";");
+      let includes = false;
+      word_tags.forEach((t, i) => {
+        t = t.trim();
+        if (t !== "") {
+          console.log("t=> ", t);
+          includes = tags.includes(t);
+        }
+      });
+
+      return includes; */
+
+      return tagFound;
+    });
+
+    setwordsf(filteredWord);
   }
 
   return (
@@ -95,10 +143,7 @@ export default function WordsList({ onSelectWord }) {
         className={CLASS_INPUT_TEXT}
       />
 
-      <Tags
-        onTagClick={onTagClick}
-        tags={["four", "magasin", "broyeur", "cimenterie"]}
-      />
+      <Tags onTagClick={onTagClick} tags={tags} />
 
       <ul>
         {wordsf.map((w, i) => (
