@@ -7,7 +7,7 @@ import { CLASS_BTN, CLASS_INPUT_TEXT } from "../helpers/flow";
 function Tags({ tags, onTagClick }) {
   const [selectedTags, setSelectedTags] = useState([]);
   const [firstClick, setFirstClick] = useState(false);
-  const [showTags, setShowTags] = useState(true);
+  const [showTags, setShowTags] = useState(false);
 
   useEffect(() => {
     if (firstClick) {
