@@ -32,7 +32,7 @@ function Tags({ tags, onTagClick }) {
   }
 
   return (
-    <div className="flex gap-2 my-2 flex-wrap">
+    <div className="flex flex-col gap-2 my-2 flex-wrap">
       <div>
         <input type="checkbox" onChange={onChange} />
         SHOW/HIDE TAGS
@@ -42,7 +42,7 @@ function Tags({ tags, onTagClick }) {
           <button
             onClick={(e) => onClick(t)}
             key={i}
-            className={`p-1 hover:text-sky-500 hover:border-sky-400  text-xs rounded-full px-2  ${
+            className={`p-1 hover:text-sky-500 m-1 hover:border-sky-400  text-xs rounded-full px-2  ${
               selectedTags.includes(t)
                 ? "text-white border-none bg-sky-500"
                 : "text-black border"

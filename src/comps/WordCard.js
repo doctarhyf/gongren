@@ -45,7 +45,7 @@ export default function WordCard({ word, onUpdateWord, onDeleteWord, onOkay }) {
   }
 
   return (
-    <div className=" bg-neutral-200 border-neutral-300 mt-2 border shadow-md rounded-md p-2 ">
+    <div className="  mt-2  p-2 ">
       <div className="text-sky-500 text-lg">{word.zh}</div>
       <div>
         {words_data.map(
