@@ -2,6 +2,30 @@ import React, { useState } from "react";
 import { CLASS_BTN } from "../helpers/flow";
 import AudioPlayer from "react-audio-player";
 
+/* // Check if enumerateDevices is supported by the browser
+if (navigator.mediaDevices && navigator.mediaDevices.enumerateDevices) {
+  // Use enumerateDevices to get a list of media devices
+  navigator.mediaDevices
+    .enumerateDevices()
+    .then((deviceInfos) => {
+      // Loop through the list of deviceInfos
+      deviceInfos.forEach((deviceInfo) => {
+        console.log("Device ID:", deviceInfo.deviceId);
+        console.log("Kind:", deviceInfo.kind);
+        console.log("Label:", deviceInfo.label);
+        console.log("------------------------");
+      });
+    })
+    .catch((error) => {
+      console.error("Error enumerating devices:", error);
+    });
+} else {
+  console.error("enumerateDevices is not supported in this browser");
+}
+ */
+
+console.log(navigator);
+
 const MicrophoneRecorder = ({ onAudioRecorded }) => {
   const [audioStream, setAudioStream] = useState(null);
   const [recording, setRecording] = useState(false);
