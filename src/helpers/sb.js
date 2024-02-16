@@ -102,8 +102,14 @@ export async function LoadAllItems(tableName) {
   return data;
 }
 
-export async function LoadAllItems2(tableName, onSuccess, onError) {
-  let { data, error } = await supabase.from(tableName).select("*");
+export async function LoadAllItems2(tableName, onSuccess, onError, columns) {
+  let select = "*";
+  if (columns && columns.join && columns.length > 0)
+    select = columns.join(", ");
+
+  console.log("LoadAllItems2 => ", "select : ", select);
+
+  let { data, error } = await supabase.from(tableName).select(select);
 
   if (error) {
     onError(error);

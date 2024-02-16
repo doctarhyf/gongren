@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import * as SB from "../helpers/sb";
 
-const useDataLoader = (tableName) => {
+const useDataLoader = (tableName, columns) => {
   const [items, setItems] = useState([]);
   const [loading, setloading] = useState(false);
   const [error, seterror] = useState();
@@ -19,7 +19,8 @@ const useDataLoader = (tableName) => {
         setItems([]);
         seterror(e);
         setloading(false);
-      }
+      },
+      columns
     );
   }, [tableName]);
 
