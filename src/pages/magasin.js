@@ -1,95 +1,71 @@
 import React, { useState } from "react";
-import { CLASS_BTN } from "../helpers/flow";
-import AudioPlayer from "react-audio-player";
 
-/* // Check if enumerateDevices is supported by the browser
-if (navigator.mediaDevices && navigator.mediaDevices.enumerateDevices) {
-  // Use enumerateDevices to get a list of media devices
-  navigator.mediaDevices
-    .enumerateDevices()
-    .then((deviceInfos) => {
-      // Loop through the list of deviceInfos
-      deviceInfos.forEach((deviceInfo) => {
-        console.log("Device ID:", deviceInfo.deviceId);
-        console.log("Kind:", deviceInfo.kind);
-        console.log("Label:", deviceInfo.label);
-        console.log("------------------------");
+const AudioRecorderPlayer = () => {
+  const [isRecording, setIsRecording] = useState(false);
+  const [audioBlob, setAudioBlob] = useState(null);
+  const [audioURL, setAudioURL] = useState(null);
+
+  let mediaRecorder;
+  let audioChunks = [];
+
+  const startRecording = () => {
+    navigator.mediaDevices
+      .getUserMedia({ audio: true })
+      .then((stream) => {
+        mediaRecorder = new MediaRecorder(stream);
+        mediaRecorder.ondataavailable = handleDataAvailable;
+        mediaRecorder.onstop = handleStop;
+
+        setIsRecording(true);
+        audioChunks = [];
+        mediaRecorder.start();
+      })
+      .catch((error) => {
+        console.error("Error accessing microphone:", error);
       });
-    })
-    .catch((error) => {
-      console.error("Error enumerating devices:", error);
-    });
-} else {
-  console.error("enumerateDevices is not supported in this browser");
-}
- */
-
-console.log(navigator);
-
-const MicrophoneRecorder = ({ onAudioRecorded }) => {
-  const [audioStream, setAudioStream] = useState(null);
-  const [recording, setRecording] = useState(false);
-  const [recordedAudioBlob, setRecordedAudioBlob] = useState(null);
-
-  const startRecording = async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      setAudioStream(stream);
-      setRecording(true);
-      console.log("recording ...");
-    } catch (error) {
-      console.error("Error accessing microphone:", error.message);
-      alert("Error accessing microphone:", error.message);
-    }
   };
 
   const stopRecording = () => {
-    if (audioStream) {
-      const tracks = audioStream.getTracks();
-      tracks.forEach((track) => track.stop());
-      setAudioStream(null);
-      setRecording(false);
-      console.log(audioStream);
+    if (mediaRecorder && mediaRecorder.state === "recording") {
+      mediaRecorder.stop();
+      setIsRecording(false);
     }
   };
 
-  const handleAudioRecorded = (blob) => {
-    setRecordedAudioBlob(blob);
-    onAudioRecorded(blob);
+  const handleDataAvailable = (event) => {
+    if (event.data.size > 0) {
+      audioChunks.push(event.data);
+    }
+  };
+
+  const handleStop = () => {
+    const blob = new Blob(audioChunks, { type: "audio/wav" });
+    setAudioBlob(blob);
+    setAudioURL(URL.createObjectURL(blob));
   };
 
   return (
     <div>
-      <button
-        className={CLASS_BTN}
-        onClick={startRecording}
-        disabled={recording}
-      >
+      <h2>Audio Recorder and Player</h2>
+
+      <button onClick={startRecording} disabled={isRecording}>
         Start Recording
       </button>
-      <button
-        className={CLASS_BTN}
-        onClick={stopRecording}
-        disabled={!recording}
-      >
+      <button onClick={stopRecording} disabled={!isRecording}>
         Stop Recording
       </button>
 
-      {recordedAudioBlob && (
+      {audioBlob && (
         <div>
-          <p>Recorded Audio:</p>
-          <AudioPlayer src={URL.createObjectURL(recordedAudioBlob)} controls />
+          <h3>Audio Player</h3>
+          <audio controls>
+            <source src={audioURL} type="audio/wav" />
+            Your browser does not support the audio element.
+          </audio>
         </div>
       )}
     </div>
   );
 };
 
-export default function Magasin() {
-  return (
-    <div>
-      <div>Magasin cool</div>
-      <MicrophoneRecorder />
-    </div>
-  );
-}
+export default AudioRecorderPlayer;
