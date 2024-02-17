@@ -46,13 +46,14 @@ export default function RepportCard({
   function GenShiftRepportText(data) {
     const dt = JSON.parse(data.upd);
     const { shift, team, date, sacs, dechires, camions } = dt;
-    const [d, m, y] = date;
+    const [d, m, y] = date.split("/");
+    console.log(" dttt ===> [d,m,y] : ", d, m, y, date);
     const { nom, zh } = SUPERVISORS[team];
     const shift_data = SHIFT_HOURS_ZH[shift];
     const tonnage = Number(sacs) / 20;
 
     return `•EMBALLAGE CIMENT水泥包装
-${y}年${m + 1}月${d}日
+${y}年${Number(m) + 1}月${d}日
 Équipe班：${team}
 Superviseur班长: @${nom} ${zh} 
      •${shift_data}
