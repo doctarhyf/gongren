@@ -189,9 +189,9 @@ export default function BagsDataInput({
             <div>
               <span className={CLASS_SELECT_TITLE}>CAMIONS:</span>
               <input
+                type="number"
                 className={CLASS_INPUT_TEXT}
                 ref={ref_camions}
-                type="text"
                 defaultValue={(upd && upd.camions) || 0}
               />
             </div>
@@ -210,7 +210,7 @@ export default function BagsDataInput({
           <input
             className={CLASS_INPUT_TEXT}
             ref={ref_dechires}
-            type="text"
+            type="number"
             defaultValue={(upd && upd.dechires) || 0}
           />
         </div>
@@ -220,7 +220,7 @@ export default function BagsDataInput({
           <input
             className={CLASS_INPUT_TEXT}
             ref={ref_retours}
-            type="text"
+            type="number"
             defaultValue={(upd && upd.retours) || 0}
           />
         </div>
@@ -229,7 +229,7 @@ export default function BagsDataInput({
           <input
             className={CLASS_INPUT_TEXT}
             ref={ref_ajouts}
-            type="text"
+            type="number"
             defaultValue={(upd && upd.ajouts) || 0}
           />
         </div>

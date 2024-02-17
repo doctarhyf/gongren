@@ -23,11 +23,11 @@ export default function TableLoadsTotals({ totalData, date }) {
       {!no_data && (
         <>
           <tr>
-            <td className={CLASS_TD}>"EQ. 班组"</td>
-            <td className={CLASS_TD}>"SAC 袋袋数"</td>
-            <td className={CLASS_TD}>"T 吨"</td>
-            <td className={CLASS_TD}>"BONUS 奖金"</td>
-            <td className={CLASS_TD}>"CDF 钢狼"</td>
+            <td className={CLASS_TD}>EQ. 班组</td>
+            <td className={CLASS_TD}>SAC 袋袋数</td>
+            <td className={CLASS_TD}>T 吨</td>
+            <td className={CLASS_TD}>BONUS 奖金</td>
+            <td className={CLASS_TD}>CDF 钢狼</td>
           </tr>
           {Object.entries(totalData).map((td, i) => (
             <>
@@ -37,8 +37,10 @@ export default function TableLoadsTotals({ totalData, date }) {
                   <td className={CLASS_TD}>{td[0]}</td>
                   <td className={CLASS_TD}>{td[1].sacs}</td>
                   <td className={CLASS_TD}> {td[1].tonnage.toFixed(2)}</td>
-                  <td className={CLASS_TD}>{td[1].bonus}</td>
-                  <td className={CLASS_TD}>{td[1].bonus * 1000}</td>
+                  <td className={CLASS_TD}>{td[1].bonus.toFixed(2)}</td>
+                  <td className={CLASS_TD}>
+                    {(td[1].bonus * 1000).toFixed(2)}
+                  </td>
                 </tr>
               )}{" "}
               {td[0] === "TOTAL" && (
