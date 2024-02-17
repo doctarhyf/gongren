@@ -113,10 +113,10 @@ export default function FormNewWord({
     setLoading(false);
   }
 
-  function onImageUploadSuccsess(res) {
+  function onImageUploadSuccsess(res, new_file_name) {
     console.log("onImageUploadSuccsess", res);
 
-    setword((old) => ({ ...old, pics: [res.fullPath] }));
+    setword((old) => ({ ...old, pics: ["dico/" + new_file_name] }));
     console.log(word);
   }
 

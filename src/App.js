@@ -71,39 +71,34 @@ function App() {
     setShowModal(true);
   }
 
-  if (user)
-    return (
-      <ModalContext.Provider value={[showImage, showData]}>
-        <div>
-          <div
-            className={`  flex flex-col justify-center items-center bg-black/60 backdrop-blur-md text-white  absolute h-full w-full ${
-              showModal ? "absolute" : "hidden"
-            } `}
-          >
-            <div>
-              {modalType === "img" && <img src={modalData} alt={modalData} />}
-              {modalType === "data" &&
-                Object.entries(modalData).map(([k, v], i) => (
-                  <div key={i}>
-                    <span className="text-sky-500">{k}: </span>
-                    <span>{v}</span>
-                  </div>
-                ))}
-            </div>
-            <div>
-              <button
-                onClick={(e) => setShowModal(false)}
-                className={CLASS_BTN}
-              >
-                OK
-              </button>
-            </div>
+  return user ? (
+    <ModalContext.Provider value={[showImage, showData]}>
+      <div>
+        <div
+          className={`  flex flex-col justify-center items-center bg-black/60 backdrop-blur-md text-white  absolute h-full w-full ${
+            showModal ? "absolute" : "hidden"
+          } `}
+        >
+          <div>
+            {modalType === "img" && <img src={modalData} alt={modalData} />}
+            {modalType === "data" &&
+              Object.entries(modalData).map(([k, v], i) => (
+                <div key={i}>
+                  <span className="text-sky-500">{k}: </span>
+                  <span>{v}</span>
+                </div>
+              ))}
           </div>
-          <GongRen user={user} onLogout={onLogout} />
+          <div>
+            <button onClick={(e) => setShowModal(false)} className={CLASS_BTN}>
+              OK
+            </button>
+          </div>
         </div>
-      </ModalContext.Provider>
-    );
-  return (
+        <GongRen user={user} onLogout={onLogout} />
+      </div>
+    </ModalContext.Provider>
+  ) : (
     <>
       <FormLogin onLogin={onLogin} />
 
