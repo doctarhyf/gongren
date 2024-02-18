@@ -2,23 +2,26 @@ import React, { useState, useRef, useEffect } from "react";
 import { CLASS_BTN } from "../helpers/flow";
 
 let chunks = [];
+let stream;
+let mediaRecorder;
+let blob;
 
 export default function Magasin() {
-  const [stream, setstream] = useState(null);
-  const [error, seterror] = useState([]);
-  const [mediaRecord, setMediaRecord] = useState();
+  //const [stream, setstream] = useState(null);
+  const [errors, seterrors] = useState({});
+  //const [mediaRecord, setMediaRecord] = useState();
   const [recording, setrecording] = useState(false);
 
   const audio = useRef();
 
-  useEffect(() => {
+  /* useEffect(() => {
     console.log("Stream set Okay : \n", stream);
     if (stream) {
       setMediaRecord(new MediaRecorder(stream));
     }
-  }, [stream]);
+  }, [stream]); */
 
-  useEffect(() => {
+  /*  useEffect(() => {
     if (mediaRecord) {
       console.log("mediaRecord.state : ", mediaRecord.state);
       console.log("chunks :", chunks);
@@ -36,54 +39,89 @@ export default function Magasin() {
         console.log("recorder stopped : ", audioURL);
       };
     }
-  }, [mediaRecord]);
+  }, [mediaRecord]); */
 
-  async function onClick() {
+  async function startRecording() {
+    seterrors([]);
+
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       console.log("getUserMedia supported! ");
 
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({
+        stream = await navigator.mediaDevices.getUserMedia({
           audio: true,
         });
-        setstream(stream);
-
         console.log("Stream ok : ", stream);
+
+        mediaRecorder = new MediaRecorder(stream);
+
+        console.log("mediaRecorder: ", mediaRecorder);
+
+        setupMediRecorderListenenrs();
+
+        console.log("starting rec ...");
+        setrecording(true);
+        console.log(chunks);
+        mediaRecorder.start();
       } catch (e) {
-        seterror([...error, e]);
-        console.log("Stream error : ", e);
+        seterrors({ ...errors, [e.code]: e });
+        console.table(e);
       }
     } else {
       console.log("getUserMedia not supported on your browser!");
     }
   }
 
-  function startRec() {
-    console.log("starting rec ...");
-    setrecording(true);
-    console.log(chunks);
-    mediaRecord.start();
-  }
-
-  function stopRec() {
+  function stopRecording() {
     console.log("stopping rec ...");
     setrecording(false);
     console.log(chunks);
-    mediaRecord.stop();
+    mediaRecorder.stop();
+  }
+
+  function setupMediRecorderListenenrs() {
+    console.log("setupMediRecorderListenenrs", mediaRecorder);
+    mediaRecorder.ondataavailable = (e) => {
+      chunks.push(e.data);
+    };
+
+    mediaRecorder.onstop = (e) => {
+      blob = new Blob(chunks, { type: "audio/ogg; codecs=opus" });
+      chunks = [];
+      const audioURL = window.URL.createObjectURL(blob);
+      audio.current.src = audioURL;
+
+      console.log("recorder stopped : ", audioURL, "\nBlob :", blob);
+    };
   }
 
   return (
     <div>
-      <button onClick={onClick}>INIT</button>
-      {mediaRecord && (
-        <div>
-          <button onClick={startRec} className={CLASS_BTN} disabled={recording}>
-            Start Rec
-          </button>
-          <button onClick={stopRec} className={CLASS_BTN} disabled={!recording}>
-            Stop Rec
-          </button>
-          <audio ref={audio} controls />
+      <div>
+        <button
+          onClick={startRecording}
+          className={CLASS_BTN}
+          disabled={recording}
+        >
+          Start Rec
+        </button>
+        <button
+          onClick={stopRecording}
+          className={CLASS_BTN}
+          disabled={!recording}
+        >
+          Stop Rec
+        </button>
+        <audio ref={audio} controls />
+      </div>
+
+      {Object.entries(errors).length > 0 && (
+        <div className="text-white bg-red-500 p-1 rounded-md text-xs">
+          {Object.entries(errors).map((e, i) => (
+            <div>
+              {i + 1}. code: {e.toString()}
+            </div>
+          ))}
         </div>
       )}
     </div>
