@@ -5,7 +5,7 @@ import Equipes from "../pages/equipes";
 import Sections from "../pages/sections";
 import Listes from "../pages/listes";
 import Chargement from "../pages/chargement";
-import Magasin from "../pages/magasin";
+import Magasin from "../pages/magasin-copy";
 import Dico from "../pages/dico";
 import Sacs from "../pages/sacs";
 

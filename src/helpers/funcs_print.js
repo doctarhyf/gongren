@@ -150,7 +150,7 @@ function draw_en_tete(
   const LOGO_W = (293 / 10) * 2;
 
   doc.setFontSize(12);
-  const date = new Date().toDateString();
+  const date = formatFrenchDate(new Date());
   let { w, h } = doc.getTextDimensions(date);
   doc.text(date, page_width - w - page_margin, page_margin);
 
@@ -365,7 +365,7 @@ function print_agent_roulement(doc, agent_data, print_empty) {
     }
 
     let ds = `${month_idx}/${date_idx}/${year}`;
-    let dt = new Date(ds).toString();
+    let dt = formatFrenchDate(new Date(ds));
     let dname = getDayName(ds, true);
     //console.log(`ds => ${ds}, dt => ${dt.split(" ")[0]}, dname => ${dname}`);
     days_letters[i] = dname;
