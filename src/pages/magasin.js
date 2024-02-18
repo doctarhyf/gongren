@@ -7,39 +7,9 @@ let mediaRecorder;
 let blob;
 
 export default function Magasin() {
-  //const [stream, setstream] = useState(null);
   const [errors, seterrors] = useState({});
-  //const [mediaRecord, setMediaRecord] = useState();
   const [recording, setrecording] = useState(false);
-
   const audio = useRef();
-
-  /* useEffect(() => {
-    console.log("Stream set Okay : \n", stream);
-    if (stream) {
-      setMediaRecord(new MediaRecorder(stream));
-    }
-  }, [stream]); */
-
-  /*  useEffect(() => {
-    if (mediaRecord) {
-      console.log("mediaRecord.state : ", mediaRecord.state);
-      console.log("chunks :", chunks);
-      mediaRecord.ondataavailable = (e) => {
-        chunks.push(e.data);
-      };
-
-      mediaRecord.onstop = (e) => {
-        const blob = new Blob(chunks, { type: "audio/ogg; codecs=opus" });
-
-        chunks = [];
-        const audioURL = window.URL.createObjectURL(blob);
-        audio.current.src = audioURL;
-
-        console.log("recorder stopped : ", audioURL);
-      };
-    }
-  }, [mediaRecord]); */
 
   async function startRecording() {
     seterrors([]);
