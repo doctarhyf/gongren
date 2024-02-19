@@ -404,7 +404,10 @@ function print_agent_roulement(doc, agent_data, print_empty) {
         [{ lat: "13" }]
       );
 
-      text_tokens = [{ lat: agent_data.nom.fr }, { zh: agent_data.nom.zh }];
+      text_tokens = [
+        { lat: agent_data.nom.fr + " " },
+        { zh: agent_data.nom.zh },
+      ];
       let rect_row_agent = centeTextInRect(
         doc,
         PAGE_MARG + rect_row_num.w,
