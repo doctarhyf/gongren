@@ -30,7 +30,27 @@ export function formatFrenchDate(inputDate) {
     weekday: "long",
   });
 
-  return formattedDate;
+  return capitalizeDayAndMonth(formattedDate);
+}
+
+function capitalizeDayAndMonth(inputDateString) {
+  const dateArray = inputDateString.split(" ");
+
+  if (dateArray.length === 4) {
+    const day = capitalizeFirstCharacter(dateArray[0]);
+    const date = dateArray[1];
+    const month = capitalizeFirstCharacter(dateArray[2]);
+    const year = dateArray[3];
+
+    return `${day} ${date} ${month} ${year}`;
+  } else {
+    // Handle invalid date format
+    return inputDateString;
+  }
+}
+
+function capitalizeFirstCharacter(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
 export const FFD = formatFrenchDate;
