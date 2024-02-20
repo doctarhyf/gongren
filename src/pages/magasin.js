@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { CLASS_BTN } from "../helpers/flow";
+import FrStereo from "../comps/FrStereo";
 
 function AudioRecorder({ onRecordStop, tag }) {
   const [stream, setstream] = useState(null);
@@ -115,7 +116,8 @@ export default function Magasin() {
     <div>
       <div>Magasin</div>
       <div>
-        <AudioRecorder key={1} onRecordStop={onRecordStop} tag={`audio_${1}`} />
+        {/* <AudioRecorder key={1} onRecordStop={onRecordStop} tag={`audio_${1}`} /> */}
+        <FrStereo />
       </div>
     </div>
   );

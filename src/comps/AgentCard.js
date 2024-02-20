@@ -1,5 +1,12 @@
-import React, { useState } from "react";
-import { CLASS_BTN, CONTRATS, EQUIPES, POSTE, SECTIONS } from "../helpers/flow";
+import React, { useContext, useState } from "react";
+import {
+  CLASS_BTN,
+  CONTRATS,
+  EQUIPES,
+  POSTE,
+  SECTIONS,
+  USER_LEVEL,
+} from "../helpers/flow";
 import { FFD, formatFrenchDate } from "../helpers/func";
 import FormAddAgent from "./FormAddAgent";
 import * as SB from "../helpers/sb";
@@ -8,6 +15,7 @@ import Loading from "./Loading";
 import shield from "../img/shield.png";
 import user from "../img/user.png";
 import ItemNotSelected from "./ItemNotSelected";
+import { UserContext } from "../App";
 
 export const AGENT_CARD_EVENT = {
   DELETED: "ag_del",
@@ -22,6 +30,8 @@ export default function AgentCard({
   agentCardEditMode,
   setAgentCardEditMode,
 }) {
+  const user = useContext(UserContext);
+
   const [loading, setloading] = useState(false);
 
   async function onFormUpdate(agent_data) {
@@ -156,24 +166,28 @@ export default function AgentCard({
           <div className="flex justify-center items-center text-center ">
             {!agentCardEditMode && (
               <>
-                <button
-                  onClick={(e) => onShowRoulement(agent)}
-                  className={CLASS_BTN}
-                >
-                  VOIR ROULEMENT
-                </button>
-                <button
-                  onClick={(e) => setAgentCardEditMode(!agentCardEditMode)}
-                  className={CLASS_BTN}
-                >
-                  UPDATE
-                </button>
-                <button
-                  onClick={(e) => deleteAgent(agent)}
-                  className={CLASS_BTN}
-                >
-                  DELETE
-                </button>
+                {user.user_level >= USER_LEVEL.ADMIN && (
+                  <>
+                    <button
+                      onClick={(e) => onShowRoulement(agent)}
+                      className={CLASS_BTN}
+                    >
+                      VOIR ROULEMENT
+                    </button>
+                    <button
+                      onClick={(e) => setAgentCardEditMode(!agentCardEditMode)}
+                      className={CLASS_BTN}
+                    >
+                      UPDATE
+                    </button>
+                    <button
+                      onClick={(e) => deleteAgent(agent)}
+                      className={CLASS_BTN}
+                    >
+                      DELETE
+                    </button>
+                  </>
+                )}
               </>
             )}
 

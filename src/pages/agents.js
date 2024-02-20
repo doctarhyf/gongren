@@ -5,6 +5,9 @@ import AgentCard, { AGENT_CARD_EVENT } from "../comps/AgentCard";
 import AgentsList from "../comps/AgentsList";
 import FormAddAgent from "../comps/FormAddAgent";
 import Loading from "../comps/Loading";
+import { USER_LEVEL } from "../helpers/flow";
+import { UserContext } from "../App";
+import { useContext } from "react";
 
 export default function Agents() {
   const [curAgent, setCurAgent] = useState(null);
@@ -14,6 +17,8 @@ export default function Agents() {
   const [showAgentDetails, setShowAgentDetails] = useState(true);
   const [loading, setloading] = useState(false);
   const [msg, setmsg] = useState({ title: "", content: "" });
+
+  const [showImage, showData, user] = useContext(UserContext);
 
   function onShowRoulement() {
     console.log("On Show Roulement ...");
@@ -103,12 +108,14 @@ export default function Agents() {
       <div>
         {!showFormAddNewAgent && (
           <div>
-            <button
-              onClick={(e) => setShowFormAddNewAgent(true)}
-              className="p-1 rounded-md border my-1 border-green-500 text-green-500 hover:bg-green-500 hover:text-white"
-            >
-              NEW AGENT
-            </button>
+            {user.user_level >= USER_LEVEL.ADMIN && (
+              <button
+                onClick={(e) => setShowFormAddNewAgent(true)}
+                className="p-1 rounded-md border my-1 border-green-500 text-green-500 hover:bg-green-500 hover:text-white"
+              >
+                NEW AGENT
+              </button>
+            )}
             <div>
               Show/Hide Details
               <input

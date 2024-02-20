@@ -1,5 +1,16 @@
-import React, { useEffect, useReducer, useRef, useState } from "react";
-import { CLASS_BTN, CLASS_INPUT_TEXT, CLASS_TD } from "../helpers/flow";
+import React, {
+  useContext,
+  useEffect,
+  useReducer,
+  useRef,
+  useState,
+} from "react";
+import {
+  CLASS_BTN,
+  CLASS_INPUT_TEXT,
+  CLASS_TD,
+  USER_LEVEL,
+} from "../helpers/flow";
 import Excelexport from "../comps/Excelexport";
 import { TABLES_NAMES, supabase } from "../helpers/sb.config";
 import Loading from "../comps/Loading";
@@ -9,6 +20,7 @@ import FormNewWord from "../comps/FormNewWord";
 import ItemNotSelected from "../comps/ItemNotSelected";
 import WordsList from "../comps/WordsList";
 import WordCard from "../comps/WordCard";
+import { UserContext } from "../App";
 
 const SBBukcet = () => {
   const [publicUrls, setPublicUrls] = useState([]);
@@ -73,6 +85,7 @@ const SECTIONS = {
 };
 
 export default function Dico() {
+  const user = useContext(UserContext);
   const [section, setsection] = useState(SECTIONS.NEW_WORD);
   const [showFormNewWord, setShowFomrNewWord] = useState(false);
   const [selectedWord, setSelectedWord] = useState();
@@ -150,12 +163,17 @@ export default function Dico() {
     <div className="md:flex gap-4 mt-4">
       {!showFormNewWord && (
         <div className={` ${selectedWord ? "hidden" : "block"} `}>
-          <button
-            onClick={(e) => setShowFomrNewWord(true)}
-            className={CLASS_BTN}
-          >
-            ADD NEW WORD
-          </button>
+          {user.user_level >= USER_LEVEL.ADMIN && (
+            <>
+              {" "}
+              <button
+                onClick={(e) => setShowFomrNewWord(true)}
+                className={CLASS_BTN}
+              >
+                ADD NEW WORD
+              </button>{" "}
+            </>
+          )}
           <button
             onClick={(e) => {
               setShowFomrNewWord(true);

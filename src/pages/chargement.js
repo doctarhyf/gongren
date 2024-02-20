@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
-import { CLASS_BTN, MONTHS } from "../helpers/flow";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import { CLASS_BTN, MONTHS, USER_LEVEL } from "../helpers/flow";
 import DateSelector from "../comps/DateSelector";
 import Loading from "../comps/Loading";
 import BagsDataInput from "../comps/BagsDataInput";
@@ -13,10 +13,12 @@ import {
   ParseYearRepport,
 } from "../helpers/func";
 import RepportCard from "../comps/RepportCard";
+import { UserContext } from "../App";
 
 const bg = "bg-neutral-100";
 
 export default function Chargement() {
+  const user = useContext(UserContext);
   const [date, setdate] = useState({});
 
   const [addDataMode, setAddDataMode] = useState(false);
@@ -159,12 +161,14 @@ export default function Chargement() {
     <div>
       <Loading isLoading={loading} />
 
-      <button
-        className={`${CLASS_BTN}  ${addDataMode ? "hidden" : "block"} `}
-        onClick={onAddDataClick}
-      >
-        ADD NEW DATA
-      </button>
+      {user.user_level >= USER_LEVEL.ADMIN && (
+        <button
+          className={`${CLASS_BTN}  ${addDataMode ? "hidden" : "block"} `}
+          onClick={onAddDataClick}
+        >
+          ADD NEW DATA
+        </button>
+      )}
 
       {!addDataMode && (
         <div>

@@ -1,0 +1,29 @@
+import { useState } from "react";
+
+const ico_play =
+  "data:image/png;base64,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";
+
+const MEDIA_STATE = {
+  REC: "recording",
+  STOP: "stopped",
+  PLAY: "playing",
+  PAUSE: "paused",
+};
+
+const MODE = {
+  RECORDING: "recording",
+  PLAYING: "playing",
+};
+
+export default function FrStereo() {
+  const [state, setstate] = useState(MEDIA_STATE.STOP);
+  const [mode, setmode] = useState(MODE.PLAYING);
+
+  return (
+    <div>
+      <div className=" w-32 h-32 ">
+        <img src={state.ico} />
+      </div>
+    </div>
+  );
+}

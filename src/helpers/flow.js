@@ -5,7 +5,7 @@ import Equipes from "../pages/equipes";
 import Sections from "../pages/sections";
 import Listes from "../pages/listes";
 import Chargement from "../pages/chargement";
-import Magasin from "../pages/magasin-copy";
+import Magasin from "../pages/magasin";
 import Dico from "../pages/dico";
 import Sacs from "../pages/sacs";
 
@@ -113,7 +113,7 @@ export const MAIN_MENU = [
     name: "Agents",
     path: "/agents",
     el: Agents,
-    user_level: USER_LEVEL.SUPERVISOR,
+    user_level: USER_LEVEL.AGENT,
   },
   { name: "Chargement", path: "/chargement", el: Chargement, user_level: 0 },
 
@@ -127,7 +127,7 @@ export const MAIN_MENU = [
     name: "Equipes",
     path: "/equipes",
     el: Equipes,
-    user_level: USER_LEVEL.SUPERVISOR,
+    user_level: USER_LEVEL.AGENT,
   },
 
   { name: "Magasin", path: "/magasin", el: Magasin, user_level: 0 },

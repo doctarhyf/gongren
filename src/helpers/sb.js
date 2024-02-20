@@ -116,33 +116,7 @@ export async function LoadAllItems2(tableName, onSuccess, onError, columns) {
     return;
   }
 
-  onSuccess(data);
-}
-
-export async function GetUser(matricule, pin) {
-  let { data, error } = await supabase
-    .from(TABLES_NAMES.USERS)
-    .select("*")
-    .eq("matricule", matricule)
-    .eq("pin", pin);
-
-  const isOneRecord = data.length;
-
-  if (isOneRecord) {
-    return data[0];
-  }
-  // .eq("matricule", matricule)
-  //.eq("pin", pin);
-  /* console.log(`loggin in. user:"${matricule}", pin:"${pin}" ...`, data, error);
-  console.log(data);
-  if (data.length === 1) return data[0];
-  if (error) return error;
-  return {
-    error: true,
-    message: `Error loading user:'${matricule}', pin:'${pin}'`,
-    res: data && JSON.stringify(data),
-  }; */
-  return error;
+  onSuccess(data); //dsa
 }
 
 export async function LoadItems(tableName, pageNum = 1, perPage = 5) {

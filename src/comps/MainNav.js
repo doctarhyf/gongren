@@ -12,7 +12,10 @@ function UserInfo({ user }) {
       </div>
       <div className=" justify-center text-xs uppercase  items-center  p-1 mr-2 ">
         <div>
-          Hello, <span className="text-white">{user.display_name}</span>
+          Hello,{" "}
+          <span className="text-white">
+            {user.prenom} {user.nom}
+          </span>
         </div>
         <div>
           User level : <span className="text-white"> {user.user_level}</span>

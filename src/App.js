@@ -6,13 +6,13 @@ import MainNav from "./comps/MainNav";
 import Loading from "./comps/Loading";
 import * as SB from "./helpers/sb";
 import { _ } from "./helpers/func";
-import { TABLES_NAMES } from "./helpers/sb.config";
+import { TABLES_NAMES, supabase } from "./helpers/sb.config";
 import FormLogin from "./comps/FormLogin";
 import GongRen from "./GongRen";
 import { useCookies } from "react-cookie";
 import { createContext } from "react";
 
-export const ModalContext = createContext();
+export const UserContext = createContext();
 
 function App() {
   const [user, setuser] = useState();
@@ -23,34 +23,45 @@ function App() {
   const [modalData, setModalData] = useState("");
   const [modalType, setModalType] = useState("img");
 
-  useEffect(() => {
+  /*  useEffect(() => {
     const myCookieValue = cookies.gr_user;
-    console.log("myCookieValue", myCookieValue);
+
     if (myCookieValue) {
       setuser(myCookieValue);
     }
-  });
+  }); */
 
-  async function onLogin(mat, pin) {
+  async function onLogin(matricule, pin) {
+    let err;
     seterror(undefined);
     setloading(true);
-    const res = await SB.GetUser(mat.toUpperCase(), pin);
 
-    if (res === null) {
-      let error_message = `User cant be found!\nmat: '${mat}', pin: '${pin}'`;
-      seterror(error_message);
-      document.getElementById("my_modal_1").showModal();
-      console.log(error_message);
+    matricule = matricule.toUpperCase().trim();
+    pin = pin.trim();
+
+    const { data, error } = await supabase
+      .from(TABLES_NAMES.AGENTS)
+      .select("*")
+      .eq("matricule", matricule)
+      .eq("pin", pin);
+
+    if (data.length === 1) {
+      setuser(data[0]);
+    } else {
+      if (error === null) {
+        err = `User matricule: "${matricule}", pin : "${pin}" cant be found`;
+        seterror(err);
+        alert(err);
+        console.log(err);
+      } else {
+        err = "Error loging in\n" + JSON.stringify(error);
+        seterror(err);
+        console.log(err);
+        alert(err);
+      }
     }
 
-    const expirationTime = new Date();
-    expirationTime.setMinutes(expirationTime.getMinutes() + 5);
-    setCookie("gr_user", JSON.stringify(res), {
-      path: "/",
-      expires: expirationTime,
-    });
-    setuser(res);
-
+    console.log(data, error, user);
     setloading(false);
   }
 
@@ -72,7 +83,7 @@ function App() {
   }
 
   return user ? (
-    <ModalContext.Provider value={[showImage, showData]}>
+    <UserContext.Provider value={[showImage, showData, user]}>
       <div>
         <div
           className={`  flex flex-col justify-center items-center bg-black/60 backdrop-blur-md text-white  absolute h-full w-full ${
@@ -97,7 +108,7 @@ function App() {
         </div>
         <GongRen user={user} onLogout={onLogout} />
       </div>
-    </ModalContext.Provider>
+    </UserContext.Provider>
   ) : (
     <>
       <FormLogin onLogin={onLogin} />

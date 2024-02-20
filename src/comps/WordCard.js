@@ -2,13 +2,19 @@ import React, { useContext, useEffect, useState } from "react";
 import * as SB from "../helpers/sb";
 import { TABLES_NAMES, supabase } from "../helpers/sb.config";
 import Loading from "./Loading";
-import { CLASS_BTN, CLASS_INPUT_TEXT, NO_IMAGE } from "../helpers/flow";
-import { ModalContext } from "../App";
+import {
+  CLASS_BTN,
+  CLASS_INPUT_TEXT,
+  NO_IMAGE,
+  USER_LEVEL,
+} from "../helpers/flow";
+import { UserContext } from "../App";
 
 export default function WordCard({ word, onUpdateWord, onDeleteWord, onOkay }) {
+  const user = useContext(UserContext);
   const [publicUrl, setPublicUrl] = useState("");
   const [loading, setloading] = useState(true);
-  const [showImage, showData] = useContext(ModalContext);
+  const [showImage, showData] = useContext(UserContext);
 
   useEffect(() => {
     word && getPublicUrl(word.pics[0]);
@@ -101,12 +107,16 @@ export default function WordCard({ word, onUpdateWord, onDeleteWord, onOkay }) {
           <Loading isLoading={loading} center />
         </div>
       </div>
-      <button className={CLASS_BTN} onClick={(e) => onUpdateWord(word)}>
-        UPDATE
-      </button>
-      <button className={CLASS_BTN} onClick={(e) => onDeleteWord(word)}>
-        DELETE
-      </button>
+      {user.user_level >= USER_LEVEL.ADMIN && (
+        <>
+          <button className={CLASS_BTN} onClick={(e) => onUpdateWord(word)}>
+            UPDATE
+          </button>
+          <button className={CLASS_BTN} onClick={(e) => onDeleteWord(word)}>
+            DELETE
+          </button>
+        </>
+      )}
       <button className={CLASS_BTN} onClick={(e) => onOkay(word)}>
         OK
       </button>

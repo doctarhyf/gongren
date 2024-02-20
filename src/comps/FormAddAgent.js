@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import Loading from "./Loading";
 import {
   CONTRATS,
@@ -6,7 +6,9 @@ import {
   NATIONALITIES,
   POSTE,
   SECTIONS,
+  USER_LEVEL,
 } from "../helpers/flow";
+import { UserContext } from "../App";
 
 const DATA_TYPE_TEXT_INPUT = 2;
 const DATA_TYPE_SELECT = 3;
@@ -18,6 +20,7 @@ export default function FormAddAgent({
   onFormCancel,
   agentDataToUpdate,
 }) {
+  const user = useContext(UserContext);
   let isNewAgent = agentDataToUpdate === undefined;
 
   let agent = agentDataToUpdate || {
@@ -169,12 +172,14 @@ export default function FormAddAgent({
         </button>
       )}
       {!isNewAgent && (
-        <button
-          onClick={saveAgentData}
-          className="p-1 rounded-md border my-1 border-green-500 text-green-500 hover:bg-green-500 hover:text-white"
-        >
-          UPDATE
-        </button>
+        <>
+          <button
+            onClick={saveAgentData}
+            className="p-1 rounded-md border my-1 border-green-500 text-green-500 hover:bg-green-500 hover:text-white"
+          >
+            UPDATE
+          </button>
+        </>
       )}
     </div>
   );
