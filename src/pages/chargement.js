@@ -161,14 +161,12 @@ export default function Chargement() {
     <div>
       <Loading isLoading={loading} />
 
-      {user.user_level >= USER_LEVEL.ADMIN && (
-        <button
-          className={`${CLASS_BTN}  ${addDataMode ? "hidden" : "block"} `}
-          onClick={onAddDataClick}
-        >
-          ADD NEW DATA
-        </button>
-      )}
+      <button
+        className={`${CLASS_BTN}  ${addDataMode ? "hidden" : "block"} `}
+        onClick={onAddDataClick}
+      >
+        ADD NEW DATA {JSON.stringify(user)}
+      </button>
 
       {!addDataMode && (
         <div>
