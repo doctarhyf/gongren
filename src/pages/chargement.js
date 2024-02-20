@@ -165,7 +165,7 @@ export default function Chargement() {
         className={`${CLASS_BTN}  ${addDataMode ? "hidden" : "block"} `}
         onClick={onAddDataClick}
       >
-        ADD NEW DATA {JSON.stringify(user)}
+        ADD NEW DATA
       </button>
 
       {!addDataMode && (
