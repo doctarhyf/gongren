@@ -85,7 +85,7 @@ const SECTIONS = {
 };
 
 export default function Dico() {
-  const user = useContext(UserContext);
+  const [, , user] = useContext(UserContext);
   const [section, setsection] = useState(SECTIONS.NEW_WORD);
   const [showFormNewWord, setShowFomrNewWord] = useState(false);
   const [selectedWord, setSelectedWord] = useState();
@@ -163,7 +163,9 @@ export default function Dico() {
     <div className="md:flex gap-4 mt-4">
       {!showFormNewWord && (
         <div className={` ${selectedWord ? "hidden" : "block"} `}>
-          {user.user_level >= USER_LEVEL.ADMIN && (
+          {user.user_level > USER_LEVEL.ADMIN}
+
+          {true && (
             <>
               {" "}
               <button

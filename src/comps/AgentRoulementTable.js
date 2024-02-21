@@ -1,7 +1,8 @@
-import React, { useState } from "react";
-import { CLASS_BTN, CLASS_TD, CLASS_TODAY } from "../helpers/flow";
+import React, { useContext, useState } from "react";
+import { CLASS_BTN, CLASS_TD, CLASS_TODAY, USER_LEVEL } from "../helpers/flow";
 import Loading from "./Loading";
 import { GFMN } from "../helpers/GetRoulemenDaysData.mjs";
+import { UserContext } from "../App";
 
 export default function AgentRoulementTable({
   agentData,
@@ -14,6 +15,7 @@ export default function AgentRoulementTable({
   errors,
 }) {
   const [editRoulement, setEditRoulement] = useState(false);
+  const [, , user] = useContext(UserContext);
 
   return (
     <div>
@@ -51,14 +53,16 @@ export default function AgentRoulementTable({
                 <div
                   className={` ${errors.length === 0 ? "block" : "hidden"} `}
                 >
-                  <button
-                    className={`${CLASS_BTN} ${
-                      !editRoulement ? "block" : "hidden"
-                    } `}
-                    onClick={(e) => setEditRoulement(true)}
-                  >
-                    UPDATE
-                  </button>
+                  {user.user_level >= USER_LEVEL.ADMIN && (
+                    <button
+                      className={`${CLASS_BTN} ${
+                        !editRoulement ? "block" : "hidden"
+                      } `}
+                      onClick={(e) => setEditRoulement(true)}
+                    >
+                      UPDATE
+                    </button>
+                  )}
                   <button
                     className={`${CLASS_BTN} ${
                       editRoulement ? "block" : "hidden"

@@ -18,7 +18,7 @@ import { UserContext } from "../App";
 const bg = "bg-neutral-100";
 
 export default function Chargement() {
-  const user = useContext(UserContext);
+  const [, , user] = useContext(UserContext);
   const [date, setdate] = useState({});
 
   const [addDataMode, setAddDataMode] = useState(false);

@@ -56,7 +56,7 @@ export const K_POSTE_AIDE_OPERATEUR = 7;
 export const USER_LEVEL = {
   AGENT: 0,
   SUPERVISOR: 1,
-  ADMIN: 2,
+  ADMIN: Number(2),
   SUPER: 3,
 };
 
