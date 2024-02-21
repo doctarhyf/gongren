@@ -8,6 +8,7 @@ import {
 import { doc, draw_load_table, printShiftData } from "../helpers/funcs_print";
 import ButtonPrint from "./ButtonPrint";
 import { ParseDayRepport } from "../helpers/func";
+import wechat from "../img/wechat.png";
 
 export default function RepportCard({
   data,
@@ -113,6 +114,9 @@ Superviseur班长: @${nom} ${zh} 
         {data && data.tid === "s" && (
           <div className="form-control">
             <label className="label cursor-pointer">
+              <span>
+                <img src={wechat} width={30} />
+              </span>
               <span className="label-text">Weixin Repport</span>
               <input
                 type="checkbox"
