@@ -1,14 +1,17 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import useDataLoader from "../hooks/useDataLoader";
 import { TABLES_NAMES } from "../helpers/sb.config";
 import {
   CLASS_BTN,
   CLASS_INPUT_TEXT,
   CLASS_TD,
+  USER_LEVEL,
   dateFormatter,
 } from "../helpers/flow";
+import { UserContext } from "../App";
 
 export default function Sacs() {
+  const user = useContext(UserContext);
   const [records, loading, error] = useDataLoader(TABLES_NAMES.SACS);
   const [addingNewRecord, setAddingNewRecord] = useState(false);
   const [newrec, setnewrec] = useState();
@@ -86,18 +89,20 @@ export default function Sacs() {
             </tr>
           </table>
         )}
-        <button
-          className={CLASS_BTN}
-          onClick={(e) => {
-            if (!addingNewRecord) {
-              setAddingNewRecord(true);
-            } else {
-              saveNewRecord();
-            }
-          }}
-        >
-          {addingNewRecord ? "SAVE RECORD" : "ADD NEW RECORD"}
-        </button>
+        {user.user_level === USER_LEVEL.SUPER && (
+          <button
+            className={CLASS_BTN}
+            onClick={(e) => {
+              if (!addingNewRecord) {
+                setAddingNewRecord(true);
+              } else {
+                saveNewRecord();
+              }
+            }}
+          >
+            {addingNewRecord ? "SAVE RECORD" : "ADD NEW RECORD"}
+          </button>
+        )}
       </div>
       <div>{error && JSON.stringify(error)}</div>
     </div>

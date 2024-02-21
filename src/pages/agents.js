@@ -131,6 +131,7 @@ export default function Agents() {
         {!showFormAddNewAgent && (
           <div className="flex ">
             <AgentsList
+              showToggleTableMode
               key={updateKey}
               curAgent={curAgent}
               onAgentClick={(agent_data) => onAgentClick(agent_data)}

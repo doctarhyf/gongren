@@ -104,7 +104,11 @@ export default function Listes() {
       <div className="flex">
         <div>
           <div className="text-green-500">Click on name to add it</div>
-          <AgentsList onTeamClick={onTeamClick} onAgentClick={onAgentClick} />
+          <AgentsList
+            onTeamClick={onTeamClick}
+            onAgentClick={onAgentClick}
+            showToggleTeamsView
+          />
         </div>
         <div>
           <div className="font-bold">Count : {agents.length}</div>

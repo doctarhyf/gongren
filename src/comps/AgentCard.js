@@ -13,7 +13,7 @@ import * as SB from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
 import Loading from "./Loading";
 import shield from "../img/shield.png";
-import user from "../img/user.png";
+import ico_user from "../img/user.png";
 import ItemNotSelected from "./ItemNotSelected";
 import { UserContext } from "../App";
 
@@ -99,7 +99,7 @@ export default function AgentCard({
       {agent && !agentCardEditMode && (
         <div className="agent-card p-2 border-neutral-400 border rounded-md ml-2">
           <div className="text-center">
-            <img className="mx-auto" src={user} width={80} height={80} />
+            <img className="mx-auto" src={ico_user} width={80} height={80} />
           </div>
           <div>
             <table>

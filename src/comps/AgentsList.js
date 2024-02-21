@@ -11,7 +11,13 @@ import {
 
 const PER_PAGE = 10;
 
-export default function AgentsList({ onAgentClick, curAgent, onTeamClick }) {
+export default function AgentsList({
+  onAgentClick,
+  curAgent,
+  onTeamClick,
+  showToggleTableMode,
+  showToggleTeamsView,
+}) {
   const [q, setq] = useState("");
 
   const [agents, setagents] = useState([]);
@@ -104,24 +110,28 @@ export default function AgentsList({ onAgentClick, curAgent, onTeamClick }) {
           onChange={(e) => onSearch(e.target.value)}
         />
       </div>
-      <div>
-        TABLE MODE ON/OFF
-        <input
-          type="checkbox"
-          className="toggle toggle-xs"
-          checked={showNamesInTable}
-          onChange={(e) => setshowNamesInTable(e.target.checked)}
-        />
-      </div>
-      <div>
-        TEAM ON/OFF
-        <input
-          type="checkbox"
-          className="toggle toggle-xs"
-          checked={showTeamMode}
-          onChange={(e) => setShowTeamMode(e.target.checked)}
-        />
-      </div>
+      {showToggleTableMode && (
+        <div>
+          TABLE MODE ON/OFF
+          <input
+            type="checkbox"
+            className="toggle toggle-xs"
+            checked={showNamesInTable}
+            onChange={(e) => setshowNamesInTable(e.target.checked)}
+          />
+        </div>
+      )}
+      {showToggleTeamsView && (
+        <div>
+          TEAM ON/OFF
+          <input
+            type="checkbox"
+            className="toggle toggle-xs"
+            checked={showTeamMode}
+            onChange={(e) => setShowTeamMode(e.target.checked)}
+          />
+        </div>
+      )}
       {!showTeamMode && (
         <div className="">
           {!showNamesInTable && (
