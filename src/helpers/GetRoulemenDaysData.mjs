@@ -141,7 +141,7 @@ export default function GetRoulemenDaysData(
     daysNames: daysNames,
   };
 
-  console.log(dateObj);
+  //console.log(dateObj);
 
   return dateObj;
 }

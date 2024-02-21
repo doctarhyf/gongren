@@ -4,6 +4,12 @@ import Loading from "./Loading";
 import { GFMN } from "../helpers/GetRoulemenDaysData.mjs";
 import { UserContext } from "../App";
 
+const POINTAGES_HOURS_LEN = {
+  J: 10,
+  N: 14,
+  R: 0,
+};
+
 export default function AgentRoulementTable({
   agentData,
   daysData,
@@ -16,8 +22,36 @@ export default function AgentRoulementTable({
 }) {
   const [editRoulement, setEditRoulement] = useState(false);
   const [, , user] = useContext(UserContext);
+  const [showStats, setShowHideStats] = useState(false);
 
-  //console.log("dbg", daysData, new Date().getMonth(), new Date().getDate());
+  let pointage = [];
+  let stats = {};
+
+  if (agentRoulementData && agentRoulementData.rl && daysData && agentData) {
+    const { nom, postnom, prenom, mingzi, matricule } = agentData;
+    const { dates, daysNames } = daysData;
+    const rl = agentRoulementData.rl.split("");
+
+    dates.forEach((p, i) => {
+      pointage.push({ idx: i, date: p, dayName: daysNames[i], rl: rl[i] });
+    });
+
+    const JOURS_OUVRABLES = pointage.filter(
+      (it, i) => it.dayName !== "D" && it.rl === "J"
+    ).length;
+
+    const DIMANCHES_FERIES = pointage.filter(
+      (it, i) => it.dayName === "D" && (it.rl === "J" || it.rl === "N")
+    ).length;
+
+    const NUITS = pointage.filter((it, i) => it.rl === "N").length;
+
+    stats.NOM = `${nom} ${postnom} ${prenom} ${mingzi}`;
+    stats.MATRICULE = matricule;
+    stats.JOURS_OUVRABLES = [JOURS_OUVRABLES, 10 * JOURS_OUVRABLES];
+    stats.DIMANCHES_FERIES = [DIMANCHES_FERIES, DIMANCHES_FERIES * 10];
+    stats.NUITS = [NUITS, NUITS * 14];
+  }
 
   return (
     <div>
@@ -171,6 +205,27 @@ export default function AgentRoulementTable({
           )}
         </tr>
       </table>
+
+      <div>
+        <button
+          className={CLASS_BTN}
+          onClick={(e) => setShowHideStats(!showStats)}
+        >
+          SHOW/HIDE STATS
+        </button>
+      </div>
+
+      {showStats && (
+        <div>
+          {stats &&
+            Object.entries(stats).map((it, i) => (
+              <div>
+                <span className="font-bold">{it[0]}:</span>
+                {JSON.stringify(it[1])}
+              </div>
+            ))}
+        </div>
+      )}
 
       <div className={`m-1 ${errors.length === 0 ? "hidden" : "block"} `}>
         <span className="p-1 m-1 rounded-full bg-red-700 border-red-400 border text-xs text-white">
