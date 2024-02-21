@@ -987,6 +987,37 @@ function GetRandomArray(len) {
   return agents_data;
 }
 
+function parseFrenchDate(dateString) {
+  // Define a mapping of French month names to their numerical representations
+  const monthMap = {
+    Janvier: 0,
+    Février: 1,
+    Mars: 2,
+    Avril: 3,
+    Mai: 4,
+    Juin: 5,
+    Juillet: 6,
+    Août: 7,
+    Septembre: 8,
+    Octobre: 9,
+    Novembre: 10,
+    Décembre: 11,
+  };
+
+  // Split the date string into parts
+  const parts = dateString.split(" ");
+
+  // Extract day, month, and year
+  const day = parseInt(parts[0], 10);
+  const month = monthMap[parts[1]];
+  const year = parseInt(parts[2], 10);
+
+  // Create a new Date object
+  const parsedDate = new Date(year, month, day);
+
+  return parsedDate;
+}
+
 function draw_load_table(data) {
   const fname = `PRIME_${data.date.toUpperCase().replaceAll(" ", "_")}.pdf`;
 
@@ -1004,7 +1035,9 @@ function draw_load_table(data) {
 
   const rect_logo = drawLogo(doc);
 
-  draw_date(doc, pw, pm, fsize, new Date(data.date), true);
+  const date = parseFrenchDate(data.date.replaceAll("Du ", ""));
+
+  draw_date(doc, pw, pm, fsize, date, true);
   const rect_title = draw_title(doc, rect_logo.y + rect_logo.h, pw, pm, 12);
 
   draw_charg_table(doc, pw, ph, pm, rect_title, fsize, data);
