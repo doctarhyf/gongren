@@ -6,6 +6,8 @@ import DateSelector from "./DateSelector";
 import { CLASS_BTN, CLASS_TD, MONTHS } from "../helpers/flow";
 import excel from "../img/excel.png";
 import Papa from "papaparse";
+import autoTable from "jspdf-autotable";
+import jsPDF from "jspdf";
 import {
   CorrectZeroMonthIndexDisplay,
   customSortByDate,
@@ -17,6 +19,7 @@ import RepportCard from "./RepportCard";
 import TableLoads from "./TableLoads";
 import Excelexport from "./Excelexport";
 import TableLoadsTotals from "./TableLoadsTotal";
+import { doc } from "../helpers/funcs_print";
 
 function MyForm() {
   return (
@@ -282,8 +285,63 @@ export default function BagsDataList({
     return JSON.stringify(d).toString();
   }
 
-  function printLoadTabled(loasds, totals) {
-    console.log(loads, totals);
+  function printLoadTabled(loads, totals) {
+    var doc = new jsPDF({ putOnlyUsedFonts: true, orientation: "portrait" });
+    const pdata = GenExcelLoadsData(loads);
+
+    console.log(pdata);
+
+    return;
+
+    //console.log(pdata);
+    //autoTable(doc, pdata.splice(0, 4));
+
+    //doc.table(10, 10, pdata);
+    //doc.save("at.pdf");
+    var generateData = function (amount) {
+      var result = [];
+      var data = {
+        coin: "100",
+        game_group: "GameGroup",
+        game_name: "XPTO2",
+        game_version: "25",
+        machine: "20485861",
+        vlt: "0",
+      };
+      for (var i = 0; i < amount; i += 1) {
+        data.id = (i + 1).toString();
+        result.push(Object.assign({}, data));
+      }
+      return result;
+    };
+
+    function createHeaders(keys) {
+      var result = [];
+      for (var i = 0; i < keys.length; i += 1) {
+        result.push({
+          id: keys[i],
+          name: keys[i],
+          prompt: keys[i],
+          width: 65,
+          align: "center",
+          padding: 0,
+        });
+      }
+      return result;
+    }
+
+    var headers = createHeaders([
+      "id",
+      "coin",
+      "game_group",
+      "game_name",
+      "game_version",
+      "machine",
+      "vlt",
+    ]);
+
+    doc.table(1, 1, generateData(100), headers, { autoSize: true });
+    doc.save("at.pdf");
   }
 
   function genTotalCSVData(data) {
