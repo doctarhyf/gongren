@@ -3,8 +3,42 @@ import { TABLES_NAMES, supabase } from "./sb.config";
 export async function InsertItem(tableName, newData) {
   const { data, error } = await supabase.from(tableName).insert([newData]);
 
-  if (error) return error;
+  if (error) {
+    console.log("insert error => ", error);
+    return error;
+  }
   return data;
+}
+
+export async function UpdateRoulementForTeam(
+  month_code,
+  roulemant_data,
+  ids_array,
+  onSuccess,
+  onError
+) {
+  const condition = {
+    month_code: month_code,
+    agent_id: { in: ids_array },
+  };
+
+  supabase
+    .from(TABLES_NAMES.AGENTS_RLD)
+    .update({ rl: roulemant_data })
+    .eq(condition)
+    .then((response) => {
+      if (response.error) {
+        console.error(response.error);
+        onError(response.error);
+      } else {
+        console.log("Upsert successful:", response.data);
+        onSuccess(response.data);
+      }
+    })
+    .catch((error) => {
+      console.error("Error during upsert:", error);
+      onError(error);
+    });
 }
 
 export async function UpdateRoulement2(
@@ -22,7 +56,12 @@ export async function UpdateRoulement2(
   const shouldCreateNewRecord = count === 0;
   let res;
   if (shouldCreateNewRecord) {
-    res = await InsertItem(TABLES_NAMES.AGENTS_RLD);
+    res = await InsertItem(TABLES_NAMES.AGENTS_RLD, {
+      rl: roulemant_data,
+      month_code: month_code,
+      agent_id: month_code.split("_")[1],
+    });
+    //console.log("should insert for ", month_code, roulemant_data);
   } else {
     const { data, error } = await supabase
       .from(TABLES_NAMES.AGENTS_RLD)
@@ -70,17 +109,14 @@ export async function CountItemsInTableWithRowEqVal(
   rowName,
   rowVal
 ) {
-  console.log(
-    "CountItemsInTableWithRowEqVal() ",
-    ` => counting from ${tableName} where ${rowName} === "${rowVal}" `
-  );
+  //console.log("CountItemsInTableWithRowEqVal() ",` => counting from ${tableName} where ${rowName} === "${rowVal}" `);
 
   let { data, error } = await supabase
     .from(tableName)
     .select("*")
     .eq(rowName, rowVal);
 
-  console.log("da count => ", data);
+  // console.log("da count => ", data);
 
   if (error) return 0;
   return data.length;
@@ -107,7 +143,7 @@ export async function LoadAllItems2(tableName, onSuccess, onError, columns) {
   if (columns && columns.join && columns.length > 0)
     select = columns.join(", ");
 
-  console.log("LoadAllItems2 => ", "select : ", select);
+  //  console.log("LoadAllItems2 => ", "select : ", select);
 
   let { data, error } = await supabase.from(tableName).select(select);
 
