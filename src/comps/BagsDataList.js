@@ -302,7 +302,7 @@ export default function BagsDataList({
         id: keys[i],
         name: keys[i],
         prompt: keys[i],
-        width: 65,
+        width: 80,
         align: "center",
         padding: 0,
       });
@@ -310,10 +310,16 @@ export default function BagsDataList({
     return result;
   }
 
+  function repeatChar(char = "*", count = 15) {
+    return [...Array(count)].map((c, i) => char).join("");
+  }
+
   function printLoadTabled(loads, totals) {
     const doc = new jsPDF({ orientation: "portrait" });
+    const FONT_SIZE = 10;
 
-    doc.setFontSize(10);
+    doc.setFont("helvetica");
+    doc.setFontSize(FONT_SIZE);
 
     let r = doc.addFont(
       "fonts/DroidSansFallback.ttf",
@@ -321,13 +327,26 @@ export default function BagsDataList({
       "normal"
     );
 
+    console.log(r);
+
     const body = [];
 
-    Object.entries(loads).map((data_day, i_day) => {
+    const def = {
+      date: repeatChar(),
+      shift: repeatChar(),
+      equipe: repeatChar(),
+      sacs: repeatChar(),
+      T: repeatChar(),
+      camions: repeatChar(),
+      dechires: repeatChar(),
+    };
+
+    Object.entries(loads).map((data_day, i_loads) => {
       const day_key = data_day[0];
       const day_data = data_day[1];
 
-      day_data.map((shift, i) => {
+      let shift_idx = 0;
+      day_data.map((shift, i_day) => {
         const {
           id,
           created_at,
@@ -358,10 +377,12 @@ export default function BagsDataList({
           dechires + "",
         ]; */
 
+        const date_str = `${y}.${Number(m) + 1}.${d}`;
+
         const load_data = {
-          date: day_key,
-          equipe: t,
+          date: shift_idx === 0 ? date_str : '"',
           shift: s_fr,
+          equipe: t,
           sacs: sacs + "",
           T: tonnage.toFixed(2),
           camions: camions + "",
@@ -369,6 +390,8 @@ export default function BagsDataList({
         };
 
         body.push(load_data);
+
+        shift_idx++;
       });
     });
 
@@ -376,16 +399,26 @@ export default function BagsDataList({
 
     var headers = createHeaders([
       "date",
-      "equipe",
       "shift",
-
+      "equipe",
       "sacs",
       "T",
       "camions",
       "dechires",
     ]);
 
-    doc.table(15, 15, body, headers, { autoSize: true });
+    const tableConfig = {
+      printHeaders: true,
+      autoSize: true,
+      margins: 0,
+      fontSize: FONT_SIZE,
+      padding: 2.5,
+      //headerBackgroundColor: "gray",
+      // headerTextColor?: string;
+    };
+
+    body.push(def);
+    doc.table(15, 15, body, headers, tableConfig);
     doc.save("at.pdf");
   }
 
