@@ -19,7 +19,11 @@ import RepportCard from "./RepportCard";
 import TableLoads from "./TableLoads";
 import Excelexport from "./Excelexport";
 import TableLoadsTotals from "./TableLoadsTotal";
-import { doc } from "../helpers/funcs_print";
+import {
+  doc,
+  drawChineseEnglishTextLine,
+  drawLogo,
+} from "../helpers/funcs_print";
 
 function MyForm() {
   return (
@@ -288,8 +292,9 @@ export default function BagsDataList({
   function printLoadTabled(loads, totals) {
     var doc = new jsPDF({ putOnlyUsedFonts: true, orientation: "portrait" });
     const pdata = GenExcelLoadsData(loads);
-
-    console.log(pdata);
+    const headers_d = [pdata[0]];
+    // const
+    //console.log(headers_d);
 
     return;
 
@@ -467,8 +472,34 @@ export default function BagsDataList({
     return JSON.parse(final_data);
   }
 
-  function printTotalsTable(data) {
-    console.log(totalData);
+  function printTotalsTable(totalData) {
+    const doc = new jsPDF({ orientation: "portrait" });
+
+    let rect = drawLogo(doc);
+    rect = drawChineseEnglishTextLine(doc, rect.x, rect.y + rect.h + 8, 12, [
+      { lat: "Total tonnage" },
+    ]);
+
+    let head = Object.keys(totalData.A);
+    head = [["Equipe", ...head]];
+    let body = Object.entries(totalData).map((dt, i) => [
+      dt[0],
+      ...Object.values(dt[1]).map((v, i) =>
+        [3, 6].includes(i)
+          ? i === 6
+            ? (v * 1000).toFixed(2)
+            : v.toFixed(2)
+          : v
+      ),
+    ]);
+
+    autoTable(doc, {
+      head: head,
+      body: body,
+      margin: { top: rect.y + rect.h + 8 },
+    });
+
+    doc.save("total.pdf");
   }
 
   return (
@@ -508,7 +539,7 @@ export default function BagsDataList({
                     <div>
                       <ButtonPrint
                         title={"PRINT TOTAL"}
-                        onClick={(e) => printTotalsTable(loadsFilteredByYear)}
+                        onClick={(e) => printTotalsTable(totalData)}
                       />
                     </div>
                     <TableLoadsTotals totalData={totalData} date={date} />

@@ -28,6 +28,8 @@ function drawChineseEnglishTextLine(doc, x, y, fontSize, tokens) {
   const orig_font_size = doc.getFontSize();
   doc.setFontSize(fontSize);
   let orig_x = x;
+  let w;
+  let h;
 
   const lat_font_name = "helvetica";
   const zh_font_name = "DroidSansFallback";
@@ -44,11 +46,15 @@ function drawChineseEnglishTextLine(doc, x, y, fontSize, tokens) {
       doc.setFont(zh_font_name);
       doc.text(orig_x, y, text);
     }
-    const { w } = doc.getTextDimensions(text);
+    const dims = doc.getTextDimensions(text);
+    w = dims.w;
+    h = dims.h;
     orig_x += w;
   });
   doc.setFontSize(orig_font_size);
   doc.setFont(lat_font_name);
+
+  return { x: x, y: y, w: orig_x, h: h };
 }
 
 function ls_food(agents_names) {
