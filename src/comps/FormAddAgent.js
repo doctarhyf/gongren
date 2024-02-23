@@ -20,7 +20,7 @@ export default function FormAddAgent({
   onFormCancel,
   agentDataToUpdate,
 }) {
-  const user = useContext(UserContext);
+  const [, , user] = useContext(UserContext);
   let isNewAgent = agentDataToUpdate === undefined;
 
   let agent = agentDataToUpdate || {

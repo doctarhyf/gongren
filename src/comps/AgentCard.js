@@ -30,7 +30,7 @@ export default function AgentCard({
   agentCardEditMode,
   setAgentCardEditMode,
 }) {
-  const user = useContext(UserContext);
+  const [, , user] = useContext(UserContext);
 
   const [loading, setloading] = useState(false);
 

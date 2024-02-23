@@ -187,7 +187,9 @@ function addAgentsNames(doc, agents) {
   const x = 10;
   let y;
   agents.forEach((agent, i) => {
-    let nom = `${i + 1}. ${agent.nom} ${agent.postnom} ${fcap(agent.prenom)}`;
+    let nom = `${i + 1}. ${agent.nom} ${agent.postnom} ${fcap(
+      agent.prenom
+    )} - ${agent.matricule}`;
 
     y = LOGOH / 2 + 10 + (i + 1) * 8;
     doc.text(nom, x, y);
