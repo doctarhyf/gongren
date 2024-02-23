@@ -35,11 +35,8 @@ export default function AgentsTable({
   customAgentsTableName,
 }) {
   const COL_SPAN = 4;
-  /*  const nb_op = CountAgentsByPostType(agentsf, K_POSTE_OPERATEUR);
-  const nb_charg = CountAgentsByPostType(agentsf, K_POSTE_CHARGEUR);
-  const nb_net = CountAgentsByPostType(agentsf, K_POSTE_NETTOYEUR);
-  const nb_aide_op = CountAgentsByPostType(agentsf, K_POSTE_AIDE_OPERATEUR);
-  const chef_deq = agentsf.find((it, i) => it.chef_deq === "OUI"); */
+  let year;
+  let month;
 
   let daysCount = 31;
 
@@ -47,6 +44,8 @@ export default function AgentsTable({
     let ag = agentsf[0];
 
     const [mc, agent_id, y, m] = ag.rld.month_code.split("_");
+    year = Number(y);
+    month = Number(m);
 
     daysCount = new Date(Number(y), Number(m) + 1, 0).getDate();
   }
@@ -125,19 +124,11 @@ export default function AgentsTable({
     return final_data;
   }
 
-  const [dates, setdates] = useState([]);
+  let dates = daysLetters.map((d, i) => i + 1);
 
-  useState(() => {
-    setdates(
-      [...Array(daysCount)].map((d, i) => {
-        return 21 + i > daysCount ? (daysCount - i - 20 - 1) * -1 : 21 + i;
-      })
-    );
-  }, [daysCount]);
+  dates = [...dates.splice(20, dates.length), ...dates.splice(0, 20)];
 
-  /*  useEffect(() => {
-    console.log("agt:isCustomList", isCustomList);
-  }, [isCustomList]); */
+  // console.log(dates, year, month);
 
   return (
     <>

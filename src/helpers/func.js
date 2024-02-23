@@ -368,8 +368,9 @@ export function getRouelemtDaysLetters2(year, month) {
   let monthIndex = Number(month);
   const startDate = new Date(year, monthIndex, 21);
 
-  // Calculate the 20th of the next month
-  const endDate = new Date(year, monthIndex + 1, 20);
+  //console.log("getRouelemtDaysLetters2", startDate.toISOString());
+
+  const endDate = new Date(year, monthIndex + 1, monthIndex === 3 ? 21 : 20);
 
   const dayNames = [];
   let currentDate = new Date(startDate);

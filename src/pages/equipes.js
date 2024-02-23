@@ -203,7 +203,7 @@ export default function Equipes() {
 
     fianl_data.sort(CustomSortByListPriority);
 
-    console.log("ksort", fianl_data);
+    //console.log("ksort", fianl_data);
 
     setagentsf(fianl_data);
     setCustomAgents(custom_arr_with_rld);
