@@ -105,10 +105,6 @@ export default function AgentsTable({
     });
 
     let ag_zero = { ...res[0] };
-    const daysLetters = getRouelemtDaysLetters(
-      Number(ag_zero.year),
-      Number(ag_zero.month)
-    );
 
     ag_zero = {
       ...ag_zero,
@@ -127,8 +123,6 @@ export default function AgentsTable({
   let dates = daysLetters.map((d, i) => i + 1);
 
   dates = [...dates.splice(20, dates.length), ...dates.splice(0, 20)];
-
-  // console.log(dates, year, month);
 
   return (
     <>
