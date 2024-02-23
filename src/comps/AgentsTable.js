@@ -5,6 +5,7 @@ import sup from "../img/sup.png";
 import pdf from "../img/pdf.png";
 import {
   CountAgentsByPostType,
+  _,
   getDaysInMonth,
   getRouelemtDaysLetters,
   getRouelemtDaysLetters2,
@@ -19,6 +20,7 @@ import {
   CLASS_BTN,
   K_POSTE_OPERATEUR,
   CLASS_TODAY,
+  CLASS_INPUT_TEXT,
 } from "../helpers/flow";
 import ItemNotSelected from "./ItemNotSelected";
 
@@ -50,13 +52,20 @@ export default function AgentsTable({
     daysCount = new Date(Number(y), Number(m) + 1, 0).getDate();
   }
 
-  function printPDF(agents_array) {
+  const ref_custom_title = useRef();
+
+  function printNameListPDF(agents_array) {
+    const customTitle = _(ref_custom_title);
+
     if (agents_array.length === 0) {
       alert("Agents list cant be empty!");
       return;
     }
 
-    printPDF1(agents_array);
+    printPDF1(
+      agents_array,
+      customTitle.trim().length > 0 ? customTitle : undefined
+    );
   }
 
   const ref_print_empty = useRef();
@@ -242,11 +251,19 @@ export default function AgentsTable({
             {agentsf.length !== 0 && (
               <div className="flex gap-4">
                 <button
-                  onClick={(e) => printPDF(agentsf)}
+                  onClick={(e) => printNameListPDF(agentsf)}
                   className={`${CLASS_BTN} flex text-sm my-2`}
                 >
                   <img src={pdf} alt="pdf" width={20} height={30} /> PRINT LIST
                 </button>
+                <div>
+                  <input
+                    type="text"
+                    ref={ref_custom_title}
+                    className={CLASS_INPUT_TEXT}
+                    placeholder="Custom Title"
+                  />
+                </div>
                 <button
                   onClick={(e) =>
                     printAgentsRoulementPDF(
