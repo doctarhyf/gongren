@@ -29,6 +29,7 @@ import {
   doc,
   drawChineseEnglishTextLine,
   drawLogo,
+  draw_en_tete,
 } from "../helpers/funcs_print";
 
 function MyForm() {
@@ -317,6 +318,8 @@ export default function BagsDataList({
   function printLoadTabled(loads, totals) {
     const doc = new jsPDF({ orientation: "portrait" });
     const FONT_SIZE = 10;
+    let ty = -1;
+    let tm = -1;
 
     doc.setFont("helvetica");
     doc.setFontSize(FONT_SIZE);
@@ -378,6 +381,8 @@ export default function BagsDataList({
         ]; */
 
         const date_str = `${y}.${Number(m) + 1}.${d}`;
+        ty = y;
+        tm = m;
 
         const load_data = {
           date: shift_idx === 0 ? date_str : '"',
@@ -418,7 +423,14 @@ export default function BagsDataList({
     };
 
     body.push(def);
-    doc.table(15, 15, body, headers, tableConfig);
+
+    doc.text(formatFrenchDate(new Date()), 210 - 15, 10, { align: "right" });
+
+    doc.text(`RAPPORT CHARGEMENT, ${MONTHS[tm]} - ${ty}`, 105, 20, {
+      align: "center",
+    });
+
+    doc.table(15, 25, body, headers, tableConfig);
     doc.save("at.pdf");
   }
 
