@@ -3,7 +3,13 @@ import * as SB from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
 import Loading from "../comps/Loading";
 import DateSelector from "./DateSelector";
-import { CLASS_BTN, CLASS_TD, MONTHS } from "../helpers/flow";
+import {
+  CLASS_BTN,
+  CLASS_TD,
+  MONTHS,
+  SHIFTS_ZH,
+  SHIFT_HOURS_ZH,
+} from "../helpers/flow";
 import excel from "../img/excel.png";
 import Papa from "papaparse";
 import autoTable from "jspdf-autotable";
@@ -289,63 +295,97 @@ export default function BagsDataList({
     return JSON.stringify(d).toString();
   }
 
-  function printLoadTabled(loads, totals) {
-    var doc = new jsPDF({ putOnlyUsedFonts: true, orientation: "portrait" });
-    const pdata = GenExcelLoadsData(loads);
-    const headers_d = [pdata[0]];
-    // const
-    //console.log(headers_d);
-
-    return;
-
-    //console.log(pdata);
-    //autoTable(doc, pdata.splice(0, 4));
-
-    //doc.table(10, 10, pdata);
-    //doc.save("at.pdf");
-    var generateData = function (amount) {
-      var result = [];
-      var data = {
-        coin: "100",
-        game_group: "GameGroup",
-        game_name: "XPTO2",
-        game_version: "25",
-        machine: "20485861",
-        vlt: "0",
-      };
-      for (var i = 0; i < amount; i += 1) {
-        data.id = (i + 1).toString();
-        result.push(Object.assign({}, data));
-      }
-      return result;
-    };
-
-    function createHeaders(keys) {
-      var result = [];
-      for (var i = 0; i < keys.length; i += 1) {
-        result.push({
-          id: keys[i],
-          name: keys[i],
-          prompt: keys[i],
-          width: 65,
-          align: "center",
-          padding: 0,
-        });
-      }
-      return result;
+  function createHeaders(keys) {
+    var result = [];
+    for (var i = 0; i < keys.length; i += 1) {
+      result.push({
+        id: keys[i],
+        name: keys[i],
+        prompt: keys[i],
+        width: 65,
+        align: "center",
+        padding: 0,
+      });
     }
+    return result;
+  }
+
+  function printLoadTabled(loads, totals) {
+    const doc = new jsPDF({ orientation: "portrait" });
+
+    doc.setFontSize(10);
+
+    let r = doc.addFont(
+      "fonts/DroidSansFallback.ttf",
+      "DroidSansFallback",
+      "normal"
+    );
+
+    const body = [];
+
+    Object.entries(loads).map((data_day, i_day) => {
+      const day_key = data_day[0];
+      const day_data = data_day[1];
+
+      day_data.map((shift, i) => {
+        const {
+          id,
+          created_at,
+          sacs,
+          retours,
+          ajouts,
+          code,
+          prob_machine,
+          prob_courant,
+          autre,
+          camions,
+          dechires,
+        } = shift;
+
+        const tonnage = Number(sacs) / 20;
+        const [t, s, y, m, d] = code.split("_");
+
+        const [s_fr, s_zh, s_h] = SHIFT_HOURS_ZH[s];
+
+        /* const load_data_a = [
+          day_key,
+          t,
+          s_fr,
+          // s_zh,
+          sacs + "",
+          tonnage.toFixed(2),
+          camions + "",
+          dechires + "",
+        ]; */
+
+        const load_data = {
+          date: day_key,
+          equipe: t,
+          shift: s_fr,
+          sacs: sacs + "",
+          T: tonnage.toFixed(2),
+          camions: camions + "",
+          dechires: dechires + "",
+        };
+
+        body.push(load_data);
+      });
+    });
+
+    console.log(body);
 
     var headers = createHeaders([
-      "id",
-      "coin",
-      "game_group",
-      "game_name",
-      "game_version",
-      "machine",
-      "vlt",
+      "date",
+      "equipe",
+      "shift",
+
+      "sacs",
+      "T",
+      "camions",
+      "dechires",
     ]);
 
-    doc.table(1, 1, generateData(100), headers, { autoSize: true });
+    doc.table(15, 15, body, headers, { autoSize: true });
     doc.save("at.pdf");
   }
 
@@ -472,13 +512,27 @@ export default function BagsDataList({
     return JSON.parse(final_data);
   }
 
-  function printTotalsTable(totalData) {
+  function printTotalsTable(totalData, y, m) {
     const doc = new jsPDF({ orientation: "portrait" });
+    let r = doc.addFont(
+      "fonts/DroidSansFallback.ttf",
+      "DroidSansFallback",
+      "normal"
+    );
 
     let rect = drawLogo(doc);
+
     rect = drawChineseEnglishTextLine(doc, rect.x, rect.y + rect.h + 8, 12, [
-      { lat: "Total tonnage" },
+      { zh: "水泥车间包装奖金" },
+      { lat: " - " },
+      { lat: "" + y },
+      { zh: "年" },
+      { lat: "" + m },
+      { zh: "月" },
     ]);
+
+    doc.setFontSize(10);
+    doc.text(`TOTAL CHARGEMENTS ${MONTHS[m]} ${y}`, rect.x, rect.y + 8);
 
     let head = Object.keys(totalData.A);
     head = [["Equipe", ...head]];
@@ -539,7 +593,9 @@ export default function BagsDataList({
                     <div>
                       <ButtonPrint
                         title={"PRINT TOTAL"}
-                        onClick={(e) => printTotalsTable(totalData)}
+                        onClick={(e) =>
+                          printTotalsTable(totalData, date.y, date.m)
+                        }
                       />
                     </div>
                     <TableLoadsTotals totalData={totalData} date={date} />
@@ -577,9 +633,11 @@ export default function BagsDataList({
 
       {!showRepportMode && (
         <div className="flex gap-4">
-          <div className="flex  ">
-            <div className="border-l pl-1">
-              <div>Annee/年</div>
+          <div className="flex divide-x  ">
+            <div className=" pl-1">
+              <div className="text-white px-2 text-sm bg-sky-500 mb-2">
+                Annee/年
+              </div>
               {Object.entries(loadsFiltered).map((year_data, i) => (
                 <div
                   key={i}
@@ -604,8 +662,10 @@ export default function BagsDataList({
             </div>
 
             {yearData && (
-              <div className="border-l pl-1">
-                <div>Mois/月</div>
+              <div className=" pl-1">
+                <div className="text-white px-2 text-sm bg-sky-500 mb-2">
+                  Mois/月
+                </div>
                 {Object.entries(yearData).map((month_data, i) => (
                   <div
                     key={i}
@@ -631,8 +691,10 @@ export default function BagsDataList({
             )}
 
             {monthData && (
-              <div className="border-l pl-1">
-                <div>Jour/日</div>
+              <div className=" pl-1">
+                <div className="text-white px-2 text-sm bg-sky-500 mb-2">
+                  Jour/日
+                </div>
                 {Object.entries(monthData)
                   .sort(customSortDaysArray)
                   .map((day_data, i) => (
@@ -657,8 +719,10 @@ export default function BagsDataList({
             )}
 
             {dayData && (
-              <div className="border-l pl-1">
-                <div>Equipe/班次</div>
+              <div className=" pl-1">
+                <div className="text-white px-2 text-sm bg-sky-500 mb-2">
+                  Equipe/班次
+                </div>
                 {Object.entries(dayData)
                   .sort((a, b) => {
                     const codeA = a[1].code.charAt(2);
