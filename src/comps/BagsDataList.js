@@ -426,12 +426,14 @@ export default function BagsDataList({
 
     doc.text(formatFrenchDate(new Date()), 210 - 15, 10, { align: "right" });
 
-    doc.text(`RAPPORT CHARGEMENT, ${MONTHS[tm]} - ${ty}`, 105, 20, {
+    const doc_title = `RAPPORT CHARGEMENT, ${MONTHS[tm]} - ${ty}`;
+    const file_name = `RAPPORT_CHARGEMENT_${MONTHS[tm]}_${ty}`;
+    doc.text(doc_title, 105, 20, {
       align: "center",
     });
 
     doc.table(15, 25, body, headers, tableConfig);
-    doc.save("at.pdf");
+    doc.save(file_name);
   }
 
   function genTotalCSVData(data) {
