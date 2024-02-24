@@ -18,6 +18,7 @@ export default function AgentRoulementTable({
   hideHeaders,
   onChangeRoulement,
   onSaveRoulement,
+  onSaveRoulementAndApplyToWholeTeam,
   errors,
 }) {
   const [editRoulement, setEditRoulement] = useState(false);
@@ -112,6 +113,19 @@ export default function AgentRoulementTable({
                   >
                     SAVE
                   </button>
+
+                  <button
+                    className={`${CLASS_BTN} ${
+                      editRoulement ? "block" : "hidden"
+                    } `}
+                    onClick={(e) => {
+                      setEditRoulement(false);
+                      onSaveRoulementAndApplyToWholeTeam();
+                    }}
+                  >
+                    SAVE (WHOLE TEAM)
+                  </button>
+
                   <button
                     className={`${CLASS_BTN} ${
                       editRoulement ? "block" : "hidden"

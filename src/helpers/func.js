@@ -157,7 +157,7 @@ function addLogo(doc) {
   );
 }
 
-function addTitle(doc, agents) {
+function addTitle(doc, agents, customTitle) {
   if (agents.length === 0) {
     throw new Error("Agents length must not be zero!");
     return;
@@ -165,7 +165,9 @@ function addTitle(doc, agents) {
   let { equipe, section } = agents[0];
   let date = new Date().toLocaleDateString();
 
-  let title = `NOM DES AGENTS DE L'ATELIER CIMENT, ${section} EQUIPE ${equipe}, le ${date}`;
+  let title =
+    customTitle ||
+    `NOM DES AGENTS DE L'ATELIER CIMENT, ${section} EQUIPE ${equipe}, le ${date}`;
   doc.setFontSize(12);
   const x = 10;
   const y = LOGOH / LOGO_RATIO + 20;
@@ -187,7 +189,9 @@ function addAgentsNames(doc, agents) {
   const x = 10;
   let y;
   agents.forEach((agent, i) => {
-    let nom = `${i + 1}. ${agent.nom} ${agent.postnom} ${fcap(agent.prenom)}`;
+    let nom = `${i + 1}. ${agent.nom} ${agent.postnom} ${fcap(
+      agent.prenom
+    )} - ${agent.matricule}`;
 
     y = LOGOH / 2 + 10 + (i + 1) * 8;
     doc.text(nom, x, y);
@@ -198,7 +202,7 @@ function addAgentsNames(doc, agents) {
   doc.text(`TOTAL :  ${agents.length} Agent(s)`, x, y + 10);
 }
 
-export function printPDF1(agents) {
+export function printPDF1(agents, customTitle) {
   if (agents.length === 0) {
     const msg = `Agents list is empty!`;
 
@@ -211,7 +215,7 @@ export function printPDF1(agents) {
 
   const doc = new jsPDF();
   addLogo(doc);
-  addTitle(doc, agents);
+  addTitle(doc, agents, customTitle);
   addAgentsNames(doc, agents);
   doc.save(`${section}_${equipe}.pdf`);
 }
@@ -368,8 +372,9 @@ export function getRouelemtDaysLetters2(year, month) {
   let monthIndex = Number(month);
   const startDate = new Date(year, monthIndex, 21);
 
-  // Calculate the 20th of the next month
-  const endDate = new Date(year, monthIndex + 1, 20);
+  //console.log("getRouelemtDaysLetters2", startDate.toISOString());
+
+  const endDate = new Date(year, monthIndex + 1, monthIndex === 3 ? 21 : 20);
 
   const dayNames = [];
   let currentDate = new Date(startDate);

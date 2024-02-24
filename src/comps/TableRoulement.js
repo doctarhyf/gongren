@@ -1,13 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as SB from "../helpers/sb";
 import GetRoulemenDaysData from "../helpers/GetRoulemenDaysData.mjs";
-import { TABLES_NAMES } from "../helpers/sb.config";
+import { TABLES_NAMES, supabase } from "../helpers/sb.config";
 import DateSelector from "./DateSelector";
 import Loading from "./Loading";
 import { CLASS_TD } from "../helpers/flow";
 import AgentRoulementTable from "./AgentRoulementTable";
 import ButtonPrint from "./ButtonPrint";
-import { doc, print_agent_roulement } from "../helpers/funcs_print";
+import { agents_rl, doc, print_agent_roulement } from "../helpers/funcs_print";
 
 const ERRORS = {
   AGENT_DATA_UNDEFINED: { code: "no_ag_data", msg: "agentData is undefined!" },
@@ -108,7 +108,7 @@ export default function TableRoulement({ agentData }) {
 
   function onSaveRoulement() {
     setloading(true);
-    console.log(agentRoulementData);
+    //console.log(agentRoulementData);
     SB.UpdateRoulement2(
       selectedMonthCode,
       agentRoulementData.rl,
@@ -123,6 +123,67 @@ export default function TableRoulement({ agentData }) {
         setloading(false);
       }
     );
+  }
+
+  async function onSaveRoulementAndApplyToWholeTeam() {
+    if (
+      window.confirm("Are you sure you wanna save and apply to whole team?\n")
+    ) {
+      setloading(true);
+      const { section, equipe } = agentData;
+
+      try {
+        let res = await supabase
+          .from(TABLES_NAMES.AGENTS)
+          .select("id")
+          .eq("section", section)
+          .eq("equipe", equipe);
+
+        if (res.error) {
+          alert("Error\n" + JSON.stringify(res.error));
+        } else {
+          //console.log(res.data);
+          const idz = res.data.map((it, i) => it.id);
+          const [mc, aid, y, m] = selectedMonthCode.split("_");
+          const id_mc = idz.map((id, i) => ({
+            mc: `mc_${id}_${y}_${m}`,
+            id: id,
+          }));
+          const { rl } = agentRoulementData;
+
+          id_mc.forEach((it, i) => {
+            // console.log(it, rl);
+
+            SB.UpdateRoulement2(
+              it.mc,
+              rl,
+              (s) => {
+                const p = (i + 1) / id_mc.length;
+                console.log(s, p);
+
+                if (p === 1) {
+                  const m = `Data updated for all team\nSection: ${section}\nEquipe: ${equipe}`;
+                  console.log(m);
+                  alert(m);
+                  setloading(false);
+                }
+              },
+              (e) => {
+                const p = (i + 1) / id_mc.length;
+                console.log(e, p);
+                if (p === 1) {
+                  setloading(false);
+                }
+              }
+            );
+          });
+        }
+      } catch (e) {
+        console.log(e);
+        alert("Error loading data\n" + JSON.stringify(e));
+        setloading(false);
+      }
+    }
   }
 
   const ref_print_empty = useRef();
@@ -191,6 +252,7 @@ export default function TableRoulement({ agentData }) {
         daysData={daysData}
         agentRoulementData={agentRoulementData}
         onSaveRoulement={onSaveRoulement}
+        onSaveRoulementAndApplyToWholeTeam={onSaveRoulementAndApplyToWholeTeam}
         errors={errors}
       />
     </div>
