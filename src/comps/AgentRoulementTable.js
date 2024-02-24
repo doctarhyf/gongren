@@ -45,12 +45,14 @@ export default function AgentRoulementTable({
     ).length;
 
     const NUITS = pointage.filter((it, i) => it.rl === "N").length;
+    const REPOS = pointage.filter((it, i) => it.rl === "R").length;
 
     stats.NOM = `${nom} ${postnom} ${prenom} ${mingzi}`;
     stats.MATRICULE = matricule;
     stats.JOURS_OUVRABLES = [JOURS_OUVRABLES, 10 * JOURS_OUVRABLES];
     stats.DIMANCHES_FERIES = [DIMANCHES_FERIES, DIMANCHES_FERIES * 10];
     stats.NUITS = [NUITS, NUITS * 14];
+    stats.REPOS = [REPOS, 0];
   }
 
   return (
