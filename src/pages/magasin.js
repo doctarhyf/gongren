@@ -1,84 +1,68 @@
 import React, { useState, useRef, useEffect } from "react";
 import { CLASS_BTN } from "../helpers/flow";
-import FrStereo from "../comps/FrStereo";
 
-function AudioRecorder({ onRecordStop, tag }) {
-  const [stream, setstream] = useState(null);
-  const [error, seterror] = useState([]);
-  const [mediaRecord, setMediaRecord] = useState();
+let chunks = [];
+let stream;
+let mediaRecorder;
+let blob;
+
+export default function Magasin() {
+  const [errors, seterrors] = useState({});
   const [recording, setrecording] = useState(false);
-  const [chunks, setchunks] = useState([]);
-
   const audio = useRef();
 
-  useEffect(() => {
-    init();
-  }, []);
-
-  useEffect(() => {
-    console.log("Stream set Okay : \n", stream);
-    if (stream) {
-      setMediaRecord(new MediaRecorder(stream));
-    }
-  }, [stream]);
-
-  useEffect(() => {
-    if (mediaRecord) {
-      console.log("mediaRecord.state : ", mediaRecord.state);
-      console.log("chunks :", chunks);
-      mediaRecord.ondataavailable = (e) => {
-        //chunks.push(e.data);
-        setchunks([...chunks, e.data]);
-      };
-
-      mediaRecord.onstop = (e) => {
-        const blob = new Blob(chunks, { type: "audio/ogg; codecs=opus" });
-
-        //chunks = [];
-        setchunks([]);
-        const audioURL = window.URL.createObjectURL(blob);
-        audio.current.src = audioURL;
-
-        console.log("recorder stopped : ", audioURL);
-        onRecordStop({ audioURL: audioURL, blob: blob, tag: tag });
-      };
-    }
-  }, [mediaRecord]);
-
-  async function init() {
-    console.log("Initializing ... audio tag: ", tag);
+  async function startRecording() {
+    seterrors([]);
 
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       console.log("getUserMedia supported! ");
 
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({
+        stream = await navigator.mediaDevices.getUserMedia({
           audio: true,
         });
-        setstream(stream);
-
         console.log("Stream ok : ", stream);
+
+        mediaRecorder = new MediaRecorder(stream);
+
+        console.log("mediaRecorder: ", mediaRecorder);
+
+        setupMediRecorderListenenrs();
+
+        console.log("starting rec ...");
+        setrecording(true);
+        console.log(chunks);
+        mediaRecorder.start();
       } catch (e) {
-        seterror([...error, e]);
-        console.log("Stream error : ", e);
+        seterrors({ ...errors, [e.code]: e });
+        console.table(e);
       }
     } else {
       console.log("getUserMedia not supported on your browser!");
     }
   }
 
-  function startRecording() {
-    console.log("starting rec ...");
-    setrecording(true);
-    console.log(chunks);
-    mediaRecord.start();
-  }
-
   function stopRecording() {
     console.log("stopping rec ...");
     setrecording(false);
     console.log(chunks);
-    mediaRecord.stop();
+    mediaRecorder.stop();
+  }
+
+  function setupMediRecorderListenenrs() {
+    console.log("setupMediRecorderListenenrs", mediaRecorder);
+    mediaRecorder.ondataavailable = (e) => {
+      chunks.push(e.data);
+    };
+
+    mediaRecorder.onstop = (e) => {
+      blob = new Blob(chunks, { type: "audio/ogg; codecs=opus" });
+      chunks = [];
+      const audioURL = window.URL.createObjectURL(blob);
+      audio.current.src = audioURL;
+
+      console.log("recorder stopped : ", audioURL, "\nBlob :", blob);
+    };
   }
 
   return (
@@ -100,25 +84,15 @@ function AudioRecorder({ onRecordStop, tag }) {
         </button>
         <audio ref={audio} controls />
       </div>
-      <div>{}</div>
-    </div>
-  );
-}
-
-export default function Magasin() {
-  function onRecordStop(audioURL, blob, tag) {
-    console.log("Audio tag: ", tag);
-    console.log("audioUrl : ", audioURL);
-    console.log("blob: ", blob);
-  }
-
-  return (
-    <div>
-      <div>Magasin</div>
-      <div>
-        {/* <AudioRecorder key={1} onRecordStop={onRecordStop} tag={`audio_${1}`} /> */}
-        <FrStereo />
-      </div>
+      {Object.entries(errors).length > 0 && (
+        <div className="text-white bg-red-500 p-1 rounded-md text-xs">
+          {Object.entries(errors).map((e, i) => (
+            <div>
+              {i + 1}. code: {e.toString()}
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

@@ -11,7 +11,7 @@ import {
 import { UserContext } from "../App";
 
 export default function Sacs() {
-  const user = useContext(UserContext);
+  const [, , user] = useContext(UserContext);
   const [records, loading, error] = useDataLoader(TABLES_NAMES.SACS);
   const [addingNewRecord, setAddingNewRecord] = useState(false);
   const [newrec, setnewrec] = useState();
