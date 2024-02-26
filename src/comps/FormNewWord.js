@@ -5,7 +5,7 @@ import {
   pinyinVowelsWithTones,
 } from "../helpers/flow";
 import * as SB from "../helpers/sb";
-import { TABLES_NAMES } from "../helpers/sb.config";
+import { TABLES_NAMES, supabase } from "../helpers/sb.config";
 import ImageUpload from "../comps/ImageUpload";
 import Loading from "../comps/Loading";
 import PYKBD from "./PYKBD";
@@ -15,14 +15,16 @@ const AUDIO_TYPE = {
   LAT: "Latin",
 };
 
-function AudioRecPlay() {
-  let chunks = [];
-  let stream;
-  let mediaRecorder;
-  let blob;
+let chunks = [];
+let stream;
+let mediaRecorder;
+let blob;
 
+function AudioRecPlay() {
   const [errors, seterrors] = useState({});
   const [recording, setrecording] = useState(false);
+  const [uploading, setuploading] = useState(false);
+  const [audioFileName, setaudioFileName] = useState(null);
   const audio = useRef();
 
   async function startRecording() {
@@ -76,13 +78,57 @@ function AudioRecPlay() {
       audio.current.src = audioURL;
 
       console.log("recorder stopped : ", audioURL, "\nBlob :", blob);
+      uploadAudioData(blob, audioURL);
     };
+  }
+
+  async function uploadAudioData(blob, audioURL) {
+    console.log("uploading ....");
+    const splits = audioURL.split("/");
+    const fileName = audioFileName || splits[splits.length - 1];
+    setaudioFileName(fileName);
+
+    console.log("upd => ", fileName);
+    setuploading(true);
+    const { data, error } = await supabase.storage
+      .from("dico") // Replace with your bucket name
+      .upload(fileName, blob); //selectedFile);
+
+    if (error) {
+      //onImageUploadError(error);
+      setuploading(false);
+      if (error.statusCode === "409") {
+        console.log("This file exists!, will be deleted");
+
+        replaceFile(blob, fileName, audioURL);
+      }
+      //throw error;
+    }
+
+    setuploading(false);
+    //onSuccess()
+    console.log(data);
+  }
+
+  async function replaceFile(blob, fileName, audioURL) {
+    console.log("replacing file ...");
+    const { data, error } = await supabase.storage
+      .from("dico") // Replace with your actual storage bucket name
+      .remove([fileName]);
+    console.log(data, error);
+    if (data.length === 1) {
+      console.log('file : " ', fileName, ' " deleted! reuploading ... ');
+      uploadAudioData(blob, audioURL);
+    }
   }
 
   return (
     <div>
-      <div>Media Rec Play</div>
-      <div>
+      {!uploading && <div>Media Rec Play</div>}
+      {uploading && (
+        <div className="text-green-500">Uploading audio, please wait ...</div>
+      )}
+      <div className={` ${uploading ? "hidden" : "block"} `}>
         <button
           onClick={startRecording}
           className={CLASS_BTN}
@@ -120,6 +166,7 @@ export default function FormNewWord({
   const [loading, setLoading] = useState(false);
   const [pyfocused, setpyfocused] = useState(false);
   const [audioType, setAudioType] = useState();
+  const [blod, setblob] = useState(null);
 
   useEffect(() => {
     if (upd) {
