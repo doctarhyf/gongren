@@ -3,6 +3,7 @@ import * as SB from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
 import Loading from "./Loading";
 import { CLASS_BTN, CLASS_INPUT_TEXT } from "../helpers/flow";
+import ButtonPrint from "./ButtonPrint";
 
 function Tags({ tags, onTagClick }) {
   const [selectedTags, setSelectedTags] = useState([]);
@@ -56,7 +57,7 @@ function Tags({ tags, onTagClick }) {
   );
 }
 
-export default function WordsList({ onSelectWord }) {
+export default function WordsList({ onSelectWord, onPrintWords }) {
   const [words, setwords] = useState([]);
   const [wordsf, setwordsf] = useState([]);
   const [loading, setloading] = useState(false);
@@ -134,6 +135,7 @@ export default function WordsList({ onSelectWord }) {
   return (
     <div>
       <Loading isLoading={loading} />
+      <ButtonPrint onClick={(e) => onPrintWords(words)} />
       <input
         type="search"
         value={q}

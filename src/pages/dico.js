@@ -21,6 +21,7 @@ import ItemNotSelected from "../comps/ItemNotSelected";
 import WordsList from "../comps/WordsList";
 import WordCard from "../comps/WordCard";
 import { UserContext } from "../App";
+import ButtonPrint from "../comps/ButtonPrint";
 
 const SBBukcet = () => {
   const [publicUrls, setPublicUrls] = useState([]);
@@ -171,6 +172,10 @@ export default function Dico() {
     setSelectedWord(undefined);
   }
 
+  function onPrintWords(words) {
+    console.log(words);
+  }
+
   return (
     <div className="md:flex gap-4 mt-4">
       {!showFormNewWord && (
@@ -197,7 +202,12 @@ export default function Dico() {
           >
             RELOAD
           </button>
-          <WordsList key={rdk} onSelectWord={onSelectWord} />
+
+          <WordsList
+            onPrintWords={onPrintWords}
+            key={rdk}
+            onSelectWord={onSelectWord}
+          />
         </div>
       )}
       {showFormNewWord && (
