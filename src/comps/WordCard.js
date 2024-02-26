@@ -50,6 +50,14 @@ export default function WordCard({ word, onUpdateWord, onDeleteWord, onOkay }) {
     }
   }
 
+  async function gpu(filePath) {
+    const { data, error } = await supabase.storage
+      .from("dico") // Replace 'your-bucket-name' with your actual bucket name
+      .createSignedUrl(filePath, 60);
+
+    return data;
+  }
+
   return (
     <div className="  mt-2  p-2 ">
       <div className="text-sky-500 text-3xl">{word.zh}</div>
@@ -57,10 +65,17 @@ export default function WordCard({ word, onUpdateWord, onDeleteWord, onOkay }) {
         {words_data.map(
           (it, i) =>
             !["pics", "id", "created_at", "tags"].includes(it[0]) && (
-              <div>
-                <span className="text-sky-500">{it[0]}:</span> -{" "}
-                <span className="  ">{it[1]}</span>
-              </div>
+              <>
+                <div>
+                  <span className="text-sky-500">{it[0]}:</span> -{" "}
+                  <span className="  ">{it[1]}</span>
+                </div>
+                {i === 7 && (
+                  <>
+                    <audio src={it[1][0]} controls />
+                  </>
+                )}
+              </>
             )
         )}
 

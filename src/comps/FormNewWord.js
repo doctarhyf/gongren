@@ -232,9 +232,17 @@ export default function FormNewWord({
     setword((old) => ({ ...old, py: npy }));
   }
 
-  function onAudioRecUploadSuccess(res) {
+  async function onAudioRecUploadSuccess(res) {
     console.log("onAudioRecUploadSuccess => ", res);
-    setword((old) => ({ ...old, audios: [res.fullPath] }));
+    const { data, error } = await supabase.storage
+      .from("dico") // Replace with your actual storage bucket name
+      .getPublicUrl(res.path);
+
+    console.log("fpath", data);
+
+    const fpath = data.publicUrl;
+
+    setword((old) => ({ ...old, audios: [fpath] }));
   }
 
   return (
