@@ -20,7 +20,7 @@ let stream;
 let mediaRecorder;
 let blob;
 
-function AudioRecPlay() {
+function AudioRecPlay({ onAudioRecUploadSuccess }) {
   const [errors, seterrors] = useState({});
   const [recording, setrecording] = useState(false);
   const [uploading, setuploading] = useState(false);
@@ -103,10 +103,11 @@ function AudioRecPlay() {
         replaceFile(blob, fileName, audioURL);
       }
       //throw error;
+      return;
     }
 
     setuploading(false);
-    //onSuccess()
+    onAudioRecUploadSuccess(data);
     console.log(data);
   }
 
@@ -162,6 +163,7 @@ export default function FormNewWord({
     lat: "",
     tags: "",
     pics: [],
+    audios: [],
   });
   const [loading, setLoading] = useState(false);
   const [pyfocused, setpyfocused] = useState(false);
@@ -230,6 +232,11 @@ export default function FormNewWord({
     setword((old) => ({ ...old, py: npy }));
   }
 
+  function onAudioRecUploadSuccess(res) {
+    console.log("onAudioRecUploadSuccess => ", res);
+    setword((old) => ({ ...old, audios: [res.fullPath] }));
+  }
+
   return (
     <div>
       <div>New Word</div>
@@ -257,7 +264,7 @@ export default function FormNewWord({
           onChange={onChange}
           placeholder="Pinyin"
         />
-        <AudioRecPlay />
+        <AudioRecPlay onAudioRecUploadSuccess={onAudioRecUploadSuccess} />
         <PYKBD
           onHidePYKBD={(e) => setpyfocused(false)}
           show={pyfocused}
