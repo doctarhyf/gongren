@@ -5,9 +5,11 @@ const useDataLoader = (tableName, columns) => {
   const [items, setItems] = useState([]);
   const [loading, setloading] = useState(false);
   const [error, seterror] = useState();
+  const [id, setid] = useState();
 
   useEffect(() => {
     setloading(true);
+    setItems([]);
     SB.LoadAllItems2(
       tableName,
       (data) => {
@@ -22,9 +24,13 @@ const useDataLoader = (tableName, columns) => {
       },
       columns
     );
-  }, [tableName]);
+  }, [tableName, id]);
 
-  return [items, loading, error];
+  function reload() {
+    setid(Math.random());
+  }
+
+  return [items, loading, error, reload];
 };
 
 export default useDataLoader;

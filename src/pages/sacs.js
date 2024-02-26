@@ -9,11 +9,17 @@ import {
   dateFormatter,
 } from "../helpers/flow";
 import { UserContext } from "../App";
+import ButtonPrint from "../comps/ButtonPrint";
+import { _ } from "../helpers/func";
+import * as SB from "../helpers/sb";
+import Loading from "../comps/Loading";
 
 export default function Sacs() {
   const [, , user] = useContext(UserContext);
-  const [records, loading, error] = useDataLoader(TABLES_NAMES.SACS);
+
   const [addingNewRecord, setAddingNewRecord] = useState(false);
+  const [dataLoading, setDataLoading] = useState(false);
+  const [records, loading, error, reload] = useDataLoader(TABLES_NAMES.SACS);
   const [newrec, setnewrec] = useState();
   const def_obj = {
     //id: 1,
@@ -29,14 +35,59 @@ export default function Sacs() {
   const ref_ag_mag = useRef();
   const ref_chef_deq = useRef();
 
-  function saveNewRecord() {
-    console.log(this);
-    setAddingNewRecord(false);
+  async function saveNewRecord() {
+    setDataLoading(true);
+    let newdt = {
+      equipe: _(ref_team),
+      sacs: Number(_(ref_sacs)),
+      agent_mag: _(ref_ag_mag),
+      chef_deq: _(ref_chef_deq),
+    };
+
+    const res = await SB.InsertItem(TABLES_NAMES.SACS, newdt);
+
+    if (res === null) {
+      alert("Record saved!");
+      reload();
+    } else {
+      alert("Error \n" + JSON.stringify(res));
+      console.log(res);
+    }
+
+    setDataLoading(false);
+  }
+
+  function print() {
+    //console.log(records);
+    if (records.length === 0) {
+      alert("Sorry, cant print empty data!");
+      return;
+    }
+
+    let headers = Object.keys(records[0]);
+    headers = [headers];
+
+    let body = records.map((rec, i) => Object.values(rec));
+
+    console.log(headers);
+    console.log(body);
+
+    reload();
+  }
+
+  async function onRowClick(it) {
+    console.log(it);
+    if (window.confirm("Delete record?")) {
+      const res = await SB.DeleteItem(TABLES_NAMES.SACS, it);
+
+      console.log(res);
+      reload();
+    }
   }
 
   return (
     <div>
-      <div>Gerance sacs</div>
+      <Loading isLoading={dataLoading} />
       <div>{loading && "loading ..."}</div>
       <div>
         {records && records.length > 0 && (
@@ -47,7 +98,10 @@ export default function Sacs() {
               ))}
             </tr>
             {Object.values(records).map((it, i) => (
-              <tr>
+              <tr
+                className={` hover:bg-slate-300 cursor-pointer `}
+                onClick={(e) => onRowClick(it)}
+              >
                 {Object.values(it).map((v, i) => (
                   <td className={CLASS_TD}>
                     {i === 1 ? dateFormatter.format(new Date(v)) : v}
@@ -89,20 +143,28 @@ export default function Sacs() {
             </tr>
           </table>
         )}
-        {user.user_level === USER_LEVEL.SUPER && (
-          <button
-            className={CLASS_BTN}
-            onClick={(e) => {
-              if (!addingNewRecord) {
-                setAddingNewRecord(true);
-              } else {
-                saveNewRecord();
-              }
-            }}
-          >
-            {addingNewRecord ? "SAVE RECORD" : "ADD NEW RECORD"}
+        <div className=" md:flex">
+          {user.user_level === USER_LEVEL.SUPER && (
+            <>
+              <button className={CLASS_BTN} onClick={(e) => saveNewRecord()}>
+                SAVE NEW RECORD
+              </button>
+
+              <button
+                className={CLASS_BTN}
+                onClick={(e) => {
+                  setAddingNewRecord(!addingNewRecord);
+                }}
+              >
+                {addingNewRecord ? "CANCEL" : "ADD NEW RECORD"}
+              </button>
+            </>
+          )}
+          <button className={CLASS_BTN} onClick={(e) => reload()}>
+            RELOAD
           </button>
-        )}
+          <ButtonPrint onClick={print} />
+        </div>
       </div>
       <div>{error && JSON.stringify(error)}</div>
     </div>
