@@ -72,7 +72,9 @@ export default function WordCard({ word, onUpdateWord, onDeleteWord, onOkay }) {
                 </div>
                 {i === 7 && (
                   <>
-                    <audio src={it[1][0]} controls />
+                    {it[1] && it[1].length > 0 && (
+                      <audio src={it[1][0]} controls />
+                    )}
                   </>
                 )}
               </>
