@@ -62,6 +62,16 @@ export default function BagsDataInput({
     const ajouts = Number(_(ref_ajouts));
     const dechires = Number(_(ref_dechires));
 
+    if (
+      !window.confirm(
+        `Is the data correct?\nDate: ${JSON.stringify(
+          date
+        )}\nTeam: ${team}\nShift: ${shift}\nSacs: ${sacs}`
+      )
+    ) {
+      setloading(false);
+      return;
+    }
     const code = `${team}_${shift}_${date.y}_${date.m}_${date.d}`;
     const load = {
       code: code,
@@ -98,7 +108,7 @@ export default function BagsDataInput({
         onDataAdded && onDataAdded();
         setloading(false);
       } else {
-        onError && onError(`Error adding bags data`, JSON.stringify(res));
+        onError && onError(JSON.stringify(res));
       }
       setloading(false);
     }

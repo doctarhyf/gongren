@@ -211,7 +211,10 @@ export async function UpdateItem(table_name, upd_data, onSuccess, onError) {
     onError(error);
   }
 
-  if (error) return error;
+  if (error) {
+    onError(error);
+    return error;
+  }
 
   return data;
 }

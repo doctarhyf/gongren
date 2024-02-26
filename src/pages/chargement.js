@@ -189,7 +189,10 @@ export default function Chargement() {
             onDataAdded={onBagsDataAdded}
             onError={(e) => {
               console.log(e);
-              alert("Bags data input error!\n", JSON.stringify(e));
+              alert(
+                "Bags data input error!\nThe data may already exists!\n" +
+                  JSON.stringify(e)
+              );
             }}
             date={date}
           />
