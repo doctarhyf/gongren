@@ -11,7 +11,7 @@ import {
 import { UserContext } from "../App";
 
 export default function WordCard({ word, onUpdateWord, onDeleteWord, onOkay }) {
-  const user = useContext(UserContext);
+  const [, , user] = useContext(UserContext);
   const [publicUrl, setPublicUrl] = useState("");
   const [loading, setloading] = useState(true);
   const [showImage, showData] = useContext(UserContext);
