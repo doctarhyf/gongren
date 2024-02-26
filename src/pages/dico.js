@@ -111,18 +111,30 @@ export default function Dico() {
   }
 
   async function onDeleteWord(word) {
+    //let audioDeleted = false;
+    //let picDeleted = false;
+
     if (window.confirm("Delete word? " + word.zh)) {
-      const links = word.pics;
-      if (links.length === 0) {
+      const { audios, pics } = word;
+
+      if (pics.length === 0 && audios.length === 0) {
         delWordRecd(word);
         return;
       }
-      deleteFile(word.pics[0].replace("dico/", ""), (s) => {
-        if (window.confirm('Delete "' + word.zh + '"')) {
-          delWordRecd(word);
-        }
 
-        console.log("word file : ", word.pics, " deleted!");
+      const audiofname =
+        audios[0] && audios[0].split("/")[audios[0].split("/").length - 1];
+      deleteFile(audiofname, (s) => {
+        console.log("audio file : “", s, "” deleted");
+        // audioDeleted = true;
+        delWordRecd(word);
+      });
+
+      const picfname = pics[0] && pics[0].replace("dico/", "");
+      deleteFile(picfname, (s) => {
+        console.log("pic file : “", word.pics, "” deleted!");
+        //picDeleted = true;
+        delWordRecd(word);
       });
     }
   }

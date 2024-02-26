@@ -50,14 +50,6 @@ export default function WordCard({ word, onUpdateWord, onDeleteWord, onOkay }) {
     }
   }
 
-  async function gpu(filePath) {
-    const { data, error } = await supabase.storage
-      .from("dico") // Replace 'your-bucket-name' with your actual bucket name
-      .createSignedUrl(filePath, 60);
-
-    return data;
-  }
-
   return (
     <div className="  mt-2  p-2 ">
       <div className="text-sky-500 text-3xl">{word.zh}</div>

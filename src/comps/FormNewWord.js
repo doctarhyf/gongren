@@ -294,6 +294,7 @@ export default function FormNewWord({
             setAudioType(AUDIO_TYPE.LAT);
           }}
         />
+
         <input
           className={CLASS_INPUT_TEXT}
           name="tags"
@@ -307,6 +308,7 @@ export default function FormNewWord({
           Separate tags with the caracter <span className=" kbd ">";"</span>
         </div>
         <div>PHOTO</div>
+
         <ImageUpload
           onImageUploadStart={onImageUploadStart}
           onImageUploadSuccsess={onImageUploadSuccsess}
