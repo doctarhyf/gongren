@@ -242,6 +242,8 @@ export default function FormNewWord({
 
     const fpath = data.publicUrl;
 
+    //cool
+
     setword((old) => ({ ...old, audios: [fpath] }));
   }
 
