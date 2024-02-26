@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   CLASS_BTN,
   CLASS_INPUT_TEXT,
@@ -8,41 +8,97 @@ import * as SB from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
 import ImageUpload from "../comps/ImageUpload";
 import Loading from "../comps/Loading";
+import PYKBD from "./PYKBD";
 
-function PYKBD({ show, onType, onHidePYKBD }) {
+const AUDIO_TYPE = {
+  PY: "Pinyin",
+  LAT: "Latin",
+};
+
+function AudioRecPlay() {
+  let chunks = [];
+  let stream;
+  let mediaRecorder;
+  let blob;
+
+  const [errors, seterrors] = useState({});
+  const [recording, setrecording] = useState(false);
+  const audio = useRef();
+
+  async function startRecording() {
+    seterrors([]);
+
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+      console.log("getUserMedia supported! ");
+
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({
+          audio: true,
+        });
+        console.log("Stream ok : ", stream);
+
+        mediaRecorder = new MediaRecorder(stream);
+
+        console.log("mediaRecorder: ", mediaRecorder);
+
+        setupMediRecorderListenenrs();
+
+        console.log("starting rec ...");
+        setrecording(true);
+        console.log(chunks);
+        mediaRecorder.start();
+      } catch (e) {
+        seterrors({ ...errors, [e.code]: e });
+        console.table(e);
+      }
+    } else {
+      console.log("getUserMedia not supported on your browser!");
+    }
+  }
+
+  function stopRecording() {
+    console.log("stopping rec ...");
+    setrecording(false);
+    console.log(chunks);
+    mediaRecorder.stop();
+  }
+
+  function setupMediRecorderListenenrs() {
+    console.log("setupMediRecorderListenenrs", mediaRecorder);
+    mediaRecorder.ondataavailable = (e) => {
+      chunks.push(e.data);
+    };
+
+    mediaRecorder.onstop = (e) => {
+      blob = new Blob(chunks, { type: "audio/ogg; codecs=opus" });
+      chunks = [];
+      const audioURL = window.URL.createObjectURL(blob);
+      audio.current.src = audioURL;
+
+      console.log("recorder stopped : ", audioURL, "\nBlob :", blob);
+    };
+  }
+
   return (
-    <div
-      className={` border  p-1 px-2 rounded-md bg-neutral-200/70 shadow-md ${
-        show ? "block" : "hidden"
-      } `}
-    >
-      <div className="flex flex-row font-bold text-xs items-center my-2  justify-between">
-        <span>PINYIN KEYBOARD</span>
-        <button
-          onClick={onHidePYKBD}
-          className="text-white bg-red-500 text-xs rounded-full w-6 h-6"
-        >
-          X
-        </button>
-      </div>
-
+    <div>
+      <div>Media Rec Play</div>
       <div>
-        {pinyinVowelsWithTones.map((pyletter_array, i) => (
-          <div key={i} className="flex justify-between">
-            {pyletter_array.map((py, i) => (
-              <button key={i} className={CLASS_BTN} onClick={(e) => onType(py)}>
-                {py}
-              </button>
-            ))}
-          </div>
-        ))}
+        <button
+          onClick={startRecording}
+          className={CLASS_BTN}
+          disabled={recording}
+        >
+          Start Rec
+        </button>
+        <button
+          onClick={stopRecording}
+          className={CLASS_BTN}
+          disabled={!recording}
+        >
+          Stop Rec
+        </button>
+        <audio ref={audio} controls />
       </div>
-      {/* <button className={CLASS_BTN} onClick={(e) => onType("A")}>
-        A
-      </button>
-      <button className={CLASS_BTN} onClick={(e) => onType("B")}>
-        B
-      </button> */}
     </div>
   );
 }
@@ -63,16 +119,13 @@ export default function FormNewWord({
   });
   const [loading, setLoading] = useState(false);
   const [pyfocused, setpyfocused] = useState(false);
+  const [audioType, setAudioType] = useState();
 
   useEffect(() => {
     if (upd) {
       setword({ ...upd });
     }
   }, []);
-
-  useEffect(() => {
-    console.log(word);
-  }, [word]);
 
   function onChange(e) {
     const { name, value } = e.target;
@@ -88,13 +141,11 @@ export default function FormNewWord({
         TABLES_NAMES.DICO,
         word,
         (s) => {
-          //alert("Word Update Success\n", JSON.stringify(s));
           console.log(s);
           setLoading(false);
           onWordUpdateSuccess(s);
         },
         (e) => {
-          //alert("Word Update Error \n", JSON.stringify(e));
           console.log(e);
           setLoading(false);
           onWordUpdateError(e);
@@ -104,7 +155,6 @@ export default function FormNewWord({
       const res = await SB.InsertItem(TABLES_NAMES.DICO, word);
 
       if (res === null) {
-        //alert("New word saved!");
         onWordSaved(res);
         setLoading(false);
       }
@@ -144,18 +194,23 @@ export default function FormNewWord({
           onChange={onChange}
           type="text"
           placeholder="中文"
-          onBlur={(e) => setpyfocused(false)}
+          onBlur={(e) => {
+            setpyfocused(false);
+          }}
         />
         <input
           className={CLASS_INPUT_TEXT}
           name="py"
-          onFocus={(e) => setpyfocused(true)}
+          onFocus={(e) => {
+            setpyfocused(true);
+            setAudioType(AUDIO_TYPE.PY);
+          }}
           type="text"
           value={word.py || ""}
           onChange={onChange}
           placeholder="Pinyin"
         />
-
+        <AudioRecPlay />
         <PYKBD
           onHidePYKBD={(e) => setpyfocused(false)}
           show={pyfocused}
@@ -170,6 +225,10 @@ export default function FormNewWord({
           type="text"
           placeholder="Definition"
           onBlur={(e) => setpyfocused(false)}
+          onFocus={(e) => {
+            setpyfocused(false);
+            setAudioType(AUDIO_TYPE.LAT);
+          }}
         />
         <input
           className={CLASS_INPUT_TEXT}
