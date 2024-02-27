@@ -420,7 +420,7 @@ export function getRouelemtDaysLetters(year, monthIndex) {
 
   return dayNames;
 }
-
+/* 
 export function formatAsMoney(value) {
   // Convert the input to a number if it's a string
   const number = typeof value === "string" ? parseFloat(value) : value;
@@ -435,7 +435,7 @@ export function formatAsMoney(value) {
     style: "currency",
     currency: "CDF", // Change the currency code as needed
   });
-}
+} */
 
 export function ParseShiftRepport(shift_data) {
   //console.log("ssddtt => ", shift_data);
@@ -459,8 +459,8 @@ export function ParseShiftRepport(shift_data) {
   repport.ajouts = shift.ajouts;
   repport.dechires = shift.dechires;
   const bonus_marg_t = repport.tonnage - 600 < 0 ? 0 : repport.tonnage - 600;
-  const bonus_marg_cdf = formatAsMoney(bonus_marg_t * 1000);
-  repport.bonus = bonus_marg_cdf;
+  const bonus_marg_cdf = bonus_marg_t * 1000;
+  repport.bonus = formatAsMoney(bonus_marg_cdf);
 
   const upd = {
     id: shift.id,
