@@ -1,5 +1,6 @@
 import React from "react";
 import { CLASS_TD } from "../helpers/flow";
+import { formatAsMoney } from "../helpers/func";
 
 export default function TableLoadsTotals({ totalData, date }) {
   const no_data = totalData.length === 0;
@@ -39,7 +40,7 @@ export default function TableLoadsTotals({ totalData, date }) {
                   <td className={CLASS_TD}> {td[1].tonnage.toFixed(2)}</td>
                   <td className={CLASS_TD}>{td[1].bonus.toFixed(2)}</td>
                   <td className={CLASS_TD}>
-                    {(td[1].bonus * 1000).toFixed(2)}
+                    {formatAsMoney((td[1].bonus * 1000).toFixed(2))}
                   </td>
                 </tr>
               )}{" "}
@@ -50,7 +51,7 @@ export default function TableLoadsTotals({ totalData, date }) {
                   <td className={CLASS_TD}> {td[1].tonnage.toFixed(2)}</td>
                   <td className={CLASS_TD}>{td[1].bonus}</td>
                   <td className={CLASS_TD}>
-                    {Number(td[1].bonus * 1000).toFixed(2)}
+                    {formatAsMoney(Number(td[1].bonus * 1000).toFixed(2))}
                   </td>
                 </tr>
               )}
