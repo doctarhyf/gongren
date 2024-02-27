@@ -191,6 +191,17 @@ export default function BagsDataInput({
               defaultValue={(upd && upd.sacs) || 0}
             />
           </div>
+
+          <div>
+            <span className={CLASS_SELECT_TITLE}></span>
+            <button
+              className={CLASS_BTN}
+              onClick={(e) => setShowCalculator(true)}
+            >
+              AFFICHER CALCULATEUR DE BONS
+            </button>
+          </div>
+
           <div>
             <span className={CLASS_SELECT_TITLE}>TONNAGE:</span>
             {tonnage} T.
@@ -205,13 +216,6 @@ export default function BagsDataInput({
                 defaultValue={(upd && upd.camions) || 0}
               />
             </div>
-
-            <button
-              className={CLASS_BTN}
-              onClick={(e) => setShowCalculator(true)}
-            >
-              AFFICHER CALCULATEUR DE BONS
-            </button>
           </div>
         </div>
 
