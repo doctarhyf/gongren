@@ -246,8 +246,14 @@ export default function FormNewWord({
     setword((old) => ({ ...old, py: npy }));
   }
 
+  const [recordedAudioPath, setRecordedAudioPath] = useState(null);
   async function onAudioRecUploadSuccess(res) {
     console.log("onAudioRecUploadSuccess => ", res);
+
+    if (res && res.path) {
+      setRecordedAudioPath(res.path);
+    }
+
     const { data, error } = await supabase.storage
       .from("dico") // Replace with your actual storage bucket name
       .getPublicUrl(res.path);
@@ -257,6 +263,13 @@ export default function FormNewWord({
     const fpath = data.publicUrl;
 
     setword((old) => ({ ...old, audios: [fpath] }));
+  }
+
+  async function onCancelForm(path) {
+    console.log("onCancel(), deleteing ... ", path);
+    const res = await supabase.storage.from("dico").remove([path]);
+    console.log("deleted ... ", path, "\nres : ", res);
+    onCancel();
   }
 
   return (
@@ -337,7 +350,10 @@ export default function FormNewWord({
           <button className={` ${CLASS_BTN}  `} onClick={onSaveNewWord}>
             SAVE
           </button>
-          <button onClick={onCancel} className={CLASS_BTN}>
+          <button
+            onClick={(e) => onCancelForm(recordedAudioPath)}
+            className={CLASS_BTN}
+          >
             CANCEL
           </button>
         </div>

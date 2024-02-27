@@ -112,9 +112,6 @@ export default function Dico() {
   }
 
   async function onDeleteWord(word) {
-    //let audioDeleted = false;
-    //let picDeleted = false;
-
     if (window.confirm("Delete word? " + word.zh)) {
       const { audios, pics } = word;
 
