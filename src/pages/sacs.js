@@ -1,4 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
+import autoTable from "jspdf-autotable";
+import jsPDF from "jspdf";
 import useDataLoader from "../hooks/useDataLoader";
 import { TABLES_NAMES } from "../helpers/sb.config";
 import {
@@ -10,9 +12,62 @@ import {
 } from "../helpers/flow";
 import { UserContext } from "../App";
 import ButtonPrint from "../comps/ButtonPrint";
-import { _ } from "../helpers/func";
+import { _, createHeaders, formatFrenchDate } from "../helpers/func";
 import * as SB from "../helpers/sb";
 import Loading from "../comps/Loading";
+import { doc } from "../helpers/funcs_print";
+
+function Table({
+  records,
+  onRowClick,
+  addingNewRecord,
+  ref_team,
+  ref_sacs,
+  ref_ag_mag,
+  ref_chef_deq,
+}) {
+  return (
+    <table>
+      <tr>
+        {Object.keys(records[0]).map((it, i) => (
+          <td className={CLASS_TD}>{it}</td>
+        ))}
+      </tr>
+      {Object.values(records).map((it, i) => (
+        <tr
+          className={` hover:bg-slate-300 cursor-pointer `}
+          onClick={(e) => onRowClick(it)}
+        >
+          {Object.values(it).map((v, i) => (
+            <td className={CLASS_TD}>
+              {i === 1 ? dateFormatter.format(new Date(v)) : v}
+            </td>
+          ))}
+        </tr>
+      ))}
+      <tr className={` ${addingNewRecord ? "" : "hidden"} `}>
+        <td className={CLASS_TD}></td>
+        <td className={CLASS_TD}></td>
+        <td className={CLASS_TD}>
+          <select ref={ref_team}>
+            {["A", "B", "C", "D"].map((t, i) => (
+              <option key={i}>{t}</option>
+            ))}
+          </select>
+        </td>
+        <td className={CLASS_TD}>
+          <input type="number" className={CLASS_INPUT_TEXT} ref={ref_sacs} />
+        </td>
+        <td className={CLASS_TD}>
+          <input type="text" className={CLASS_INPUT_TEXT} ref={ref_ag_mag} />
+        </td>
+        <td className={CLASS_TD}>
+          <input type="text" className={CLASS_INPUT_TEXT} ref={ref_chef_deq} />
+        </td>
+      </tr>
+    </table>
+  );
+}
 
 export default function Sacs() {
   const [, , user] = useContext(UserContext);
@@ -58,7 +113,8 @@ export default function Sacs() {
   }
 
   function print() {
-    //console.log(records);
+    const doc = new jsPDF();
+
     if (records.length === 0) {
       alert("Sorry, cant print empty data!");
       return;
@@ -67,12 +123,21 @@ export default function Sacs() {
     let headers = Object.keys(records[0]);
     headers = [headers];
 
-    let body = records.map((rec, i) => Object.values(rec));
+    let body = records.map((rec, i) =>
+      Object.values(rec).map((it, i) =>
+        i === 1 ? formatFrenchDate(new Date(it)) : it + ""
+      )
+    );
 
     console.log(headers);
     console.log(body);
 
-    reload();
+    autoTable(doc, {
+      head: headers,
+      body: body,
+    });
+
+    doc.save("table.pdf");
   }
 
   async function onRowClick(it) {
@@ -90,58 +155,19 @@ export default function Sacs() {
       <Loading isLoading={dataLoading} />
       <div>{loading && "loading ..."}</div>
       <div>
+        <div className="text-red-500 uppercase text-xs font-bold">
+          Click on item to delete it!
+        </div>
         {records && records.length > 0 && (
-          <table>
-            <tr>
-              {Object.keys(records[0]).map((it, i) => (
-                <td className={CLASS_TD}>{it}</td>
-              ))}
-            </tr>
-            {Object.values(records).map((it, i) => (
-              <tr
-                className={` hover:bg-slate-300 cursor-pointer `}
-                onClick={(e) => onRowClick(it)}
-              >
-                {Object.values(it).map((v, i) => (
-                  <td className={CLASS_TD}>
-                    {i === 1 ? dateFormatter.format(new Date(v)) : v}
-                  </td>
-                ))}
-              </tr>
-            ))}
-            <tr className={` ${addingNewRecord ? "" : "hidden"} `}>
-              <td className={CLASS_TD}></td>
-              <td className={CLASS_TD}></td>
-              <td className={CLASS_TD}>
-                <select ref={ref_team}>
-                  {["A", "B", "C", "D"].map((t, i) => (
-                    <option key={i}>{t}</option>
-                  ))}
-                </select>
-              </td>
-              <td className={CLASS_TD}>
-                <input
-                  type="number"
-                  className={CLASS_INPUT_TEXT}
-                  ref={ref_sacs}
-                />
-              </td>
-              <td className={CLASS_TD}>
-                <input
-                  type="text"
-                  className={CLASS_INPUT_TEXT}
-                  ref={ref_ag_mag}
-                />
-              </td>
-              <td className={CLASS_TD}>
-                <input
-                  type="text"
-                  className={CLASS_INPUT_TEXT}
-                  ref={ref_chef_deq}
-                />
-              </td>
-            </tr>
-          </table>
+          <Table
+            records={records}
+            onRowClick={onRowClick}
+            addingNewRecord={addingNewRecord}
+            ref_team={ref_team}
+            ref_sacs={ref_sacs}
+            ref_ag_mag={ref_ag_mag}
+            ref_chef_deq={ref_chef_deq}
+          />
         )}
         <div className=" md:flex">
           {user.user_level === USER_LEVEL.SUPER && (
