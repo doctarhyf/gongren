@@ -25,6 +25,7 @@ function AudioRecPlay({ onAudioRecUploadSuccess, audioType }) {
   const [recording, setrecording] = useState(false);
   const [uploading, setuploading] = useState(false);
   const [audioFileName, setaudioFileName] = useState(null);
+  const [audioRecorded, setAudioRecorded] = useState(false);
   const audio = useRef();
 
   async function startRecording() {
@@ -78,6 +79,8 @@ function AudioRecPlay({ onAudioRecUploadSuccess, audioType }) {
       audio.current.src = audioURL;
 
       console.log("recorder stopped : ", audioURL, "\nBlob :", blob);
+
+      setAudioRecorded(true);
       uploadAudioData(blob, audioURL);
     };
   }
@@ -144,7 +147,18 @@ function AudioRecPlay({ onAudioRecUploadSuccess, audioType }) {
         >
           Stop Rec
         </button>
-        <audio ref={audio} controls />
+        <audio
+          className={` ${audioRecorded ? "block" : "hidden"} `}
+          ref={audio}
+          controls
+        />
+        <div
+          className={` ${
+            recording ? "block" : "hidden"
+          } p-1 text-white rounded-full w-fit text-xs px-2  bg-red-500 `}
+        >
+          Recording ...
+        </div>
       </div>
     </div>
   );
@@ -295,10 +309,10 @@ export default function FormNewWord({
             setAudioType(AUDIO_TYPE.LAT);
           }}
         />
-        <AudioRecPlay
+        {/* <AudioRecPlay
           onAudioRecUploadSuccess={onAudioRecUploadSuccess}
           audioType={AUDIO_TYPE.LAT}
-        />
+        /> */}
 
         <input
           className={CLASS_INPUT_TEXT}

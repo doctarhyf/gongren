@@ -80,14 +80,14 @@ const SBBukcet = () => {
   );
 };
 
-const SECTIONS = {
+/* const SECTIONS = {
   NEW_WORD: { id: 0, title: "Add New Word" },
   WORDS_LIST: { id: 0, title: "Add New Word" },
-};
+}; */
 
 export default function Dico() {
   const [, , user] = useContext(UserContext);
-  const [section, setsection] = useState(SECTIONS.NEW_WORD);
+  // const [section, setsection] = useState(SECTIONS.NEW_WORD);
   const [showFormNewWord, setShowFomrNewWord] = useState(false);
   const [selectedWord, setSelectedWord] = useState();
   const [upd, setupd] = useState();
@@ -176,6 +176,11 @@ export default function Dico() {
     console.log(words);
   }
 
+  function onCancelFormNewWord() {
+    setShowFomrNewWord(false);
+    setupd(undefined);
+  }
+
   return (
     <div className="md:flex gap-4 mt-4">
       {!showFormNewWord && (
@@ -227,10 +232,7 @@ export default function Dico() {
             setShowFomrNewWord(false);
             init();
           }}
-          onCancel={(e) => {
-            setShowFomrNewWord(false);
-            setupd(undefined);
-          }}
+          onCancel={onCancelFormNewWord}
           upd={upd}
         />
       )}
