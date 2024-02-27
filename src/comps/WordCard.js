@@ -65,7 +65,20 @@ export default function WordCard({ word, onUpdateWord, onDeleteWord, onOkay }) {
                 {i === 7 && (
                   <>
                     {it[1] && it[1].length > 0 && (
-                      <audio src={it[1][0]} controls />
+                      <div>
+                        {it[1][0] && (
+                          <div>
+                            中文录音:
+                            <audio src={it[1][0]} controls />
+                          </div>
+                        )}
+                        {it[1][1] && (
+                          <div>
+                            Audio:
+                            <audio src={it[1][1]} controls />
+                          </div>
+                        )}
+                      </div>
                     )}
                   </>
                 )}

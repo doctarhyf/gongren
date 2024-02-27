@@ -20,7 +20,7 @@ let stream;
 let mediaRecorder;
 let blob;
 
-function AudioRecPlay({ onAudioRecUploadSuccess }) {
+function AudioRecPlay({ onAudioRecUploadSuccess, audioType }) {
   const [errors, seterrors] = useState({});
   const [recording, setrecording] = useState(false);
   const [uploading, setuploading] = useState(false);
@@ -242,8 +242,6 @@ export default function FormNewWord({
 
     const fpath = data.publicUrl;
 
-    //cool
-
     setword((old) => ({ ...old, audios: [fpath] }));
   }
 
@@ -274,7 +272,10 @@ export default function FormNewWord({
           onChange={onChange}
           placeholder="Pinyin"
         />
-        <AudioRecPlay onAudioRecUploadSuccess={onAudioRecUploadSuccess} />
+        <AudioRecPlay
+          onAudioRecUploadSuccess={onAudioRecUploadSuccess}
+          audioType={AUDIO_TYPE.PY}
+        />
         <PYKBD
           onHidePYKBD={(e) => setpyfocused(false)}
           show={pyfocused}
@@ -293,6 +294,10 @@ export default function FormNewWord({
             setpyfocused(false);
             setAudioType(AUDIO_TYPE.LAT);
           }}
+        />
+        <AudioRecPlay
+          onAudioRecUploadSuccess={onAudioRecUploadSuccess}
+          audioType={AUDIO_TYPE.LAT}
         />
 
         <input

@@ -420,22 +420,6 @@ export function getRouelemtDaysLetters(year, monthIndex) {
 
   return dayNames;
 }
-/* 
-export function formatAsMoney(value) {
-  // Convert the input to a number if it's a string
-  const number = typeof value === "string" ? parseFloat(value) : value;
-
-  // Check if the conversion was successful
-  if (isNaN(number)) {
-    return "Invalid input";
-  }
-
-  // Format the number as currency using toLocaleString
-  return number.toLocaleString("en-US", {
-    style: "currency",
-    currency: "CDF", // Change the currency code as needed
-  });
-} */
 
 export function ParseShiftRepport(shift_data) {
   //console.log("ssddtt => ", shift_data);
