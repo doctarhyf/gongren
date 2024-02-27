@@ -172,9 +172,11 @@ export default function Sacs() {
         <div className=" md:flex">
           {user.user_level === USER_LEVEL.SUPER && (
             <>
-              <button className={CLASS_BTN} onClick={(e) => saveNewRecord()}>
-                SAVE NEW RECORD
-              </button>
+              {addingNewRecord && (
+                <button className={CLASS_BTN} onClick={(e) => saveNewRecord()}>
+                  SAVE NEW RECORD
+                </button>
+              )}
 
               <button
                 className={CLASS_BTN}
