@@ -875,10 +875,25 @@ function draw_logo(doc, x, y, w, h) {
   return { x: x, y: y, w: w, h: h };
 }
 
-function draw_date(doc, page_width, page_margin, font_size, other_date) {
+function draw_date(
+  doc,
+  page_width,
+  page_margin,
+  font_size,
+  other_date,
+  shortDate = true
+) {
   const old_font_size = doc.getFontSize();
   doc.setFontSize(font_size);
-  const date = formatFrenchDate(other_date || new Date()).toUpperCase();
+
+  const finalDate = other_date || new Date();
+  const shortDateString = `${finalDate.getFullYear()}.${
+    Number(finalDate.getMonth()) + 1
+  }.${finalDate.getDate()}`;
+
+  const date = shortDate
+    ? shortDateString
+    : formatFrenchDate(other_date || new Date()).toUpperCase();
   let { w, h } = doc.getTextDimensions(date);
 
   doc.text(date, page_width - w - page_margin, page_margin);

@@ -7,10 +7,23 @@ export default function TableLoads({ date, totalData, loadsData }) {
   function printDailRepport(data) {
     const dp = ParseDayRepport(data);
     draw_load_table(dp);
-    console.log("table loads print daily rep", dp);
+    //console.log("dtbl", dp);
   }
+
+  function printAllRepport(loads) {
+    loads.forEach((it, i) => {
+      printDailRepport(it);
+    });
+  }
+
   return (
     <table>
+      {/* <div>
+        <ButtonPrint
+          title={"PRINT ALL REPPORT"}
+          onClick={(e) => printAllRepport(Object.entries(loadsData))}
+        />
+      </div> */}
       <thead>
         <tr>
           <td className={CLASS_TD} align="center" colSpan={11}>
