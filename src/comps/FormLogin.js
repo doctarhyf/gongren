@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import {
   CLASS_BTN,
   CLASS_INPUT_TEXT,
@@ -6,8 +6,11 @@ import {
   LOGO,
   MAIN_MENU,
 } from "../helpers/flow";
+import LanguageChooser from "./LanguageChooser";
+import { LANGS } from "../helpers/lang_strings";
 
 export default function FormLogin({ onLogin }) {
+  const [lang, setlang] = useState(LANGS[1]);
   const ref_mat = useRef();
   const ref_pin = useRef();
 
@@ -23,6 +26,10 @@ export default function FormLogin({ onLogin }) {
     }
 
     onLogin(mat, pin);
+  }
+
+  function onLanguageChanged(newLang) {
+    console.log(newLang);
   }
 
   return (
@@ -55,6 +62,8 @@ export default function FormLogin({ onLogin }) {
             LOGIN
           </button>
         </div>
+
+        <LanguageChooser onLanguageChanged={onLanguageChanged} />
 
         <div className="text-sm">
           Code and Design by{" "}

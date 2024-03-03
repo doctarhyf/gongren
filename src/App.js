@@ -29,7 +29,7 @@ function App() {
     if (myCookieValue) {
       setuser(myCookieValue);
     }
-  }); */
+  });  */
 
   async function onLogin(matricule, pin) {
     let err;

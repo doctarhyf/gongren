@@ -21,7 +21,7 @@ export default function Home() {
 
     let agents_grouped_by_teams = GroupBySectionAndEquipe(agents);
 
-    console.log(agents_grouped_by_teams);
+    //console.log(agents_grouped_by_teams);
 
     const rlds = await SB.LoadAllItems(TABLES_NAMES.AGENTS_RLD);
 
@@ -52,7 +52,7 @@ export default function Home() {
       <div>Agents count : {agents.length}</div>
       <div className="w-fit ">
         {Object.entries(agents_by_teams).map((section, i) => (
-          <details>
+          <details key={i}>
             <summary className="cursor-pointer">{section[0]}</summary>
             <div>
               {Object.entries(section[1])
