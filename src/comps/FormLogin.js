@@ -7,18 +7,17 @@ import {
   MAIN_MENU,
 } from "../helpers/flow";
 import LanguageChooser from "./LanguageChooser";
-import { LANGS } from "../helpers/lang_strings";
+import GET_TRAD, { LANGS, STRINGS_KEYS } from "../helpers/lang_strings";
 
 export default function FormLogin({ onLogin }) {
   const [lang, setlang] = useState(LANGS[1]);
+  const [trads, settrads] = useState({});
   const ref_mat = useRef();
   const ref_pin = useRef();
 
   function onBtnLogin() {
     const mat = ref_mat.current.value;
     const pin = ref_pin.current.value;
-
-    //console.log(mat, pin);
 
     if (mat === "" || pin === "") {
       alert(`Matricule and password cant be empty!`);
@@ -29,14 +28,19 @@ export default function FormLogin({ onLogin }) {
   }
 
   function onLanguageChanged(newLang) {
-    console.log(newLang);
+    const ft = GET_TRAD(STRINGS_KEYS.MATRICULE, newLang.code);
+    const newtrads = { ...trads, [STRINGS_KEYS.MATRICULE]: ft };
+    settrads(newtrads);
+    setlang(newLang);
+
+    console.log(newtrads);
   }
 
   return (
     <div className=" flex flex-col mt-4 mx-2 p-2 ">
       <div className="mx-auto flex flex-col space-y-4 ">
         <img src={LOGO} width={200} />
-        <div>Matricule</div>
+        <div>{trads[STRINGS_KEYS.MATRICULE]}</div>
         <input
           ref={ref_mat}
           type="text"

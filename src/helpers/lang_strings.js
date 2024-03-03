@@ -3,7 +3,7 @@ import usa from "../img/usa.png";
 import china from "../img/china.png";
 
 const STRINGS = {
-  MATRICULE: {
+  Matricule: {
     default: "Matricule",
     "en-US": "Agent Number",
     "fr-FR": "Numero Matricule",
