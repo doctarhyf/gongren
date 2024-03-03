@@ -28,8 +28,16 @@ export default function FormLogin({ onLogin }) {
   }
 
   function onLanguageChanged(newLang) {
-    const ft = GET_TRAD(STRINGS_KEYS.MATRICULE, newLang.code);
-    const newtrads = { ...trads, [STRINGS_KEYS.MATRICULE]: ft };
+    // const ft = GET_TRAD(STRINGS_KEYS.MATRICULE, newLang.code);
+    let newtrads = {
+      ...trads,
+      [STRINGS_KEYS.MATRICULE]: GET_TRAD(STRINGS_KEYS.MATRICULE, newLang.code),
+    };
+    newtrads = {
+      ...newtrads,
+      [STRINGS_KEYS.PIN]: GET_TRAD(STRINGS_KEYS.PIN, newLang.code),
+    };
+
     settrads(newtrads);
     setlang(newLang);
 
@@ -39,7 +47,7 @@ export default function FormLogin({ onLogin }) {
   return (
     <div className=" flex flex-col mt-4 mx-2 p-2 ">
       <div className="mx-auto flex flex-col space-y-4 ">
-        <img src={LOGO} width={200} />
+        {/* <img src={LOGO} width={200} />  */}
         <div>{trads[STRINGS_KEYS.MATRICULE]}</div>
         <input
           ref={ref_mat}
@@ -47,7 +55,7 @@ export default function FormLogin({ onLogin }) {
           placeholder="matricule, ex: L0501"
           className={CLASS_INPUT_TEXT}
         />
-        <div>PIN</div>
+        <div>{trads[STRINGS_KEYS.PIN]}</div>
         <input
           ref={ref_pin}
           type="password"
@@ -63,7 +71,7 @@ export default function FormLogin({ onLogin }) {
             onClick={(e) => onBtnLogin()}
             className={` ${CLASS_BTN} mx-auto w-full`}
           >
-            LOGIN
+            {trads[STRINGS_KEYS.Login]}
           </button>
         </div>
 

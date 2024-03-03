@@ -9,11 +9,34 @@ const STRINGS = {
     "fr-FR": "Numero Matricule",
     "zh-CN": "工号",
   },
+  PIN: {
+    default: "PIN",
+    "en-US": "PIN",
+    "fr-FR": "Code PIN",
+    "zh-CN": "密码",
+  },
+  Login: {
+    default: "LOGIN",
+    "en-US": "LOGIN",
+    "fr-FR": "SE CONNECTER",
+    "zh-CN": "登录",
+  },
 };
 
 export const STRINGS_KEYS = {
   MATRICULE: "Matricule",
+  PIN: "PIN",
+  Login: "Login",
 };
+
+function genStringKeys(stringKeysData) {
+  let stringKeys = {};
+  Object.keys(stringKeysData).forEach((dt) => {
+    stringKeys[dt] = dt;
+  });
+
+  return stringKeys;
+}
 
 function GET_TRAD(stringKey, langCode) {
   const strings = STRINGS[stringKey];
