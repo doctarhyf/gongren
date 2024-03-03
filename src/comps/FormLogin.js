@@ -47,12 +47,12 @@ export default function FormLogin({ onLogin }) {
   return (
     <div className=" flex flex-col mt-4 mx-2 p-2 ">
       <div className="mx-auto flex flex-col space-y-4 ">
-        {/* <img src={LOGO} width={200} />  */}
+        <img src={LOGO} width={200} />
         <div>{trads[STRINGS_KEYS.MATRICULE]}</div>
         <input
           ref={ref_mat}
           type="text"
-          placeholder="matricule, ex: L0501"
+          placeholder="matricule, ex: L0501" // coool
           className={CLASS_INPUT_TEXT}
         />
         <div>{trads[STRINGS_KEYS.PIN]}</div>
