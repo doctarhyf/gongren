@@ -41,13 +41,12 @@ export default function FormLogin({ onLogin }) {
     onLogin(mat, pin);
   }
 
-  function onLanguageChanged(newLang) {
+  function onLanguageChanged(newLangIdx) {
+    
+    const newLang = LANGS[newLangIdx];
     settrads(GEN_TRANSLATIONS(TRANSLATIONS, newLang));
     setlang(newLang);
-    setCookie(LANG_COOKIE_KEY, JSON.stringify(newLang), {
-      path: "/",
-      expires: new Date(Date.now() + 86400 * 1000),
-    });
+    
   }
 
   return (
@@ -83,7 +82,7 @@ export default function FormLogin({ onLogin }) {
 
         <LanguageChooser onLanguageChanged={onLanguageChanged} />
 
-        <div>{JSON.stringify(lang)}</div>
+        
 
         <div className="text-sm">
           {trads[GET_STRINGS_KEYS(STRINGS["Code and Design by"].default)]}

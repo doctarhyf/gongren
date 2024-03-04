@@ -8,8 +8,32 @@ export default function LanguageChooser({ onLanguageChanged }) {
   const [cookies, setCookie, removeCookie] = useCookies([LANG_COOKIE_KEY]);
 
   useEffect(() => {
-    onLanguageChanged(selectLang);
-  }, [selectLang]);
+
+   
+    const savedLang = getSavedLang()
+    setSelectedLang(savedLang);
+
+   onLanguageChanged(LANGS.indexOf(savedLang))
+
+
+  }, [])
+
+
+  function getSavedLang(){
+    const langIdx = cookies[LANG_COOKIE_KEY];
+    const lang = LANGS[langIdx];
+    return lang || LANGS[1];
+  }
+  
+
+  function onLangSelected(lang){
+    setSelectedLang(lang);
+    setCookie(LANG_COOKIE_KEY, LANGS.indexOf(lang), {
+      path: "/",
+      expires: new Date(Date.now() + 86400 * 1000),
+    });
+    onLanguageChanged(LANGS.indexOf(lang))
+  }
 
   return (
     <div>
@@ -18,16 +42,10 @@ export default function LanguageChooser({ onLanguageChanged }) {
       {Object.values(LANGS).map((lang, i) => (
         <button
           className={`  ${CLASS_BTN} ${
-            lang.code === cookies[LANG_COOKIE_KEY].code ? "bg-sky-500" : ""
+            lang.code === selectLang.code ? "bg-sky-500" : ""
           } `}
           key={i}
-          onClick={(e) => {
-            setSelectedLang(lang);
-            setCookie(LANG_COOKIE_KEY, JSON.stringify(lang), {
-              path: "/",
-              expires: new Date(Date.now() + 86400 * 1000),
-            });
-          }}
+          onClick={(e) => onLangSelected(lang)}
         >
           <img src={lang.icon} width={30} height={30} />
         </button>
