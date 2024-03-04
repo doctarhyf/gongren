@@ -38,6 +38,14 @@ export default function FormLogin({ onLogin }) {
       [STRINGS_KEYS.PIN]: GET_TRAD(STRINGS_KEYS.PIN, newLang.code),
     };
 
+    newtrads = {
+      ...newtrads,
+      [STRINGS_KEYS["Code and Design by"]]: GET_TRAD(
+        STRINGS_KEYS["Code and Design by"],
+        newLang.code
+      ),
+    };
+
     settrads(newtrads);
     setlang(newLang);
 
@@ -78,7 +86,7 @@ export default function FormLogin({ onLogin }) {
         <LanguageChooser onLanguageChanged={onLanguageChanged} />
 
         <div className="text-sm">
-          Code and Design by{" "}
+          {trads[STRINGS_KEYS["Code and Design by"]]}
           <a
             className="text-sky-500  italic"
             href="https://github.com/doctarhyf"

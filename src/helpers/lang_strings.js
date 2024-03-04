@@ -21,12 +21,19 @@ const STRINGS = {
     "fr-FR": "SE CONNECTER",
     "zh-CN": "登录",
   },
+  "Code and Design by": {
+    default: "Code and Design by",
+    "en-US": "Code and Design by",
+    "fr-FR": "Code et conception par",
+    "zh-CN": "代码和设计由",
+  },
 };
 
 export const STRINGS_KEYS = {
   MATRICULE: "Matricule",
   PIN: "PIN",
   Login: "Login",
+  "Code and Design by": "Code and Design by",
 };
 
 function genStringKeys(stringKeysData) {
