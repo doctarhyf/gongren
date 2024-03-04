@@ -3,6 +3,7 @@ import {
   CLASS_BTN,
   CLASS_INPUT_TEXT,
   CLASS_TD,
+  COOKIE_KEY,
   LOGO,
   MAIN_MENU,
 } from "../helpers/flow";
@@ -14,6 +15,7 @@ import GET_TRAD, {
   GEN_TRANSLATIONS,
   PACK_TRANSLATIONS_STRINGS,
 } from "../helpers/lang_strings";
+import { useCookies } from "react-cookie";
 
 export default function FormLogin({ onLogin }) {
   const TRANSLATIONS = PACK_TRANSLATIONS_STRINGS([
@@ -22,6 +24,7 @@ export default function FormLogin({ onLogin }) {
     STRINGS["Code and Design by"],
   ]);
   const [lang, setlang] = useState(LANGS[1]);
+  const [cookies, setCookie, removeCookie] = useCookies([COOKIE_KEY]);
   const [trads, settrads] = useState({});
   const ref_mat = useRef();
   const ref_pin = useRef();
@@ -41,6 +44,10 @@ export default function FormLogin({ onLogin }) {
   function onLanguageChanged(newLang) {
     settrads(GEN_TRANSLATIONS(TRANSLATIONS, newLang));
     setlang(newLang);
+    setCookie(COOKIE_KEY, JSON.stringify(newLang), {
+      path: "/",
+      expires: new Date(Date.now() + 86400 * 1000),
+    });
   }
 
   return (

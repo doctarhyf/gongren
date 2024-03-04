@@ -27,14 +27,20 @@ export const STRINGS = {
     "fr-FR": "Code et conception par",
     "zh-CN": "代码和设计由",
   },
+  "Agents count": {
+    default: "Agents count",
+    "en-US": "Agents count",
+    "fr-FR": "Nombre d'agents",
+    "zh-CN": "工人数量",
+  },
+  Team: {
+    default: "Team",
+    "en-US": "Team",
+    "fr-FR": "Equipe",
+    "zh-CN": "班组",
+  },
 };
 
-/*export const STRINGS_KEYS = GenStringKeys(STRINGS);  {
-  MATRICULE: "Matricule",
-  PIN: "PIN",
-  Login: "Login",
-  "Code and Design by": "Code and Design by",
-}; */
 function GenStringKeys(strings) {
   let strz = {};
 
@@ -86,8 +92,6 @@ export const LANGS = [
 
 export const GET_STRINGS_KEYS = (key) => {
   const stk = GenStringKeys(STRINGS);
-
-  console.log("stk: ", stk);
 
   return stk[key];
 };

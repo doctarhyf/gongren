@@ -3,14 +3,32 @@ import * as SB from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
 import Loading from "../comps/Loading";
 import { GroupBySectionAndEquipe } from "../helpers/func";
+import { COOKIE_KEY } from "../helpers/flow";
+import { useCookies } from "react-cookie";
+import {
+  GEN_TRANSLATIONS,
+  GET_STRINGS_KEYS,
+  LANGS,
+  PACK_TRANSLATIONS_STRINGS,
+  STRINGS,
+} from "../helpers/lang_strings";
 
 export default function Home() {
   const [agents, setagents] = useState([]);
   const [loading, setloading] = useState(false);
   const [agents_by_teams, set_agents_by_teams] = useState({});
 
+  const [cookies, setCookie, removeCookie] = useCookies([COOKIE_KEY]);
+
+  const TRANSLATIONS = PACK_TRANSLATIONS_STRINGS([STRINGS["Agents count"]]);
+  const [trads, settrads] = useState({});
+  const [lang, setlang] = useState(LANGS[1]);
+
   useEffect(() => {
     loadData();
+    const sellang = cookies[COOKIE_KEY] || LANGS[1];
+    setlang(sellang);
+    settrads(GEN_TRANSLATIONS(TRANSLATIONS, sellang));
   }, []);
 
   async function loadData() {
@@ -20,8 +38,6 @@ export default function Home() {
     let agents = await SB.LoadAllItems(TABLES_NAMES.AGENTS);
 
     let agents_grouped_by_teams = GroupBySectionAndEquipe(agents);
-
-    //console.log(agents_grouped_by_teams);
 
     const rlds = await SB.LoadAllItems(TABLES_NAMES.AGENTS_RLD);
 
@@ -49,7 +65,10 @@ export default function Home() {
   return (
     <div className="md:w-[980pt] md:mx-auto ">
       <Loading isLoading={loading} />
-      <div>Agents count : {agents.length}</div>
+      <div>
+        {trads[GET_STRINGS_KEYS(STRINGS["Agents count"].default)]} :
+        {agents.length}
+      </div>
       <div className="w-fit ">
         {Object.entries(agents_by_teams).map((section, i) => (
           <details key={i}>
@@ -59,7 +78,8 @@ export default function Home() {
                 .sort()
                 .map((team, i) => (
                   <div className="ml-8">
-                    Equipe {team[0]} : <b>{team[1].length}</b>
+                    Equipe
+                    {team[0]} : <b>{team[1].length}</b>
                   </div>
                 ))}
             </div>
