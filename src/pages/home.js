@@ -3,7 +3,7 @@ import * as SB from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
 import Loading from "../comps/Loading";
 import { GroupBySectionAndEquipe } from "../helpers/func";
-import { COOKIE_KEY } from "../helpers/flow";
+import { LANG_COOKIE_KEY } from "../helpers/flow";
 import { useCookies } from "react-cookie";
 import {
   GEN_TRANSLATIONS,
@@ -18,7 +18,7 @@ export default function Home() {
   const [loading, setloading] = useState(false);
   const [agents_by_teams, set_agents_by_teams] = useState({});
 
-  const [cookies, setCookie, removeCookie] = useCookies([COOKIE_KEY]);
+  const [cookies, setCookie, removeCookie] = useCookies([LANG_COOKIE_KEY]);
 
   const TRANSLATIONS = PACK_TRANSLATIONS_STRINGS([STRINGS["Agents count"]]);
   const [trads, settrads] = useState({});
@@ -26,7 +26,7 @@ export default function Home() {
 
   useEffect(() => {
     loadData();
-    const sellang = cookies[COOKIE_KEY] || LANGS[1];
+    const sellang = cookies[LANG_COOKIE_KEY] || LANGS[1];
     setlang(sellang);
     settrads(GEN_TRANSLATIONS(TRANSLATIONS, sellang));
   }, []);
@@ -78,7 +78,8 @@ export default function Home() {
                 .sort()
                 .map((team, i) => (
                   <div className="ml-8">
-                    Equipe
+                    Equipe{" "}
+                    {trads[GET_STRINGS_KEYS(STRINGS["Agents count"].default)]} :
                     {team[0]} : <b>{team[1].length}</b>
                   </div>
                 ))}

@@ -9,7 +9,7 @@ import Magasin from "../pages/magasin";
 import Dico from "../pages/dico";
 import Sacs from "../pages/sacs";
 
-export const COOKIE_KEY = "gongren_lang";
+export const LANG_COOKIE_KEY = "gongren_lang";
 
 export const SUPERVISORS = {
   A: { nom: "ALBERT KANKOBWE", zh: "刚果贝" },

@@ -3,7 +3,7 @@ import {
   CLASS_BTN,
   CLASS_INPUT_TEXT,
   CLASS_TD,
-  COOKIE_KEY,
+  LANG_COOKIE_KEY,
   LOGO,
   MAIN_MENU,
 } from "../helpers/flow";
@@ -24,7 +24,7 @@ export default function FormLogin({ onLogin }) {
     STRINGS["Code and Design by"],
   ]);
   const [lang, setlang] = useState(LANGS[1]);
-  const [cookies, setCookie, removeCookie] = useCookies([COOKIE_KEY]);
+  const [cookies, setCookie, removeCookie] = useCookies([LANG_COOKIE_KEY]);
   const [trads, settrads] = useState({});
   const ref_mat = useRef();
   const ref_pin = useRef();
@@ -44,7 +44,7 @@ export default function FormLogin({ onLogin }) {
   function onLanguageChanged(newLang) {
     settrads(GEN_TRANSLATIONS(TRANSLATIONS, newLang));
     setlang(newLang);
-    setCookie(COOKIE_KEY, JSON.stringify(newLang), {
+    setCookie(LANG_COOKIE_KEY, JSON.stringify(newLang), {
       path: "/",
       expires: new Date(Date.now() + 86400 * 1000),
     });
@@ -82,6 +82,8 @@ export default function FormLogin({ onLogin }) {
         </div>
 
         <LanguageChooser onLanguageChanged={onLanguageChanged} />
+
+        <div>{JSON.stringify(lang)}</div>
 
         <div className="text-sm">
           {trads[GET_STRINGS_KEYS(STRINGS["Code and Design by"].default)]}
