@@ -36,15 +36,6 @@ export const STRINGS_KEYS = {
   "Code and Design by": "Code and Design by",
 };
 
-function genStringKeys(stringKeysData) {
-  let stringKeys = {};
-  Object.keys(stringKeysData).forEach((dt) => {
-    stringKeys[dt] = dt;
-  });
-
-  return stringKeys;
-}
-
 function GET_TRAD(stringKey, langCode) {
   const strings = STRINGS[stringKey];
 

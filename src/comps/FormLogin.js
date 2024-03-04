@@ -10,6 +10,11 @@ import LanguageChooser from "./LanguageChooser";
 import GET_TRAD, { LANGS, STRINGS_KEYS } from "../helpers/lang_strings";
 
 export default function FormLogin({ onLogin }) {
+  const TRANSLATIONS = [
+    STRINGS_KEYS.MATRICULE,
+    STRINGS_KEYS.PIN,
+    STRINGS_KEYS["Code and Design by"],
+  ];
   const [lang, setlang] = useState(LANGS[1]);
   const [trads, settrads] = useState({});
   const ref_mat = useRef();
@@ -28,23 +33,13 @@ export default function FormLogin({ onLogin }) {
   }
 
   function onLanguageChanged(newLang) {
-    // const ft = GET_TRAD(STRINGS_KEYS.MATRICULE, newLang.code);
-    let newtrads = {
-      ...trads,
-      [STRINGS_KEYS.MATRICULE]: GET_TRAD(STRINGS_KEYS.MATRICULE, newLang.code),
-    };
-    newtrads = {
-      ...newtrads,
-      [STRINGS_KEYS.PIN]: GET_TRAD(STRINGS_KEYS.PIN, newLang.code),
-    };
+    let newtrads = {};
 
-    newtrads = {
-      ...newtrads,
-      [STRINGS_KEYS["Code and Design by"]]: GET_TRAD(
-        STRINGS_KEYS["Code and Design by"],
-        newLang.code
-      ),
-    };
+    TRANSLATIONS.forEach((it, i) => {
+      newtrads = { ...newtrads, [it]: GET_TRAD(it, newLang.code) };
+    });
+
+    console.log(newtrads);
 
     settrads(newtrads);
     setlang(newLang);
