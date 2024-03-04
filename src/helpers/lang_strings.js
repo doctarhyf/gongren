@@ -2,7 +2,7 @@ import france from "../img/france.png";
 import usa from "../img/usa.png";
 import china from "../img/china.png";
 
-const STRINGS = {
+export const STRINGS = {
   Matricule: {
     default: "Matricule",
     "en-US": "Agent Number",
@@ -16,7 +16,7 @@ const STRINGS = {
     "zh-CN": "密码",
   },
   Login: {
-    default: "LOGIN",
+    default: "Login",
     "en-US": "LOGIN",
     "fr-FR": "SE CONNECTER",
     "zh-CN": "登录",
@@ -29,14 +29,27 @@ const STRINGS = {
   },
 };
 
-export const STRINGS_KEYS = {
+/*export const STRINGS_KEYS = GenStringKeys(STRINGS);  {
   MATRICULE: "Matricule",
   PIN: "PIN",
   Login: "Login",
   "Code and Design by": "Code and Design by",
-};
+}; */
+function GenStringKeys(strings) {
+  let strz = {};
+
+  Object.keys(strings).forEach((it, i) => {
+    strz[it] = it;
+  });
+
+  return strz;
+}
+
+console.log("GenStringKeys => ", STRINGS_KEYS);
 
 function GET_TRAD(stringKey, langCode) {
+  const STRINGS_KEYS = GenStringKeys(STRINGS); //sds
+
   const strings = STRINGS[stringKey];
 
   if (!strings) {
@@ -73,4 +86,8 @@ export const LANGS = [
   },
 ];
 
+export const STRINGS_KEYS = (key) => {
+  const stk = GenStringKeys(STRINGS);
+  return stk[key];
+};
 export default GET_TRAD;

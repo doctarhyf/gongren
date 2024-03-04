@@ -7,13 +7,17 @@ import {
   MAIN_MENU,
 } from "../helpers/flow";
 import LanguageChooser from "./LanguageChooser";
-import GET_TRAD, { LANGS, STRINGS_KEYS } from "../helpers/lang_strings";
+import GET_TRAD, {
+  LANGS,
+  STRINGS,
+  STRINGS_KEYS,
+} from "../helpers/lang_strings";
 
 export default function FormLogin({ onLogin }) {
   const TRANSLATIONS = [
-    STRINGS_KEYS.MATRICULE,
-    STRINGS_KEYS.PIN,
-    STRINGS_KEYS["Code and Design by"],
+    STRINGS_KEYS(STRINGS.Matricule.default),
+    STRINGS_KEYS(STRINGS.PIN.default),
+    STRINGS_KEYS(STRINGS["Code and Design by"].default),
   ];
   const [lang, setlang] = useState(LANGS[1]);
   const [trads, settrads] = useState({});
@@ -51,14 +55,14 @@ export default function FormLogin({ onLogin }) {
     <div className=" flex flex-col mt-4 mx-2 p-2 ">
       <div className="mx-auto flex flex-col space-y-4 ">
         <img src={LOGO} width={200} />
-        <div>{trads[STRINGS_KEYS.MATRICULE]}</div>
+        <div>{trads[STRINGS_KEYS(STRINGS.Matricule.default)]}</div>
         <input
           ref={ref_mat}
           type="text"
           placeholder="matricule, ex: L0501" // coool
           className={CLASS_INPUT_TEXT}
         />
-        <div>{trads[STRINGS_KEYS.PIN]}</div>
+        <div>{trads[STRINGS_KEYS(STRINGS.PIN.default)]}</div>
         <input
           ref={ref_pin}
           type="password"
@@ -74,14 +78,14 @@ export default function FormLogin({ onLogin }) {
             onClick={(e) => onBtnLogin()}
             className={` ${CLASS_BTN} mx-auto w-full`}
           >
-            {trads[STRINGS_KEYS.Login]}
+            {trads[STRINGS_KEYS(STRINGS.Login.default)]}
           </button>
         </div>
 
         <LanguageChooser onLanguageChanged={onLanguageChanged} />
 
         <div className="text-sm">
-          {trads[STRINGS_KEYS["Code and Design by"]]}
+          {trads[STRINGS_KEYS(STRINGS["Code and Design by"].default)]}
           <a
             className="text-sky-500  italic"
             href="https://github.com/doctarhyf"
