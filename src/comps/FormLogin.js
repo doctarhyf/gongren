@@ -11,6 +11,7 @@ import GET_TRAD, {
   LANGS,
   STRINGS,
   GET_STRINGS_KEYS,
+  GEN_TRANSLATIONS,
 } from "../helpers/lang_strings";
 
 export default function FormLogin({ onLogin }) {
@@ -37,18 +38,8 @@ export default function FormLogin({ onLogin }) {
   }
 
   function onLanguageChanged(newLang) {
-    let newtrads = {};
-
-    TRANSLATIONS.forEach((it, i) => {
-      newtrads = { ...newtrads, [it]: GET_TRAD(it, newLang.code) };
-    });
-
-    console.log(newtrads);
-
-    settrads(newtrads);
+    settrads(GEN_TRANSLATIONS(TRANSLATIONS, newLang));
     setlang(newLang);
-
-    console.log(newtrads);
   }
 
   return (

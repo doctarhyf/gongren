@@ -91,4 +91,14 @@ export const GET_STRINGS_KEYS = (key) => {
 
   return stk[key];
 };
+
+export const GEN_TRANSLATIONS = (translations, newLang) => {
+  let newtrads = {};
+  translations.forEach((it, i) => {
+    newtrads = { ...newtrads, [it]: GET_TRAD(it, newLang.code) };
+  });
+
+  return newtrads;
+};
+
 export default GET_TRAD;
