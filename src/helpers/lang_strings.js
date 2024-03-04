@@ -45,8 +45,6 @@ function GenStringKeys(strings) {
   return strz;
 }
 
-console.log("GenStringKeys => ", STRINGS_KEYS);
-
 function GET_TRAD(stringKey, langCode) {
   const STRINGS_KEYS = GenStringKeys(STRINGS); //sds
 
@@ -86,8 +84,11 @@ export const LANGS = [
   },
 ];
 
-export const STRINGS_KEYS = (key) => {
+export const GET_STRINGS_KEYS = (key) => {
   const stk = GenStringKeys(STRINGS);
+
+  console.log("stk: ", stk);
+
   return stk[key];
 };
 export default GET_TRAD;
