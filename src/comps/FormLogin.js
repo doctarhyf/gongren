@@ -82,7 +82,7 @@ export default function FormLogin({ onLogin }) {
             className="text-sky-500  italic"
             href="https://github.com/doctarhyf"
           >
-            Ir. Franvale Mutunda K. / @doctarhyf
+            Ir. Franvale Mutunda K. (库齐) / @doctarhyf
           </a>
         </div>
       </div>
