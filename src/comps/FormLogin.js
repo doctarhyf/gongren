@@ -12,14 +12,15 @@ import GET_TRAD, {
   STRINGS,
   GET_STRINGS_KEYS,
   GEN_TRANSLATIONS,
+  PACK_TRANSLATIONS_STRINGS,
 } from "../helpers/lang_strings";
 
 export default function FormLogin({ onLogin }) {
-  const TRANSLATIONS = [
-    GET_STRINGS_KEYS(STRINGS.Matricule.default),
-    GET_STRINGS_KEYS(STRINGS.PIN.default),
-    GET_STRINGS_KEYS(STRINGS["Code and Design by"].default),
-  ];
+  const TRANSLATIONS = PACK_TRANSLATIONS_STRINGS([
+    STRINGS.Matricule,
+    STRINGS.PIN,
+    STRINGS["Code and Design by"],
+  ]);
   const [lang, setlang] = useState(LANGS[1]);
   const [trads, settrads] = useState({});
   const ref_mat = useRef();

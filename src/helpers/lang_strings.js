@@ -101,4 +101,7 @@ export const GEN_TRANSLATIONS = (translations, newLang) => {
   return newtrads;
 };
 
+export const PACK_TRANSLATIONS_STRINGS = (trans) =>
+  trans.map((t, i) => GET_STRINGS_KEYS(t.default));
+
 export default GET_TRAD;
