@@ -20,15 +20,20 @@ export default function Home() {
 
   const [cookies, setCookie, removeCookie] = useCookies([LANG_COOKIE_KEY]);
 
-  const TRANSLATIONS = PACK_TRANSLATIONS_STRINGS([STRINGS["Agents count"]]);
+  const TRANSLATIONS = PACK_TRANSLATIONS_STRINGS([
+    STRINGS["Agents count"],
+    STRINGS.Team,
+  ]);
   const [trads, settrads] = useState({});
   const [lang, setlang] = useState(LANGS[1]);
 
   useEffect(() => {
     loadData();
-    const sellang = cookies[LANG_COOKIE_KEY] || LANGS[1];
+    const sellang = LANGS[cookies[LANG_COOKIE_KEY]] || LANGS[1];
     setlang(sellang);
     settrads(GEN_TRANSLATIONS(TRANSLATIONS, sellang));
+
+    console.log("sellang : ", sellang);
   }, []);
 
   async function loadData() {
@@ -78,7 +83,7 @@ export default function Home() {
                 .sort()
                 .map((team, i) => (
                   <div className="ml-8">
-                    Equipe{" "}
+                    {trads[GET_STRINGS_KEYS(STRINGS.Team.default)]} :
                     {trads[GET_STRINGS_KEYS(STRINGS["Agents count"].default)]} :
                     {team[0]} : <b>{team[1].length}</b>
                   </div>

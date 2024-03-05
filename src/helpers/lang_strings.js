@@ -15,12 +15,13 @@ export const STRINGS = {
     "fr-FR": "Code PIN",
     "zh-CN": "密码",
   },
-  Login: {
-    default: "Login",
-    "en-US": "LOGIN",
-    "fr-FR": "SE CONNECTER",
+  Signin: {
+    default: "Signin",
+    "en-US": "Signin",
+    "fr-FR": "Se connecter",
     "zh-CN": "登录",
   },
+
   "Code and Design by": {
     default: "Code and Design by",
     "en-US": "Code and Design by",
@@ -52,9 +53,10 @@ function GenStringKeys(strings) {
 }
 
 function GET_TRAD(stringKey, langCode) {
-  const STRINGS_KEYS = GenStringKeys(STRINGS); //sds
+  const STRINGS_KEYS = GenStringKeys(STRINGS);
 
   const strings = STRINGS[stringKey];
+  console.log("string key => ", stringKey);
 
   if (!strings) {
     return STRINGS_KEYS[stringKey];

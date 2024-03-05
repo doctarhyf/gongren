@@ -21,6 +21,7 @@ export default function FormLogin({ onLogin }) {
   const TRANSLATIONS = PACK_TRANSLATIONS_STRINGS([
     STRINGS.Matricule,
     STRINGS.PIN,
+    STRINGS.Signin,
     STRINGS["Code and Design by"],
   ]);
   const [lang, setlang] = useState(LANGS[1]);
@@ -42,11 +43,9 @@ export default function FormLogin({ onLogin }) {
   }
 
   function onLanguageChanged(newLangIdx) {
-    
     const newLang = LANGS[newLangIdx];
     settrads(GEN_TRANSLATIONS(TRANSLATIONS, newLang));
     setlang(newLang);
-    
   }
 
   return (
@@ -57,7 +56,9 @@ export default function FormLogin({ onLogin }) {
         <input
           ref={ref_mat}
           type="text"
-          placeholder="matricule, ex: L0501" // coool
+          placeholder={`${
+            trads[GET_STRINGS_KEYS(STRINGS.Matricule.default)]
+          }, ex: L0501`} // coool
           className={CLASS_INPUT_TEXT}
         />
         <div>{trads[GET_STRINGS_KEYS(STRINGS.PIN.default)]}</div>
@@ -76,13 +77,11 @@ export default function FormLogin({ onLogin }) {
             onClick={(e) => onBtnLogin()}
             className={` ${CLASS_BTN} mx-auto w-full`}
           >
-            {trads[GET_STRINGS_KEYS(STRINGS.Login.default)]}
+            {trads[GET_STRINGS_KEYS(STRINGS.Signin.default)]}
           </button>
         </div>
 
         <LanguageChooser onLanguageChanged={onLanguageChanged} />
-
-        
 
         <div className="text-sm">
           {trads[GET_STRINGS_KEYS(STRINGS["Code and Design by"].default)]}
