@@ -28,10 +28,11 @@ export default function AgentsList({
   const [showNamesInTable, setshowNamesInTable] = useState(false);
   const [showTeamMode, setShowTeamMode] = useState(false);
   const [teams, setteams] = useState([]);
+  const [showOnlyActive, setShowOnlyActive] = useState(false);
 
   useEffect(() => {
     loadAgents();
-  }, []);
+  }, [showOnlyActive]);
 
   function GetSplittedItemsIntoPages(items_raw, items_per_page) {
     let items = [];
@@ -57,6 +58,13 @@ export default function AgentsList({
     setagentf([]);
     setteams([]);
     let items_raw = await SB.LoadAllItems(TABLES_NAMES.AGENTS);
+
+    const showActive = showOnlyActive ? "OUI" : "NON";
+
+    if (showOnlyActive) {
+      items_raw = items_raw.filter((it, i) => it.active === "OUI");
+    }
+
     setteams(GroupBySectionAndEquipe(items_raw));
     const items_len = items_raw.length;
     const num_pages = Math.ceil(items_len / PER_PAGE);
@@ -108,6 +116,15 @@ export default function AgentsList({
           className="mb-2 border-sky-500 outline-none border rounded-md p-1"
           type="search"
           onChange={(e) => onSearch(e.target.value)}
+        />
+      </div>
+      <div>
+        SHOW ONLY ACTIVE
+        <input
+          type="checkbox"
+          className="toggle toggle-xs"
+          checked={showOnlyActive}
+          onChange={(e) => setShowOnlyActive(e.target.checked)}
         />
       </div>
       {showToggleTableMode && (
