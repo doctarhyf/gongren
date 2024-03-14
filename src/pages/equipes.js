@@ -88,6 +88,8 @@ export default function Equipes() {
 
     let items = await LoadAllItems(TABLES_NAMES.AGENTS);
 
+    items = items.filter((it, i) => it.active === "OUI");
+
     items = items.sort(CustomSortByListPriority);
 
     let rlds = await LoadAllItems(TABLES_NAMES.AGENTS_RLD);
