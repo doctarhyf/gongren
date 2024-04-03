@@ -129,7 +129,7 @@ export default function Agents() {
         )}
 
         {!showFormAddNewAgent && (
-          <div className="flex ">
+          <div className="flex  ">
             <AgentsList
               showToggleTableMode
               key={updateKey}

@@ -18,12 +18,7 @@ export default function TableLoads({ date, totalData, loadsData }) {
 
   return (
     <table>
-      {/* <div>
-        <ButtonPrint
-          title={"PRINT ALL REPPORT"}
-          onClick={(e) => printAllRepport(Object.entries(loadsData))}
-        />
-      </div> */}
+     
       <thead>
         <tr>
           <td className={CLASS_TD} align="center" colSpan={11}>

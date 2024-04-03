@@ -109,11 +109,11 @@ export default function AgentsList({
   }
 
   return (
-    <section className="p-1   ">
+    <section className="p-1  w-full md:w-min  ">
       <Loading isLoading={loading} />{" "}
       <div>
         <input
-          className="mb-2 border-sky-500 outline-none border rounded-md p-1"
+          className="mb-2  w-full md:w-min border-sky-500 outline-none border rounded-md p-1"
           type="search"
           onChange={(e) => onSearch(e.target.value)}
         />

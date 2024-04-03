@@ -4,7 +4,7 @@ import smile from "../img/smile.png";
 export default function ItemNotSelected({ show, message }) {
   return (
     <div
-      className={`p-8 text-center justify-center  ${
+      className={` hidden md:block p-8 text-center justify-center  ${
         show ? "hidden" : "block"
       } `}
     >
