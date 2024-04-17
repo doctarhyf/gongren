@@ -41,6 +41,7 @@ export default function Home() {
     set_agents_by_teams({});
 
     let agents = await SB.LoadAllItems(TABLES_NAMES.AGENTS);
+    agents = agents.filter((agent, i) => agent.active === "OUI");
 
     let agents_grouped_by_teams = GroupBySectionAndEquipe(agents);
 
