@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 
-
 import GetRoulemenDaysData from "../helpers/GetRoulemenDaysData.mjs";
 import shield from "../img/shield.png";
 import sup from "../img/sup.png";
@@ -135,29 +134,29 @@ export default function AgentsTable({
   let dates = daysLetters.map((d, i) => i + 1);
 
   dates = [...dates.splice(20, dates.length), ...dates.splice(0, 20)];
-  
-  const first_agent = agentsf[0];
-  
-  let cal ;
-  
-  if(first_agent){
-  	const mc = first_agent.rld.month_code;
-  	
-  	if(mc){
-  	const d = 21;
-  		const [c,id,y,m] = mc.split('_');
-  		const dobj = GetRoulemenDaysData(parseInt(y), parseInt(m)+1, parseInt(d))
-  		alert(`y: ${y}, m: ${m}, d:${d}`);
-  		alert(JSON.stringify(dobj))
-  		console.log(dobj);
-  		cal = dobj;
-  		//alert(m)
-  	}
-  	
-  	
-  }
-  
 
+  const first_agent = agentsf[0];
+
+  let cal;
+
+  if (first_agent) {
+    const mc = first_agent.rld.month_code;
+
+    if (mc) {
+      const d = 21;
+      const [c, id, y, m] = mc.split("_");
+      const dobj = GetRoulemenDaysData(
+        parseInt(y),
+        parseInt(m) + 1,
+        parseInt(d)
+      );
+      //alert(`y: ${y}, m: ${m}, d:${d}`);
+      //alert(JSON.stringify(dobj))
+      console.log(dobj);
+      cal = dobj;
+      //alert(m)
+    }
+  }
 
   return (
     <>
@@ -167,9 +166,7 @@ export default function AgentsTable({
             <tr>
               <td
                 className={CLASS_TD}
-                colSpan={
-                  agentsf[0] && cal && cal.dates.length + COL_SPAN
-                }
+                colSpan={agentsf[0] && cal && cal.dates.length + COL_SPAN}
               >
                 <div className="text-2xl text-center">
                   Equipe <span ref={ref_sp_equipe}></span> -{" "}
@@ -183,16 +180,19 @@ export default function AgentsTable({
           <tbody className="">
             <tr>
               <td className={CLASS_TD} colSpan={COL_SPAN}></td>
-              {cal && cal.daysNames.map((d, i) => (
-                <td
-                  key={i}
-                  className={`${CLASS_TD} ${
-                    i === dates.indexOf(new Date().getDate()) ? CLASS_TODAY : ""
-                  }  `}
-                >
-                  {d}
-                </td>
-              ))}
+              {cal &&
+                cal.daysNames.map((d, i) => (
+                  <td
+                    key={i}
+                    className={`${CLASS_TD} ${
+                      i === dates.indexOf(new Date().getDate())
+                        ? CLASS_TODAY
+                        : ""
+                    }  `}
+                  >
+                    {d}
+                  </td>
+                ))}
             </tr>
             <tr>
               <td className={` ${CLASS_TD} w-min `}>
@@ -213,16 +213,19 @@ export default function AgentsTable({
                 </td>
               ))} */}
 
-              {cal && cal.dates.map((d, i) => (
-                <td
-                  key={i}
-                  className={`${CLASS_TD} ${
-                    i === dates.indexOf(new Date().getDate()) ? CLASS_TODAY : ""
-                  }  `}
-                >
-                  {d}
-                </td>
-              ))}
+              {cal &&
+                cal.dates.map((d, i) => (
+                  <td
+                    key={i}
+                    className={`${CLASS_TD} ${
+                      i === dates.indexOf(new Date().getDate())
+                        ? CLASS_TODAY
+                        : ""
+                    }  `}
+                  >
+                    {d}
+                  </td>
+                ))}
             </tr>
             {(isCustomList ? customAgentsList : agentsf).map((ag, i) => (
               <tr
@@ -253,22 +256,23 @@ export default function AgentsTable({
                   {ag.matricule && `- ${ag.matricule}`}
                 </td>
                 <td className={CLASS_TD}>{ag.poste}</td>
-                {cal && ag.rld.rl
-                  .slice(0, daysCount + 1)
-                  .split("")
-                  .map((r, i) => (
-                  
-                  i < cal.dates.length ? 
-                    <td
-                      className={`${CLASS_TD}   ${
-                        i === dates.indexOf(new Date().getDate())
-                          ? CLASS_TODAY
-                          : ""
-                      } `}
-                    >
-                      {r}
-                    </td> : null
-                  ))}
+                {cal &&
+                  ag.rld.rl
+                    .slice(0, daysCount + 1)
+                    .split("")
+                    .map((r, i) =>
+                      i < cal.dates.length ? (
+                        <td
+                          className={`${CLASS_TD}   ${
+                            i === dates.indexOf(new Date().getDate())
+                              ? CLASS_TODAY
+                              : ""
+                          } `}
+                        >
+                          {r}
+                        </td>
+                      ) : null
+                    )}
               </tr>
             ))}
           </tbody>
