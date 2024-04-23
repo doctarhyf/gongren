@@ -156,7 +156,11 @@ export default function AgentsTable({
       console.log(dobj);
       cal = dobj;
       todayIndex = cal.dates.indexOf(new Date().getDate());
-      isCurrentMonth = new Date().getMonth() == m;
+      isCurrentMonth =
+        new Date().getFullYear() == y &&
+        ((new Date().getMonth() == m && new Date().getDate() > 20) ||
+          (new Date().getMonth() == parseInt(m) + 1 &&
+            new Date().getDate() < 20));
 
       console.log(
         `todayIndex : ${todayIndex}, isCurrentMonth : ${isCurrentMonth}`
