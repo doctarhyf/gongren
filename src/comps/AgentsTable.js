@@ -139,6 +139,8 @@ export default function AgentsTable({
 
   let cal;
 
+  let todayIndex = -1;
+  let isCurrentMonth = false;
   if (first_agent) {
     const mc = first_agent.rld.month_code;
 
@@ -150,10 +152,16 @@ export default function AgentsTable({
         parseInt(m) + 1,
         parseInt(d)
       );
-      //alert(`y: ${y}, m: ${m}, d:${d}`);
-      //alert(JSON.stringify(dobj))
+
       console.log(dobj);
       cal = dobj;
+      todayIndex = cal.dates.indexOf(new Date().getDate());
+      //check if we in current month or next month
+      isCurrentMonth = new Date().getMonth();
+
+      console.log(
+        `todayIndex : ${todayIndex}, isCurrentMonth : ${isCurrentMonth}`
+      );
       //alert(m)
     }
   }
@@ -185,9 +193,7 @@ export default function AgentsTable({
                   <td
                     key={i}
                     className={`${CLASS_TD} ${
-                      i === dates.indexOf(new Date().getDate())
-                        ? CLASS_TODAY
-                        : ""
+                      isCurrentMonth && i === todayIndex ? CLASS_TODAY : ""
                     }  `}
                   >
                     {d}
@@ -218,9 +224,7 @@ export default function AgentsTable({
                   <td
                     key={i}
                     className={`${CLASS_TD} ${
-                      i === dates.indexOf(new Date().getDate())
-                        ? CLASS_TODAY
-                        : ""
+                      isCurrentMonth && i === todayIndex ? CLASS_TODAY : ""
                     }  `}
                   >
                     {d}
@@ -264,7 +268,7 @@ export default function AgentsTable({
                       i < cal.dates.length ? (
                         <td
                           className={`${CLASS_TD}   ${
-                            i === dates.indexOf(new Date().getDate())
+                            isCurrentMonth && i === todayIndex
                               ? CLASS_TODAY
                               : ""
                           } `}
