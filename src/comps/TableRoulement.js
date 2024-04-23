@@ -64,7 +64,7 @@ export default function TableRoulement({ agentData }) {
   async function createNewRLData(monthCode) {
     setloading(true);
 
-    let msg = `Creating new roulement date : ${monthCode}`;
+    let msg = `Creating new roulement data : ${monthCode}`;
 
     console.log(msg);
     alert(msg);
