@@ -156,8 +156,7 @@ export default function AgentsTable({
       console.log(dobj);
       cal = dobj;
       todayIndex = cal.dates.indexOf(new Date().getDate());
-      //check if we in current month or next month
-      isCurrentMonth = new Date().getMonth();
+      isCurrentMonth = new Date().getMonth() == m;
 
       console.log(
         `todayIndex : ${todayIndex}, isCurrentMonth : ${isCurrentMonth}`
