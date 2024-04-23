@@ -335,6 +335,7 @@ function getDayName(dateString, oneLetter) {
 
 function print_agent_roulement(doc, agent_data, print_empty) {
   // Delete all existing pages
+
   const pageCount = doc.internal.getNumberOfPages();
   for (let i = pageCount; i >= 1; i--) {
     doc.deletePage(i);
@@ -358,6 +359,8 @@ function print_agent_roulement(doc, agent_data, print_empty) {
   let inNextMonth = false;
   let lastDate = getDaysInMonth(year, month);
 
+  //alert("month idx => " + month_idx);
+
   array_rld.map((d, i) => {
     if (date_idx > lastDate) {
       date_idx = 1;
@@ -374,8 +377,6 @@ function print_agent_roulement(doc, agent_data, print_empty) {
     days_letters[i] = dname;
     date_idx++;
   });
-
-  //console.log(days_letters);
 
   doc.setFontSize(FONT_SIZE);
   draw_en_tete(
@@ -574,6 +575,17 @@ function print_agents_list_roulement(agents_rl) {
 function print_agents_rl(agents_list, print_empty, team_name) {
   const first_el = { ...agents_list[0] };
   const days_names_el = { ...agents_list[agents_list.length - 1] };
+  
+
+
+alert(JSON.stringify(days_names_el))
+if(days_names_el.month === 4){
+	let new_rld = days_names_el.rld.slice(0,-1)
+	days_names_el.rld = new_rld;
+}
+alert(JSON.stringify(days_names_el))
+
+//return;
 
   const doc = new jsPDF({ orientation: orientation });
   let r = doc.addFont(

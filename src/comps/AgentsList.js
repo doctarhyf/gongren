@@ -17,6 +17,7 @@ export default function AgentsList({
   onTeamClick,
   showToggleTableMode,
   showToggleTeamsView,
+  onlyActive = true,
 }) {
   const [q, setq] = useState("");
 
@@ -61,7 +62,7 @@ export default function AgentsList({
 
     const showActive = showOnlyActive ? "OUI" : "NON";
 
-    if (showOnlyActive) {
+    if (onlyActive) {
       items_raw = items_raw.filter((it, i) => it.active === "OUI");
     }
 

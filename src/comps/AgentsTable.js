@@ -94,6 +94,7 @@ export default function AgentsTable({
       y = Number(y);
 
       const num_days_in_month = getDaysInMonth(y, m, true);
+      //alert(`days in month ${num_days_in_month}`);
       const rld = ag.rld.rl.slice(0, num_days_in_month);
 
       let ad = {
@@ -228,7 +229,7 @@ export default function AgentsTable({
                 </td>
                 <td className={CLASS_TD}>{ag.poste}</td>
                 {ag.rld.rl
-                  .slice(0, daysCount)
+                  .slice(0, daysCount + 1)
                   .split("")
                   .map((r, i) => (
                     <td
