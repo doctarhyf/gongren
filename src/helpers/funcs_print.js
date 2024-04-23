@@ -575,17 +575,15 @@ function print_agents_list_roulement(agents_rl) {
 function print_agents_rl(agents_list, print_empty, team_name) {
   const first_el = { ...agents_list[0] };
   const days_names_el = { ...agents_list[agents_list.length - 1] };
-  
 
+  //alert(JSON.stringify(days_names_el))
+  if (days_names_el.month === 4) {
+    let new_rld = days_names_el.rld.slice(0, -1);
+    days_names_el.rld = new_rld;
+  }
+  //alert(JSON.stringify(days_names_el))
 
-//alert(JSON.stringify(days_names_el))
-if(days_names_el.month === 4){
-	let new_rld = days_names_el.rld.slice(0,-1)
-	days_names_el.rld = new_rld;
-}
-//alert(JSON.stringify(days_names_el))
-
-//return;
+  //return;
 
   const doc = new jsPDF({ orientation: orientation });
   let r = doc.addFont(
@@ -598,7 +596,7 @@ if(days_names_el.month === 4){
 
   const largest_row_widths = getLargestRowWidths(agents_list);
 
-  const limit = 14;
+  const limit = 12;
   const pw = 297;
   const ph = 210;
   const pm = 15;
