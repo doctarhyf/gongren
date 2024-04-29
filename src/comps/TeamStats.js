@@ -13,13 +13,22 @@ export default function TeamStats({ agentsf }) {
   const nb_net = CountAgentsByPostType(agentsf, K_POSTE_NETTOYEUR);
   const nb_aide_op = CountAgentsByPostType(agentsf, K_POSTE_AIDE_OPERATEUR);
   const chef_deq = agentsf.find((it, i) => it.chef_deq === "OUI");
+  const agent_zero = agentsf[0]
+  
+  let cur_equipe = '';
+  let cur_section = '';
+  let agents_count = agentsf.length;
+  
+  if(agent_zero){
+  	const { equipe, section } = agent_zero
+  	cur_equipe = equipe;
+  	cur_section = section;
+  }
 
   return (
     <di className="mx-2">
       <div className="border-b mb-1 text-lg text-sky-500  pb-1 ">
-        {" "}
-        TEAM STATS, Equipe ( {chef_deq && chef_deq.equipe},{" "}
-        {chef_deq && chef_deq.section} )
+        {`Equipe ${cur_equipe}, ${cur_section} (${agents_count} agents`})
       </div>
       <div>
         {" "}
