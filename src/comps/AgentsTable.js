@@ -288,7 +288,7 @@ export default function AgentsTable({
         <tr>
           <td className={COL_SPAN}>
             {agentsf.length !== 0 && (
-              <div className="flex gap-4">
+              <div className="flex gap-4 justify-center items-center p-4 ">
                 <button
                   onClick={(e) => printNameListPDF(agentsf)}
                   className={`${CLASS_BTN} flex text-sm my-2`}
@@ -323,10 +323,10 @@ export default function AgentsTable({
         </tr>
       </div>
 
-      <ItemNotSelected
+      { (!agentsf || agentsf.length == 0 ) &&  <ItemNotSelected
         show={agentsf.length > 0}
         message={"Please select a team!"}
-      />
+      /> }
     </>
   );
 }

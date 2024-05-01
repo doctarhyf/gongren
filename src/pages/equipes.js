@@ -229,7 +229,21 @@ export default function Equipes() {
     const agent_to_add = CheckAgentRLDData(ag, y, m);
     const agentsfz = agentsf[0];
 
-    setCustomAgents((old) => [...old, agent_to_add]);
+
+if(customAgents && customAgents.length > 0){
+const exists = parseInt(customAgents.filter(it => it.id === agent_to_add.id ).length) > 0
+
+if(!exists) { setCustomAgents((old) => [...old, agent_to_add]) } else {
+
+alert(`Agent ${agent_to_add.nom}, already added!`);
+
+}
+
+}
+
+
+
+
   }
 
   const [showFilters, setShowFilters] = useState(false);
@@ -239,7 +253,7 @@ export default function Equipes() {
     <div>
       <Loading isLoading={loading} />
 
-      <div className="flex">
+      <div className=" md:flex ">
         {!loading && (
           <>
             <div>
