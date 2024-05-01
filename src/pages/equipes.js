@@ -283,7 +283,14 @@ alert(`Agent ${agent_to_add.nom}, already added!`);
                 <div>
                   <button
                     className={CLASS_BTN}
-                    onClick={(e) => setCustomAgents([])}
+                    onClick={(e) => {
+                    
+                    if( window.confirm('Clear custom list?') ){
+                    setCustomAgents([]);
+                    alert('Custom list cleared')
+                    }
+                    
+                    }}
                   >
                     CLEAR CUSTOM LIST
                   </button>
