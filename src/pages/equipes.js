@@ -230,7 +230,7 @@ export default function Equipes() {
     const agentsfz = agentsf[0];
 
 
-if(customAgents && customAgents.length > 0){
+//if(customAgents && customAgents.length > 0){
 const exists = parseInt(customAgents.filter(it => it.id === agent_to_add.id ).length) > 0
 
 if(!exists) { setCustomAgents((old) => [...old, agent_to_add]) } else {
@@ -239,7 +239,7 @@ alert(`Agent ${agent_to_add.nom}, already added!`);
 
 }
 
-}
+//}
 
 
 
@@ -248,6 +248,13 @@ alert(`Agent ${agent_to_add.nom}, already added!`);
 
   const [showFilters, setShowFilters] = useState(false);
   const [customTableName, setCustomTableName] = useState();
+  
+   function onCustomAgentClick(ag){
+   
+   if(window.confirm(`Remove agent : ${ ag.nom } from list?`)){
+  setCustomAgents(old_agl => old_agl.filter(it => it.id !== ag.id ))
+}
+  }
 
   return (
     <div>
@@ -413,6 +420,7 @@ alert(`Agent ${agent_to_add.nom}, already added!`);
           isCustomList={isCustomList}
           customAgentsList={customAgents}
           customAgentsTableName={customTableName}
+          onCustomAgentClick={onCustomAgentClick}
         />
       </div>
     </div>
