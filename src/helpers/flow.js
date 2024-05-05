@@ -8,6 +8,7 @@ import Chargement from "../pages/chargement";
 import Magasin from "../pages/magasin";
 import Dico from "../pages/dico";
 import Sacs from "../pages/sacs";
+import JinChu from "../pages/jinchu";
 
 export const LANG_COOKIE_KEY = "gongren_lang";
 
@@ -109,6 +110,10 @@ export const EQUIPES_NAMES = {
 export const CONTRATS = ["BNC", "KAY", "GCK"];
 export const NATIONALITIES = ["CD", "ZH"];
 
+
+
+
+
 export const MAIN_MENU = [
   { name: "Home", path: "/home", el: Home, user_level: USER_LEVEL.AGENT },
   {
@@ -118,7 +123,7 @@ export const MAIN_MENU = [
     user_level: USER_LEVEL.AGENT,
   },
   { name: "Chargement", path: "/chargement", el: Chargement, user_level: 0 },
-
+  { name: "JinChu", path: "/jinchu", el: JinChu, user_level: 0 },
   {
     name: "Roulements",
     path: "/roulements",
