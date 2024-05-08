@@ -98,9 +98,17 @@ export default function AgentCard({
       <Loading isLoading={loading} />
       {agent && !agentCardEditMode && (
         <div className="agent-card p-2 border-neutral-400 border rounded-md ml-2">
-          <div className="text-center">
-            <img className="mx-auto" src={ico_user} width={80} height={80} />
-          </div>
+          <a href={agent.photo || null}>
+            {" "}
+            <div className="text-center">
+              <img
+                className="mx-auto"
+                src={agent.photo || ico_user}
+                width={80}
+                height={80}
+              />
+            </div>
+          </a>
           <div>
             <table>
               {!agentCardEditMode && (
