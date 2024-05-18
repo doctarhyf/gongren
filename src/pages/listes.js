@@ -148,7 +148,7 @@ export default function Listes() {
              border-transparent
              hover:bg-red-200 hover:text-red-500 cursor-pointer"
               >
-                {`${i + 1}. ${it.nom} ${it.postnom}`}
+                {`${it.nom} ${it.postnom} ${it.mingzi}`}
               </div>
             ))}
           </div>

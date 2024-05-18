@@ -45,6 +45,13 @@ function App() {
       .eq("matricule", matricule)
       .eq("pin", pin);
 
+    if (!data) {
+      alert(JSON.stringify(error));
+      console.error(error);
+      alert(JSON.stringify(data));
+      return;
+    }
+
     if (data.length === 1) {
       setuser(data[0]);
     } else {
