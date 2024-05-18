@@ -36,7 +36,7 @@ export default function AgentsTable({
   isCustomList,
   customAgentsList,
   customAgentsTableName,
-  onCustomAgentClick
+  onCustomAgentClick,
 }) {
   const COL_SPAN = 4;
   let year;
@@ -169,9 +169,8 @@ export default function AgentsTable({
       //alert(m)
     }
   }
-  
- 
- 
+
+  //this is cool
 
   return (
     <>
@@ -240,12 +239,15 @@ export default function AgentsTable({
             </tr>
             {(isCustomList ? customAgentsList : agentsf).map((ag, i) => (
               <tr
-              
-              onClick={ e => isCustomList && onCustomAgentClick(ag) }
+                onClick={(e) => isCustomList && onCustomAgentClick(ag)}
                 key={i}
-                className={` ${ isCustomList ? 'hover:bg-red-700 hover:cursor-pointer hover:text-black hover:font-bold' : ' ' } ${
-                  ag.chef_deq === "OUI" && "bg-neutral-200/60 font-bold"
-                }   ${ag.poste === "SUP" && "bg-neutral-200/60 font-bold"}  `}
+                className={` ${
+                  isCustomList
+                    ? "hover:bg-red-700 hover:cursor-pointer hover:text-black hover:font-bold"
+                    : " "
+                } ${ag.chef_deq === "OUI" && "bg-neutral-200/60 font-bold"}   ${
+                  ag.poste === "SUP" && "bg-neutral-200/60 font-bold"
+                }  `}
               >
                 <td className={` ${CLASS_TD} w-min `}>{i + 1}</td>
                 <td className={CLASS_TD}>
@@ -329,10 +331,12 @@ export default function AgentsTable({
         </tr>
       </div>
 
-      { (!agentsf || agentsf.length == 0 ) &&  <ItemNotSelected
-        show={agentsf.length > 0}
-        message={"Please select a team!"}
-      /> }
+      {(!agentsf || agentsf.length == 0) && (
+        <ItemNotSelected
+          show={agentsf.length > 0}
+          message={"Please select a team!"}
+        />
+      )}
     </>
   );
 }
