@@ -229,17 +229,38 @@ export default function Equipes() {
     const agent_to_add = CheckAgentRLDData(ag, y, m);
     const agentsfz = agentsf[0];
 
-    setCustomAgents((old) => [...old, agent_to_add]);
+
+//if(customAgents && customAgents.length > 0){
+const exists = parseInt(customAgents.filter(it => it.id === agent_to_add.id ).length) > 0
+
+if(!exists) { setCustomAgents((old) => [...old, agent_to_add]) } else {
+
+alert(`Agent ${agent_to_add.nom}, already added!`);
+
+}
+
+//}
+
+
+
+
   }
 
   const [showFilters, setShowFilters] = useState(false);
   const [customTableName, setCustomTableName] = useState();
+  
+   function onCustomAgentClick(ag){
+   
+   if(window.confirm(`Remove agent : ${ ag.nom } from list?`)){
+  setCustomAgents(old_agl => old_agl.filter(it => it.id !== ag.id ))
+}
+  }
 
   return (
     <div>
       <Loading isLoading={loading} />
 
-      <div className="flex">
+      <div className=" md:flex ">
         {!loading && (
           <>
             <div>
@@ -262,7 +283,14 @@ export default function Equipes() {
                 <div>
                   <button
                     className={CLASS_BTN}
-                    onClick={(e) => setCustomAgents([])}
+                    onClick={(e) => {
+                    
+                    if( window.confirm('Clear custom list?') ){
+                    setCustomAgents([]);
+                    alert('Custom list cleared')
+                    }
+                    
+                    }}
                   >
                     CLEAR CUSTOM LIST
                   </button>
@@ -399,6 +427,7 @@ export default function Equipes() {
           isCustomList={isCustomList}
           customAgentsList={customAgents}
           customAgentsTableName={customTableName}
+          onCustomAgentClick={onCustomAgentClick}
         />
       </div>
     </div>

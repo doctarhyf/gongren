@@ -9,6 +9,8 @@ import {
   USER_LEVEL,
 } from "../helpers/flow";
 import { UserContext } from "../App";
+import ico_user from "../img/user.png";
+import { supabase } from "../helpers/sb.config";
 
 const DATA_TYPE_TEXT_INPUT = 2;
 const DATA_TYPE_SELECT = 3;
@@ -39,6 +41,7 @@ export default function FormAddAgent({
     matricule: "",
     page: 2,
     active: "NON",
+    photo: "",
   };
 
   const ref_id = useRef();
@@ -59,6 +62,8 @@ export default function FormAddAgent({
   const ref_tenue = useRef();
   const ref_active = useRef();
   const ref_page = useRef();
+  //const ref_photo = useRef();
+  const [photo, setphoto] = useState();
 
   const [loading, setloading] = useState(false);
 
@@ -83,8 +88,12 @@ export default function FormAddAgent({
       list_priority: _(ref_list_priority),
       tenue: _(ref_tenue),
       active: _(ref_active),
+      photo: photo,
       //page: _(ref_page),
     };
+
+    /* alert(JSON.stringify(agent_data));
+    return; */
 
     if (!isNewAgent) {
       agent_data.id = _(ref_id);
@@ -98,9 +107,93 @@ export default function FormAddAgent({
     return ref.current && ref.current.value;
   }
 
+  const [uploading, setuploading] = useState(false);
+
+  async function uploadPhoto(file, file_name) {
+    if (file) {
+      setuploading(true);
+      // const file_name = `${Math.random()}.jpg`;
+      let { data, error } = await supabase.storage
+        .from("agents_photos")
+        .upload(`${file_name}`, file);
+
+      if (error && error.statusCode == "409") {
+        alert("Updating ...");
+        const res = await supabase.storage
+          .from("agents_photos")
+          .update(file_name, file, {
+            cacheControl: "3600",
+            upsert: true,
+          });
+
+        data = res.data;
+        error = res.error;
+      }
+
+      setuploading(false);
+
+      if (error) {
+        console.error("Error uploading file:", error.message);
+        return error;
+      } else {
+        console.log("File uploaded successfully:", data.Key);
+
+        const path = supabase.storage
+          .from("agents_photos")
+          .getPublicUrl(data.path);
+
+        return path;
+      }
+    }
+  }
+
+  const [selectedImage, setSelectedImage] = useState(null);
+  const handleImageChange = async (event) => {
+    const file = event.target.files[0];
+    if (file && file.type.startsWith("image/")) {
+      setSelectedImage(URL.createObjectURL(file));
+
+      const file_name = `agent_${agentDataToUpdate.id}.jpg`;
+      const { data } = await uploadPhoto(file, file_name);
+
+      if (data && data.publicUrl) {
+        const { publicUrl } = data;
+        setphoto(publicUrl);
+        console.log(publicUrl);
+        //alert(publicUrl);
+      } else {
+        alert(`error ...`);
+      }
+    } else {
+      setSelectedImage(null);
+    }
+  };
+
   return (
     <div>
       <Loading isLoading={loading} />
+
+      <img src={selectedImage || ico_user} width={120} height={120} />
+      {uploading && (
+        <div className="text-green-500 text-xs my-2 font-bold bg-black rounded-full p-2">
+          Uploading photo ...
+        </div>
+      )}
+
+      <tr>
+        <td align="right" className="text-neutral-400 text-sm">
+          Photo
+        </td>
+
+        <td>
+          <input
+            type="file"
+            name="photo"
+            accept="image/*"
+            onChange={handleImageChange}
+          />
+        </td>
+      </tr>
       {[
         [ref_id, `id`, agent.id, , ,],
         [ref_created_at, `created_at`, agent.created_at, , ,],
@@ -177,12 +270,14 @@ export default function FormAddAgent({
       )}
       {!isNewAgent && (
         <>
-          <button
-            onClick={saveAgentData}
-            className="p-1 rounded-md border my-1 border-green-500 text-green-500 hover:bg-green-500 hover:text-white"
-          >
-            UPDATE
-          </button>
+          {!uploading && (
+            <button
+              onClick={saveAgentData}
+              className="p-1 disabled:bg-gray-400 rounded-md border my-1 border-green-500 text-green-500 hover:bg-green-500 hover:text-white"
+            >
+              {uploading ? "Uploading photo ..." : "UPDATE"}
+            </button>
+          )}
         </>
       )}
     </div>
