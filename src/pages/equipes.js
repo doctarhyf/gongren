@@ -59,6 +59,9 @@ export default function Equipes() {
   const ref_mor_agents = useRef();
   const ref_full_team = useRef();
   const ref_all_gck_stuff = useRef();
+  const ref_all_mor = useRef();
+  const ref_all_bnc = useRef();
+  const ref_all_kay = useRef();
   const ref_all_cd_stuff = useRef();
   const ref_all_zh_stuff = useRef();
   const ref_all_sup = useRef();
@@ -72,6 +75,9 @@ export default function Equipes() {
     { name: "MOR AGENTS", ref: ref_mor_agents },
     { name: "FULL TEAM", ref: ref_full_team },
     { name: "ALL GCK STUFF", ref: ref_all_gck_stuff },
+    { name: "ALL MOR", ref: ref_all_mor },
+    { name: "ALL BINIC", ref: ref_all_bnc },
+    { name: "ALL KAYTRADING", ref: ref_all_kay },
     { name: "ALL CD GCK STUFF", ref: ref_all_cd_stuff },
     { name: "ALL ZH GCK STUFF", ref: ref_all_zh_stuff },
     { name: "ALL DEQ", ref: ref_all_deq },
@@ -110,6 +116,8 @@ export default function Equipes() {
       const mor = ag.contrat !== "GCK";
       const cd = ag.nationalite === "CD";
       const zh = ag.nationalite === "ZH";
+      const bnc = ag.contrat === "BNC";
+      const kay = ag.contrat === "KAY";
 
       const equipe_section = by_equipe && by_section;
       const eq_sec_gck = equipe_section && gck;
@@ -117,6 +125,9 @@ export default function Equipes() {
       const all_gck = gck;
       const all_zh = all_gck && zh;
       const all_cd = all_gck && cd;
+      const all_mor = mor;
+      const all_bnc = bnc;
+      const all_kay = kay;
       const all_sup =
         all_gck && !zh && ag.poste === "SUP" && ag.section === "ENSACHAGE";
       const agents_only_no_sup = ag.poste !== "SUP" && equipe_section;
@@ -132,6 +143,9 @@ export default function Equipes() {
         if ("FULL TEAM" === filter.name) return equipe_section;
         if ("ALL CHINESE STUFF" === filter.name) return all_zh;
         if ("ALL GCK STUFF" === filter.name) return all_gck;
+        if ("ALL MOR" === filter.name) return all_mor;
+        if ("ALL BINIC" === filter.name) return all_bnc;
+        if ("ALL KAYTRADING" === filter.name) return all_kay;
         if ("ALL CD GCK STUFF" === filter.name) return all_cd;
         if ("ALL ZH GCK STUFF" === filter.name) return all_zh;
         if ("ALL SUPERVISORS" === filter.name) return all_sup;
@@ -229,31 +243,27 @@ export default function Equipes() {
     const agent_to_add = CheckAgentRLDData(ag, y, m);
     const agentsfz = agentsf[0];
 
+    //if(customAgents && customAgents.length > 0){
+    const exists =
+      parseInt(customAgents.filter((it) => it.id === agent_to_add.id).length) >
+      0;
 
-//if(customAgents && customAgents.length > 0){
-const exists = parseInt(customAgents.filter(it => it.id === agent_to_add.id ).length) > 0
+    if (!exists) {
+      setCustomAgents((old) => [...old, agent_to_add]);
+    } else {
+      alert(`Agent ${agent_to_add.nom}, already added!`);
+    }
 
-if(!exists) { setCustomAgents((old) => [...old, agent_to_add]) } else {
-
-alert(`Agent ${agent_to_add.nom}, already added!`);
-
-}
-
-//}
-
-
-
-
+    //}
   }
 
   const [showFilters, setShowFilters] = useState(false);
   const [customTableName, setCustomTableName] = useState();
-  
-   function onCustomAgentClick(ag){
-   
-   if(window.confirm(`Remove agent : ${ ag.nom } from list?`)){
-  setCustomAgents(old_agl => old_agl.filter(it => it.id !== ag.id ))
-}
+
+  function onCustomAgentClick(ag) {
+    if (window.confirm(`Remove agent : ${ag.nom} from list?`)) {
+      setCustomAgents((old_agl) => old_agl.filter((it) => it.id !== ag.id));
+    }
   }
 
   return (
@@ -284,12 +294,10 @@ alert(`Agent ${agent_to_add.nom}, already added!`);
                   <button
                     className={CLASS_BTN}
                     onClick={(e) => {
-                    
-                    if( window.confirm('Clear custom list?') ){
-                    setCustomAgents([]);
-                    alert('Custom list cleared')
-                    }
-                    
+                      if (window.confirm("Clear custom list?")) {
+                        setCustomAgents([]);
+                        alert("Custom list cleared");
+                      }
                     }}
                   >
                     CLEAR CUSTOM LIST
