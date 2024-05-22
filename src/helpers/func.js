@@ -188,14 +188,23 @@ function addAgentsNames(doc, agents) {
   doc.setFontSize(10);
   const x = 10;
   let y;
+  let idx = 0;
+  const page_limit = 28;
   agents.forEach((agent, i) => {
     let nom = `${i + 1}. ${agent.nom} ${agent.postnom} ${fcap(
       agent.prenom
     )} - ${agent.matricule}`;
 
-    y = LOGOH / 2 + 10 + (i + 1) * 8;
+    const start = i > page_limit ? 0 : LOGOH / 2 + 10;
+    y = start + (idx + 1) * 8;
     doc.text(nom, x, y);
     if (i === agents.length - 1) doc.line(x, y + 2.5, 180, y + 2.5);
+    if (idx === page_limit) {
+      doc.addPage();
+
+      idx = 0;
+    }
+    idx++;
   });
 
   doc.setFontSize(12);
