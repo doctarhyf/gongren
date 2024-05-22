@@ -189,7 +189,8 @@ function addAgentsNames(doc, agents) {
   const x = 10;
   let y;
   let idx = 0;
-  const page_limit = 28;
+  const original_limit = 29;
+  let page_limit = original_limit;
   agents.forEach((agent, i) => {
     let nom = `${i + 1}. ${agent.nom} ${agent.postnom} ${fcap(
       agent.prenom
@@ -197,8 +198,10 @@ function addAgentsNames(doc, agents) {
 
     const start = i > page_limit ? 0 : LOGOH / 2 + 10;
     y = start + (idx + 1) * 8;
+
     doc.text(nom, x, y);
     if (i === agents.length - 1) doc.line(x, y + 2.5, 180, y + 2.5);
+
     if (idx === page_limit) {
       doc.addPage();
 
