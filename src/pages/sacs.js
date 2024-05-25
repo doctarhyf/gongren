@@ -70,6 +70,73 @@ function Table({
 }
 
 export default function Sacs() {
+  const [stv, setstv] = useState(0);
+  const [ss, setss] = useState(0);
+  const [sd, setsd] = useState(0);
+  const [su, setsu] = useState(0);
+  const [sr, setsr] = useState(0);
+  const [sc, setsc] = useState(0);
+  const [sdiff, setsdiff] = useState(0);
+
+  useEffect(() => {
+    let restants = stv + ss - sd - su;
+    let diff = restants - sc;
+
+    setsr(restants);
+    setsdiff(diff);
+
+    console.log(`Sacs restants ; ${restants}`);
+  }, [stv, ss, sd, su, sc]);
+
+  return (
+    <div>
+      <div>Calculateurs de sacs</div>
+      <div>Sacs trouves</div>
+      <input
+        type="number"
+        keyboardType={"numeric"}
+        value={stv}
+        onChange={(e) => setstv(parseInt(e.target.value))}
+      />
+      <div>Sacs sortis</div>
+      <input
+        type="number"
+        keyboardType={"numeric"}
+        value={ss}
+        onChange={(e) => setss(parseInt(e.target.value))}
+      />
+      <div>Sacs dechires</div>
+      <input
+        type="number"
+        keyboardType={"numeric"}
+        value={sd}
+        onChange={(e) => setsd(parseInt(e.target.value))}
+      />
+      <div>Sacs utilises</div>
+      <input
+        type="number"
+        keyboardType={"numeric"}
+        value={su}
+        onChange={(e) => setsu(parseInt(e.target.value))}
+      />
+
+      <div>Sacs comptes apres chargement</div>
+      <input
+        type="number"
+        keyboardType={"numeric"}
+        value={sc}
+        onChange={(e) => setsc(parseInt(e.target.value))}
+      />
+
+      <div>Sacs Restants</div>
+      <div>{sr}</div>
+      <div>Sacs Perdus</div>
+      <div>{sdiff}</div>
+    </div>
+  );
+}
+
+/* export default function Sacs() {
   const [, , user] = useContext(UserContext);
 
   const [addingNewRecord, setAddingNewRecord] = useState(false);
@@ -198,3 +265,4 @@ export default function Sacs() {
     </div>
   );
 }
+ */
