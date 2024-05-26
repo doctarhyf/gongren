@@ -732,8 +732,30 @@ function print_agents_rl(agents_list, print_empty, team_name) {
 
   final_data.forEach((cur_ag_data, i) => {
     let y = newPage ? idx * fsize + pm : rly + idx * fsize + fsize;
-    const is_header_row = i === 1;
     const is_day_nams_row = i === 0;
+    const is_header_row = i === 1;
+
+    /*    if (newPage) {
+      line_rects = draw_agent_single_line(
+        doc,
+        false,
+        {
+          ...cur_ag_data,
+          id: "No",
+          nom: { fr: "AGENT/", zh: "员工" },
+          matricule: "MAT.",
+          contrat: "",
+          i: i,
+        },
+        rlx,
+        y,
+        pw,
+        pm,
+        header_el_w_data,
+        dates
+      );
+    } */
+
     if (is_header_row) {
       line_rects = draw_agent_single_line(
         doc,
