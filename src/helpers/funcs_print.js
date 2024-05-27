@@ -744,11 +744,8 @@ function print_agents_rl(agents_list, print_empty, team_name) {
   const final_data = [days_names_el, first_el, ...agents_list];
   final_data.pop();
 
-  console.error(`old len => ${final_data.length}`);
-  copyAndInsert(final_data, 13);
-  console.error(`new len =>  ${final_data.length}`);
-
   const AGENTS_NEW_PAGE_SPLIT_INDEX = 14;
+  copyAndInsert(final_data, AGENTS_NEW_PAGE_SPLIT_INDEX - 1);
 
   final_data.forEach((cur_ag_data, i) => {
     let y = newPage ? idx * fsize + pm : rly + idx * fsize + fsize;
