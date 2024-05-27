@@ -572,6 +572,20 @@ function print_agents_list_roulement(agents_rl) {
   doc.save("rl.pdf");
 }
 
+function copyAndInsert(agentsArray, copyIndex) {
+  // Check if the copyIndex is valid
+  if (copyIndex < 0 || copyIndex >= agentsArray.length) {
+    console.error("Invalid copy index");
+    return;
+  }
+
+  // Copy the element at index 13
+  let elementToCopy = agentsArray[copyIndex];
+
+  // Insert the copied element at index 14
+  agentsArray.splice(copyIndex + 1, 0, { ...elementToCopy }); // Spread operator to create a new object
+}
+
 function print_agents_rl(agents_list, print_empty, team_name) {
   const first_el = { ...agents_list[0] };
   const days_names_el = { ...agents_list[agents_list.length - 1] };
@@ -730,31 +744,16 @@ function print_agents_rl(agents_list, print_empty, team_name) {
   const final_data = [days_names_el, first_el, ...agents_list];
   final_data.pop();
 
+  console.error(`old len => ${final_data.length}`);
+  copyAndInsert(final_data, 13);
+  console.error(`new len =>  ${final_data.length}`);
+
+  const AGENTS_NEW_PAGE_SPLIT_INDEX = 14;
+
   final_data.forEach((cur_ag_data, i) => {
     let y = newPage ? idx * fsize + pm : rly + idx * fsize + fsize;
     const is_day_nams_row = i === 0;
-    const is_header_row = i === 1;
-
-    /*    if (newPage) {
-      line_rects = draw_agent_single_line(
-        doc,
-        false,
-        {
-          ...cur_ag_data,
-          id: "No",
-          nom: { fr: "AGENT/", zh: "员工" },
-          matricule: "MAT.",
-          contrat: "",
-          i: i,
-        },
-        rlx,
-        y,
-        pw,
-        pm,
-        header_el_w_data,
-        dates
-      );
-    } */
+    const is_header_row = i === 1 || i === AGENTS_NEW_PAGE_SPLIT_INDEX;
 
     if (is_header_row) {
       line_rects = draw_agent_single_line(
