@@ -10,7 +10,7 @@ export default function SacsCalc() {
 
   useEffect(() => {
     let restants = sacs_trouves + sacs_sortis - sacs_dechires - sacs_utilises;
-    let lost = restants - sacs_comptes;
+    let lost = - restants + sacs_comptes;
 
     setsr(restants);
     setsdiff(lost);
