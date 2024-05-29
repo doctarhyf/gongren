@@ -18,10 +18,11 @@ import Loading from "../comps/Loading";
 import { doc } from "../helpers/funcs_print";
 import SacsCalc from "../comps/SacsCalc";
 import GestionSacs from "../comps/GestionSacs";
+import SacsContainer from "../comps/SacsContainer";
 
 const SECTIONS = {
   CONTAINER: { label: "Conteneur" },
-  SACS_PROD: { label: "Gestion Sacs" },
+  SACS_CHARGEMENT: { label: "Gestion Sacs" },
   CALC: { label: "Calculateur sacs" },
 };
 
@@ -45,7 +46,8 @@ export default function Sacs() {
         ))}
       </div>
 
-      {selsec === SECTIONS.SACS_PROD && <GestionSacs />}
+      {selsec === SECTIONS.CONTAINER && <SacsContainer />}
+      {selsec === SECTIONS.SACS_CHARGEMENT && <GestionSacs />}
       {selsec === SECTIONS.CALC && <SacsCalc />}
     </div>
   );

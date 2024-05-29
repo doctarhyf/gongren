@@ -19,10 +19,5 @@ import { doc } from "../helpers/funcs_print";
 import container from "../img/container.jpg";
 
 export default function GestionSacs() {
-  return (
-    <div>
-      {/*  <div>Container</div>
-      <img src={container} width={100} height={50} /> */}
-    </div>
-  );
+  return <div>Gestion de sacs</div>;
 }
