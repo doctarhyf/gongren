@@ -70,7 +70,16 @@ export default function SacsCalc() {
             {sacs_restants}
           </div>
         )}
-        {sacs_perdus === 0 || isNaN(sacs_perdus) ? null : (
+        
+        {sacs_perdus === 0 &&
+            <div className="p-1 rounded-full bg-white text-green-500 font-bold">Comptage normal</div>
+          
+           }
+        
+        
+        
+        {sacs_perdus === 0 || isNaN(sacs_perdus) ? 
+        null : (
           <>
             <div className=" font-bold ">Sacs Perdus</div>
             <div className=" text-xxl text-red-500 font-bold text-4xl ">
