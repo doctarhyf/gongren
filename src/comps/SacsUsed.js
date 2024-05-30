@@ -11,13 +11,13 @@ import {
   dateFormatter,
 } from "../helpers/flow";
 import { UserContext } from "../App";
-import ButtonPrint from "../comps/ButtonPrint";
+import ButtonPrint from "./ButtonPrint";
 import { _, createHeaders, formatFrenchDate } from "../helpers/func";
 import * as SB from "../helpers/sb";
-import Loading from "../comps/Loading";
+import Loading from "./Loading";
 import { doc } from "../helpers/funcs_print";
 import container from "../img/container.jpg";
 
-export default function GestionSacs() {
-  return <div>Gestion de sacs</div>;
+export default function SacsUsed() {
+  return <div>SacsUsed</div>;
 }
