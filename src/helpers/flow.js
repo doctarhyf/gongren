@@ -14,7 +14,7 @@ export const LANG_COOKIE_KEY = "gongren_lang";
 
 export const SUPERVISORS = {
   A: { nom: "ALBERT KANKOBWE", zh: "刚果贝" },
-  B: { nom: "BERTIN KAYEMBE", zh: "编带" },
+  B: { nom: "NKULU MWENZE", zh: "库鲁" },
   C: { nom: "SERGE KAZALI", zh: "塞基尔" },
   D: { nom: "AMEDEE KATANGA", zh: "噶当噶" },
 };
