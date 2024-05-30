@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { GetDummyContainer } from "../helpers/dummy.mjs";
 
 export default function SacsContainer() {
-  const [cont_data, set_cont_dat] = useState(GetDummyContainer(50));
+  const [cont_data, set_cont_dat] = useState();
 
   useEffect(() => {
     console.log(cont_data);
@@ -10,9 +10,13 @@ export default function SacsContainer() {
 
   return (
     <div>
-      <div>Sacs Restant: 2200</div>
+      <div>Stock: 2200</div>
+      <div>
+        <button>SORTI</button>
+        <button>ENTREE</button>
+      </div>
       <div className=" container mx-auto p-4 ">
-        <table className="min-w-full bg-white">
+        {/*  <table className="min-w-full bg-white">
           <thead>
             <tr>
               <th className="py-2 px-4 bg-gray-200 border-b">ID</th>
@@ -34,7 +38,7 @@ export default function SacsContainer() {
               </tr>
             ))}
           </tbody>
-        </table>
+        </table> */}
       </div>
     </div>
   );
