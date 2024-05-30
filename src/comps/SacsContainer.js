@@ -34,7 +34,7 @@ export default function SacsContainer() {
 
     const trans = {
       id: Math.random() * 1000,
-      recount: recountStock ? "oui" : "non",
+      recount: recountStock ? "recount" : "",
       team: new_trans.team,
       op: recountStock ? "" : new_trans.op || "rem",
       sacs_count: new_trans.sacs_count,
