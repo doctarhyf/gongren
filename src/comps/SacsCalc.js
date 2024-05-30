@@ -77,7 +77,7 @@ export default function SacsCalc() {
         
         {sacs_perdus === 0 || isNaN(sacs_perdus) ? 
         !isNaN(sacs_perdus) && 
-            <div className="p-1 rounded-full bg-white text-green-500 font-bold">Comptage normal</div>
+            <div className="p-2 px-auto rounded-full bg-slate-100 text-green-500 font-bold">Comptage normal</div>
           
         
          : (
