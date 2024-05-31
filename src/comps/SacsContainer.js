@@ -51,9 +51,8 @@ export default function SacsContainer() {
 
   const onClickTrans = (op) => {
     if (window.confirm("Delete trans")) {
+      set_cont_dat((old) => old.filter((it) => it.id != op.id));
     }
-
-    set_cont_dat((old) => old.filter((it) => it.id != op.id));
   };
 
   return (
