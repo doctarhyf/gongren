@@ -22,7 +22,9 @@ export default function SacsContainer() {
   };
 
   const onConfirm = (e) => {
-    console.log(new_trans);
+    if (!window.confirm(`Confirm transaction\n${JSON.stringify(new_trans)}`)) {
+      return;
+    }
 
     let stock_restant =
       new_trans.op === "add"
@@ -45,6 +47,13 @@ export default function SacsContainer() {
 
     set_cont_dat((old) => [...old, trans]);
     setShowDataInput(false);
+  };
+
+  const onClickTrans = (op) => {
+    if (window.confirm("Delete trans")) {
+    }
+
+    set_cont_dat((old) => old.filter((it) => it.id != op.id));
   };
 
   return (
@@ -76,7 +85,10 @@ export default function SacsContainer() {
 
             <tbody className="table-body">
               {cont_data.map((op, i) => (
-                <tr>
+                <tr
+                  className=" hover:bg-sky-100 cursor-pointer "
+                  onClick={(e) => onClickTrans(op)}
+                >
                   <td>{i + 1}</td>
                   <td>{op.recount}</td>
                   <td>{op.team}</td>
