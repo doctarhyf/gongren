@@ -28,6 +28,7 @@ const SECTIONS = {
 
 export default function Sacs() {
   const [selsec, setselsec] = useState(SECTIONS.CONTAINER);
+  const [stock, setstock] = useState(0);
 
   return (
     <div>
@@ -46,9 +47,15 @@ export default function Sacs() {
         ))}
       </div>
 
-      {selsec === SECTIONS.CONTAINER && <SacsContainer />}
-      {selsec === SECTIONS.SACS_CHARGEMENT && <SacsUsed />}
-      {selsec === SECTIONS.CALC && <SacsCalc />}
+      {selsec === SECTIONS.CONTAINER && (
+        <SacsContainer stock={stock} setstock={setstock} />
+      )}
+      {selsec === SECTIONS.SACS_CHARGEMENT && (
+        <SacsUsed stock={stock} setstock={setstock} />
+      )}
+      {selsec === SECTIONS.CALC && (
+        <SacsCalc stock={stock} setstock={setstock} />
+      )}
     </div>
   );
 }

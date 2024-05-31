@@ -18,6 +18,10 @@ import Loading from "./Loading";
 import { doc } from "../helpers/funcs_print";
 import container from "../img/container.jpg";
 
-export default function SacsUsed() {
-  return <div>SacsUsed</div>;
+export default function SacsUsed({ stock, setstock }) {
+  return (
+    <div>
+      <div>Stock : {stock}</div>
+    </div>
+  );
 }

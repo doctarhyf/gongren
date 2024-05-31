@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { GetDummyContainer } from "../helpers/dummy.mjs";
 
-export default function SacsContainer() {
+export default function SacsContainer({ stock, setstock }) {
   const [cont_data, set_cont_dat] = useState([]);
   const [showDataInput, setShowDataInput] = useState(false);
   const [new_trans, set_new_trans] = useState({});
-  const [stock, setstock] = useState(0);
+
   const [recountStock, setRecountStock] = useState(false);
 
   /* useEffect(() => {
