@@ -72,13 +72,28 @@ function MyButton({ title = "ADD", onClick }) {
   );
 }
 
-function SacsContainer({ onAddTrans, trans_cont }) {
+function FormInput({ type, set_show_form, on_save }) {
+  const [data, setdata] = useState({});
+
+  return (
+    <div>
+      {type === TRANSACTION_TYPE.CONTAINER && <div>form cont</div>}
+      {type === TRANSACTION_TYPE.PRODUCTION && <div>form prod</div>}
+      <div>
+        <MyButton onClick={(e) => on_save("cool", type)} title="SAVE" />
+        <MyButton onClick={(e) => set_show_form(false)} title="CANCEL" />
+      </div>
+    </div>
+  );
+}
+
+function SacsContainer({ onShowFormInput, trans_cont }) {
   const type = TRANSACTION_TYPE.CONTAINER;
 
   return (
     <div className=" container  ">
       <div>
-        <MyButton onClick={(e) => onAddTrans(type)} />
+        <MyButton onClick={(e) => onShowFormInput(type)} />
       </div>
       <table>
         <thead>
@@ -106,28 +121,13 @@ function SacsContainer({ onAddTrans, trans_cont }) {
   );
 }
 
-function FormInput({ type, set_show_form, on_save }) {
-  const [data, setdata] = useState({});
-
-  return (
-    <div>
-      {type === TRANSACTION_TYPE.CONTAINER && <div>form</div>}
-      {type === TRANSACTION_TYPE.PRODUCTION && <div>form prod</div>}
-      <div>
-        <MyButton onClick={(e) => on_save("cool", type)} title="SAVE" />
-        <MyButton onClick={(e) => set_show_form(false)} title="CANCEL" />
-      </div>
-    </div>
-  );
-}
-
-function SacsProduction({ trans_prod, onAddTrans }) {
+function SacsProduction({ onShowFormInput, trans_prod }) {
   const type = TRANSACTION_TYPE.PRODUCTION;
 
   return (
     <div>
       <div>
-        <MyButton onClick={(e) => onAddTrans(type)} />
+        <MyButton onClick={(e) => onShowFormInput(type)} />
       </div>
 
       {JSON.stringify(trans_prod)}
@@ -142,19 +142,20 @@ export default function Sacs() {
   const [show_form, set_show_form] = useState(false);
   const [form_type, set_form_type] = useState(undefined);
 
-  const on_save = (dt, t) => console.log(dt, t);
-
-  const onAddTrans = (t) => {
-    // console.log(t);
-    set_form_type(t);
-    set_show_form(true);
-
-    return;
+  const on_save = (dt, t) => {
     if (t === TRANSACTION_TYPE.CONTAINER) {
       set_trans_cont((old) => [...old, { ...transaction_container }]);
     } else {
       set_trans_prod((old) => [...old, { ...transaction_production }]);
     }
+
+    console.log(dt, t);
+    set_show_form(false);
+  };
+
+  const onShowFormInput = (t) => {
+    set_form_type(t);
+    set_show_form(true);
   };
 
   return (
@@ -198,10 +199,16 @@ export default function Sacs() {
       {!show_form && (
         <>
           {SECTIONS.CONTAINER.label === selsec.label && (
-            <SacsContainer onAddTrans={onAddTrans} trans_cont={trans_cont} />
+            <SacsContainer
+              onShowFormInput={onShowFormInput}
+              trans_cont={trans_cont}
+            />
           )}
           {SECTIONS.PRODUCTION.label === selsec.label && (
-            <SacsProduction onAddTrans={onAddTrans} trans_prod={trans_prod} />
+            <SacsProduction
+              onShowFormInput={onShowFormInput}
+              trans_prod={trans_prod}
+            />
           )}
         </>
       )}
