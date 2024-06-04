@@ -87,14 +87,33 @@ function SacsContainer({ onAddTrans, trans_cont }) {
             <td>Team</td>
             <td>Type</td>
             <td>Sacs</td>
-            <td>Dates</td>
+            <td>Date</td>
           </th>
         </thead>
         <tbody>
-          <tr></tr>
+          {trans_cont.map((t, i) => (
+            <tr>
+              <td>{t.id}</td>
+              <td>{t.team}</td>
+              <td>{t.type}</td>
+              <td>{t.sacs}</td>
+              <td>{t.dates}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
-      {JSON.stringify(trans_cont)}
+    </div>
+  );
+}
+
+function FormInput({ type, set_show_form }) {
+  return (
+    <div>
+      {type === TRANSACTION_TYPE.CONTAINER && <div>form cont</div>}
+      {type === TRANSACTION_TYPE.PRODUCTION && <div>form prod</div>}
+      <div>
+        <MyButton onClick={(e) => set_show_form(false)} title="CANCEL" />
+      </div>
     </div>
   );
 }
@@ -117,9 +136,15 @@ export default function Sacs() {
   const [trans_cont, set_trans_cont] = useState([]);
   const [trans_prod, set_trans_prod] = useState([]);
   const [selsec, setselsec] = useState(SECTIONS.CONTAINER);
+  const [show_form, set_show_form] = useState(false);
+  const [form_type, set_form_type] = useState(undefined);
 
   const onAddTrans = (t) => {
-    console.log(t);
+    // console.log(t);
+    set_form_type(t);
+    set_show_form(true);
+
+    return;
     if (t === TRANSACTION_TYPE.CONTAINER) {
       set_trans_cont((old) => [...old, { ...transaction_container }]);
     } else {
@@ -157,11 +182,19 @@ export default function Sacs() {
         </div>
       </div>
 
-      {SECTIONS.CONTAINER.label === selsec.label && (
-        <SacsContainer onAddTrans={onAddTrans} trans_cont={trans_cont} />
+      {show_form && (
+        <FormInput type={form_type} set_show_form={set_show_form} />
       )}
-      {SECTIONS.PRODUCTION.label === selsec.label && (
-        <SacsProduction onAddTrans={onAddTrans} trans_prod={trans_prod} />
+
+      {!show_form && (
+        <>
+          {SECTIONS.CONTAINER.label === selsec.label && (
+            <SacsContainer onAddTrans={onAddTrans} trans_cont={trans_cont} />
+          )}
+          {SECTIONS.PRODUCTION.label === selsec.label && (
+            <SacsProduction onAddTrans={onAddTrans} trans_prod={trans_prod} />
+          )}
+        </>
       )}
     </div>
   );
