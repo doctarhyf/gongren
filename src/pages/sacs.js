@@ -106,12 +106,15 @@ function SacsContainer({ onAddTrans, trans_cont }) {
   );
 }
 
-function FormInput({ type, set_show_form }) {
+function FormInput({ type, set_show_form, on_save }) {
+  const [data, setdata] = useState({});
+
   return (
     <div>
-      {type === TRANSACTION_TYPE.CONTAINER && <div>form cont</div>}
+      {type === TRANSACTION_TYPE.CONTAINER && <div>form</div>}
       {type === TRANSACTION_TYPE.PRODUCTION && <div>form prod</div>}
       <div>
+        <MyButton onClick={(e) => on_save("cool", type)} title="SAVE" />
         <MyButton onClick={(e) => set_show_form(false)} title="CANCEL" />
       </div>
     </div>
@@ -138,6 +141,8 @@ export default function Sacs() {
   const [selsec, setselsec] = useState(SECTIONS.CONTAINER);
   const [show_form, set_show_form] = useState(false);
   const [form_type, set_form_type] = useState(undefined);
+
+  const on_save = (dt, t) => console.log(dt, t);
 
   const onAddTrans = (t) => {
     // console.log(t);
@@ -183,7 +188,11 @@ export default function Sacs() {
       </div>
 
       {show_form && (
-        <FormInput type={form_type} set_show_form={set_show_form} />
+        <FormInput
+          type={form_type}
+          set_show_form={set_show_form}
+          on_save={on_save}
+        />
       )}
 
       {!show_form && (
