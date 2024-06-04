@@ -18,17 +18,114 @@ import Loading from "../comps/Loading";
 import { doc } from "../helpers/funcs_print";
 import SacsCalc from "../comps/SacsCalc";
 import SacsUsed from "../comps/SacsUsed";
-import SacsContainer from "../comps/SacsContainer";
+//import SacsContainer from "../comps/SacsContainer";
 
-const SECTIONS = {
-  CONTAINER: { label: "Sacs Container" },
-  SACS_CHARGEMENT: { label: "Sacs Used" },
-  CALC: { label: "Calculateur sacs" },
+const options = {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+  hour: "numeric",
+  minute: "numeric",
+  second: "numeric",
+  timeZone: "UTC", // Adjust to local time zone if needed
+  timeZoneName: "short",
 };
 
+const TRANSACTION_TYPE = {
+  CONTAINER: "CONTAINER",
+  PRODUCTION: "PRODUCTION",
+};
+
+const SECTIONS = {
+  CONTAINER: { label: "SACS CONTAINER" },
+  PRODUCTION: { label: "SACS PRODUCTION" },
+};
+
+const transaction_container = {
+  id: 0,
+  team: "A", // A | B | C | D
+  type: "", // normal | sinoma,
+  sacs: 0,
+  createdAt: new Date().toISOString(),
+};
+
+const transaction_production = {
+  id: 0,
+  team: "A", // A | B | C | D
+  createdAt: new Date().toISOString(),
+  st: 0, // sacs trouves
+  ss: 0, // sacs sortis
+  su: 0, // sacs utilises
+  prod: 0, // production
+  sd: 0, // sacs dechires
+  sr: 0, // sacs restants
+};
+
+function MyButton({ title = "ADD", onClick }) {
+  return (
+    <button
+      onClick={onClick}
+      className=" p-1 rounded-lg bg-sky-500 hover:bg-sky-300 text-white  "
+    >
+      {title}
+    </button>
+  );
+}
+
+function SacsContainer({ onAddTrans, trans_cont }) {
+  const type = TRANSACTION_TYPE.CONTAINER;
+
+  return (
+    <div className=" container  ">
+      <div>
+        <MyButton onClick={(e) => onAddTrans(type)} />
+      </div>
+      <table>
+        <thead>
+          <th>
+            <td>ID</td>
+            <td>Team</td>
+            <td>Type</td>
+            <td>Sacs</td>
+            <td>Dates</td>
+          </th>
+        </thead>
+        <tbody>
+          <tr></tr>
+        </tbody>
+      </table>
+      {JSON.stringify(trans_cont)}
+    </div>
+  );
+}
+
+function SacsProduction({ trans_prod, onAddTrans }) {
+  const type = TRANSACTION_TYPE.PRODUCTION;
+
+  return (
+    <div>
+      <div>
+        <MyButton onClick={(e) => onAddTrans(type)} />
+      </div>
+
+      {JSON.stringify(trans_prod)}
+    </div>
+  );
+}
+
 export default function Sacs() {
+  const [trans_cont, set_trans_cont] = useState([]);
+  const [trans_prod, set_trans_prod] = useState([]);
   const [selsec, setselsec] = useState(SECTIONS.CONTAINER);
-  const [stock, setstock] = useState(0);
+
+  const onAddTrans = (t) => {
+    console.log(t);
+    if (t === TRANSACTION_TYPE.CONTAINER) {
+      set_trans_cont((old) => [...old, { ...transaction_container }]);
+    } else {
+      set_trans_prod((old) => [...old, { ...transaction_production }]);
+    }
+  };
 
   return (
     <div>
@@ -47,14 +144,24 @@ export default function Sacs() {
         ))}
       </div>
 
-      {selsec === SECTIONS.CONTAINER && (
-        <SacsContainer stock={stock} setstock={setstock} />
+      <div className=" text-3xl font-thin  ">
+        <div>
+          Stock Container :{" "}
+          <span className=" font-bold text-green-900 ">{0}</span>
+        </div>
+        <div className=" text-base text-gray-800  ">
+          Last update :{" "}
+          <span className=" font-bold  ">
+            {new Intl.DateTimeFormat("fr-FR", options).format(new Date())}
+          </span>
+        </div>
+      </div>
+
+      {SECTIONS.CONTAINER.label === selsec.label && (
+        <SacsContainer onAddTrans={onAddTrans} trans_cont={trans_cont} />
       )}
-      {selsec === SECTIONS.SACS_CHARGEMENT && (
-        <SacsUsed stock={stock} setstock={setstock} />
-      )}
-      {selsec === SECTIONS.CALC && (
-        <SacsCalc stock={stock} setstock={setstock} />
+      {SECTIONS.PRODUCTION.label === selsec.label && (
+        <SacsProduction onAddTrans={onAddTrans} trans_prod={trans_prod} />
       )}
     </div>
   );
