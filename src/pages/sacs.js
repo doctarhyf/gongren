@@ -73,7 +73,7 @@ function MyButton({ title = "ADD", onClick }) {
   );
 }
 
-function FormContainer({ onSaveData }) {
+function FormContainer({ onSaveData, onCancel }) {
   const [data, setdata] = useState({ team: "A", type: "42.5", sacs: 0 });
 
   return (
@@ -110,7 +110,7 @@ function FormContainer({ onSaveData }) {
           }}
           title="SAVE"
         />
-        {/* <MyButton onClick={(e) => set_show_form(false)} title="CANCEL" /> */}
+        <MyButton onClick={(e) => onCancel()} title="CANCEL" />
       </div>
     </div>
   );
@@ -126,7 +126,10 @@ function FormInput({ type, set_show_form, updateTransactions }) {
     <div>
       {type === TRANSACTION_TYPE.CONTAINER && (
         <div>
-          <FormContainer onSaveData={onSaveData} />
+          <FormContainer
+            onSaveData={onSaveData}
+            onCancel={(e) => set_show_form(false)}
+          />
         </div>
       )}
       {type === TRANSACTION_TYPE.PRODUCTION && <div>form prod</div>}
@@ -142,21 +145,25 @@ function SacsContainer({ onShowFormInput, trans_cont }) {
       <div>
         <MyButton onClick={(e) => onShowFormInput(type)} />
       </div>
-      {JSON.stringify(trans_cont)}
+
       <table>
         <tr>
-          <td>id</td>
-          <td>team</td>
-          <td>type</td>
-          <td>sacs</td>
+          <td className=" p-1 border border-black ">id</td>
+          <td className=" p-1 border border-black ">team</td>
+          <td className=" p-1 border border-black ">32.5</td>
+          <td className=" p-1 border border-black ">42.5</td>
         </tr>
 
         {trans_cont.map((t, i) => (
           <tr>
-            <td>{t.id || i}</td>
-            <td>{t.team}</td>
-            <td>{t.type}</td>
-            <td>{t.sacs}</td>
+            <td className=" p-1 border border-black ">{t.id || i}</td>
+            <td className=" p-1 border border-black ">{t.team}</td>
+            <td className=" p-1 border border-black ">
+              {t.type === "32.5" ? t.sacs : 0}
+            </td>
+            <td className=" p-1 border border-black ">
+              {t.type === "42.5" ? t.sacs : 0}
+            </td>
           </tr>
         ))}
       </table>
