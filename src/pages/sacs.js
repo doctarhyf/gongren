@@ -73,17 +73,63 @@ function MyButton({ title = "ADD", onClick }) {
   );
 }
 
-function FormInput({ type, set_show_form, on_save }) {
-  const [data, setdata] = useState({});
+function FormContainer({ onSaveData }) {
+  const [data, setdata] = useState({ team: "A", type: "42.5", sacs: 0 });
 
   return (
     <div>
-      {type === TRANSACTION_TYPE.CONTAINER && <div>form cont</div>}
-      {type === TRANSACTION_TYPE.PRODUCTION && <div>form prod</div>}
+      <div>Equipe</div>
+      <select
+        value={data.team}
+        onChange={(e) => setdata((old) => ({ ...old, team: e.target.value }))}
+      >
+        {["A", "B", "C", "D"].map((o, i) => (
+          <option>{o}</option>
+        ))}
+      </select>
+      <div>Sac Type</div>
+      <select
+        onChange={(e) => setdata((old) => ({ ...old, type: e.target.value }))}
+      >
+        {["32.5", "42.5"].map((o, i) => (
+          <option value={o}>{o}</option>
+        ))}
+      </select>
+      <div>Nb. Sacs</div>
+      <input
+        type="number"
+        value={data.sacs}
+        onChange={(e) => setdata((old) => ({ ...old, sacs: e.target.value }))}
+      />
+
       <div>
-        <MyButton onClick={(e) => on_save("cool", type)} title="SAVE" />
-        <MyButton onClick={(e) => set_show_form(false)} title="CANCEL" />
+        <MyButton
+          onClick={(e) => {
+            onSaveData(data);
+            //on_save("cool", type);
+          }}
+          title="SAVE"
+        />
+        {/* <MyButton onClick={(e) => set_show_form(false)} title="CANCEL" /> */}
       </div>
+    </div>
+  );
+}
+
+function FormInput({ type, set_show_form, updateTransactions }) {
+  const onSaveData = (dt) => {
+    //console.log(dt);
+    updateTransactions(dt, type);
+  };
+
+  return (
+    <div>
+      {type === TRANSACTION_TYPE.CONTAINER && (
+        <div>
+          <FormContainer onSaveData={onSaveData} />
+        </div>
+      )}
+      {type === TRANSACTION_TYPE.PRODUCTION && <div>form prod</div>}
     </div>
   );
 }
@@ -96,27 +142,23 @@ function SacsContainer({ onShowFormInput, trans_cont }) {
       <div>
         <MyButton onClick={(e) => onShowFormInput(type)} />
       </div>
+      {JSON.stringify(trans_cont)}
       <table>
-        <thead>
-          <th>
-            <td>ID</td>
-            <td>Team</td>
-            <td>Type</td>
-            <td>Sacs</td>
-            <td>Date</td>
-          </th>
-        </thead>
-        <tbody>
-          {trans_cont.map((t, i) => (
-            <tr>
-              <td>{t.id}</td>
-              <td>{t.team}</td>
-              <td>{t.type}</td>
-              <td>{t.sacs}</td>
-              <td>{t.dates}</td>
-            </tr>
-          ))}
-        </tbody>
+        <tr>
+          <td>id</td>
+          <td>team</td>
+          <td>type</td>
+          <td>sacs</td>
+        </tr>
+
+        {trans_cont.map((t, i) => (
+          <tr>
+            <td>{t.id || i}</td>
+            <td>{t.team}</td>
+            <td>{t.type}</td>
+            <td>{t.sacs}</td>
+          </tr>
+        ))}
       </table>
     </div>
   );
@@ -136,10 +178,6 @@ function SacsProduction({ onShowFormInput, trans_prod }) {
   );
 }
 
-function FormContainer() {
-  return <div>form container</div>;
-}
-
 export default function Sacs() {
   const [trans_cont, set_trans_cont] = useState([]);
   const [trans_prod, set_trans_prod] = useState([]);
@@ -147,11 +185,11 @@ export default function Sacs() {
   const [show_form, set_show_form] = useState(false);
   const [form_type, set_form_type] = useState(undefined);
 
-  const on_save = (dt, t) => {
+  const updateTransactions = (dt, t) => {
     if (t === TRANSACTION_TYPE.CONTAINER) {
-      set_trans_cont((old) => [...old, { ...transaction_container }]);
+      set_trans_cont((old) => [...old, dt]);
     } else {
-      set_trans_prod((old) => [...old, { ...transaction_production }]);
+      set_trans_prod((old) => [...old, dt]);
     }
 
     console.log(dt, t);
@@ -197,7 +235,7 @@ export default function Sacs() {
         <FormInput
           type={form_type}
           set_show_form={set_show_form}
-          on_save={on_save}
+          updateTransactions={updateTransactions}
         />
       )}
 
