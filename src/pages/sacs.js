@@ -39,6 +39,7 @@ const TRANSACTION_TYPE = {
 const SECTIONS = {
   CONTAINER: { label: "SACS CONTAINER" },
   PRODUCTION: { label: "SACS PRODUCTION" },
+  CALCULATOR: { label: "CALCULATOR" },
 };
 
 const transaction_container = {
@@ -214,6 +215,8 @@ export default function Sacs() {
               trans_prod={trans_prod}
             />
           )}
+
+          {SECTIONS.CALCULATOR.label === selsec.label && <SacsCalc />}
         </>
       )}
     </div>
