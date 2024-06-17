@@ -455,7 +455,9 @@ function SacsProduction({ trans, onAddTrans, stock }) {
                         onChange={(e) =>
                           set_adjust((old) => ({
                             ...old,
-                            s32: parseInt(e.target.value),
+                            s32: isNaN(parseInt(e.target.value))
+                              ? 0
+                              : parseInt(e.target.value),
                           }))
                         }
                       />
