@@ -16,252 +16,57 @@ import { _, createHeaders, formatFrenchDate } from "../helpers/func";
 import * as SB from "../helpers/sb";
 import Loading from "../comps/Loading";
 import { doc } from "../helpers/funcs_print";
-import SacsCalc from "../comps/SacsCalc";
-import SacsUsed from "../comps/SacsUsed";
-//import SacsContainer from "../comps/SacsContainer";
-
-const options = {
-  year: "numeric",
-  month: "long",
-  day: "numeric",
-  hour: "numeric",
-  minute: "numeric",
-  second: "numeric",
-  timeZone: "UTC", // Adjust to local time zone if needed
-  timeZoneName: "short",
-};
-
-const TRANSACTION_TYPE = {
-  CONTAINER: "CONTAINER",
-  PRODUCTION: "PRODUCTION",
-};
 
 const SECTIONS = {
-  CONTAINER: { label: "SACS CONTAINER" },
-  PRODUCTION: { label: "SACS PRODUCTION" },
-  CALCULATOR: { label: "CALCULATOR" },
+  CONTAINER: { label: "Sacs Container" },
+  PRODUCTION: { label: "Sacs Production" },
+  CALCULATOR: { label: "Sacs Calculator" },
 };
 
-const transaction_container = {
-  id: 0,
-  team: "A", // A | B | C | D
-  type: "", // normal | sinoma,
-  sacs: 0,
-  createdAt: new Date().toISOString(),
-};
-
-const transaction_production = {
-  id: 0,
-  team: "A", // A | B | C | D
-  createdAt: new Date().toISOString(),
-  st: 0, // sacs trouves
-  ss: 0, // sacs sortis
-  su: 0, // sacs utilises
-  prod: 0, // production
-  sd: 0, // sacs dechires
-  sr: 0, // sacs restants
-};
-
-function MyButton({ title = "ADD", onClick }) {
-  return (
-    <button
-      onClick={onClick}
-      className=" p-1 rounded-lg bg-sky-500 hover:bg-sky-300 text-white  "
-    >
-      {title}
-    </button>
-  );
-}
-
-function FormContainer({ onSaveData, onCancel }) {
-  const [data, setdata] = useState({ team: "A", type: "42.5", sacs: 0 });
+function TabCont({ tabs, onSelectTab }) {
+  const [selected_tab, set_selected_tab] = useState(Object.entries(tabs)[0]);
 
   return (
-    <div>
-      <div>Equipe</div>
-      <select
-        value={data.team}
-        onChange={(e) => setdata((old) => ({ ...old, team: e.target.value }))}
-      >
-        {["A", "B", "C", "D"].map((o, i) => (
-          <option>{o}</option>
-        ))}
-      </select>
-      <div>Sac Type</div>
-      <select
-        onChange={(e) => setdata((old) => ({ ...old, type: e.target.value }))}
-      >
-        {["32.5", "42.5"].map((o, i) => (
-          <option value={o}>{o}</option>
-        ))}
-      </select>
-      <div>Nb. Sacs</div>
-      <input
-        type="number"
-        value={data.sacs}
-        onChange={(e) => setdata((old) => ({ ...old, sacs: e.target.value }))}
-      />
-
-      <div>
-        <MyButton
+    <div className=" gap-4 flex py-4 sm:flex-row flex-col ">
+      {Object.entries(tabs).map((t, i) => (
+        <button
           onClick={(e) => {
-            onSaveData(data);
-            //on_save("cool", type);
+            set_selected_tab(t);
+            onSelectTab(t);
           }}
-          title="SAVE"
-        />
-        <MyButton onClick={(e) => onCancel()} title="CANCEL" />
-      </div>
-    </div>
-  );
-}
-
-function FormInput({ type, set_show_form, updateTransactions }) {
-  const onSaveData = (dt) => {
-    //console.log(dt);
-    updateTransactions(dt, type);
-  };
-
-  return (
-    <div>
-      {type === TRANSACTION_TYPE.CONTAINER && (
-        <div>
-          <FormContainer
-            onSaveData={onSaveData}
-            onCancel={(e) => set_show_form(false)}
-          />
-        </div>
-      )}
-      {type === TRANSACTION_TYPE.PRODUCTION && <div>form prod</div>}
-    </div>
-  );
-}
-
-function SacsContainer({ onShowFormInput, trans_cont }) {
-  const type = TRANSACTION_TYPE.CONTAINER;
-
-  return (
-    <div className=" container  ">
-      <div>
-        <MyButton onClick={(e) => onShowFormInput(type)} />
-      </div>
-
-      <table>
-        <tr>
-          <td className=" p-1 border border-black ">id</td>
-          <td className=" p-1 border border-black ">team</td>
-          <td className=" p-1 border border-black ">32.5</td>
-          <td className=" p-1 border border-black ">42.5</td>
-        </tr>
-
-        {trans_cont.map((t, i) => (
-          <tr>
-            <td className=" p-1 border border-black ">{t.id || i}</td>
-            <td className=" p-1 border border-black ">{t.team}</td>
-            <td className=" p-1 border border-black ">
-              {t.type === "32.5" ? t.sacs : 0}
-            </td>
-            <td className=" p-1 border border-black ">
-              {t.type === "42.5" ? t.sacs : 0}
-            </td>
-          </tr>
-        ))}
-      </table>
-    </div>
-  );
-}
-
-function SacsProduction({ onShowFormInput, trans_prod }) {
-  const type = TRANSACTION_TYPE.PRODUCTION;
-
-  return (
-    <div>
-      <div>
-        <MyButton onClick={(e) => onShowFormInput(type)} />
-      </div>
-
-      {JSON.stringify(trans_prod)}
+          className={`  hover:text-white hover:bg-sky-500 ${
+            selected_tab[0] === t[0]
+              ? " text-white bg-sky-500  "
+              : "  text-sky-500 "
+          } p-1 border border-sky-500 rounded-md `}
+        >
+          {t[1].label}
+        </button>
+      ))}
     </div>
   );
 }
 
 export default function Sacs() {
-  const [trans_cont, set_trans_cont] = useState([]);
-  const [trans_prod, set_trans_prod] = useState([]);
-  const [selsec, setselsec] = useState(SECTIONS.CONTAINER);
-  const [show_form, set_show_form] = useState(false);
-  const [form_type, set_form_type] = useState(undefined);
+  const [curtab, setcurtab] = useState();
 
-  const updateTransactions = (dt, t) => {
-    if (t === TRANSACTION_TYPE.CONTAINER) {
-      set_trans_cont((old) => [...old, dt]);
-    } else {
-      set_trans_prod((old) => [...old, dt]);
-    }
-
-    console.log(dt, t);
-    set_show_form(false);
-  };
-
-  const onShowFormInput = (t) => {
-    set_form_type(t);
-    set_show_form(true);
-  };
+  function onSelectTab(t) {
+    console.log(t);
+    setcurtab(t);
+  }
 
   return (
     <div>
-      <div className="gap-2 my-2">
-        {Object.values(SECTIONS).map((s, i) => (
-          <span
-            onClick={(e) => setselsec(s)}
-            className={`  ${
-              s.label === selsec.label
-                ? "bg-sky-500 text-white    "
-                : " hover:text-sky-500 hover:border-b  "
-            }  p-1 hover:cursor-pointer `}
-          >
-            {s.label}
-          </span>
-        ))}
-      </div>
-
-      <div className=" text-3xl font-thin  ">
-        <div>
-          Stock Container :{" "}
-          <span className=" font-bold text-green-900 ">{0}</span>
-        </div>
-        <div className=" text-base text-gray-800  ">
-          Last update :{" "}
-          <span className=" font-bold  ">
-            {new Intl.DateTimeFormat("fr-FR", options).format(new Date())}
-          </span>
-        </div>
-      </div>
-
-      {show_form && (
-        <FormInput
-          type={form_type}
-          set_show_form={set_show_form}
-          updateTransactions={updateTransactions}
-        />
-      )}
-
-      {!show_form && (
+      <TabCont tabs={SECTIONS} onSelectTab={onSelectTab} />
+      {curtab && (
         <>
-          {SECTIONS.CONTAINER.label === selsec.label && (
-            <SacsContainer
-              onShowFormInput={onShowFormInput}
-              trans_cont={trans_cont}
-            />
+          {SECTIONS.PRODUCTION.label === curtab[1].label && (
+            <div>Production</div>
           )}
-          {SECTIONS.PRODUCTION.label === selsec.label && (
-            <SacsProduction
-              onShowFormInput={onShowFormInput}
-              trans_prod={trans_prod}
-            />
-          )}
-
-          {SECTIONS.CALCULATOR.label === selsec.label && <SacsCalc />}
+          {SECTIONS.CONTAINER.label === curtab[1].label && <div>Container</div>}
+          {SECTIONS.CALCULATOR.label === curtab[1].label && (
+            <div>Calculator</div>
+          )}{" "}
         </>
       )}
     </div>
