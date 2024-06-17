@@ -194,6 +194,8 @@ function SacsContainer({ trans, onAddTrans, stock }) {
 }
 
 function SacsProduction({ trans, onAddTrans, stock }) {
+  const [adjust, set_adjust] = useState(0);
+  const [showAdjust, setShowAdjust] = useState(false);
   const [showInput, setShowInput] = useState(false);
   const [data, setdata] = useState({
     id: trans.length,
@@ -219,8 +221,11 @@ function SacsProduction({ trans, onAddTrans, stock }) {
     const newr42 =
       data.sortis42 + trouves42 - data.utilises42 - data.dechires42;
 
-    set_restants({ s32: newr32, s42: newr42 });
-  }, [data]);
+    const adj32 = showAdjust ? adjust.s32 : 0;
+    const adj42 = showAdjust ? adjust.s42 : 0;
+
+    set_restants({ s32: newr32 + adj32, s42: newr42 + adj42 });
+  }, [data, adjust]);
 
   function onSaveTrans() {
     console.log(data);
@@ -229,8 +234,8 @@ function SacsProduction({ trans, onAddTrans, stock }) {
     onAddTrans("prod", {
       ...data,
       date: new Date().toISOString(),
-      tonnage32: data.utilises32 / 20,
-      tonnage42: data.utilises42 / 20,
+      tonnage32: data.utilises32 / 20 || 0,
+      tonnage42: data.utilises42 / 20 || 0,
       restants32: restants.s32,
       restants42: restants.s42,
     });
@@ -436,30 +441,52 @@ function SacsProduction({ trans, onAddTrans, stock }) {
 
                 <td className="p1 border border-gray-900">
                   {restants.s32 || 0}
-                  {/*  <input
-                    className=" w-16 "
-                    value={data.restants32}
-                    onChange={(e) =>
-                      setdata((old) => ({
-                        ...old,
-                        restants32: e.target.value === "" ? 0 : parseInt(e.target.value),
-                      }))
-                    }
-                  /> */}
+                  <div>
+                    <input
+                      type="checkbox"
+                      value={showAdjust}
+                      onChange={(e) => setShowAdjust(e.target.checked)}
+                    />
+                    Adjust
+                    {showAdjust && (
+                      <input
+                        type="text"
+                        value={adjust.s32}
+                        onChange={(e) =>
+                          set_adjust((old) => ({
+                            ...old,
+                            s32: parseInt(e.target.value),
+                          }))
+                        }
+                      />
+                    )}
+                  </div>
                 </td>
 
                 <td className="p1 border border-gray-900">
                   {restants.s42 || 0}
-                  {/*  <input
-                    className=" w-16 "
-                    value={data.restants42}
-                    onChange={(e) =>
-                      setdata((old) => ({
-                        ...old,
-                        restants42: e.target.value === "" ? 0 : parseInt(e.target.value),
-                      }))
-                    }
-                  /> */}
+                  <div>
+                    <input
+                      type="checkbox"
+                      value={showAdjust}
+                      onChange={(e) => setShowAdjust(e.target.checked)}
+                    />
+                    Adjust
+                    {showAdjust && (
+                      <input
+                        type="text"
+                        value={adjust.s42}
+                        onChange={(e) =>
+                          set_adjust((old) => ({
+                            ...old,
+                            s42: isNaN(parseInt(e.target.value))
+                              ? 0
+                              : parseInt(e.target.value),
+                          }))
+                        }
+                      />
+                    )}
+                  </div>
                 </td>
               </tr>
             )}
