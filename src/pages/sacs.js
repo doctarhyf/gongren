@@ -25,7 +25,7 @@ const SECTIONS = {
   CALCULATOR: { label: "Sacs Calculator" },
 };
 
-function Stock({ stock }) {
+function ContainerStock({ stock }) {
   return (
     <div className=" py-4 border rounded-md p-1 bg-slate-300/50 ">
       <div className=" font-bold  ">STOCK CONTAINER</div>
@@ -44,7 +44,7 @@ function Stock({ stock }) {
   );
 }
 
-function SacsCont({ trans, onAddTrans }) {
+function SacsContainer({ trans, onAddTrans }) {
   const [showInput, setShowInput] = useState(false);
   const [data, setdata] = useState({
     id: trans.length,
@@ -122,7 +122,8 @@ function SacsCont({ trans, onAddTrans }) {
                     onChange={(e) =>
                       setdata((old) => ({
                         ...old,
-                        s32: parseInt(e.target.value),
+                        s32:
+                          e.target.value === "" ? 0 : parseInt(e.target.value),
                       }))
                     }
                   />
@@ -134,13 +135,296 @@ function SacsCont({ trans, onAddTrans }) {
                     onChange={(e) =>
                       setdata((old) => ({
                         ...old,
-                        s42: parseInt(e.target.value),
+                        s42:
+                          e.target.value === "" ? 0 : parseInt(e.target.value),
                       }))
                     }
                   />
                 </td>
                 <td className="p1 border border-gray-900">
                   {new Date().toDateString()}
+                </td>
+              </tr>
+            )}
+            {trans.map((t, i) => (
+              <tr className={`  ${showInput ? "opacity-20" : ""}  `}>
+                <td className="p1 border border-gray-900">{i}</td>
+                <td className="p1 border border-gray-900">{t.team}</td>
+                <td className="p1 border border-gray-900">{t.s32}</td>
+                <td className="p1 border border-gray-900">{t.s42}</td>
+                <td className="p1 border border-gray-900">
+                  {new Date().toDateString()}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
+function SacsProduction({ trans }) {
+  const [showInput, setShowInput] = useState(false);
+  const [data, setdata] = useState({
+    id: trans.length,
+    sortis32: 0,
+    tonnage32: 0,
+    sortis42: 0,
+    tonnage42: 0,
+    dechires32: 0,
+    dechires42: 0,
+    utilises32: 0,
+    utilises42: 0,
+  });
+
+  const [restants, set_restants] = useState({ s32: 10, s42: 20 });
+
+  useEffect(() => {
+    const isFirstRec = trans.length === 0;
+    let trouves32 = 0;
+    let trouves42 = 0;
+    let prev_rec;
+
+    if (!isFirstRec) {
+      prev_rec = trans[trans.length - 2];
+      trouves32 = prev_rec.restants32;
+      trouves42 = prev_rec.restants42;
+    }
+
+    const newr32 =
+      data.sortis32 + trouves32 - data.utilises32 - data.dechires32;
+    const newr42 =
+      data.sortis42 + trouves42 - data.utilises42 - data.dechires42;
+
+    /*  const t32 = data.utilises32 / 20
+      const t42 = data.utilises32 / 20; */
+
+    set_restants({ s32: newr32, s42: newr42 });
+  }, [data]);
+
+  function onSaveTrans() {
+    console.log(data);
+    /* if (data.s32 === undefined || data.s42 === undefined) {
+       alert("Please input sacs amount!");
+       return;
+     }
+
+     setShowInput(false);
+     onAddTrans("cont", data);
+     setdata({}); */
+  }
+
+  return (
+    <div>
+      <div>
+        {!showInput && (
+          <button
+            onClick={(e) => setShowInput(true)}
+            className=" p-1 text-green-500 border rounded-md border-green-500 hover:text-white hover:bg-green-500 "
+          >
+            INSERT
+          </button>
+        )}
+
+        {showInput && (
+          <button
+            onClick={onSaveTrans}
+            className=" p-1 text-sky-500 border rounded-md border-sky-500 hover:text-white hover:bg-sky-500 "
+          >
+            SAVE
+          </button>
+        )}
+
+        <button
+          onClick={(e) => setShowInput(false)}
+          className=" p-1 text-red-500 border rounded-md border-red-500 hover:text-white hover:bg-red-500 "
+        >
+          CANCEL
+        </button>
+      </div>
+      <div className=" container  ">
+        <table>
+          <thead>
+            <th className="p1 border border-gray-900">id</th>
+            <th className="p1 border border-gray-900">Equipe</th>
+            <th className="p1 border border-gray-900">Date</th>
+            <th className="p1 border border-gray-900">Sacs Sortis (32.5)</th>
+            <th className="p1 border border-gray-900">Tonnage (32.5)</th>
+            <th className="p1 border border-gray-900">Sacs Sortis (42.5)</th>
+            <th className="p1 border border-gray-900">Tonnage (42.5)</th>
+
+            <th className="p1 border border-gray-900">Sacs Dechires (32.5)</th>
+            <th className="p1 border border-gray-900">Sacs Dechires (42.5)</th>
+            <th className="p1 border border-gray-900">Sacs Utilises (32.5)</th>
+            <th className="p1 border border-gray-900">Sacs Utilises (42.5)</th>
+
+            <th className="p1 border border-gray-900">Sacs Restants (32.5)</th>
+            <th className="p1 border border-gray-900">Sacs Restants (42.5)</th>
+          </thead>
+          <tbody>
+            {showInput && (
+              <tr>
+                <td className="p1 border border-gray-900">{-1}</td>
+
+                <td className="p1 border border-gray-900">
+                  <select
+                    className=" border p-1 "
+                    value={data.team}
+                    onChange={(e) =>
+                      setdata((old) => ({ ...old, team: e.target.value }))
+                    }
+                  >
+                    {["A", "B", "C", "D"].map((eq) => (
+                      <option value={eq}>{eq}</option>
+                    ))}
+                  </select>
+                </td>
+
+                <td className="p1 border border-gray-900">
+                  {new Date().toDateString()}
+                </td>
+
+                <td className="p1 border border-gray-900">
+                  <input
+                    className=" w-16 "
+                    value={data.sortis32}
+                    onChange={(e) =>
+                      setdata((old) => ({
+                        ...old,
+                        sortis32:
+                          e.target.value === "" ? 0 : parseInt(e.target.value),
+                      }))
+                    }
+                  />
+                </td>
+
+                <td className="p1 border border-gray-900">
+                  {data.utilises32 / 20}
+                  {/* <input
+                    className=" w-16 "
+                    value={data.tonnage32}
+                    onChange={(e) =>
+                      setdata((old) => ({
+                        ...old,
+                        tonnage32:
+                          e.target.value === "" ? 0 : parseInt(e.target.value),
+                      }))
+                    }
+                  /> */}
+                </td>
+
+                <td className="p1 border border-gray-900">
+                  <input
+                    className=" w-16 "
+                    value={data.sortis42}
+                    onChange={(e) =>
+                      setdata((old) => ({
+                        ...old,
+                        sortis42:
+                          e.target.value === "" ? 0 : parseInt(e.target.value),
+                      }))
+                    }
+                  />
+                </td>
+
+                <td className="p1 border border-gray-900">
+                  {data.utilises42 / 20}
+                  {/* <input
+                    className=" w-16 "
+                    value={data.tonnage42}
+                    onChange={(e) =>
+                      setdata((old) => ({
+                        ...old,
+                        tonnage42:
+                          e.target.value === "" ? 0 : parseInt(e.target.value),
+                      }))
+                    }
+                  /> */}
+                </td>
+
+                <td className="p1 border border-gray-900">
+                  <input
+                    className=" w-16 "
+                    value={data.dechires32}
+                    onChange={(e) =>
+                      setdata((old) => ({
+                        ...old,
+                        dechires32:
+                          e.target.value === "" ? 0 : parseInt(e.target.value),
+                      }))
+                    }
+                  />
+                </td>
+
+                <td className="p1 border border-gray-900">
+                  <input
+                    className=" w-16 "
+                    value={data.dechires42}
+                    onChange={(e) =>
+                      setdata((old) => ({
+                        ...old,
+                        dechires42:
+                          e.target.value === "" ? 0 : parseInt(e.target.value),
+                      }))
+                    }
+                  />
+                </td>
+
+                <td className="p1 border border-gray-900">
+                  <input
+                    className=" w-16 "
+                    value={data.utilises32}
+                    onChange={(e) =>
+                      setdata((old) => ({
+                        ...old,
+                        utilises32:
+                          e.target.value === "" ? 0 : parseInt(e.target.value),
+                      }))
+                    }
+                  />
+                </td>
+
+                <td className="p1 border border-gray-900">
+                  <input
+                    className=" w-16 "
+                    value={data.utilises42}
+                    onChange={(e) =>
+                      setdata((old) => ({
+                        ...old,
+                        utilises42:
+                          e.target.value === "" ? 0 : parseInt(e.target.value),
+                      }))
+                    }
+                  />
+                </td>
+
+                <td className="p1 border border-gray-900">
+                  {restants.s32}
+                  {/*  <input
+                    className=" w-16 "
+                    value={data.restants32}
+                    onChange={(e) =>
+                      setdata((old) => ({
+                        ...old,
+                        restants32: e.target.value === "" ? 0 : parseInt(e.target.value),
+                      }))
+                    }
+                  /> */}
+                </td>
+
+                <td className="p1 border border-gray-900">
+                  {restants.s42}
+                  {/*  <input
+                    className=" w-16 "
+                    value={data.restants42}
+                    onChange={(e) =>
+                      setdata((old) => ({
+                        ...old,
+                        restants42: e.target.value === "" ? 0 : parseInt(e.target.value),
+                      }))
+                    }
+                  /> */}
                 </td>
               </tr>
             )}
@@ -180,7 +464,7 @@ export default function Sacs() {
       set_stock_cont({ s32: trans_cont[0].s32, s42: trans_cont[0].s42 });
       //console.log("first rec", trans_cont);
     } else {
-      const last_rec = trans_cont[trans_cont.length - 1];
+      const last_rec = { s32: 0, s42: 0 }; //trans_cont[trans_cont.length - 1];
       const { s32, s42 } = stock_cont;
       const news32 = parseInt(s32) + parseInt(last_rec.s32);
       const news42 = parseInt(s42) + parseInt(last_rec.s42);
@@ -190,21 +474,24 @@ export default function Sacs() {
   }, [trans_cont]);
 
   function onAddTrans(type, data) {
-    set_trans_cont((old) => [...old, data]);
+    if (type === "cont") {
+      set_trans_cont((old) => [...old, data]);
+    } else {
+    }
   }
 
   return (
     <div>
-      <Stock stock={stock_cont} />
+      <ContainerStock stock={stock_cont} />
 
       <TabCont tabs={SECTIONS} onSelectTab={onSelectTab} />
       {curtab && (
         <>
           {SECTIONS.PRODUCTION.label === curtab[1].label && (
-            <div>Production</div>
+            <SacsProduction trans={trans_prod} onAddTrans={onAddTrans} />
           )}
           {SECTIONS.CONTAINER.label === curtab[1].label && (
-            <SacsCont trans={trans_cont} onAddTrans={onAddTrans} />
+            <SacsContainer trans={trans_cont} onAddTrans={onAddTrans} />
           )}
           {SECTIONS.CALCULATOR.label === curtab[1].label && <SacsCalc />}
         </>
