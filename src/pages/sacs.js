@@ -200,9 +200,6 @@ function SacsProduction({ trans, onAddTrans }) {
     const newr42 =
       data.sortis42 + trouves42 - data.utilises42 - data.dechires42;
 
-    /*  const t32 = data.utilises32 / 20
-      const t42 = data.utilises32 / 20; */
-
     set_restants({ s32: newr32, s42: newr42 });
   }, [data]);
 
@@ -491,7 +488,15 @@ export default function Sacs() {
     if (type === "cont") {
       set_trans_cont((old) => [...old, data]);
     } else {
+      // production
       set_trans_prod((old) => [...old, data]);
+
+      const { s32, s42 } = stock_cont;
+
+      const news32 = s32 - data.utilises32;
+      const news42 = s42 - data.utilises42;
+
+      set_stock_cont({ s32: news32, s42: news42 });
     }
   }
 
