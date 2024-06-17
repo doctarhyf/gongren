@@ -25,10 +25,10 @@ const SECTIONS = {
   CALCULATOR: { label: "Sacs Calculator" },
 };
 
-function ContainerStock({ stock }) {
+function Stock({ stock, label }) {
   return (
     <div className=" py-4 border rounded-md p-1 bg-slate-300/50 ">
-      <div className=" font-bold  ">STOCK CONTAINER</div>
+      <div className=" font-bold  ">STOCK {label}</div>
 
       <div className=" flex flex-col ">
         <div>
@@ -48,6 +48,7 @@ function SacsContainer({ trans, onAddTrans, stock }) {
   const [showInput, setShowInput] = useState(false);
   const [data, setdata] = useState({
     id: trans.length,
+    team: "A",
     op: "in",
     s32: 0,
     s42: 0,
@@ -66,6 +67,7 @@ function SacsContainer({ trans, onAddTrans, stock }) {
 
   return (
     <div>
+      {/*   <Stock stock={stock} label={"CONTAINER"} /> */}
       <div>
         {!showInput && (
           <button
@@ -77,20 +79,21 @@ function SacsContainer({ trans, onAddTrans, stock }) {
         )}
 
         {showInput && (
-          <button
-            onClick={onSaveTrans}
-            className=" p-1 text-sky-500 border rounded-md border-sky-500 hover:text-white hover:bg-sky-500 "
-          >
-            SAVE
-          </button>
+          <>
+            <button
+              onClick={onSaveTrans}
+              className=" p-1 text-sky-500 border rounded-md border-sky-500 hover:text-white hover:bg-sky-500 "
+            >
+              SAVE
+            </button>
+            <button
+              onClick={(e) => setShowInput(false)}
+              className=" p-1 text-red-500 border rounded-md border-red-500 hover:text-white hover:bg-red-500 "
+            >
+              CANCEL
+            </button>
+          </>
         )}
-
-        <button
-          onClick={(e) => setShowInput(false)}
-          className=" p-1 text-red-500 border rounded-md border-red-500 hover:text-white hover:bg-red-500 "
-        >
-          CANCEL
-        </button>
       </div>
       <div className=" container  ">
         <table>
@@ -109,7 +112,8 @@ function SacsContainer({ trans, onAddTrans, stock }) {
               <tr>
                 <td className="p1 border border-gray-900">{-1}</td>
                 <td className="p1 border border-gray-900">
-                  <select
+                  in
+                  {/*  <select
                     className=" border p-1 "
                     value={data.op}
                     onChange={(e) =>
@@ -119,7 +123,7 @@ function SacsContainer({ trans, onAddTrans, stock }) {
                     {["in", "out"].map((op) => (
                       <option value={op}>{op}</option>
                     ))}
-                  </select>
+                  </select> */}
                 </td>
                 <td className="p1 border border-gray-900">
                   <select
@@ -189,7 +193,7 @@ function SacsContainer({ trans, onAddTrans, stock }) {
   );
 }
 
-function SacsProduction({ trans, onAddTrans }) {
+function SacsProduction({ trans, onAddTrans, stock }) {
   const [showInput, setShowInput] = useState(false);
   const [data, setdata] = useState({
     id: trans.length,
@@ -207,16 +211,8 @@ function SacsProduction({ trans, onAddTrans }) {
   const [restants, set_restants] = useState({ s32: 10, s42: 20 });
 
   useEffect(() => {
-    const isFirstRec = trans.length === 0;
-    let trouves32 = 0;
-    let trouves42 = 0;
-    let prev_rec;
-
-    if (!isFirstRec) {
-      prev_rec = { restants32: 0, restants42: 0 }; //trans[trans.length - 2];
-      trouves32 = prev_rec.restants32;
-      trouves42 = prev_rec.restants42;
-    }
+    const trouves32 = stock.s32;
+    const trouves42 = stock.s42;
 
     const newr32 =
       data.sortis32 + trouves32 - data.utilises32 - data.dechires32;
@@ -233,14 +229,28 @@ function SacsProduction({ trans, onAddTrans }) {
     onAddTrans("prod", {
       ...data,
       date: new Date().toISOString(),
+      tonnage32: data.utilises32 / 20,
+      tonnage42: data.utilises42 / 20,
       restants32: restants.s32,
       restants42: restants.s42,
     });
-    setdata({});
+    //reset
+    setdata({
+      team: "A",
+      sortis32: 0,
+      tonnage32: 0,
+      sortis42: 0,
+      tonnage42: 0,
+      dechires32: 0,
+      dechires42: 0,
+      utilises32: 0,
+      utilises42: 0,
+    });
   }
 
   return (
     <div>
+      <Stock stock={stock} label={"RESTANTS"} />
       <div>
         {!showInput && (
           <button
@@ -252,20 +262,21 @@ function SacsProduction({ trans, onAddTrans }) {
         )}
 
         {showInput && (
-          <button
-            onClick={onSaveTrans}
-            className=" p-1 text-sky-500 border rounded-md border-sky-500 hover:text-white hover:bg-sky-500 "
-          >
-            SAVE
-          </button>
+          <>
+            <button
+              onClick={onSaveTrans}
+              className=" p-1 text-sky-500 border rounded-md border-sky-500 hover:text-white hover:bg-sky-500 "
+            >
+              SAVE
+            </button>
+            <button
+              onClick={(e) => setShowInput(false)}
+              className=" p-1 text-red-500 border rounded-md border-red-500 hover:text-white hover:bg-red-500 "
+            >
+              CANCEL
+            </button>
+          </>
         )}
-
-        <button
-          onClick={(e) => setShowInput(false)}
-          className=" p-1 text-red-500 border rounded-md border-red-500 hover:text-white hover:bg-red-500 "
-        >
-          CANCEL
-        </button>
       </div>
       <div className=" container  ">
         <table>
@@ -453,26 +464,27 @@ function SacsProduction({ trans, onAddTrans }) {
               </tr>
             )}
 
-            {trans.map((t, i) => (
-              <tr className={`  ${showInput ? "opacity-20" : ""}  `}>
-                <td className="p1 border border-gray-900">{t.id}</td>
+            {!showInput &&
+              trans.map((t, i) => (
+                <tr className={`  ${showInput ? "opacity-20" : ""}  `}>
+                  <td className="p1 border border-gray-900">{i}</td>
 
-                <td className="p1 border border-gray-900">{t.team}</td>
-                <td className="p1 border border-gray-900">{t.date}</td>
-                <td className="p1 border border-gray-900">{t.sortis32}</td>
-                <td className="p1 border border-gray-900">{t.tonnage32}</td>
-                <td className="p1 border border-gray-900">{t.sortis42}</td>
-                <td className="p1 border border-gray-900">{t.tonnage42}</td>
+                  <td className="p1 border border-gray-900">{t.team}</td>
+                  <td className="p1 border border-gray-900">{t.date}</td>
+                  <td className="p1 border border-gray-900">{t.sortis32}</td>
+                  <td className="p1 border border-gray-900">{t.tonnage32}</td>
+                  <td className="p1 border border-gray-900">{t.sortis42}</td>
+                  <td className="p1 border border-gray-900">{t.tonnage42}</td>
 
-                <td className="p1 border border-gray-900">{t.dechires32}</td>
-                <td className="p1 border border-gray-900">{t.dechires42}</td>
-                <td className="p1 border border-gray-900">{t.utilises32}</td>
-                <td className="p1 border border-gray-900">{t.utilises42}</td>
+                  <td className="p1 border border-gray-900">{t.dechires32}</td>
+                  <td className="p1 border border-gray-900">{t.dechires42}</td>
+                  <td className="p1 border border-gray-900">{t.utilises32}</td>
+                  <td className="p1 border border-gray-900">{t.utilises42}</td>
 
-                <td className="p1 border border-gray-900">{t.restants32}</td>
-                <td className="p1 border border-gray-900">{t.restants42}</td>
-              </tr>
-            ))}
+                  <td className="p1 border border-gray-900">{t.restants32}</td>
+                  <td className="p1 border border-gray-900">{t.restants42}</td>
+                </tr>
+              ))}
           </tbody>
         </table>
       </div>
@@ -485,6 +497,7 @@ export default function Sacs() {
   const [trans_cont, set_trans_cont] = useState([]);
   const [trans_prod, set_trans_prod] = useState([]);
   const [stock_cont, set_stock_cont] = useState({ s32: 0, s42: 0 });
+  const [stock_prod, set_stock_prod] = useState({ s32: 0, s42: 0 });
 
   function onSelectTab(t) {
     //console.log(t);
@@ -520,28 +533,33 @@ export default function Sacs() {
       ]);
 
       set_stock_cont({ s32: news32, s42: news42 });
+
+      if (data.op === "out") {
+        const { s32, s42 } = stock_prod;
+        const ns32 = s32 + data.s32;
+        const ns42 = s42 + data.s42;
+
+        set_stock_prod({ s32: ns32, s42: ns42 });
+      }
     } else {
       // production
       set_trans_prod((old) => [...old, data]);
-
-      const { s32, s42 } = stock_cont;
-
-      const news32 = s32 - data.utilises32;
-      const news42 = s42 - data.utilises42;
-
-      set_stock_cont({ s32: news32, s42: news42 });
+      set_stock_prod({ s32: data.restants32, s42: data.restants42 });
     }
   }
 
   return (
     <div>
-      <ContainerStock stock={stock_cont} />
-
+      <Stock stock={stock_cont} label={"CONTAINER"} />
       <TabCont tabs={SECTIONS} onSelectTab={onSelectTab} />
       {curtab && (
         <>
           {SECTIONS.PRODUCTION.label === curtab[1].label && (
-            <SacsProduction trans={trans_prod} onAddTrans={onAddTrans} />
+            <SacsProduction
+              trans={trans_prod}
+              onAddTrans={onAddTrans}
+              stock={stock_prod}
+            />
           )}
           {SECTIONS.CONTAINER.label === curtab[1].label && (
             <SacsContainer
