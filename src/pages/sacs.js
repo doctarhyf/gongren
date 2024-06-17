@@ -17,6 +17,7 @@ import * as SB from "../helpers/sb";
 import Loading from "../comps/Loading";
 import { doc } from "../helpers/funcs_print";
 import TabCont from "../comps/TabCont";
+import SacsCalc from "../comps/SacsCalc";
 
 const SECTIONS = {
   CONTAINER: { label: "Sacs Container" },
@@ -137,9 +138,7 @@ export default function Sacs() {
           {SECTIONS.CONTAINER.label === curtab[1].label && (
             <SacsCont trans={trans_cont} onAddTrans={onAddTrans} />
           )}
-          {SECTIONS.CALCULATOR.label === curtab[1].label && (
-            <div>Calculator</div>
-          )}{" "}
+          {SECTIONS.CALCULATOR.label === curtab[1].label && <SacsCalc />}{" "}
         </>
       )}
     </div>
