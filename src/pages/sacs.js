@@ -210,7 +210,7 @@ function SacsProduction({ trans, onAddTrans, stock }) {
     utilises42: 0,
   });
 
-  const [restants, set_restants] = useState({ s32: 10, s42: 20 });
+  const [restants, set_restants] = useState({ s32: 0, s42: 0 });
 
   useEffect(() => {
     const trouves32 = stock.s32;
