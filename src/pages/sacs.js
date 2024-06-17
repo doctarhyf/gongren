@@ -25,12 +25,40 @@ const SECTIONS = {
   CALCULATOR: { label: "Sacs Calculator" },
 };
 
+function Stock({ stock }) {
+  return (
+    <div className=" py-4 border rounded-md p-1 bg-slate-300/50 ">
+      <div className=" font-bold  ">STOCK CONTAINER</div>
+
+      <div className=" flex flex-col ">
+        <div>
+          {" "}
+          Type 32.5 :<span className=" font-bold "> {stock.s32}</span>{" "}
+        </div>
+        <div>
+          {" "}
+          Type 42.5 : <span className=" font-bold ">{stock.s42}</span>{" "}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function SacsCont({ trans, onAddTrans }) {
   const [showInput, setShowInput] = useState(false);
+  const [data, setdata] = useState({
+    id: trans.length,
+  });
 
   function onSaveTrans() {
+    if (data.s32 === undefined || data.s42 === undefined) {
+      alert("Please input sacs amount!");
+      return;
+    }
+
     setShowInput(false);
-    onAddTrans("cont", { team: "A", s32: Math.random(), s42: Math.random() });
+    onAddTrans("cont", data);
+    setdata({});
   }
 
   return (
@@ -75,17 +103,41 @@ function SacsCont({ trans, onAddTrans }) {
               <tr>
                 <td className="p1 border border-gray-900">{-1}</td>
                 <td className="p1 border border-gray-900">
-                  <select className=" border p-1 ">
+                  <select
+                    className=" border p-1 "
+                    value={data.team}
+                    onChange={(e) =>
+                      setdata((old) => ({ ...old, team: e.target.value }))
+                    }
+                  >
                     {["A", "B", "C", "D"].map((eq) => (
                       <option value={eq}>{eq}</option>
                     ))}
                   </select>
                 </td>
                 <td className="p1 border border-gray-900">
-                  <input className=" w-16 " type="number" value={0} />
+                  <input
+                    className=" w-16 "
+                    value={data.s32}
+                    onChange={(e) =>
+                      setdata((old) => ({
+                        ...old,
+                        s32: parseInt(e.target.value),
+                      }))
+                    }
+                  />
                 </td>
                 <td className="p1 border border-gray-900">
-                  <input className=" w-16" type="number" value={0} />
+                  <input
+                    className=" w-16"
+                    value={data.s42}
+                    onChange={(e) =>
+                      setdata((old) => ({
+                        ...old,
+                        s42: parseInt(e.target.value),
+                      }))
+                    }
+                  />
                 </td>
                 <td className="p1 border border-gray-900">
                   {new Date().toDateString()}
@@ -114,21 +166,37 @@ export default function Sacs() {
   const [curtab, setcurtab] = useState();
   const [trans_cont, set_trans_cont] = useState([]);
   const [trans_prod, set_trans_prod] = useState([]);
+  const [stock_cont, set_stock_cont] = useState({ s32: 0, s42: 0 });
 
   function onSelectTab(t) {
-    console.log(t);
+    //console.log(t);
     setcurtab(t);
   }
 
+  useEffect(() => {
+    const isFirstRec = trans_cont.length === 1;
+
+    if (isFirstRec) {
+      set_stock_cont({ s32: trans_cont[0].s32, s42: trans_cont[0].s42 });
+      //console.log("first rec", trans_cont);
+    } else {
+      const last_rec = trans_cont[trans_cont.length - 1];
+      const { s32, s42 } = stock_cont;
+      const news32 = parseInt(s32) + parseInt(last_rec.s32);
+      const news42 = parseInt(s42) + parseInt(last_rec.s42);
+
+      set_stock_cont({ s32: news32, s42: news42 });
+    }
+  }, [trans_cont]);
+
   function onAddTrans(type, data) {
     set_trans_cont((old) => [...old, data]);
-
-    console.log(type, data);
-    console.log(trans_cont);
   }
 
   return (
     <div>
+      <Stock stock={stock_cont} />
+
       <TabCont tabs={SECTIONS} onSelectTab={onSelectTab} />
       {curtab && (
         <>
@@ -138,7 +206,7 @@ export default function Sacs() {
           {SECTIONS.CONTAINER.label === curtab[1].label && (
             <SacsCont trans={trans_cont} onAddTrans={onAddTrans} />
           )}
-          {SECTIONS.CALCULATOR.label === curtab[1].label && <SacsCalc />}{" "}
+          {SECTIONS.CALCULATOR.label === curtab[1].label && <SacsCalc />}
         </>
       )}
     </div>
