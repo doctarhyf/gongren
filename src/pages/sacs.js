@@ -493,7 +493,11 @@ function SacsProduction({ trans, onAddTrans, stock }) {
 
             {!showInput &&
               trans.map((t, i) => (
-                <tr className={`  ${showInput ? "opacity-20" : ""}  `}>
+                <tr
+                  className={`  ${
+                    showInput ? "opacity-20" : ""
+                  } cursor-pointer hover:bg-slate-300  `}
+                >
                   <td className="p1 border border-gray-900">{i}</td>
 
                   <td className="p1 border border-gray-900">{t.team}</td>
