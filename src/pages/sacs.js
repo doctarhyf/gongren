@@ -44,10 +44,11 @@ function ContainerStock({ stock }) {
   );
 }
 
-function SacsContainer({ trans, onAddTrans }) {
+function SacsContainer({ trans, onAddTrans, stock }) {
   const [showInput, setShowInput] = useState(false);
   const [data, setdata] = useState({
     id: trans.length,
+    op: "in",
     s32: 0,
     s42: 0,
   });
@@ -95,15 +96,31 @@ function SacsContainer({ trans, onAddTrans }) {
         <table>
           <thead>
             <th className="p1 border border-gray-900">id</th>
+            <th className="p1 border border-gray-900">Operation</th>
             <th className="p1 border border-gray-900">Equipe</th>
             <th className="p1 border border-gray-900">32.5</th>
             <th className="p1 border border-gray-900">42.5</th>
+            <th className="p1 border border-gray-900">Stock 32.5</th>
+            <th className="p1 border border-gray-900">Stock 42.5</th>
             <th className="p1 border border-gray-900">Date</th>
           </thead>
           <tbody>
             {showInput && (
               <tr>
                 <td className="p1 border border-gray-900">{-1}</td>
+                <td className="p1 border border-gray-900">
+                  <select
+                    className=" border p-1 "
+                    value={data.op}
+                    onChange={(e) =>
+                      setdata((old) => ({ ...old, op: e.target.value }))
+                    }
+                  >
+                    {["in", "out"].map((op) => (
+                      <option value={op}>{op}</option>
+                    ))}
+                  </select>
+                </td>
                 <td className="p1 border border-gray-900">
                   <select
                     className=" border p-1 "
@@ -143,22 +160,28 @@ function SacsContainer({ trans, onAddTrans }) {
                     }
                   />
                 </td>
+                <td className="p1 border border-gray-900"> - </td>
+                <td className="p1 border border-gray-900"> - </td>
                 <td className="p1 border border-gray-900">
                   {new Date().toDateString()}
                 </td>
               </tr>
             )}
-            {trans.map((t, i) => (
-              <tr className={`  ${showInput ? "opacity-20" : ""}  `}>
-                <td className="p1 border border-gray-900">{i}</td>
-                <td className="p1 border border-gray-900">{t.team}</td>
-                <td className="p1 border border-gray-900">{t.s32}</td>
-                <td className="p1 border border-gray-900">{t.s42}</td>
-                <td className="p1 border border-gray-900">
-                  {new Date().toDateString()}
-                </td>
-              </tr>
-            ))}
+            {!showInput &&
+              trans.map((t, i) => (
+                <tr className={`  ${showInput ? "opacity-20" : ""}  `}>
+                  <td className="p1 border border-gray-900">{i}</td>
+                  <td className="p1 border border-gray-900">{t.op}</td>
+                  <td className="p1 border border-gray-900">{t.team}</td>
+                  <td className="p1 border border-gray-900">{t.s32}</td>
+                  <td className="p1 border border-gray-900">{t.s42}</td>
+                  <td className="p1 border border-gray-900">{t.stock32}</td>
+                  <td className="p1 border border-gray-900">{t.stock42}</td>
+                  <td className="p1 border border-gray-900">
+                    {new Date().toDateString()}
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </table>
       </div>
@@ -486,12 +509,15 @@ export default function Sacs() {
 
   function onAddTrans(type, data) {
     if (type === "cont") {
-      set_trans_cont((old) => [...old, data]);
-
       const { s32, s42 } = stock_cont;
 
-      const news32 = s32 + data.s32;
-      const news42 = s42 + data.s42;
+      const news32 = data.op === "in" ? s32 + data.s32 : s32 - data.s32;
+      const news42 = data.op === "in" ? s42 + data.s42 : s42 - data.s42;
+
+      set_trans_cont((old) => [
+        ...old,
+        { ...data, stock32: news32, stock42: news42 },
+      ]);
 
       set_stock_cont({ s32: news32, s42: news42 });
     } else {
@@ -518,7 +544,11 @@ export default function Sacs() {
             <SacsProduction trans={trans_prod} onAddTrans={onAddTrans} />
           )}
           {SECTIONS.CONTAINER.label === curtab[1].label && (
-            <SacsContainer trans={trans_cont} onAddTrans={onAddTrans} />
+            <SacsContainer
+              trans={trans_cont}
+              onAddTrans={onAddTrans}
+              stock={stock_cont}
+            />
           )}
           {SECTIONS.CALCULATOR.label === curtab[1].label && <SacsCalc />}
         </>
