@@ -487,6 +487,9 @@ export default function Sacs() {
   function onAddTrans(type, data) {
     if (type === "cont") {
       set_trans_cont((old) => [...old, data]);
+
+      const { s32, s42 } = stock_cont;
+      set_stock_cont({ s32: s32 + data.s32, s42: s42 + data.s42 });
     } else {
       // production
       set_trans_prod((old) => [...old, data]);
