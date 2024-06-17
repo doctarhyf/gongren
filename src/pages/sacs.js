@@ -48,6 +48,8 @@ function SacsContainer({ trans, onAddTrans }) {
   const [showInput, setShowInput] = useState(false);
   const [data, setdata] = useState({
     id: trans.length,
+    s32: 0,
+    s42: 0,
   });
 
   function onSaveTrans() {
@@ -164,10 +166,11 @@ function SacsContainer({ trans, onAddTrans }) {
   );
 }
 
-function SacsProduction({ trans }) {
+function SacsProduction({ trans, onAddTrans }) {
   const [showInput, setShowInput] = useState(false);
   const [data, setdata] = useState({
     id: trans.length,
+    team: "A",
     sortis32: 0,
     tonnage32: 0,
     sortis42: 0,
@@ -187,7 +190,7 @@ function SacsProduction({ trans }) {
     let prev_rec;
 
     if (!isFirstRec) {
-      prev_rec = trans[trans.length - 2];
+      prev_rec = { restants32: 0, restants42: 0 }; //trans[trans.length - 2];
       trouves32 = prev_rec.restants32;
       trouves42 = prev_rec.restants42;
     }
@@ -205,14 +208,15 @@ function SacsProduction({ trans }) {
 
   function onSaveTrans() {
     console.log(data);
-    /* if (data.s32 === undefined || data.s42 === undefined) {
-       alert("Please input sacs amount!");
-       return;
-     }
 
-     setShowInput(false);
-     onAddTrans("cont", data);
-     setdata({}); */
+    setShowInput(false);
+    onAddTrans("prod", {
+      ...data,
+      date: new Date().toISOString(),
+      restants32: restants.s32,
+      restants42: restants.s42,
+    });
+    setdata({});
   }
 
   return (
@@ -300,7 +304,7 @@ function SacsProduction({ trans }) {
                 </td>
 
                 <td className="p1 border border-gray-900">
-                  {data.utilises32 / 20}
+                  {data.utilises32 / 20 || 0}
                   {/* <input
                     className=" w-16 "
                     value={data.tonnage32}
@@ -329,7 +333,7 @@ function SacsProduction({ trans }) {
                 </td>
 
                 <td className="p1 border border-gray-900">
-                  {data.utilises42 / 20}
+                  {data.utilises42 / 20 || 0}
                   {/* <input
                     className=" w-16 "
                     value={data.tonnage42}
@@ -400,7 +404,7 @@ function SacsProduction({ trans }) {
                 </td>
 
                 <td className="p1 border border-gray-900">
-                  {restants.s32}
+                  {restants.s32 || 0}
                   {/*  <input
                     className=" w-16 "
                     value={data.restants32}
@@ -414,7 +418,7 @@ function SacsProduction({ trans }) {
                 </td>
 
                 <td className="p1 border border-gray-900">
-                  {restants.s42}
+                  {restants.s42 || 0}
                   {/*  <input
                     className=" w-16 "
                     value={data.restants42}
@@ -428,15 +432,25 @@ function SacsProduction({ trans }) {
                 </td>
               </tr>
             )}
+
             {trans.map((t, i) => (
               <tr className={`  ${showInput ? "opacity-20" : ""}  `}>
-                <td className="p1 border border-gray-900">{i}</td>
+                <td className="p1 border border-gray-900">{t.id}</td>
+
                 <td className="p1 border border-gray-900">{t.team}</td>
-                <td className="p1 border border-gray-900">{t.s32}</td>
-                <td className="p1 border border-gray-900">{t.s42}</td>
-                <td className="p1 border border-gray-900">
-                  {new Date().toDateString()}
-                </td>
+                <td className="p1 border border-gray-900">{t.date}</td>
+                <td className="p1 border border-gray-900">{t.sortis32}</td>
+                <td className="p1 border border-gray-900">{t.tonnage32}</td>
+                <td className="p1 border border-gray-900">{t.sortis42}</td>
+                <td className="p1 border border-gray-900">{t.tonnage42}</td>
+
+                <td className="p1 border border-gray-900">{t.dechires32}</td>
+                <td className="p1 border border-gray-900">{t.dechires42}</td>
+                <td className="p1 border border-gray-900">{t.utilises32}</td>
+                <td className="p1 border border-gray-900">{t.utilises42}</td>
+
+                <td className="p1 border border-gray-900">{t.restants32}</td>
+                <td className="p1 border border-gray-900">{t.restants42}</td>
               </tr>
             ))}
           </tbody>
@@ -477,6 +491,7 @@ export default function Sacs() {
     if (type === "cont") {
       set_trans_cont((old) => [...old, data]);
     } else {
+      set_trans_prod((old) => [...old, data]);
     }
   }
 
