@@ -489,7 +489,11 @@ export default function Sacs() {
       set_trans_cont((old) => [...old, data]);
 
       const { s32, s42 } = stock_cont;
-      set_stock_cont({ s32: s32 + data.s32, s42: s42 + data.s42 });
+
+      const news32 = s32 + data.s32;
+      const news42 = s42 + data.s42;
+
+      set_stock_cont({ s32: news32, s42: news42 });
     } else {
       // production
       set_trans_prod((old) => [...old, data]);
