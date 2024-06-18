@@ -578,6 +578,22 @@ export default function Sacs() {
       // production
       set_trans_prod((old) => [...old, data]);
       set_stock_prod({ s32: data.restants32, s42: data.restants42 });
+
+      console.log("data", data);
+      console.log("stock_cont", stock_cont);
+
+      const { sortis32, sortis42 } = data;
+      const { s32, s42 } = stock_cont;
+
+      const newst = { s32: s32 - sortis32, s42: s42 - sortis42 };
+
+      console.log("news", newst);
+
+      /* //to check
+      if (sortis32 > 0)
+        set_stock_cont((old) => ({ ...old, s32: stock_cont.s32 - sortis32 }));
+      if (sortis42 > 0)
+        set_stock_cont((old) => ({ ...old, s42: stock_cont.s42 - sortis42 })); */
     }
   }
 
