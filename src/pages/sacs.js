@@ -589,11 +589,7 @@ export default function Sacs() {
 
       console.log("news", newst);
 
-      /* //to check
-      if (sortis32 > 0)
-        set_stock_cont((old) => ({ ...old, s32: stock_cont.s32 - sortis32 }));
-      if (sortis42 > 0)
-        set_stock_cont((old) => ({ ...old, s42: stock_cont.s42 - sortis42 })); */
+      set_stock_cont(newst);
     }
   }
 
