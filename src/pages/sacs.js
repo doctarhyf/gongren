@@ -7,6 +7,7 @@ import {
   CLASS_BTN,
   CLASS_INPUT_TEXT,
   CLASS_TD,
+  STOCK_RESET_PWD,
   USER_LEVEL,
   dateFormatter,
 } from "../helpers/flow";
@@ -18,6 +19,16 @@ import Loading from "../comps/Loading";
 import { doc } from "../helpers/funcs_print";
 import TabCont from "../comps/TabCont";
 import SacsCalc from "../comps/SacsCalc";
+
+const TRANSACTION_TYPE = {
+  CONTAINER: "cont",
+  PRODUCTION: "prod",
+};
+
+const SACS_CONTASINER_OPERATION_TYPE = {
+  IN: "in",
+  OUT: "out",
+};
 
 const SECTIONS = {
   CONTAINER: { label: "Sacs Container" },
@@ -44,8 +55,16 @@ function Stock({ stock, label, onResetStock }) {
       {onResetStock && (
         <button
           onClick={(e) => {
-            if (window.confirm("Do you wanna reset?")) {
+            // Prompt the user to enter the password
+            let password = prompt("Please enter your password before reset!");
+
+            // Check if the password is correct
+            if (password === STOCK_RESET_PWD) {
+              // Execute the function if the password is correct
               onResetStock();
+            } else {
+              // Alert the user if the password is incorrect
+              alert("Incorrect password. Please try again.");
             }
           }}
           className="p-1 text-sm hover:bg-sky-500 hover:text-white text-sky-500 rounded-md"
@@ -60,9 +79,9 @@ function Stock({ stock, label, onResetStock }) {
 function SacsContainer({ trans, onAddTrans, stock }) {
   const [showInput, setShowInput] = useState(false);
   const [data, setdata] = useState({
-    id: trans.length,
+    id: 0,
     team: "A",
-    op: "in",
+    op: SACS_CONTASINER_OPERATION_TYPE.IN,
     s32: 0,
     s42: 0,
   });
@@ -74,8 +93,14 @@ function SacsContainer({ trans, onAddTrans, stock }) {
     }
 
     setShowInput(false);
-    onAddTrans("cont", data);
-    setdata({});
+    onAddTrans(TRANSACTION_TYPE.CONTAINER, data);
+    setdata({
+      id: 0,
+      team: "A",
+      op: SACS_CONTASINER_OPERATION_TYPE.IN,
+      s32: 0,
+      s42: 0,
+    });
   }
 
   return (
@@ -123,21 +148,8 @@ function SacsContainer({ trans, onAddTrans, stock }) {
           <tbody>
             {showInput && (
               <tr>
-                <td className="p1 border border-gray-900">{-1}</td>
-                <td className="p1 border border-gray-900">
-                  in
-                  {/*  <select
-                    className=" border p-1 "
-                    value={data.op}
-                    onChange={(e) =>
-                      setdata((old) => ({ ...old, op: e.target.value }))
-                    }
-                  >
-                    {["in", "out"].map((op) => (
-                      <option value={op}>{op}</option>
-                    ))}
-                  </select> */}
-                </td>
+                <td className="p1 border border-gray-900">0</td>
+                <td className="p1 border border-gray-900">in</td>
                 <td className="p1 border border-gray-900">
                   <select
                     className=" border p-1 "
@@ -237,7 +249,7 @@ function SacsProduction({ trans, onAddTrans, stock, setStock }) {
     const adj32 = showAdjust ? adjust.s32 : 0;
     const adj42 = showAdjust ? adjust.s42 : 0;
 
-    set_restants({ s32: newr32 + adj32, s42: newr42 + adj42 });
+    set_restants({ s32: newr32 + adj32 || 0, s42: newr42 + adj42 || 0 });
   }, [data, adjust]);
 
   function onSaveTrans() {
@@ -253,6 +265,7 @@ function SacsProduction({ trans, onAddTrans, stock, setStock }) {
       restants42: restants.s42,
     });
     //reset
+
     setdata({
       team: "A",
       sortis32: 0,
@@ -472,9 +485,7 @@ function SacsProduction({ trans, onAddTrans, stock, setStock }) {
                         onChange={(e) =>
                           set_adjust((old) => ({
                             ...old,
-                            s32: isNaN(parseInt(e.target.value))
-                              ? 0
-                              : parseInt(e.target.value),
+                            s32: parseInt(e.target.value) || 0,
                           }))
                         }
                       />
@@ -543,7 +554,7 @@ function SacsProduction({ trans, onAddTrans, stock, setStock }) {
 }
 
 export default function Sacs() {
-  const [curtab, setcurtab] = useState();
+  const [curtab, setcurtab] = useState(Object.entries(SECTIONS)[0]);
   const [trans_cont, set_trans_cont] = useState([]);
   const [trans_prod, set_trans_prod] = useState([]);
   const [stock_cont, set_stock_cont] = useState({ s32: 0, s42: 0 });
@@ -571,11 +582,19 @@ export default function Sacs() {
   }, [trans_cont]);
 
   function onAddTrans(type, data) {
-    if (type === "cont") {
+    console.log(data);
+
+    if (type === TRANSACTION_TYPE.CONTAINER) {
       const { s32, s42 } = stock_cont;
 
-      const news32 = data.op === "in" ? s32 + data.s32 : s32 - data.s32;
-      const news42 = data.op === "in" ? s42 + data.s42 : s42 - data.s42;
+      const news32 =
+        data.op === SACS_CONTASINER_OPERATION_TYPE.IN
+          ? s32 + data.s32
+          : s32 - data.s32;
+      const news42 =
+        data.op === SACS_CONTASINER_OPERATION_TYPE.IN
+          ? s42 + data.s42
+          : s42 - data.s42;
 
       set_trans_cont((old) => [
         ...old,
