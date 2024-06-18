@@ -44,11 +44,17 @@ function Stock({ stock, label, onResetStock }) {
       <div className=" flex flex-col ">
         <div>
           {" "}
-          Type 32.5 :<span className=" font-bold "> {stock.s32}</span>{" "}
+          <span className=" bg-green-500 text-white text-xs p-1 rounded-md font-bold  ">
+            32.5n
+          </span>{" "}
+          :<span className=" font-bold "> {stock.s32}</span>{" "}
         </div>
         <div>
           {" "}
-          Type 42.5 : <span className=" font-bold ">{stock.s42}</span>{" "}
+          <span className=" bg-black text-white text-xs p-1 rounded-md font-bold  ">
+            42.5n
+          </span>{" "}
+          : <span className=" font-bold ">{stock.s42}</span>{" "}
         </div>
       </div>
 
@@ -198,7 +204,7 @@ function SacsContainer({ trans, onAddTrans, stock }) {
             )}
             {!showInput &&
               trans.map((t, i) => (
-                <tr className={`  ${showInput ? "opacity-20" : ""}  `}>
+                <tr className={`  ${showInput ? "opacity-20" : ""}   `}>
                   <td className="p1 border border-gray-900">{i}</td>
                   <td className="p1 border border-gray-900">{t.op}</td>
                   <td className="p1 border border-gray-900">{t.team}</td>
@@ -263,6 +269,8 @@ function SacsProduction({ trans, onAddTrans, stock, setStock }) {
       tonnage42: data.utilises42 / 20 || 0,
       restants32: restants.s32,
       restants42: restants.s42,
+      adj32: adjust.s32,
+      adj42: adjust.s42,
     });
     //reset
 
@@ -319,18 +327,69 @@ function SacsProduction({ trans, onAddTrans, stock, setStock }) {
             <th className="p1 border border-gray-900">id</th>
             <th className="p1 border border-gray-900">Equipe</th>
             <th className="p1 border border-gray-900">Date</th>
-            <th className="p1 border border-gray-900">Sacs Sortis (32.5)</th>
-            <th className="p1 border border-gray-900">Tonnage (32.5)</th>
-            <th className="p1 border border-gray-900">Sacs Sortis (42.5)</th>
-            <th className="p1 border border-gray-900">Tonnage (42.5)</th>
+            <th className="p1 border border-gray-900">
+              Sacs Sortis{" "}
+              <span className=" bg-green-500 text-white text-xs p-1 rounded-md font-bold  ">
+                32.5n
+              </span>
+            </th>
+            <th className="p1 border border-gray-900">
+              Tonnage{" "}
+              <span className=" bg-green-500 text-white text-xs p-1 rounded-md font-bold  ">
+                32.5n
+              </span>
+            </th>
+            <th className="p1 border border-gray-900">
+              Sacs Sortis{" "}
+              <span className=" bg-black text-white text-xs p-1 rounded-md font-bold  ">
+                42.5n
+              </span>
+            </th>
+            <th className="p1 border border-gray-900">
+              Tonnage{" "}
+              <span className=" bg-black text-white text-xs p-1 rounded-md font-bold  ">
+                42.5n
+              </span>
+            </th>
 
-            <th className="p1 border border-gray-900">Sacs Dechires (32.5)</th>
-            <th className="p1 border border-gray-900">Sacs Dechires (42.5)</th>
-            <th className="p1 border border-gray-900">Sacs Utilises (32.5)</th>
-            <th className="p1 border border-gray-900">Sacs Utilises (42.5)</th>
+            <th className="p1 border border-gray-900">
+              Sacs Dechires{" "}
+              <span className=" bg-green-500 text-white text-xs p-1 rounded-md font-bold  ">
+                32.5n
+              </span>
+            </th>
+            <th className="p1 border border-gray-900">
+              Sacs Dechires{" "}
+              <span className=" bg-black text-white text-xs p-1 rounded-md font-bold  ">
+                42.5n
+              </span>
+            </th>
+            <th className="p1 border border-gray-900">
+              Sacs Utilises{" "}
+              <span className=" bg-green-500 text-white text-xs p-1 rounded-md font-bold  ">
+                32.5n
+              </span>
+            </th>
+            <th className="p1 border border-gray-900">
+              Sacs Utilises{" "}
+              <span className=" bg-black text-white text-xs p-1 rounded-md font-bold  ">
+                42.5n
+              </span>
+            </th>
 
-            <th className="p1 border border-gray-900">Sacs Restants (32.5)</th>
-            <th className="p1 border border-gray-900">Sacs Restants (42.5)</th>
+            <th className="p1 border border-gray-900">
+              Sacs Restants{" "}
+              <span className=" bg-green-500 text-white text-xs p-1 rounded-md font-bold  ">
+                32.5n
+              </span>
+            </th>
+            <th className="p1 border border-gray-900">
+              Sacs Restants{" "}
+              <span className=" bg-black text-white text-xs p-1 rounded-md font-bold  ">
+                42.5
+              </span>
+            </th>
+            <th className="p1 border border-gray-900">Ajust</th>
           </thead>
           <tbody>
             {showInput && (
@@ -518,6 +577,8 @@ function SacsProduction({ trans, onAddTrans, stock, setStock }) {
                     )}
                   </div>
                 </td>
+
+                <td className="p1 border border-gray-900"></td>
               </tr>
             )}
 
@@ -526,9 +587,19 @@ function SacsProduction({ trans, onAddTrans, stock, setStock }) {
                 <tr
                   className={`  ${
                     showInput ? "opacity-20" : ""
-                  } cursor-pointer hover:bg-slate-300  `}
+                  } cursor-pointer hover:bg-slate-300 
+                  
+                  ${
+                    (t.adj32 || 0) !== 0 || (t.adj42 || 0) !== 0
+                      ? "border-red-500 bg-red-200 border-2"
+                      : ""
+                  } 
+                  
+                  `}
                 >
-                  <td className="p1 border border-gray-900">{i}</td>
+                  <td className="p1 border border-gray-900">
+                    {i} {`t.adj32:"${t.adj32}"`} {`t.adj42:"${t.adj42}"`}
+                  </td>
 
                   <td className="p1 border border-gray-900">{t.team}</td>
                   <td className="p1 border border-gray-900">{t.date}</td>
@@ -544,6 +615,10 @@ function SacsProduction({ trans, onAddTrans, stock, setStock }) {
 
                   <td className="p1 border border-gray-900">{t.restants32}</td>
                   <td className="p1 border border-gray-900">{t.restants42}</td>
+                  <td className="p1 border border-gray-900 font-bold text-xs  ">
+                    <div>{t.adj32 || 0} (32.5)</div>
+                    <div className=" w-max ">{t.adj42 || 0} (42.5)</div>
+                  </td>
                 </tr>
               ))}
           </tbody>
