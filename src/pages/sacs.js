@@ -602,9 +602,13 @@ function SacsProduction({ trans, onAddTrans, stock, setStock }) {
                   <td className="p1 border border-gray-900">{t.team}</td>
                   <td className="p1 border border-gray-900">{t.date}</td>
                   <td className="p1 border border-gray-900">{t.sortis32}</td>
-                  <td className="p1 border border-gray-900">{t.tonnage32}</td>
+                  <td className="p1 border border-gray-900">
+                    {t.tonnage32} T.
+                  </td>
                   <td className="p1 border border-gray-900">{t.sortis42}</td>
-                  <td className="p1 border border-gray-900">{t.tonnage42}</td>
+                  <td className="p1 border border-gray-900">
+                    {t.tonnage42} T.
+                  </td>
 
                   <td className="p1 border border-gray-900">{t.dechires32}</td>
                   <td className="p1 border border-gray-900">{t.dechires42}</td>
