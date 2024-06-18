@@ -389,7 +389,7 @@ function SacsProduction({ trans, onAddTrans, stock, setStock }) {
                 42.5
               </span>
             </th>
-            <th className="p1 border border-gray-900">Ajust</th>
+            <th className="p1 border border-gray-900">Ajust (Sacs Perdus )</th>
           </thead>
           <tbody>
             {showInput && (
@@ -597,9 +597,7 @@ function SacsProduction({ trans, onAddTrans, stock, setStock }) {
                   
                   `}
                 >
-                  <td className="p1 border border-gray-900">
-                    {i} {`t.adj32:"${t.adj32}"`} {`t.adj42:"${t.adj42}"`}
-                  </td>
+                  <td className="p1 border border-gray-900">{i}</td>
 
                   <td className="p1 border border-gray-900">{t.team}</td>
                   <td className="p1 border border-gray-900">{t.date}</td>
@@ -613,11 +611,36 @@ function SacsProduction({ trans, onAddTrans, stock, setStock }) {
                   <td className="p1 border border-gray-900">{t.utilises32}</td>
                   <td className="p1 border border-gray-900">{t.utilises42}</td>
 
-                  <td className="p1 border border-gray-900">{t.restants32}</td>
-                  <td className="p1 border border-gray-900">{t.restants42}</td>
-                  <td className="p1 border border-gray-900 font-bold text-xs  ">
-                    <div>{t.adj32 || 0} (32.5)</div>
-                    <div className=" w-max ">{t.adj42 || 0} (42.5)</div>
+                  <td className="p1 border border-gray-900">
+                    <div>{t.restants32}</div>
+                    {(t.adj32 || 0) !== 0 && (
+                      <div className=" bg-red-500 text-xs p-1 w-min  m-1 rounded-md text-white ">
+                        {" "}
+                        {t.restants32 - t.adj32}{" "}
+                      </div>
+                    )}
+                  </td>
+                  <td className="p1 border border-gray-900">
+                    <div>{t.restants42}</div>
+                    {(t.adj42 || 0) !== 0 && (
+                      <div className=" bg-red-500 text-xs p-1 w-min m-1 rounded-md text-white ">
+                        {" "}
+                        {t.restants42 - t.adj42}{" "}
+                      </div>
+                    )}
+                  </td>
+                  <td className="p-1 border border-gray-900 font-bold text-xs  ">
+                    {(t.adj42 || 0) !== 0 && (
+                      <div className=" w-full text-center mx-1 bg-black text-white p-1 rounded-md ">
+                        {(t.adj42 || 0) * -1} (42.5)
+                      </div>
+                    )}
+
+                    {(t.adj32 || 0) !== 0 && (
+                      <div className=" w-[80%] text-center mx-1 bg-green-500 text-white p-1 rounded-md ">
+                        {(t.adj32 || 0) * -1} (32.5)
+                      </div>
+                    )}
                   </td>
                 </tr>
               ))}
