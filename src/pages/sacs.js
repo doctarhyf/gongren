@@ -25,7 +25,7 @@ const SECTIONS = {
   CALCULATOR: { label: "Sacs Calculator" },
 };
 
-function Stock({ stock, label }) {
+function Stock({ stock, label, onResetStock }) {
   return (
     <div className=" py-4 border rounded-md p-1 bg-slate-300/50 ">
       <div className=" font-bold  ">STOCK {label}</div>
@@ -40,6 +40,15 @@ function Stock({ stock, label }) {
           Type 42.5 : <span className=" font-bold ">{stock.s42}</span>{" "}
         </div>
       </div>
+
+      {onResetStock && (
+        <button
+          onClick={(e) => onResetStock()}
+          className="p-1 text-sm hover:bg-sky-500 hover:text-white text-sky-500 rounded-md"
+        >
+          RESET
+        </button>
+      )}
     </div>
   );
 }
@@ -193,7 +202,7 @@ function SacsContainer({ trans, onAddTrans, stock }) {
   );
 }
 
-function SacsProduction({ trans, onAddTrans, stock }) {
+function SacsProduction({ trans, onAddTrans, stock, setStock }) {
   const [adjust, set_adjust] = useState(0);
   const [showAdjust, setShowAdjust] = useState(false);
   const [showInput, setShowInput] = useState(false);
@@ -255,7 +264,11 @@ function SacsProduction({ trans, onAddTrans, stock }) {
 
   return (
     <div>
-      <Stock stock={stock} label={"RESTANTS"} />
+      <Stock
+        stock={stock}
+        label={"RESTANTS"}
+        onResetStock={(e) => setStock({ s32: 0, s42: 0 })}
+      />
       <div>
         {!showInput && (
           <button
@@ -595,7 +608,11 @@ export default function Sacs() {
 
   return (
     <div>
-      <Stock stock={stock_cont} label={"CONTAINER"} />
+      <Stock
+        stock={stock_cont}
+        label={"CONTAINER"}
+        onResetStock={(e) => set_stock_cont({ s32: 0, s42: 0 })}
+      />
       <TabCont tabs={SECTIONS} onSelectTab={onSelectTab} />
       {curtab && (
         <>
@@ -604,6 +621,7 @@ export default function Sacs() {
               trans={trans_prod}
               onAddTrans={onAddTrans}
               stock={stock_prod}
+              setStock={set_stock_prod}
             />
           )}
           {SECTIONS.CONTAINER.label === curtab[1].label && (
