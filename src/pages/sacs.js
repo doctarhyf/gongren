@@ -43,7 +43,11 @@ function Stock({ stock, label, onResetStock }) {
 
       {onResetStock && (
         <button
-          onClick={(e) => onResetStock()}
+          onClick={(e) => {
+            if (window.confirm("Do you wanna reset?")) {
+              onResetStock();
+            }
+          }}
           className="p-1 text-sm hover:bg-sky-500 hover:text-white text-sky-500 rounded-md"
         >
           RESET
