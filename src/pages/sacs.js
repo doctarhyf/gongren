@@ -591,7 +591,7 @@ function SacsProduction({ trans, onAddTrans, stock, setStock }) {
                   
                   ${
                     (t.adj32 || 0) !== 0 || (t.adj42 || 0) !== 0
-                      ? "border-red-500 bg-red-200 border-2"
+                      ? "border-red-500 bg-red-100 border-2"
                       : ""
                   } 
                   
