@@ -124,12 +124,13 @@ export default function Sacs() {
       ]);
       setloading(false);
 
-      if (res === null) {
+      const success = res.every((el) => el === null);
+
+      if (success) {
         alert("Data saved!");
         console.log(res);
       } else {
-        //console.log(res);
-        alert(res.message);
+        alert(`Error saving data! \n ${JSON.stringify(res)}`);
       }
     }
 
@@ -168,17 +169,18 @@ export default function Sacs() {
         pr_stock_prod,
         pr_stock_cont,
       ]);
+      const success = res.every((el) => el === null);
 
       console.log("res prod insert", res);
 
       setloading(false);
 
-      if (res === null) {
+      if (success) {
         alert("Data saved!");
         console.log(res);
       } else {
         //console.log(res);
-        alert(res.message);
+        alert(`Error saving data! \n ${JSON.stringify(res)}`);
       }
     }
   }
