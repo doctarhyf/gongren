@@ -19,6 +19,7 @@ import Loading from "../comps/Loading";
 import { doc } from "../helpers/funcs_print";
 import TabCont from "../comps/TabCont";
 import SacsCalc from "../comps/SacsCalc";
+
 import {
   SACS_SECTIONS,
   TRANSACTION_TYPE,
@@ -34,15 +35,25 @@ export default function Sacs() {
   const [trans_prod, set_trans_prod] = useState([]);
   const [stock_cont, set_stock_cont] = useState({ s32: 0, s42: 0 });
   const [stock_prod, set_stock_prod] = useState({ s32: 0, s42: 0 });
-  const [loading, setloading] = useState(false);
+  const [loading, setloading] = useState(true);
 
   function onSelectTab(t) {
     //console.log(t);
     setcurtab(t);
   }
 
+  function delay(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
+  // Usage example:
+
   useEffect(() => {
-    loadData();
+    //loadData();
+    delay(1500).then(() => {
+      //console.log("2 seconds have passed");
+      setloading(false);
+    });
   }, []);
 
   function loadData() {}
@@ -62,7 +73,7 @@ export default function Sacs() {
     }
   }, [trans_cont]);
 
-  function onAddTrans(type, data) {
+  async function onAddTrans(type, data) {
     console.log(data);
 
     if (type === TRANSACTION_TYPE.CONTAINER) {
@@ -79,10 +90,19 @@ export default function Sacs() {
 
       const new_trans_cont = { ...data, stock32: news32, stock42: news42 };
       set_trans_cont((old) => [...old, new_trans_cont]);
+      const pr_trans_cont = SB.InsertItem(
+        TABLES_NAMES.SACS_CONTAINER,
+        new_trans_cont
+      );
 
       const new_stock_cont = { s32: news32, s42: news42 };
       set_stock_cont(new_stock_cont);
+      const pr_stock_cont = SB.InsertItem(
+        TABLES_NAMES.SACS_STOCK_CONTAINER,
+        new_stock_cont
+      );
 
+      let pr_stock_prod;
       if (data.op === "out") {
         const { s32, s42 } = stock_prod;
         const ns32 = s32 + data.s32;
@@ -90,6 +110,27 @@ export default function Sacs() {
 
         const new_stock_prod = { s32: ns32, s42: ns42 };
         set_stock_prod(new_stock_prod);
+        pr_stock_prod = SB.InsertItem(
+          TABLES_NAMES.SACS_STOCK_PRODUCTION,
+          new_stock_prod
+        );
+      }
+
+      setloading(true);
+      const res = await Promise.all([
+        pr_trans_cont,
+        pr_stock_cont,
+        pr_stock_prod,
+      ]);
+
+      if (res === null) {
+        alert("Data saved!");
+        console.log(res);
+        setloading(false);
+      } else {
+        //console.log(res);
+        alert(res.message);
+        setloading(false);
       }
     } else {
       // production
@@ -112,6 +153,7 @@ export default function Sacs() {
 
   return (
     <div>
+      <Loading isLoading={loading} />
       <Stock
         stock={stock_cont}
         label={"CONTAINER"}

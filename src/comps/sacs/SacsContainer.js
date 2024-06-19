@@ -7,7 +7,7 @@ import {
 export default function SacsContainer({ trans, onAddTrans, stock }) {
   const [showInput, setShowInput] = useState(false);
   const [data, setdata] = useState({
-    id: 0,
+    //id: 0,
     team: "A",
     op: SACS_CONTAINER_OPERATION_TYPE.IN,
     s32: 0,
@@ -23,7 +23,7 @@ export default function SacsContainer({ trans, onAddTrans, stock }) {
     setShowInput(false);
     onAddTrans(TRANSACTION_TYPE.CONTAINER, data);
     setdata({
-      id: 0,
+      //id: 0,
       team: "A",
       op: SACS_CONTAINER_OPERATION_TYPE.IN,
       s32: 0,
