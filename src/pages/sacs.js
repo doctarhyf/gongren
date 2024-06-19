@@ -30,7 +30,7 @@ const SACS_CONTASINER_OPERATION_TYPE = {
   OUT: "out",
 };
 
-const SECTIONS = {
+const SACS_SECTIONS = {
   CONTAINER: { label: "Sacs Container" },
   PRODUCTION: { label: "Sacs Production" },
   CALCULATOR: { label: "Sacs Calculator" },
@@ -656,7 +656,7 @@ function SacsProduction({ trans, onAddTrans, stock, setStock }) {
 }
 
 export default function Sacs() {
-  const [curtab, setcurtab] = useState(Object.entries(SECTIONS)[0]);
+  const [curtab, setcurtab] = useState(Object.entries(SACS_SECTIONS)[0]);
   const [trans_cont, set_trans_cont] = useState([]);
   const [trans_prod, set_trans_prod] = useState([]);
   const [stock_cont, set_stock_cont] = useState({ s32: 0, s42: 0 });
@@ -738,10 +738,10 @@ export default function Sacs() {
         label={"CONTAINER"}
         onResetStock={(e) => set_stock_cont({ s32: 0, s42: 0 })}
       />
-      <TabCont tabs={SECTIONS} onSelectTab={onSelectTab} />
+      <TabCont tabs={SACS_SECTIONS} onSelectTab={onSelectTab} />
       {curtab && (
         <>
-          {SECTIONS.PRODUCTION.label === curtab[1].label && (
+          {SACS_SECTIONS.PRODUCTION.label === curtab[1].label && (
             <SacsProduction
               trans={trans_prod}
               onAddTrans={onAddTrans}
@@ -749,14 +749,14 @@ export default function Sacs() {
               setStock={set_stock_prod}
             />
           )}
-          {SECTIONS.CONTAINER.label === curtab[1].label && (
+          {SACS_SECTIONS.CONTAINER.label === curtab[1].label && (
             <SacsContainer
               trans={trans_cont}
               onAddTrans={onAddTrans}
               stock={stock_cont}
             />
           )}
-          {SECTIONS.CALCULATOR.label === curtab[1].label && <SacsCalc />}
+          {SACS_SECTIONS.CALCULATOR.label === curtab[1].label && <SacsCalc />}
         </>
       )}
     </div>
