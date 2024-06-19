@@ -71,7 +71,7 @@ export default function SacsProduction({ trans, onAddTrans, stock, setStock }) {
     <div>
       <Stock
         stock={stock}
-        label={"RESTANTS"}
+        label={"PRODUCTION (RESTANTS)"}
         onResetStock={(e) => setStock({ s32: 0, s42: 0 })}
       />
       <div>

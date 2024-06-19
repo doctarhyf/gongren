@@ -3,6 +3,7 @@ import {
   SACS_CONTAINER_OPERATION_TYPE,
   TRANSACTION_TYPE,
 } from "../../helpers/flow";
+import Stock from "./Stock";
 
 export default function SacsContainer({ trans, onAddTrans, stock }) {
   const [showInput, setShowInput] = useState(false);
@@ -33,7 +34,7 @@ export default function SacsContainer({ trans, onAddTrans, stock }) {
 
   return (
     <div>
-      {/*   <Stock stock={stock} label={"CONTAINER"} /> */}
+      <Stock stock={stock} label={"CONTAINER"} />
       <div>
         {!showInput && (
           <button
