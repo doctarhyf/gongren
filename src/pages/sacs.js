@@ -29,49 +29,49 @@ import Stock from "../comps/sacs/Stock";
 import SacsProduction from "../comps/sacs/SacsProduction";
 import SacsContainer from "../comps/sacs/SacsContainer";
 
+const SAVING_TO_SB = true;
+
 export default function Sacs() {
   const [curtab, setcurtab] = useState(Object.entries(SACS_SECTIONS)[0]);
   const [trans_cont, set_trans_cont] = useState([]);
   const [trans_prod, set_trans_prod] = useState([]);
   const [stock_cont, set_stock_cont] = useState({ s32: 0, s42: 0 });
   const [stock_prod, set_stock_prod] = useState({ s32: 0, s42: 0 });
-  const [loading, setloading] = useState(true);
+  const [loading, setloading] = useState(false);
 
   function onSelectTab(t) {
     //console.log(t);
     setcurtab(t);
   }
 
-  function delay(ms) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  }
-
-  // Usage example:
-
   useEffect(() => {
-    //loadData();
-    delay(1500).then(() => {
-      //console.log("2 seconds have passed");
-      setloading(false);
-    });
+    loadData();
   }, []);
 
-  function loadData() {}
+  async function loadData() {
+    setloading(true);
+    const sacs_cont = await SB.LoadAllItems(TABLES_NAMES.SACS_CONTAINER);
+    set_trans_cont(sacs_cont);
+    console.log("sacs cont", sacs_cont);
 
-  useEffect(() => {
-    const isFirstRec = trans_cont.length === 1;
+    let last_rec = sacs_cont[sacs_cont.length - 1];
 
-    if (isFirstRec) {
-      set_stock_cont({ s32: trans_cont[0].s32, s42: trans_cont[0].s42 });
-    } else {
-      const last_rec = { s32: 0, s42: 0 }; //trans_cont[trans_cont.length - 1];
-      const { s32, s42 } = stock_cont;
-      const news32 = parseInt(s32) + parseInt(last_rec.s32);
-      const news42 = parseInt(s42) + parseInt(last_rec.s42);
-
-      set_stock_cont({ s32: news32, s42: news42 });
+    if (last_rec) {
+      set_stock_cont({ s32: last_rec.stock32, s42: last_rec.stock42 });
     }
-  }, [trans_cont]);
+
+    const sacs_prod = await SB.LoadAllItems(TABLES_NAMES.SACS_PRODUCTION);
+    set_trans_prod(sacs_prod);
+    console.log("sacs prod", sacs_prod);
+
+    last_rec = sacs_prod[sacs_prod.length - 1];
+
+    if (last_rec) {
+      set_stock_prod({ s32: last_rec.restants32, s42: last_rec.restants42 });
+    }
+
+    setloading(false);
+  }
 
   async function onAddTrans(type, data) {
     console.log(data);
@@ -122,20 +122,28 @@ export default function Sacs() {
         pr_stock_cont,
         pr_stock_prod,
       ]);
+      setloading(false);
 
       if (res === null) {
         alert("Data saved!");
         console.log(res);
-        setloading(false);
       } else {
         //console.log(res);
         alert(res.message);
-        setloading(false);
       }
-    } else {
+    }
+
+    if (type === TRANSACTION_TYPE.PRODUCTION) {
       // production
       set_trans_prod((old) => [...old, data]);
-      set_stock_prod({ s32: data.restants32, s42: data.restants42 });
+      const pr_trans_prod = SB.InsertItem(TABLES_NAMES.SACS_PRODUCTION, data);
+
+      const new_stock_prod = { s32: data.restants32, s42: data.restants42 };
+      set_stock_prod(new_stock_prod);
+      const pr_stock_prod = SB.InsertItem(
+        TABLES_NAMES.SACS_STOCK_PRODUCTION,
+        new_stock_prod
+      );
 
       console.log("data", data);
       console.log("stock_cont", stock_cont);
@@ -148,6 +156,30 @@ export default function Sacs() {
       console.log("news", new_stock_container);
 
       set_stock_cont(new_stock_container);
+
+      const pr_stock_cont = SB.InsertItem(
+        TABLES_NAMES.SACS_STOCK_CONTAINER,
+        new_stock_container
+      );
+
+      setloading(true);
+      const res = await Promise.all([
+        pr_trans_prod,
+        pr_stock_prod,
+        pr_stock_cont,
+      ]);
+
+      console.log("res prod insert", res);
+
+      setloading(false);
+
+      if (res === null) {
+        alert("Data saved!");
+        console.log(res);
+      } else {
+        //console.log(res);
+        alert(res.message);
+      }
     }
   }
 

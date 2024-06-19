@@ -10,7 +10,6 @@ export default function SacsProduction({ trans, onAddTrans, stock, setStock }) {
   const [showAdjust, setShowAdjust] = useState(false);
   const [showInput, setShowInput] = useState(false);
   const [data, setdata] = useState({
-    id: trans.length,
     team: "A",
     sortis32: 0,
     tonnage32: 0,
@@ -45,7 +44,7 @@ export default function SacsProduction({ trans, onAddTrans, stock, setStock }) {
     setShowInput(false);
     onAddTrans("prod", {
       ...data,
-      date: new Date().toISOString(),
+
       tonnage32: data.utilises32 / 20 || 0,
       tonnage42: data.utilises42 / 20 || 0,
       restants32: restants.s32,
