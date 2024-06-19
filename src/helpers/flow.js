@@ -12,6 +12,22 @@ import JinChu from "../pages/jinchu";
 
 export const LANG_COOKIE_KEY = "gongren_lang";
 
+export const TRANSACTION_TYPE = {
+  CONTAINER: "cont",
+  PRODUCTION: "prod",
+};
+
+export const SACS_CONTAINER_OPERATION_TYPE = {
+  IN: "in",
+  OUT: "out",
+};
+
+export const SACS_SECTIONS = {
+  CONTAINER: { label: "Sacs Container" },
+  PRODUCTION: { label: "Sacs Production" },
+  CALCULATOR: { label: "Sacs Calculator" },
+};
+
 export const SUPERVISORS = {
   A: { nom: "ALBERT KANKOBWE", zh: "刚果贝" },
   B: { nom: "NKULU MWENZE", zh: "库鲁" },
