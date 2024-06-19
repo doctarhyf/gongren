@@ -77,19 +77,21 @@ export default function Sacs() {
           ? s42 + data.s42
           : s42 - data.s42;
 
-      set_trans_cont((old) => [
-        ...old,
-        { ...data, stock32: news32, stock42: news42 },
-      ]);
+      const new_trans_cont = { ...data, stock32: news32, stock42: news42 };
+      set_trans_cont((old) => [...old, new_trans_cont]);
 
-      set_stock_cont({ s32: news32, s42: news42 });
+      console.log(`trans_cont => `, trans_cont);
+
+      const new_stock_cont = { s32: news32, s42: news42 };
+      set_stock_cont(new_stock_cont);
 
       if (data.op === "out") {
         const { s32, s42 } = stock_prod;
         const ns32 = s32 + data.s32;
         const ns42 = s42 + data.s42;
 
-        set_stock_prod({ s32: ns32, s42: ns42 });
+        const new_stock_prod = { s32: ns32, s42: ns42 };
+        set_stock_prod(new_stock_prod);
       }
     } else {
       // production
@@ -102,11 +104,11 @@ export default function Sacs() {
       const { sortis32, sortis42 } = data;
       const { s32, s42 } = stock_cont;
 
-      const newst = { s32: s32 - sortis32, s42: s42 - sortis42 };
+      const new_stock_container = { s32: s32 - sortis32, s42: s42 - sortis42 };
 
-      console.log("news", newst);
+      console.log("news", new_stock_container);
 
-      set_stock_cont(newst);
+      set_stock_cont(new_stock_container);
     }
   }
 
