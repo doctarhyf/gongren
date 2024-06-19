@@ -154,32 +154,35 @@ export default function Sacs() {
   return (
     <div>
       <Loading isLoading={loading} />
-      <Stock
-        stock={stock_cont}
-        label={"CONTAINER"}
-        onResetStock={(e) => set_stock_cont({ s32: 0, s42: 0 })}
-      />
-      <TabCont tabs={SACS_SECTIONS} onSelectTab={onSelectTab} />
-      {curtab && (
-        <>
-          {SACS_SECTIONS.PRODUCTION.label === curtab[1].label && (
-            <SacsProduction
-              trans={trans_prod}
-              onAddTrans={onAddTrans}
-              stock={stock_prod}
-              setStock={set_stock_prod}
-            />
-          )}
-          {SACS_SECTIONS.CONTAINER.label === curtab[1].label && (
-            <SacsContainer
-              trans={trans_cont}
-              onAddTrans={onAddTrans}
-              stock={stock_cont}
-            />
-          )}
-          {SACS_SECTIONS.CALCULATOR.label === curtab[1].label && <SacsCalc />}
-        </>
-      )}
+
+      <div className={`  ${loading ? "hidden" : "block"} `}>
+        <Stock
+          stock={stock_cont}
+          label={"CONTAINER"}
+          onResetStock={(e) => set_stock_cont({ s32: 0, s42: 0 })}
+        />
+        <TabCont tabs={SACS_SECTIONS} onSelectTab={onSelectTab} />
+        {curtab && (
+          <>
+            {SACS_SECTIONS.PRODUCTION.label === curtab[1].label && (
+              <SacsProduction
+                trans={trans_prod}
+                onAddTrans={onAddTrans}
+                stock={stock_prod}
+                setStock={set_stock_prod}
+              />
+            )}
+            {SACS_SECTIONS.CONTAINER.label === curtab[1].label && (
+              <SacsContainer
+                trans={trans_cont}
+                onAddTrans={onAddTrans}
+                stock={stock_cont}
+              />
+            )}
+            {SACS_SECTIONS.CALCULATOR.label === curtab[1].label && <SacsCalc />}
+          </>
+        )}{" "}
+      </div>
     </div>
   );
 }
