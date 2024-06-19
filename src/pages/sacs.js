@@ -80,8 +80,6 @@ export default function Sacs() {
       const new_trans_cont = { ...data, stock32: news32, stock42: news42 };
       set_trans_cont((old) => [...old, new_trans_cont]);
 
-      console.log(`trans_cont => `, trans_cont);
-
       const new_stock_cont = { s32: news32, s42: news42 };
       set_stock_cont(new_stock_cont);
 
