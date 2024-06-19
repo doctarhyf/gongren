@@ -34,6 +34,7 @@ export default function Sacs() {
   const [trans_prod, set_trans_prod] = useState([]);
   const [stock_cont, set_stock_cont] = useState({ s32: 0, s42: 0 });
   const [stock_prod, set_stock_prod] = useState({ s32: 0, s42: 0 });
+  const [loading, setloading] = useState(false);
 
   function onSelectTab(t) {
     //console.log(t);
@@ -41,11 +42,16 @@ export default function Sacs() {
   }
 
   useEffect(() => {
+    loadData();
+  }, []);
+
+  function loadData() {}
+
+  useEffect(() => {
     const isFirstRec = trans_cont.length === 1;
 
     if (isFirstRec) {
       set_stock_cont({ s32: trans_cont[0].s32, s42: trans_cont[0].s42 });
-      //console.log("first rec", trans_cont);
     } else {
       const last_rec = { s32: 0, s42: 0 }; //trans_cont[trans_cont.length - 1];
       const { s32, s42 } = stock_cont;
