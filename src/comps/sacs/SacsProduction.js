@@ -380,7 +380,7 @@ export default function SacsProduction({ trans, onAddTrans, stock, setStock }) {
                   <td className="p1 border border-gray-900">{i}</td>
 
                   <td className="p1 border border-gray-900">{t.team}</td>
-                  <td className="p1 border border-gray-900">{t.date}</td>
+                  <td className="p1 border border-gray-900">{t.created_at}</td>
                   <td className="p1 border border-gray-900">{t.sortis32}</td>
                   <td className="p1 border border-gray-900">
                     {t.tonnage32} T.

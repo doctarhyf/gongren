@@ -134,9 +134,7 @@ export default function SacsContainer({ trans, onAddTrans, stock }) {
                   <td className="p1 border border-gray-900">{t.s42}</td>
                   <td className="p1 border border-gray-900">{t.stock32}</td>
                   <td className="p1 border border-gray-900">{t.stock42}</td>
-                  <td className="p1 border border-gray-900">
-                    {new Date().toDateString()}
-                  </td>
+                  <td className="p1 border border-gray-900">{t.created_at}</td>
                 </tr>
               ))}
           </tbody>
