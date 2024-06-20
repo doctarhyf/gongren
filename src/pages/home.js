@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Children, useEffect, useState } from "react";
 import * as SB from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
 import Loading from "../comps/Loading";
@@ -12,6 +12,16 @@ import {
   PACK_TRANSLATIONS_STRINGS,
   STRINGS,
 } from "../helpers/lang_strings";
+
+const Card = ({ title, desc, children }) => {
+  return (
+    <div className=" bg-orange-700 text-orange-300 border-orange-300 p-2 rounded-md w-full md:w-64 ">
+      <h1 className=" font-bold  ">{title}</h1>
+      {children}
+      <h5>{desc}</h5>
+    </div>
+  );
+};
 
 export default function Home() {
   const [agents, setagents] = useState([]);
@@ -71,28 +81,41 @@ export default function Home() {
   return (
     <div className="md:w-[980pt] md:mx-auto ">
       <Loading isLoading={loading} />
-      <div>
-        {trads[GET_STRINGS_KEYS(STRINGS["Agents count"].default)]} :
-        {agents.length}
+
+      <div className=" container ">
+        <Card title={"PRODUCTION"} desc={"Ceci montre la production"}></Card>
       </div>
-      <div className="w-fit ">
-        {Object.entries(agents_by_teams).map((section, i) => (
-          <details key={i}>
-            <summary className="cursor-pointer">{section[0]}</summary>
-            <div>
-              {Object.entries(section[1])
-                .sort()
-                .map((team, i) => (
-                  <div className="ml-8">
-                    {trads[GET_STRINGS_KEYS(STRINGS.Team.default)]} :
-                    {trads[GET_STRINGS_KEYS(STRINGS["Agents count"].default)]} :
-                    {team[0]} : <b>{team[1].length}</b>
-                  </div>
-                ))}
-            </div>
-          </details>
-        ))}
-      </div>
+
+      {false && (
+        <div className="oldmain">
+          <div>
+            {trads[GET_STRINGS_KEYS(STRINGS["Agents count"].default)]} :
+            {agents.length}
+          </div>
+          <div className="w-fit ">
+            {Object.entries(agents_by_teams).map((section, i) => (
+              <details key={i}>
+                <summary className="cursor-pointer">{section[0]}</summary>
+                <div>
+                  {Object.entries(section[1])
+                    .sort()
+                    .map((team, i) => (
+                      <div className="ml-8">
+                        {trads[GET_STRINGS_KEYS(STRINGS.Team.default)]} :
+                        {
+                          trads[
+                            GET_STRINGS_KEYS(STRINGS["Agents count"].default)
+                          ]
+                        }{" "}
+                        :{team[0]} : <b>{team[1].length}</b>
+                      </div>
+                    ))}
+                </div>
+              </details>
+            ))}
+          </div>{" "}
+        </div>
+      )}
     </div>
   );
 }
