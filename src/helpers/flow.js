@@ -28,6 +28,11 @@ export const SACS_SECTIONS = {
   CALCULATOR: { label: "Sacs Calculator" },
 };
 
+export const STOCK_TYPE = {
+  CONTAINER: TRANSACTION_TYPE.CONTAINER,
+  PRODUCTION: TRANSACTION_TYPE.PRODUCTION,
+};
+
 export const SUPERVISORS = {
   A: { nom: "ALBERT KANKOBWE", zh: "刚果贝" },
   B: { nom: "NKULU MWENZE", zh: "库鲁" },

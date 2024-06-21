@@ -1,4 +1,10 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import autoTable from "jspdf-autotable";
 import jsPDF from "jspdf";
 import useDataLoader from "../hooks/useDataLoader";
@@ -8,6 +14,7 @@ import {
   CLASS_INPUT_TEXT,
   CLASS_TD,
   STOCK_RESET_PWD,
+  STOCK_TYPE,
   USER_LEVEL,
   dateFormatter,
 } from "../helpers/flow";
@@ -81,11 +88,15 @@ export default function Sacs() {
 
       const news32 =
         data.op === SACS_CONTAINER_OPERATION_TYPE.IN
-          ? s32 + data.s32
+          ? data.stockres
+            ? data.s32
+            : s32 + data.s32
           : s32 - data.s32;
       const news42 =
         data.op === SACS_CONTAINER_OPERATION_TYPE.IN
-          ? s42 + data.s42
+          ? data.stockres
+            ? data.s42
+            : s42 + data.s42
           : s42 - data.s42;
 
       const new_trans_cont = { ...data, stock32: news32, stock42: news42 };
@@ -185,6 +196,16 @@ export default function Sacs() {
     }
   }
 
+  const onResetStock = (stockType) => {
+    if (STOCK_TYPE.CONTAINER === stockType) {
+      console.log("container ...");
+    }
+
+    if (STOCK_TYPE.PRODUCTION === stockType) {
+      console.log("production ...");
+    }
+  };
+
   return (
     <div>
       <Loading isLoading={loading} />
@@ -204,6 +225,7 @@ export default function Sacs() {
                 onAddTrans={onAddTrans}
                 stock={stock_prod}
                 setStock={set_stock_prod}
+                onResetStock={onResetStock}
               />
             )}
             {SACS_SECTIONS.CONTAINER.label === curtab[1].label && (
@@ -211,6 +233,7 @@ export default function Sacs() {
                 trans={trans_cont}
                 onAddTrans={onAddTrans}
                 stock={stock_cont}
+                onResetStock={onResetStock}
               />
             )}
             {SACS_SECTIONS.CALCULATOR.label === curtab[1].label && <SacsCalc />}

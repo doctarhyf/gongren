@@ -1,11 +1,17 @@
 import { useState } from "react";
 import {
   SACS_CONTAINER_OPERATION_TYPE,
+  STOCK_TYPE,
   TRANSACTION_TYPE,
 } from "../../helpers/flow";
 import Stock from "./Stock";
 
-export default function SacsContainer({ trans, onAddTrans, stock }) {
+export default function SacsContainer({
+  trans,
+  onAddTrans,
+  stock,
+  onResetStock,
+}) {
   const [showInput, setShowInput] = useState(false);
   const [data, setdata] = useState({
     //id: 0,
@@ -34,7 +40,7 @@ export default function SacsContainer({ trans, onAddTrans, stock }) {
 
   return (
     <div>
-      <Stock stock={stock} label={"CONTAINER"} />
+      <Stock id={STOCK_TYPE.CONTAINER} stock={stock} label={"CONTAINER"} />
       <div>
         {!showInput && (
           <button
@@ -72,6 +78,7 @@ export default function SacsContainer({ trans, onAddTrans, stock }) {
             <th className="p1 border border-gray-900">42.5</th>
             <th className="p1 border border-gray-900">Stock 32.5</th>
             <th className="p1 border border-gray-900">Stock 42.5</th>
+            <th className="p1 border border-gray-900">Stock Reset</th>
             <th className="p1 border border-gray-900">Date</th>
           </thead>
           <tbody>
@@ -121,6 +128,16 @@ export default function SacsContainer({ trans, onAddTrans, stock }) {
                 <td className="p1 border border-gray-900"> - </td>
                 <td className="p1 border border-gray-900"> - </td>
                 <td className="p1 border border-gray-900">
+                  {" "}
+                  <input
+                    type="checkbox"
+                    value={data.stockres}
+                    onChange={(e) =>
+                      setdata((old) => ({ ...old, stockres: e.target.checked }))
+                    }
+                  />{" "}
+                </td>
+                <td className="p1 border border-gray-900">
                   {new Date().toDateString()}
                 </td>
               </tr>
@@ -135,6 +152,9 @@ export default function SacsContainer({ trans, onAddTrans, stock }) {
                   <td className="p1 border border-gray-900">{t.s42}</td>
                   <td className="p1 border border-gray-900">{t.stock32}</td>
                   <td className="p1 border border-gray-900">{t.stock42}</td>
+                  <td className="p1 border border-gray-900">
+                    {t.stockres ? "yes" : "no"}
+                  </td>
                   <td className="p1 border border-gray-900">{t.created_at}</td>
                 </tr>
               ))}

@@ -1,6 +1,6 @@
-import { STOCK_RESET_PWD } from "../../helpers/flow";
+import { STOCK_RESET_PWD, STOCK_TYPE } from "../../helpers/flow";
 
-export default function Stock({ stock, label, onResetStock }) {
+export default function Stock({ id, stock, label, onResetStock }) {
   return (
     <div className=" py-4 border rounded-md p-1 bg-slate-300/50 ">
       <div className=" font-bold  ">STOCK {label}</div>
@@ -31,7 +31,7 @@ export default function Stock({ stock, label, onResetStock }) {
             // Check if the password is correct
             if (password === STOCK_RESET_PWD) {
               // Execute the function if the password is correct
-              onResetStock();
+              onResetStock(id);
             } else {
               // Alert the user if the password is incorrect
               alert("Incorrect password. Please try again.");
