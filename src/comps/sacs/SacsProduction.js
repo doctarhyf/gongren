@@ -217,17 +217,6 @@ export default function SacsProduction({
 
                 <td className="p1 border border-gray-900">
                   {data.utilises32 / 20 || 0}
-                  {/* <input
-                    className=" w-16 "
-                    value={data.tonnage32}
-                    onChange={(e) =>
-                      setdata((old) => ({
-                        ...old,
-                        tonnage32:
-                          e.target.value === "" ? 0 : parseInt(e.target.value),
-                      }))
-                    }
-                  /> */}
                 </td>
 
                 <td className="p1 border border-gray-900">
@@ -246,17 +235,6 @@ export default function SacsProduction({
 
                 <td className="p1 border border-gray-900">
                   {data.utilises42 / 20 || 0}
-                  {/* <input
-                    className=" w-16 "
-                    value={data.tonnage42}
-                    onChange={(e) =>
-                      setdata((old) => ({
-                        ...old,
-                        tonnage42:
-                          e.target.value === "" ? 0 : parseInt(e.target.value),
-                      }))
-                    }
-                  /> */}
                 </td>
 
                 <td className="p1 border border-gray-900">

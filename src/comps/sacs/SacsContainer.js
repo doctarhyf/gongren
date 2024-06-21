@@ -19,7 +19,7 @@ export default function SacsContainer({
     op: SACS_CONTAINER_OPERATION_TYPE.IN,
     s32: 0,
     s42: 0,
-    reset: false,
+    stockres: false,
   });
 
   function onSaveTrans() {
@@ -66,16 +66,6 @@ export default function SacsContainer({
             >
               CANCEL
             </button>
-            <div>
-              <input
-                type="checkbox"
-                value={data.reset}
-                onChange={(e) =>
-                  setdata((old) => ({ ...old, reset: e.target.checked }))
-                }
-              />
-              RESET
-            </div>
           </>
         )}
       </div>
