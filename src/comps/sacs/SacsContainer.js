@@ -23,8 +23,6 @@ export default function SacsContainer({
   });
 
   function onSaveTrans() {
-    console.log(data);
-    return;
     if (data.s32 === undefined || data.s42 === undefined) {
       alert("Please input sacs amount!");
       return;
