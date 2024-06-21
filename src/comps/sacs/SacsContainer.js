@@ -13,9 +13,12 @@ export default function SacsContainer({ trans, onAddTrans, stock }) {
     op: SACS_CONTAINER_OPERATION_TYPE.IN,
     s32: 0,
     s42: 0,
+    reset: false,
   });
 
   function onSaveTrans() {
+    console.log(data);
+    return;
     if (data.s32 === undefined || data.s42 === undefined) {
       alert("Please input sacs amount!");
       return;
@@ -59,6 +62,16 @@ export default function SacsContainer({ trans, onAddTrans, stock }) {
             >
               CANCEL
             </button>
+            <div>
+              <input
+                type="checkbox"
+                value={data.reset}
+                onChange={(e) =>
+                  setdata((old) => ({ ...old, reset: e.target.checked }))
+                }
+              />
+              RESET
+            </div>
           </>
         )}
       </div>
