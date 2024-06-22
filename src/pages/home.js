@@ -13,9 +13,17 @@ import {
   STRINGS,
 } from "../helpers/lang_strings";
 
-const Card = ({ title, desc, children }) => {
+const COLORS = [
+  " bg-orange-700 text-orange-300 border-orange-300 p-2 rounded-md w-full md:w-64 ",
+  " bg-green-700 text-green-300 border-green-300 p-2 rounded-md w-full md:w-64 ",
+  " bg-purple-700 text-purple-300 border-purple-300 p-2 rounded-md w-full md:w-64 ",
+  " bg-red-700 text-red-300 border-red-300 p-2 rounded-md w-full md:w-64 ",
+  " bg-sky-700 text-sky-300 border-sky-300 p-2 rounded-md w-full md:w-64 ",
+];
+
+const Card = ({ id, title, desc, children }) => {
   return (
-    <div className=" bg-orange-700 text-orange-300 border-orange-300 p-2 rounded-md w-full md:w-64 ">
+    <div className={COLORS[id]}>
       <h1 className=" font-bold  ">{title}</h1>
       {children}
       <h5>{desc}</h5>
@@ -82,8 +90,14 @@ export default function Home() {
     <div className="md:w-[980pt] md:mx-auto ">
       <Loading isLoading={loading} />
 
-      <div className=" container ">
-        <Card title={"PRODUCTION"} desc={"Ceci montre la production"}></Card>
+      <div className=" container flex gap-4 my-4 flex-col md:flex-row ">
+        {[...Array(5).fill(0)].map((it, idx) => (
+          <Card
+            id={idx}
+            title={"PRODUCTION"}
+            desc={"Ceci montre la production"}
+          ></Card>
+        ))}
       </div>
 
       {false && (
