@@ -14,18 +14,25 @@ import {
 } from "../helpers/lang_strings";
 
 const COLORS = [
-  " bg-orange-700 text-orange-300 border-orange-300 p-2 rounded-md w-full md:w-64 ",
-  " bg-green-700 text-green-300 border-green-300 p-2 rounded-md w-full md:w-64 ",
-  " bg-purple-700 text-purple-300 border-purple-300 p-2 rounded-md w-full md:w-64 ",
-  " bg-red-700 text-red-300 border-red-300 p-2 rounded-md w-full md:w-64 ",
+  " bg-teal-700 text-teal-300 border-teal-300 p-2 rounded-md w-full md:w-64 ",
   " bg-sky-700 text-sky-300 border-sky-300 p-2 rounded-md w-full md:w-64 ",
+  " bg-indigo-700 text-indigo-300 border-indigo-300 p-2 rounded-md w-full md:w-64 ",
+  " bg-purple-700 text-purple-300 border-purple-300 p-2 rounded-md w-full md:w-64 ",
+  " bg-rose-700 text-rose-300 border-rose-300 p-2 rounded-md w-full md:w-64 ",
 ];
 
 const Card = ({ id, title, desc, children }) => {
+  const [showChildren, setShowChildren] = useState(false);
+
   return (
-    <div className={COLORS[id]}>
-      <h1 className=" font-bold  border-b border-b-white/20   ">{title}</h1>
-      {children}
+    <div className={` ${COLORS[id]} md:h-fit `}>
+      <h1
+        className=" cursor-pointer hover:bg-white/25 font-bold  border-b border-b-white/20   "
+        onClick={(e) => setShowChildren(!showChildren)}
+      >
+        {title}
+      </h1>
+      {showChildren && <div>{children}</div>}
       <h5>{desc}</h5>
     </div>
   );
@@ -114,7 +121,9 @@ function HUDTonnage() {
           ].map((it, i) => (
             <div>
               <div className=" text-[24pt] ">{it[1]}</div>
-              <div className=" text-xs  ">{it[0]}</div>
+              <div className=" w-fit text-xs bg-white/25 rounded-md py-1 px-2  ">
+                {it[0]}
+              </div>
             </div>
           ))}
         </div>
@@ -170,19 +179,91 @@ function HUDGestionSacs() {
             ["CONT./集装箱袋数", data.cont],
             ["REST./剩余总量", data.prod],
           ].map((stock, i) => (
-            <div>
+            <div className=" border-b border-b-white/10 py-2 ">
               {/* <div className=" text-[24pt] ">{it[1]}</div> */}
               {Object.entries(stock[1]).map((s, i) => (
-                <div className="">
+                <div className="  ">
                   <div>
-                    <span className=" text-[22pt] ">{s[1]}</span>
-                    <span className=" bg-white/25 ml-2  px-2 text-sm rounded-md ">
+                    <span className=" text-[16pt] ">{s[1]}</span>
+                    <span className=" font-bold  px-2 text-sm  ">
                       {`${s[0]} `}
                     </span>
                   </div>
                 </div>
               ))}
-              <div className=" text-xs  ">{stock[0]}</div>
+              <div className="  text-xs bg-white/25 px-2 py-1 w-fit rounded-md ">
+                {stock[0]}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </Card>
+  );
+}
+
+function HUDAgents() {
+  const [loading, setloading] = useState(false);
+
+  const [agents, setagents] = useState([]);
+  const [data, setdata] = useState({
+    count: 0,
+    A: 10,
+    B: 20,
+    C: 30,
+    D: 40,
+  });
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  function loadData() {
+    setloading(true);
+    SB.LoadAllItems2(
+      TABLES_NAMES.AGENTS,
+      (ags) => {
+        setloading(false);
+
+        const agsf = GroupBySectionAndEquipe(ags);
+        setagents(agsf);
+
+        let tot_a = 0;
+        let tot_b = 0;
+        let tot_c = 0;
+        let tot_d = 0;
+
+        console.log("agsf", agsf);
+
+        setdata({ count: ags.length, A: tot_a, B: tot_b, C: tot_c, D: tot_d });
+      },
+      (e) => {
+        setloading(false);
+        console.log(e);
+        alert(`Error \n ${JSON.stringify(e)}`);
+      }
+    );
+  }
+
+  return (
+    <Card id={2} title={`AGENTS/ 员工 (${data.count}) Agents`} desc={""}>
+      {loading ? (
+        <Loading isLoading={true} />
+      ) : (
+        <div>
+          {Object.entries(agents).map((sec) => (
+            <div>
+              <div>{sec[0]}</div>
+              <div className=" justify-center gap-4 align-middle   flex ">
+                {Object.entries(sec[1]).map((it, i) => (
+                  <div>
+                    <div className=" text-[24pt] ">{it[1].length}</div>
+                    <div className=" w-fit text-xs bg-white/25 rounded-md py-1 px-2  ">
+                      {it[0]}
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           ))}
         </div>
@@ -253,6 +334,7 @@ export default function Home() {
       <div className=" container flex gap-4 my-4 flex-col md:flex-row ">
         <HUDTonnage />
         <HUDGestionSacs />
+        <HUDAgents />
       </div>
 
       {false && (
