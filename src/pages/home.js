@@ -22,7 +22,7 @@ const COLORS = [
 ];
 
 const Card = ({ id, title, desc, children }) => {
-  const [showChildren, setShowChildren] = useState(false);
+  const [showChildren, setShowChildren] = useState(true);
 
   return (
     <div className={` ${COLORS[id]} md:h-fit `}>
