@@ -27,7 +27,7 @@ const Card = ({ id, title, desc, children }) => {
   return (
     <div className={` ${COLORS[id]} md:h-fit `}>
       <h1
-        className=" cursor-pointer hover:bg-white/25 font-bold  border-b border-b-white/20   "
+        className=" cursor-pointer  font-bold  border-b border-b-white/20   "
         onClick={(e) => setShowChildren(!showChildren)}
       >
         {title}
