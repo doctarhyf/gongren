@@ -102,7 +102,7 @@ function HUDTonnage() {
   }
 
   return (
-    <Card id={3} title={`PROD./生产 年${y}月${parseInt(m) + 1}`} desc={""}>
+    <Card id={0} title={`PROD./生产 年${y}月${parseInt(m) + 1}`} desc={""}>
       {loading ? (
         <Loading isLoading={true} />
       ) : (
@@ -161,7 +161,7 @@ function HUDGestionSacs() {
   }
 
   return (
-    <Card id={2} title={`GESTIONS SACS/编织袋管理`} desc={""}>
+    <Card id={1} title={`GESTIONS SACS/编织袋管理`} desc={""}>
       {loading ? (
         <Loading isLoading={true} />
       ) : (
