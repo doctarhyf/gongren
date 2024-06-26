@@ -24,14 +24,14 @@ const COLORS = [
 const Card = ({ id, title, desc, children }) => {
   return (
     <div className={COLORS[id]}>
-      <h1 className=" font-bold  ">{title}</h1>
+      <h1 className=" font-bold  border-b border-b-white/20   ">{title}</h1>
       {children}
       <h5>{desc}</h5>
     </div>
   );
 };
 
-function Tonnage() {
+function HUDTonnage() {
   const date = new Date();
   const m = date.getMonth();
   const y = date.getFullYear();
@@ -102,7 +102,7 @@ function Tonnage() {
   }
 
   return (
-    <Card id={3} title={`PROD./生产 年${y}月${m}日${d} `} desc={""}>
+    <Card id={3} title={`PROD./生产 年${y}月${parseInt(m) + 1}`} desc={""}>
       {loading ? (
         <Loading isLoading={true} />
       ) : (
@@ -113,8 +113,76 @@ function Tonnage() {
             ["TON./吨数", data.tonnage],
           ].map((it, i) => (
             <div>
-              <div className=" text-xs  ">{it[0]}</div>
               <div className=" text-[24pt] ">{it[1]}</div>
+              <div className=" text-xs  ">{it[0]}</div>
+            </div>
+          ))}
+        </div>
+      )}
+    </Card>
+  );
+}
+
+function HUDGestionSacs() {
+  const [loading, setloading] = useState(false);
+
+  const [data, setdata] = useState({
+    cont: { s32: 0, s42: 0 },
+    prod: { s32: 0, s42: 0 },
+  });
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  async function loadData() {
+    setloading(true);
+    const stockCont = await SB.LoadAllItems(TABLES_NAMES.SACS_CONTAINER);
+    const stockProd = await SB.LoadAllItems(TABLES_NAMES.SACS_PRODUCTION);
+
+    const stockContLen = stockCont.length;
+    const stockProdLen = stockProd.length;
+
+    const stockContLastEl = stockCont[stockContLen - 1];
+    const stockProdLastEl = stockProd[stockProdLen - 1];
+
+    const { stock32, stock42 } = stockContLastEl;
+    const { restants32, restants42 } = stockProdLastEl;
+
+    console.log("sc", stockCont, stockCont.length);
+    console.log("sp", stockProd, stockProd.length);
+
+    setdata({
+      cont: { s32: stock32, s42: stock42 },
+      prod: { s32: restants32, s42: restants42 },
+    });
+
+    setloading(false);
+  }
+
+  return (
+    <Card id={2} title={`GESTIONS SACS/编织袋管理`} desc={""}>
+      {loading ? (
+        <Loading isLoading={true} />
+      ) : (
+        <div className="">
+          {[
+            ["CONT./集装箱袋数", data.cont],
+            ["REST./剩余总量", data.prod],
+          ].map((stock, i) => (
+            <div>
+              {/* <div className=" text-[24pt] ">{it[1]}</div> */}
+              {Object.entries(stock[1]).map((s, i) => (
+                <div className="">
+                  <div>
+                    <span className=" text-[22pt] ">{s[1]}</span>
+                    <span className=" bg-white/25 ml-2  px-2 text-sm rounded-md ">
+                      {`${s[0]} `}
+                    </span>
+                  </div>
+                </div>
+              ))}
+              <div className=" text-xs  ">{stock[0]}</div>
             </div>
           ))}
         </div>
@@ -183,7 +251,8 @@ export default function Home() {
       <Loading isLoading={loading} />
 
       <div className=" container flex gap-4 my-4 flex-col md:flex-row ">
-        <Tonnage />
+        <HUDTonnage />
+        <HUDGestionSacs />
       </div>
 
       {false && (
