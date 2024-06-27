@@ -25,7 +25,7 @@ const Card = ({ id, title, desc, children }) => {
   const [showChildren, setShowChildren] = useState(true);
 
   return (
-    <div className={` ${COLORS[id]} md:h-fit `}>
+    <div className={` ${COLORS[id]} md:h-fit flex-grow `}>
       <h1
         className=" cursor-pointer  font-bold  border-b border-b-white/20   "
         onClick={(e) => setShowChildren(!showChildren)}
@@ -205,14 +205,8 @@ function HUDGestionSacs() {
 function HUDAgents() {
   const [loading, setloading] = useState(false);
 
-  const [agents, setagents] = useState([]);
-  const [data, setdata] = useState({
-    count: 0,
-    A: 10,
-    B: 20,
-    C: 30,
-    D: 40,
-  });
+  const [agentsFiltered, setAgentsFiltered] = useState([]);
+  const [agentsGrouped, setAgentsGrouped] = useState([]);
 
   useEffect(() => {
     loadData();
@@ -222,20 +216,15 @@ function HUDAgents() {
     setloading(true);
     SB.LoadAllItems2(
       TABLES_NAMES.AGENTS,
-      (ags) => {
+      (agents) => {
         setloading(false);
 
-        const agsf = GroupBySectionAndEquipe(ags);
-        setagents(agsf);
+        const agentsf = agents.filter((agent, i) => agent.active === "OUI");
+        const agentsg = GroupBySectionAndEquipe(agentsf);
+        setAgentsFiltered(agentsf);
+        setAgentsGrouped(agentsg);
 
-        let tot_a = 0;
-        let tot_b = 0;
-        let tot_c = 0;
-        let tot_d = 0;
-
-        console.log("agsf", agsf);
-
-        setdata({ count: ags.length, A: tot_a, B: tot_b, C: tot_c, D: tot_d });
+        console.log("agsf f", agentsf);
       },
       (e) => {
         setloading(false);
@@ -246,12 +235,16 @@ function HUDAgents() {
   }
 
   return (
-    <Card id={2} title={`AGENTS/ 员工 (${data.count}) Agents`} desc={""}>
+    <Card
+      id={2}
+      title={`AGENTS/ 员工 (${agentsFiltered.length}) Agents`}
+      desc={""}
+    >
       {loading ? (
         <Loading isLoading={true} />
       ) : (
         <div>
-          {Object.entries(agents).map((sec) => (
+          {Object.entries(agentsGrouped).map((sec) => (
             <div>
               <div>{sec[0]}</div>
               <div className=" justify-center gap-4 align-middle   flex ">
