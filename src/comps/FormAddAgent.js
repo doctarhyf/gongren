@@ -121,7 +121,10 @@ export default function FormAddAgent({
       };
       const cfile = await imageCompression(file, options);
       console.log("cfile", cfile);
-      file_name = cfile.name;
+      const { type } = cfile;
+      const ext = type.split("/")[1];
+      file_name = new Date().getTime() + "." + ext;
+
       let { data, error } = await supabase.storage
         .from("agents_photos")
         .upload(`${file_name}`, cfile);
