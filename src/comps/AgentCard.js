@@ -100,12 +100,12 @@ export default function AgentCard({
         <div className="agent-card p-2 border-neutral-400 border rounded-md ml-2">
           <a href={agent.photo || null}>
             {" "}
-            <div className="text-center">
+            <div className="text-center w-44 mx-auto rounded-md  md:h-[200pt] max-h-36  overflow-hidden ">
               <img
                 className="mx-auto"
                 src={agent.photo || ico_user}
-                width={80}
-                height={80}
+                width="100%"
+                height="100%"
               />
             </div>
           </a>
