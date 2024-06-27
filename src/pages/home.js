@@ -288,38 +288,6 @@ export default function Home() {
     console.log("sellang : ", sellang);
   }, []);
 
-  async function loadData() {
-    setloading(true);
-    set_agents_by_teams({});
-
-    let agents = await SB.LoadAllItems(TABLES_NAMES.AGENTS);
-    agents = agents.filter((agent, i) => agent.active === "OUI");
-
-    let agents_grouped_by_teams = GroupBySectionAndEquipe(agents);
-
-    const rlds = await SB.LoadAllItems(TABLES_NAMES.AGENTS_RLD);
-
-    const agents_with_rld = agents.map((agent, i) => {
-      let rld = rlds.find((it, i) => it.agent_id === agent.id);
-
-      if (rld) {
-        agent.rld = rld;
-        //console.log(agent.id);
-      } else {
-        agent.rld = {
-          rl: "--------------------------------",
-          agent_id: agent.id,
-        };
-      }
-
-      return agent;
-    });
-
-    set_agents_by_teams(agents_grouped_by_teams);
-    setagents(agents_with_rld);
-    setloading(false);
-  }
-
   return (
     <div className="md:w-[980pt] md:mx-auto ">
       <Loading isLoading={loading} />

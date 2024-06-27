@@ -11,6 +11,7 @@ import {
 import { UserContext } from "../App";
 import ico_user from "../img/user.png";
 import { supabase } from "../helpers/sb.config";
+import imageCompression from "browser-image-compression";
 
 const DATA_TYPE_TEXT_INPUT = 2;
 const DATA_TYPE_SELECT = 3;
@@ -112,10 +113,18 @@ export default function FormAddAgent({
   async function uploadPhoto(file, file_name) {
     if (file) {
       setuploading(true);
-      // const file_name = `${Math.random()}.jpg`;
+
+      const options = {
+        maxSizeMB: 1, // Maximum size in MB
+        maxWidthOrHeight: 1920, // Maximum width or height
+        useWebWorker: true, // Use web workers for better performance
+      };
+      const cfile = await imageCompression(file, options);
+      console.log("cfile", cfile);
+      file_name = cfile.name;
       let { data, error } = await supabase.storage
         .from("agents_photos")
-        .upload(`${file_name}`, file);
+        .upload(`${file_name}`, cfile);
 
       if (error && error.statusCode == "409") {
         alert("Updating ...");
@@ -154,7 +163,24 @@ export default function FormAddAgent({
       setSelectedImage(URL.createObjectURL(file));
 
       const file_name = `agent_${agentDataToUpdate.id}.jpg`;
+      const { photo } = agent;
+
       const { data } = await uploadPhoto(file, file_name);
+
+      if (photo) {
+        const splits = agent.photo.split("/");
+        const old_fname = splits[splits.length - 1];
+
+        console.log("old fname => ", old_fname);
+
+        const r = await supabase.storage
+          .from("agents_photos")
+          .remove(old_fname);
+
+        console.log("Delete ", old_fname, " ==> ", r);
+      } else {
+        console.log("no old photo");
+      }
 
       if (data && data.publicUrl) {
         const { publicUrl } = data;
