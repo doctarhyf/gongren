@@ -124,18 +124,22 @@ export default function AgentCard({
                       )}
                     </td>
                   </tr>
-                  {Object.entries(agent).map((agent_data, i) => (
-                    <tr key={i}>
-                      <td align="right" className="text-neutral-400 text-sm">
-                        {agent_data[0]}
-                      </td>
-                      <td className="text-sky-500 p-1 font-bold ">
-                        {agent_data[0] === "created_at" &&
-                          formatFrenchDate(agent_data[1])}
-                        {agent_data[0] !== "created_at" && agent_data[1]}
-                      </td>
-                    </tr>
-                  ))}
+                  {Object.entries(agent).map((agent_data, i) =>
+                    ["photo", "list_priority", "page"].includes(
+                      agent_data[0]
+                    ) ? null : (
+                      <tr key={i}>
+                        <td align="right" className="text-neutral-400 text-sm">
+                          {agent_data[0]}
+                        </td>
+                        <td className="text-sky-500 p-1 font-bold ">
+                          {agent_data[0] === "created_at" &&
+                            formatFrenchDate(agent_data[1])}
+                          {agent_data[0] !== "created_at" && agent_data[1]}
+                        </td>
+                      </tr>
+                    )
+                  )}
                 </tbody>
               )}
 
