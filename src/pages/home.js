@@ -291,7 +291,9 @@ export default function Home() {
   return (
     <div className="md:w-[980pt] md:mx-auto ">
       <Loading isLoading={loading} />
-
+      {
+        // this is cool
+      }
       <div className=" container flex gap-4 my-4 flex-col md:flex-row ">
         <HUDTonnage />
         <HUDGestionSacs />
