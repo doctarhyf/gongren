@@ -17,7 +17,7 @@ export default function AgentsList({
   onTeamClick,
   showToggleTableMode,
   showToggleTeamsView,
-  onlyActive = true,
+  onlyActive,
 }) {
   const [q, setq] = useState("");
 
@@ -29,7 +29,7 @@ export default function AgentsList({
   const [showNamesInTable, setshowNamesInTable] = useState(false);
   const [showTeamMode, setShowTeamMode] = useState(false);
   const [teams, setteams] = useState([]);
-  const [showOnlyActive, setShowOnlyActive] = useState(false);
+  const [showOnlyActive, setShowOnlyActive] = useState(onlyActive);
 
   useEffect(() => {
     loadAgents();
