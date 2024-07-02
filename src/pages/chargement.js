@@ -200,15 +200,17 @@ export default function Chargement() {
       )}
       {!addDataMode && (
         <div className="flex  gap-4">
-          <BagsDataList
-            loadsf={loadsf}
-            showRepportMode={showRepportMode}
-            onSetDataLevel={onSetDataLevel}
-            loads_by_item={loads_by_item}
-            repportData={repportData}
-            onUpdateShiftData={onUpdateShiftData}
-            onDeleteShiftData={onDeleteShiftData}
-          />
+          {true && (
+            <BagsDataList
+              loadsf={loadsf}
+              showRepportMode={showRepportMode}
+              onSetDataLevel={onSetDataLevel}
+              loads_by_item={loads_by_item}
+              repportData={repportData}
+              onUpdateShiftData={onUpdateShiftData}
+              onDeleteShiftData={onDeleteShiftData}
+            />
+          )}
         </div>
       )}
     </div>

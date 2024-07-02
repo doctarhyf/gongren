@@ -62,11 +62,9 @@ function HUDTonnage() {
       TABLES_NAMES.LOADS,
       (s) => {
         setloading(false);
-        let mstring = m + 1 < 10 ? "0" + (m + 1) : "" + (m + 1);
-        const monthCheck = `${y}-${mstring}-`;
 
         const curMonthLoads = s.filter(
-          (it, i) => it.created_at.split(":")[0].split(`-${mstring}-`)[0] == y
+          (it, i) => it.code.includes(`${y}_${m}`) //it.created_at.split(":")[0].split(`-${mstring}-`)[0] == y
         );
         setloads(curMonthLoads);
 
