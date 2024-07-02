@@ -1206,7 +1206,7 @@ function draw_charg_table(doc, pw, ph, pm, rect_title, fsize, load_data) {
     ],
     ["MATIN", "", "", "", "", "", ""],
     [
-      ["15h00", "23h00"],
+      ["15h00", "23h00", -90],
       [deq_p, -90],
       "",
       "",
@@ -1223,7 +1223,7 @@ function draw_charg_table(doc, pw, ph, pm, rect_title, fsize, load_data) {
     ],
     ["APREM.", "", "", "", "", "", ""],
     [
-      ["23h00", "07h00"],
+      ["23h00", "07h00", -90],
       [deq_n, -90],
       "",
       "",
