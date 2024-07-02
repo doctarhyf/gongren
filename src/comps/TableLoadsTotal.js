@@ -49,7 +49,7 @@ export default function TableLoadsTotals({ totalData, date }) {
                   <td className={CLASS_TD}>{td[0]}</td>
                   <td className={CLASS_TD}>{td[1].sacs}</td>
                   <td className={CLASS_TD}> {td[1].tonnage.toFixed(2)}</td>
-                  <td className={CLASS_TD}>{td[1].bonus}</td>
+                  <td className={CLASS_TD}>{td[1].bonus.toFixed(2)}</td>
                   <td className={CLASS_TD}>
                     {formatAsMoney(Number(td[1].bonus * 1000).toFixed(2))}
                   </td>
