@@ -38,7 +38,7 @@ const Card = ({ id, title, desc, children }) => {
   );
 };
 
-function HUDTonnage() {
+function HUDProduction() {
   const date = new Date();
   const m = date.getMonth();
   const y = date.getFullYear();
@@ -50,6 +50,7 @@ function HUDTonnage() {
     camions: 100,
     sacs: 200,
     tonnage: 300,
+    dechires: 0,
   });
 
   useEffect(() => {
@@ -71,6 +72,7 @@ function HUDTonnage() {
         let totCamions = 0;
         let totSacs = 0;
         let totTonnage = 0;
+        let totDechires = 0;
 
         curMonthLoads.forEach((el) => {
           const {
@@ -90,12 +92,14 @@ function HUDTonnage() {
           totSacs += parseInt(sacs);
           totTonnage = totSacs / 20;
           totCamions += parseInt(camions);
+          totDechires += parseInt(dechires);
         });
 
         setdata({
           camions: totCamions,
           sacs: totSacs,
           tonnage: `${totTonnage} T`,
+          dechires: totDechires,
         });
       },
       (e) => {
@@ -116,6 +120,7 @@ function HUDTonnage() {
             ["CAMIONS/车数", data.camions],
             ["SACS/袋数", data.sacs],
             ["TON./吨数", data.tonnage],
+            ["DECH./破袋", data.dechires],
           ].map((it, i) => (
             <div>
               <div className=" text-[24pt] ">{it[1]}</div>
@@ -293,7 +298,7 @@ export default function Home() {
         // this is cool
       }
       <div className=" container flex gap-4 my-4 flex-col md:flex-row ">
-        <HUDTonnage />
+        <HUDProduction />
         <HUDGestionSacs />
         <HUDAgents />
       </div>
