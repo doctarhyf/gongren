@@ -10,6 +10,17 @@ const POINTAGES_HOURS_LEN = {
   R: 0,
 };
 
+const KAOQIN = {
+  J: { desc: "Jour" },
+  P: { desc: "Apres-midi" },
+  N: { desc: "Nuit" },
+  R: { desc: "Repos" },
+  A: { desc: "Absent" },
+  M: { desc: "Malade" },
+  C: { desc: "Conge conditionel" },
+  "-": { desc: "-" },
+};
+
 export default function AgentRoulementTable({
   agentData,
   daysData,
@@ -142,10 +153,10 @@ export default function AgentRoulementTable({
                   <td
                     className={`${CLASS_TD}  ${
                       i === daysData.dates.indexOf(new Date().getDate()) &&
-                      daysData.date.m === new Date().getMonth() + 1
+                      daysData.date.m === new Date().getMonth()
                         ? CLASS_TODAY
                         : ""
-                    } `}
+                    } ${["S", "D"].includes(d) ? "bg-black text-white" : ""} `}
                   >
                     {d}
                   </td>
@@ -160,7 +171,7 @@ export default function AgentRoulementTable({
                   <td
                     className={`${CLASS_TD}  ${
                       i === daysData.dates.indexOf(new Date().getDate()) &&
-                      daysData.date.m === new Date().getMonth() + 1
+                      daysData.date.m === new Date().getMonth()
                         ? CLASS_TODAY
                         : ""
                     } `}
@@ -185,12 +196,13 @@ export default function AgentRoulementTable({
               <td
                 className={`${CLASS_TD}  ${
                   i === daysData.dates.indexOf(new Date().getDate()) &&
-                  daysData.date.m === new Date().getMonth() + 1
+                  daysData.date.m === new Date().getMonth()
                     ? CLASS_TODAY
                     : ""
                 } `}
               >
-                {!editRoulement && r}{" "}
+                {!editRoulement && r}
+
                 {editRoulement && (
                   <select
                     className={`${CLASS_TD} texts-xs  ${
@@ -202,7 +214,7 @@ export default function AgentRoulementTable({
                     defaultValue={r}
                     onChange={(e) => onChangeRoulement(i, e.target.value)}
                   >
-                    {["J", "P", "N", "R", "-"].map((d, i) => (
+                    {Object.keys(KAOQIN).map((d, i) => (
                       <option selected={d === r}>{d}</option>
                     ))}
                   </select>

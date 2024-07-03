@@ -200,7 +200,7 @@ export default function AgentsTable({
                     key={i}
                     className={`${CLASS_TD} ${
                       isCurrentMonth && i === todayIndex ? CLASS_TODAY : ""
-                    }  `}
+                    } ${["S", "D"].includes(d) ? "bg-black text-white" : ""} `}
                   >
                     {d}
                   </td>
@@ -231,7 +231,7 @@ export default function AgentsTable({
                     key={i}
                     className={`${CLASS_TD} ${
                       isCurrentMonth && i === todayIndex ? CLASS_TODAY : ""
-                    }  `}
+                    }   `}
                   >
                     {d}
                   </td>
