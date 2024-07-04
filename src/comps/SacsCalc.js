@@ -1,4 +1,10 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
+
+const MODE = {
+  RESTANTS: "restants",
+  DECHIRES: "dechires",
+};
+
 export default function SacsCalc() {
   const [sacs_trouves, setstv] = useState(0);
   const [sacs_sortis, setss] = useState(0);
@@ -8,9 +14,11 @@ export default function SacsCalc() {
   const [sacs_comptes, setsc] = useState(0);
   const [sacs_perdus, setsdiff] = useState(0);
 
+  const [mode, setmode] = useState(MODE.RESTANTS);
+
   useEffect(() => {
     let restants = sacs_trouves + sacs_sortis - sacs_dechires - sacs_utilises;
-    let lost = - restants + sacs_comptes;
+    let lost = -restants + sacs_comptes;
 
     setsr(restants);
     setsdiff(lost);
@@ -21,6 +29,18 @@ export default function SacsCalc() {
   return (
     <div>
       <div>Calculateurs de sacs</div>
+
+      <div>
+        <input
+          type="checkbox"
+          value={mode}
+          onChange={(e) =>
+            setmode(mode === MODE.DECHIRES ? MODE.RESTANTS : MODE.DECHIRES)
+          }
+        />{" "}
+        Mode {mode}
+      </div>
+
       <div>Sacs trouves</div>
       <input
         className="outline-none border border-sky-200 hover:border-sky-500 p-1 rounded-md"
@@ -39,9 +59,14 @@ export default function SacsCalc() {
       />
       <div>Sacs dechires</div>
       <input
-        className="outline-none border border-sky-200 hover:border-sky-500 p-1 rounded-md"
+        className={`  ${
+          MODE.DECHIRES === mode
+            ? " border-green-500  "
+            : " border-sky-200 hover:border-sky-500"
+        } outline-none border  p-1 rounded-md`}
         type="number"
         keyboardType={"numeric"}
+        disabled={MODE.DECHIRES === mode}
         value={sacs_dechires}
         onChange={(e) => setsd(parseInt(e.target.value))}
       />
@@ -70,17 +95,14 @@ export default function SacsCalc() {
             {sacs_restants}
           </div>
         )}
-        
-        
-        
-        
-        
-        {sacs_perdus === 0 || isNaN(sacs_perdus) ? 
-        !isNaN(sacs_perdus) && 
-            <div className="p-2 px-auto rounded-full bg-slate-100 text-green-500 font-bold">Comptage normal</div>
-          
-        
-         : (
+
+        {sacs_perdus === 0 || isNaN(sacs_perdus) ? (
+          !isNaN(sacs_perdus) && (
+            <div className="p-2 px-auto rounded-full bg-slate-100 text-green-500 font-bold">
+              Comptage normal
+            </div>
+          )
+        ) : (
           <>
             <div className=" font-bold ">Sacs Perdus</div>
             <div className=" text-xxl text-red-500 font-bold text-4xl ">
