@@ -8,7 +8,7 @@ export default function SacsCalc() {
   const [sacs_restants, setsr] = useState(0);
   const [sacs_comptes, setsc] = useState(0);
   const [sacs_perdus, set_sacs_perdus] = useState(0);
-  const [lockdechires, setlockdechires] = useState(false);
+  const [lockdechires, setlockdechires] = useState(true);
 
   useEffect(() => {
     if (lockdechires) {
@@ -40,7 +40,15 @@ export default function SacsCalc() {
 
   return (
     <div>
-      <div>Calculateurs de sacs</div>
+      <div className=" font-bold  ">CALCULATEUR DE SACS/袋子计算</div>
+      <div>
+        <input
+          type="checkbox"
+          value={lockdechires}
+          onChange={(e) => setlockdechires(e.target.checked)}
+        />{" "}
+        CALCULS SACS DECHIRES
+      </div>
 
       <div>Sacs trouves</div>
       <input
@@ -89,15 +97,6 @@ export default function SacsCalc() {
         value={sacs_comptes}
         onChange={(e) => setsc(parseInt(e.target.value))}
       />
-
-      <div>
-        <input
-          type="checkbox"
-          value={lockdechires}
-          onChange={(e) => setlockdechires(e.target.checked)}
-        />{" "}
-        CALCULS SACS DECHIRES
-      </div>
 
       {lockdechires ? (
         <div>
