@@ -18,7 +18,6 @@ export default function TableLoads({ date, totalData, loadsData }) {
 
   return (
     <table>
-     
       <thead>
         <tr>
           <td className={CLASS_TD} align="center" colSpan={11}>
@@ -88,7 +87,9 @@ export default function TableLoads({ date, totalData, loadsData }) {
               <td className={CLASS_TD}>
                 <div>
                   {" "}
-                  {ld[0].replaceAll("_", "/").replaceAll("/0/", "/1/")}
+                  {[...ld[0].split("_")].map((d, i) => (
+                    <span>{i == 1 ? `-${parseInt(d) + 1}-` : `${d}`}</span>
+                  ))}
                 </div>
                 <ButtonPrint
                   title={"PRINT RPPORT"}
