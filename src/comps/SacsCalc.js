@@ -42,7 +42,7 @@ export default function SacsCalc() {
     <div>
       <div className=" font-bold  ">CALCULATEUR DE SACS/袋子计算</div>
 
-      <div className=" p-2 bg-slate-200 border  border-slate-500 rounded-md my-2 ">
+      <div className=" text-black p-2 bg-slate-200 border  border-slate-500 rounded-md my-2 ">
         <div>
           <input
             type="checkbox"
