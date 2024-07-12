@@ -83,7 +83,7 @@ export default function TableLoads({ date, totalData, loadsData }) {
                 i % 2 === 0 ? "bg-neutral-100" : ""
               } hover:bg-slate-200 hover:cursor-pointer`}
             >
-              <td className={CLASS_TD}>{i}</td>
+              <td className={CLASS_TD}>{i + 1}</td>
               <td className={CLASS_TD}>
                 <div>
                   {" "}
@@ -96,12 +96,7 @@ export default function TableLoads({ date, totalData, loadsData }) {
                   onClick={(e) => printDailRepport(ld)}
                 />
               </td>
-              {/*  <td>
-                              {ld[1].map &&
-                                ld[1].map((it, i) => (
-                                  <div className={CLASS_TD}>{it.code}</div>
-                                ))}
-                            </td> */}
+
               <td>
                 {ld[1].map &&
                   ld[1].map((it, i) => (
