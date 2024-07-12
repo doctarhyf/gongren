@@ -86,6 +86,25 @@ export const USER_LEVEL = {
   SUPER: 3,
 };
 
+export const ACCESS_CODES = {
+  ADD_NEW_LOAD: "ANL",
+  ADD_NEW_AGENT: "ANA",
+  UPDATE_AGENT: "UPDA",
+  DELETE_AGENT: "DELA",
+  UPDATE_LOAD: "UPDL",
+  DELETE_LOAD: "DELL",
+  PAGE_HOME: "HME",
+  PAGE_AGENTS: "AGT",
+  PAGE_CHARGEMENT: "LDS",
+  PAGE_JINCHU: "JC",
+  PAGE_ROULEMENT: "RL",
+  PAGE_EQUIPE: "TMZ",
+  PAGE_MAGASIN: "MGZ",
+  PAGE_DICO: "DIC",
+  PAGE_SACS: "SAC",
+  PAGE_LISTS: "LIST",
+};
+
 export const SECTIONS = [
   "BROYAGE",
   "ENSACHAGE",
@@ -134,33 +153,68 @@ export const CONTRATS = ["BNC", "KAY", "GCK"];
 export const NATIONALITIES = ["CD", "ZH"];
 
 export const MAIN_MENU = [
-  { name: "Home", path: "/home", el: Home, user_level: USER_LEVEL.AGENT },
+  {
+    name: "Home",
+    path: "/home",
+    el: Home,
+    access_code: ACCESS_CODES.PAGE_HOME,
+  },
   {
     name: "Agents",
     path: "/agents",
     el: Agents,
-    user_level: USER_LEVEL.AGENT,
+    access_code: ACCESS_CODES.PAGE_AGENTS,
   },
-  { name: "Chargement", path: "/chargement", el: Chargement, user_level: 0 },
-  { name: "JinChu", path: "/jinchu", el: JinChu, user_level: 0 },
+  {
+    name: "Chargement",
+    path: "/chargement",
+    el: Chargement,
+    access_code: ACCESS_CODES.PAGE_CHARGEMENT,
+  },
+  {
+    name: "JinChu",
+    path: "/jinchu",
+    el: JinChu,
+    access_code: ACCESS_CODES.PAGE_JINCHU,
+  },
   {
     name: "Roulements",
     path: "/roulements",
     el: Roulements,
-    user_level: USER_LEVEL.SUPER,
+    access_code: ACCESS_CODES.PAGE_ROULEMENT,
   },
   {
     name: "Equipes",
     path: "/equipes",
     el: Equipes,
-    user_level: USER_LEVEL.AGENT,
+    access_code: ACCESS_CODES.PAGE_EQUIPE,
   },
 
-  { name: "Magasin", path: "/magasin", el: Magasin, user_level: 0 },
-  { name: "Dico", path: "/dico", el: Dico, user_level: 0 },
-  { name: "Sacs", path: "/sacs", el: Sacs, user_level: 0 },
+  {
+    name: "Magasin",
+    path: "/magasin",
+    el: Magasin,
+    access_code: ACCESS_CODES.PAGE_MAGASIN,
+  },
+  {
+    name: "Dico",
+    path: "/dico",
+    el: Dico,
+    access_code: ACCESS_CODES.PAGE_DICO,
+  },
+  {
+    name: "Sacs",
+    path: "/sacs",
+    el: Sacs,
+    access_code: ACCESS_CODES.PAGE_SACS,
+  },
 
-  { name: "Listes", path: "/listes", el: Listes, user_level: USER_LEVEL.AGENT },
+  {
+    name: "Listes",
+    path: "/listes",
+    el: Listes,
+    access_code: ACCESS_CODES.PAGE_LISTS,
+  },
   /*{ name: "Sections", path: "/sections", el: Sections }, */
 ];
 

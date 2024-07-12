@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { CLASS_BTN, MONTHS, USER_LEVEL } from "../helpers/flow";
+import { ACCESS_CODES, CLASS_BTN, MONTHS, USER_LEVEL } from "../helpers/flow";
 import DateSelector from "../comps/DateSelector";
 import Loading from "../comps/Loading";
 import BagsDataInput from "../comps/BagsDataInput";
@@ -11,6 +11,7 @@ import {
   ParseMonthRepport,
   ParseShiftRepport,
   ParseYearRepport,
+  UserHasAccessCode,
 } from "../helpers/func";
 import RepportCard from "../comps/RepportCard";
 import { UserContext } from "../App";
@@ -161,7 +162,7 @@ export default function Chargement() {
     <div>
       <Loading isLoading={loading} />
 
-      {user.user_level === USER_LEVEL.SUPER && (
+      {UserHasAccessCode(user, ACCESS_CODES.ADD_NEW_LOAD) && (
         <button
           className={`${CLASS_BTN}  ${addDataMode ? "hidden" : "block"} `}
           onClick={onAddDataClick}
@@ -170,47 +171,45 @@ export default function Chargement() {
         </button>
       )}
 
+      {addDataMode && (
+        <BagsDataInput
+          onCancel={(e) => setAddDataMode(false)}
+          dataToUpdate={shiftDataToUpdate}
+          onDataAdded={onBagsDataAdded}
+          onError={(e) => {
+            console.log(e);
+            alert(
+              "Bags data input error!\nThe data may already exists!\n" +
+                JSON.stringify(e)
+            );
+          }}
+          date={date}
+        />
+      )}
       {!addDataMode && (
         <div>
-          TOGGLE REPPORT MODE
-          <input
-            type="checkbox"
-            className="toggle toggle-xs"
-            checked={showRepportMode}
-            onChange={(e) => setShowRepportMode(e.target.checked)}
-          />
-        </div>
-      )}
-      {addDataMode && (
-        <>
-          <BagsDataInput
-            onCancel={(e) => setAddDataMode(false)}
-            dataToUpdate={shiftDataToUpdate}
-            onDataAdded={onBagsDataAdded}
-            onError={(e) => {
-              console.log(e);
-              alert(
-                "Bags data input error!\nThe data may already exists!\n" +
-                  JSON.stringify(e)
-              );
-            }}
-            date={date}
-          />
-        </>
-      )}
-      {!addDataMode && (
-        <div className="flex  gap-4">
-          {true && (
-            <BagsDataList
-              loadsf={loadsf}
-              showRepportMode={showRepportMode}
-              onSetDataLevel={onSetDataLevel}
-              loads_by_item={loads_by_item}
-              repportData={repportData}
-              onUpdateShiftData={onUpdateShiftData}
-              onDeleteShiftData={onDeleteShiftData}
+          <div>
+            TOGGLE REPPORT MODE
+            <input
+              type="checkbox"
+              className="toggle toggle-xs"
+              checked={showRepportMode}
+              onChange={(e) => setShowRepportMode(e.target.checked)}
             />
-          )}
+          </div>
+          <div className="flex  gap-4">
+            {true && (
+              <BagsDataList
+                loadsf={loadsf}
+                showRepportMode={showRepportMode}
+                onSetDataLevel={onSetDataLevel}
+                loads_by_item={loads_by_item}
+                repportData={repportData}
+                onUpdateShiftData={onUpdateShiftData}
+                onDeleteShiftData={onDeleteShiftData}
+              />
+            )}
+          </div>
         </div>
       )}
     </div>

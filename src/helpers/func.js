@@ -1,5 +1,5 @@
 import GetRoulemenDaysData from "./GetRoulemenDaysData.mjs";
-import { MONTHS, POSTE, SHIFT_HOURS_ZH } from "./flow";
+import { ACCESS_CODES, MONTHS, POSTE, SHIFT_HOURS_ZH } from "./flow";
 import { jsPDF } from "jspdf";
 
 const LOGO_GCK_BASE_64 =
@@ -230,6 +230,10 @@ export function printPDF1(agents, customTitle) {
   addTitle(doc, agents, customTitle);
   addAgentsNames(doc, agents);
   doc.save(`${section}_${equipe}.pdf`);
+}
+
+export function UserHasAccessCode(user, ACCESS_CODE) {
+  return user.access_codes && user.access_codes.includes(ACCESS_CODE);
 }
 
 export function GroupBySectionAndEquipe(data) {

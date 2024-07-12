@@ -5,9 +5,10 @@ import AgentCard, { AGENT_CARD_EVENT } from "../comps/AgentCard";
 import AgentsList from "../comps/AgentsList";
 import FormAddAgent from "../comps/FormAddAgent";
 import Loading from "../comps/Loading";
-import { USER_LEVEL } from "../helpers/flow";
+import { ACCESS_CODES, USER_LEVEL } from "../helpers/flow";
 import { UserContext } from "../App";
 import { useContext } from "react";
+import { UserHasAccessCode } from "../helpers/func";
 
 export default function Agents() {
   const [curAgent, setCurAgent] = useState(null);
@@ -108,7 +109,7 @@ export default function Agents() {
       <div>
         {!showFormAddNewAgent && (
           <div>
-            {user.user_level >= USER_LEVEL.ADMIN && (
+            {UserHasAccessCode(user, ACCESS_CODES.ADD_NEW_AGENT) && (
               <button
                 onClick={(e) => setShowFormAddNewAgent(true)}
                 className="p-1 rounded-md border my-1 border-green-500 text-green-500 hover:bg-green-500 hover:text-white"

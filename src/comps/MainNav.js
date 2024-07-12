@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { MAIN_MENU, USER_LEVEL } from "../helpers/flow";
 import gck from "../img/gck.png";
+import { UserHasAccessCode } from "../helpers/func";
 
 function UserInfo({ user }) {
   return (
@@ -51,7 +52,7 @@ function MainNav({ user, onMenuClick, curPage, onLogout }) {
           <ul className="text-end p-2 md:flex gap-2 flex-wrap ">
             {MAIN_MENU.map((menu_item, i) => (
               <li className="mb-2" key={i}>
-                {user.user_level >= menu_item.user_level && (
+                {UserHasAccessCode(user, menu_item.access_code) && (
                   <button
                     onClick={(e) => {
                       onMenuClick(menu_item);

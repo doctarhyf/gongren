@@ -1,5 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import {
+  ACCESS_CODES,
   CLASS_BTN,
   CLASS_REPPORT_CARD,
   SHIFT_HOURS_ZH,
@@ -7,8 +8,9 @@ import {
 } from "../helpers/flow";
 import { doc, draw_load_table, printShiftData } from "../helpers/funcs_print";
 import ButtonPrint from "./ButtonPrint";
-import { ParseDayRepport } from "../helpers/func";
+import { ParseDayRepport, UserHasAccessCode } from "../helpers/func";
 import wechat from "../img/wechat.png";
+import { UserContext } from "../App";
 
 export default function RepportCard({
   data,
@@ -16,6 +18,7 @@ export default function RepportCard({
   onDeleteShiftData,
 }) {
   const [weixinRepport, setWeixinRepport] = useState(false);
+  const [, , user] = useContext(UserContext);
 
   function onPrintDailyRepport(data) {
     draw_load_table(data);
@@ -200,24 +203,28 @@ Superviseur班长: @${nom} ${zh} 
       {data && data.tid === "s" && (
         <div className="flex gap-2">
           <div>
-            <button
-              onClick={(e) => onUpdateShiftData(data)}
-              className={CLASS_BTN}
-            >
-              UPDATE
-            </button>
+            {UserHasAccessCode(user, ACCESS_CODES.UPDATE_LOAD) && (
+              <button
+                onClick={(e) => onUpdateShiftData(data)}
+                className={CLASS_BTN}
+              >
+                UPDATE
+              </button>
+            )}
           </div>
           <div>
-            <button
-              onClick={(e) => {
-                if (window.confirm("Are you sure you wanna delete?")) {
-                  onDeleteShiftData(data);
-                }
-              }}
-              className={CLASS_BTN}
-            >
-              DELETE
-            </button>
+            {UserHasAccessCode(user, ACCESS_CODES.DELETE_LOAD) && (
+              <button
+                onClick={(e) => {
+                  if (window.confirm("Are you sure you wanna delete?")) {
+                    onDeleteShiftData(data);
+                  }
+                }}
+                className={CLASS_BTN}
+              >
+                DELETE
+              </button>
+            )}
           </div>
         </div>
       )}

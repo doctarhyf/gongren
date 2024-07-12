@@ -1,5 +1,6 @@
 import React, { useContext, useState } from "react";
 import {
+  ACCESS_CODES,
   CLASS_BTN,
   CONTRATS,
   EQUIPES,
@@ -7,7 +8,7 @@ import {
   SECTIONS,
   USER_LEVEL,
 } from "../helpers/flow";
-import { FFD, formatFrenchDate } from "../helpers/func";
+import { FFD, formatFrenchDate, UserHasAccessCode } from "../helpers/func";
 import FormAddAgent from "./FormAddAgent";
 import * as SB from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
@@ -186,18 +187,26 @@ export default function AgentCard({
                     >
                       VOIR ROULEMENT
                     </button>
-                    <button
-                      onClick={(e) => setAgentCardEditMode(!agentCardEditMode)}
-                      className={CLASS_BTN}
-                    >
-                      UPDATE
-                    </button>
-                    <button
-                      onClick={(e) => deleteAgent(agent)}
-                      className={CLASS_BTN}
-                    >
-                      DELETE
-                    </button>
+
+                    {UserHasAccessCode(user, ACCESS_CODES.UPDATE_AGENT) && (
+                      <button
+                        onClick={(e) =>
+                          setAgentCardEditMode(!agentCardEditMode)
+                        }
+                        className={CLASS_BTN}
+                      >
+                        UPDATE
+                      </button>
+                    )}
+
+                    {UserHasAccessCode(user, ACCESS_CODES.DELETE_AGENT) && (
+                      <button
+                        onClick={(e) => deleteAgent(agent)}
+                        className={CLASS_BTN}
+                      >
+                        DELETE
+                      </button>
+                    )}
                   </>
                 )}
               </>
