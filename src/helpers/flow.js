@@ -87,6 +87,7 @@ export const USER_LEVEL = {
 };
 
 export const ACCESS_CODES = {
+  ROOT: "ROOT",
   ADD_NEW_LOAD: "ANL",
   ADD_NEW_AGENT: "ANA",
   UPDATE_AGENT: "UPDA",

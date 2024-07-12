@@ -1,4 +1,4 @@
-import React, { Children, useEffect, useState } from "react";
+import React, { Children, useContext, useEffect, useState } from "react";
 import * as SB from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
 import Loading from "../comps/Loading";
@@ -12,6 +12,7 @@ import {
   PACK_TRANSLATIONS_STRINGS,
   STRINGS,
 } from "../helpers/lang_strings";
+import { UserContext } from "../App";
 
 const COLORS = [
   " bg-teal-700 text-teal-300 border-teal-300 p-2 rounded-md w-full md:w-64 ",
@@ -269,6 +270,7 @@ function HUDAgents() {
 }
 
 export default function Home() {
+  const [, , user] = useContext(UserContext);
   const [agents, setagents] = useState([]);
   const [loading, setloading] = useState(false);
   const [agents_by_teams, set_agents_by_teams] = useState({});
