@@ -82,6 +82,7 @@ export default function SacsCalc() {
             value={sacs_dechires}
             onChange={(e) => setsd(parseInt(e.target.value))}
           />
+          </>
         }
         <div>Sacs utilises</div>
         <input
