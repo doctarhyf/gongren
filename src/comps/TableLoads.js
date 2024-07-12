@@ -55,7 +55,7 @@ export default function TableLoads({ date, totalData, loadsData }) {
               "",
               totalData.sacs,
               totalData.t,
-              totalData.bonus,
+              parseInt(totalData.bonus).toFixed(2),
               totalData.camions,
               totalData.dechires,
               totalData.retours,

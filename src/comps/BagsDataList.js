@@ -32,7 +32,7 @@ import {
   draw_en_tete,
 } from "../helpers/funcs_print";
 
-function MyForm() {
+/* function MyForm() {
   return (
     <table>
       <tbody>
@@ -65,6 +65,166 @@ function MyForm() {
         ))}
       </tbody>
     </table>
+  );
+} */
+
+function DataSelector({
+  loadsFiltered,
+  onSetDataLevel,
+  setYearData,
+  setShiftData,
+  setMonthData,
+  setDayData,
+  setDatePath,
+  yearData,
+  monthData,
+  dayData,
+  customOrderShift,
+}) {
+  const [sely, setsely] = useState();
+  const [selm, setselm] = useState();
+  const [seld, setseld] = useState();
+  const [sels, setsels] = useState();
+
+  useEffect(() => {
+    console.log({ sely: sely, selm: selm, seld: seld, sels: sels });
+  }, [sely, selm, seld, sels]);
+
+  return (
+    <div className="flex divide-x  ">
+      <div className=" pl-1">
+        <div className="text-white px-2 text-sm bg-sky-500 mb-2">Annee/年</div>
+        {Object.entries(loadsFiltered).map((year_data, i) => (
+          <div
+            key={i}
+            onClick={(e) => {
+              setsely(year_data);
+              onSetDataLevel("y", year_data);
+              setShiftData(undefined);
+              setMonthData(undefined);
+              setDayData(undefined);
+              setDatePath((old) => ({
+                y: year_data[0],
+                m: "",
+                d: "",
+                shift: "",
+              }));
+              setYearData(year_data[1]);
+            }}
+            className={` ${CLASS_BTN}   ${
+              sely[0] === year_data[0] && "bg-sky-500 text-white"
+            }    `}
+          >
+            {year_data[0]}
+          </div>
+        ))}
+      </div>
+
+      {yearData && (
+        <div className=" pl-1">
+          <div className="text-white px-2 text-sm bg-sky-500 mb-2">Mois/月</div>
+          {Object.entries(yearData).map((month_data, i) => (
+            <div
+              key={i}
+              onClick={(e) => {
+                setselm(month_data);
+                onSetDataLevel("m", month_data);
+                setShiftData(undefined);
+                setMonthData(undefined);
+                setDayData(undefined);
+                setDatePath((old) => ({
+                  ...old,
+                  m: MONTHS[Number(month_data[0].split("-")[1])],
+                  d: "",
+                  shift: "",
+                }));
+                setMonthData(month_data[1]);
+              }}
+              className={`  
+                
+                 ${CLASS_BTN}   ${
+                selm[0] === month_data[0] && "bg-sky-500 text-white"
+              }   
+                
+                `}
+            >
+              {CorrectZeroMonthIndexDisplay(month_data[0])}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {monthData && (
+        <div className=" pl-1">
+          <div className="text-white px-2 text-sm bg-sky-500 mb-2">Jour/日</div>
+          {Object.entries(monthData)
+            .sort(customSortDaysArray)
+            .map((day_data, i) => (
+              <div
+                key={i}
+                onClick={(e) => {
+                  setseld(day_data);
+                  onSetDataLevel("d", day_data);
+                  setShiftData(undefined);
+                  setDatePath((old) => ({
+                    ...old,
+                    d: day_data[0].split("-")[2],
+                    shift: "",
+                  }));
+                  setDayData(day_data[1]);
+                }}
+                className={`  
+                
+                 ${CLASS_BTN}   ${
+                  seld[0] === day_data[0] && "bg-sky-500 text-white"
+                }   
+                
+                `}
+              >
+                {CorrectZeroMonthIndexDisplay(day_data[0])}
+              </div>
+            ))}
+        </div>
+      )}
+
+      {dayData && (
+        <div className=" pl-1">
+          <div className="text-white px-2 text-sm bg-sky-500 mb-2">
+            Equipe/班次
+          </div>
+          {Object.entries(dayData)
+            .sort((a, b) => {
+              const codeA = a[1].code.charAt(2);
+              const codeB = b[1].code.charAt(2);
+
+              return customOrderShift[codeA] - customOrderShift[codeB];
+            })
+            .map((shift_data, i) => (
+              <div
+                key={i}
+                onClick={(e) => {
+                  setsels(shift_data);
+                  onSetDataLevel("s", shift_data);
+                  setDatePath((old) => ({
+                    ...old,
+                    shift: shift_data[1].code,
+                  }));
+                  setShiftData(shift_data[1]);
+                }}
+                className={`  
+                
+                 ${CLASS_BTN}   ${
+                  sels[1].code === shift_data[1].code && "bg-sky-500 text-white"
+                }   
+                
+                `}
+              >
+                {shift_data[1].code}
+              </div>
+            ))}
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -677,125 +837,21 @@ export default function BagsDataList({
           }
         </>
       )}
-
       {!showRepportMode && (
         <div className="flex gap-4">
-          <div className="flex divide-x  ">
-            <div className=" pl-1">
-              <div className="text-white px-2 text-sm bg-sky-500 mb-2">
-                Annee/年
-              </div>
-              {Object.entries(loadsFiltered).map((year_data, i) => (
-                <div
-                  key={i}
-                  onClick={(e) => {
-                    onSetDataLevel("y", year_data);
-                    setShiftData(undefined);
-                    setMonthData(undefined);
-                    setDayData(undefined);
-                    setDatePath((old) => ({
-                      y: year_data[0],
-                      m: "",
-                      d: "",
-                      shift: "",
-                    }));
-                    setYearData(year_data[1]);
-                  }}
-                  className={CLASS_BTN}
-                >
-                  {year_data[0]}
-                </div>
-              ))}
-            </div>
-
-            {yearData && (
-              <div className=" pl-1">
-                <div className="text-white px-2 text-sm bg-sky-500 mb-2">
-                  Mois/月
-                </div>
-                {Object.entries(yearData).map((month_data, i) => (
-                  <div
-                    key={i}
-                    onClick={(e) => {
-                      onSetDataLevel("m", month_data);
-                      setShiftData(undefined);
-                      setMonthData(undefined);
-                      setDayData(undefined);
-                      setDatePath((old) => ({
-                        ...old,
-                        m: MONTHS[Number(month_data[0].split("-")[1])],
-                        d: "",
-                        shift: "",
-                      }));
-                      setMonthData(month_data[1]);
-                    }}
-                    className={CLASS_BTN}
-                  >
-                    {CorrectZeroMonthIndexDisplay(month_data[0])}
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {monthData && (
-              <div className=" pl-1">
-                <div className="text-white px-2 text-sm bg-sky-500 mb-2">
-                  Jour/日
-                </div>
-                {Object.entries(monthData)
-                  .sort(customSortDaysArray)
-                  .map((day_data, i) => (
-                    <div
-                      key={i}
-                      onClick={(e) => {
-                        onSetDataLevel("d", day_data);
-                        setShiftData(undefined);
-                        setDatePath((old) => ({
-                          ...old,
-                          d: day_data[0].split("-")[2],
-                          shift: "",
-                        }));
-                        setDayData(day_data[1]);
-                      }}
-                      className={CLASS_BTN}
-                    >
-                      {CorrectZeroMonthIndexDisplay(day_data[0])}
-                    </div>
-                  ))}
-              </div>
-            )}
-
-            {dayData && (
-              <div className=" pl-1">
-                <div className="text-white px-2 text-sm bg-sky-500 mb-2">
-                  Equipe/班次
-                </div>
-                {Object.entries(dayData)
-                  .sort((a, b) => {
-                    const codeA = a[1].code.charAt(2);
-                    const codeB = b[1].code.charAt(2);
-
-                    return customOrderShift[codeA] - customOrderShift[codeB];
-                  })
-                  .map((shift_data, i) => (
-                    <div
-                      key={i}
-                      onClick={(e) => {
-                        onSetDataLevel("s", shift_data);
-                        setDatePath((old) => ({
-                          ...old,
-                          shift: shift_data[1].code,
-                        }));
-                        setShiftData(shift_data[1]);
-                      }}
-                      className={CLASS_BTN}
-                    >
-                      {shift_data[1].code}
-                    </div>
-                  ))}
-              </div>
-            )}
-          </div>
+          <DataSelector
+            loadsFiltered={loadsFiltered}
+            onSetDataLevel={onSetDataLevel}
+            setYearData={setYearData}
+            setShiftData={setShiftData}
+            setMonthData={setMonthData}
+            setDayData={setDayData}
+            setDatePath={setDatePath}
+            yearData={yearData}
+            monthData={monthData}
+            dayData={dayData}
+            customOrderShift={customOrderShift}
+          />
           <RepportCard
             data={repportData}
             onUpdateShiftData={onUpdateShiftData}
