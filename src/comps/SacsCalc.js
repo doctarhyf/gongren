@@ -69,10 +69,10 @@ export default function SacsCalc() {
           value={sacs_sortis}
           onChange={(e) => setss(parseInt(e.target.value))}
         />
+         {!lockdechires && <>
+        
         <div>Sacs dechires</div>
-        {lockdechires ? (
-          <div className=" font-bold ">{sacs_dechires}</div>
-        ) : (
+      
           <input
             className={`   border-sky-200 hover:border-sky-500 
          outline-none border  p-1 rounded-md`}
@@ -82,7 +82,7 @@ export default function SacsCalc() {
             value={sacs_dechires}
             onChange={(e) => setsd(parseInt(e.target.value))}
           />
-        )}
+        }
         <div>Sacs utilises</div>
         <input
           className="outline-none border border-sky-200 hover:border-sky-500 p-1 rounded-md"
