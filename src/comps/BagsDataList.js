@@ -86,10 +86,6 @@ function DataSelector({
   const [seld, setseld] = useState();
   const [sels, setsels] = useState();
 
-  useEffect(() => {
-    console.log({ sely: sely, selm: selm, seld: seld, sels: sels });
-  }, [sely, selm, seld, sels]);
-
   return (
     <div className="flex divide-x  ">
       <div className=" pl-1">
@@ -112,7 +108,7 @@ function DataSelector({
               setYearData(year_data[1]);
             }}
             className={` ${CLASS_BTN}   ${
-              sely[0] === year_data[0] && "bg-sky-500 text-white"
+              sely && sely[0] === year_data[0] && "bg-sky-500 text-white"
             }    `}
           >
             {year_data[0]}
@@ -143,7 +139,7 @@ function DataSelector({
               className={`  
                 
                  ${CLASS_BTN}   ${
-                selm[0] === month_data[0] && "bg-sky-500 text-white"
+                selm && selm[0] === month_data[0] && "bg-sky-500 text-white"
               }   
                 
                 `}
@@ -176,7 +172,7 @@ function DataSelector({
                 className={`  
                 
                  ${CLASS_BTN}   ${
-                  seld[0] === day_data[0] && "bg-sky-500 text-white"
+                  seld && seld[0] === day_data[0] && "bg-sky-500 text-white"
                 }   
                 
                 `}
@@ -214,7 +210,9 @@ function DataSelector({
                 className={`  
                 
                  ${CLASS_BTN}   ${
-                  sels[1].code === shift_data[1].code && "bg-sky-500 text-white"
+                  sels &&
+                  sels[1].code === shift_data[1].code &&
+                  "bg-sky-500 text-white"
                 }   
                 
                 `}
