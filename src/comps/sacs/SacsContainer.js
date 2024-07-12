@@ -5,6 +5,7 @@ import {
   TRANSACTION_TYPE,
 } from "../../helpers/flow";
 import Stock from "./Stock";
+import ButtonPrint from "../ButtonPrint";
 
 export default function SacsContainer({
   trans,
@@ -39,17 +40,24 @@ export default function SacsContainer({
     });
   }
 
+  const print = () => {
+    console.log(trans);
+  };
+
   return (
     <div>
       <Stock id={STOCK_TYPE.CONTAINER} stock={stock} label={"CONTAINER"} />
       <div>
         {!showInput && (
-          <button
-            onClick={(e) => setShowInput(true)}
-            className=" p-1 text-green-500 border rounded-md border-green-500 hover:text-white hover:bg-green-500 "
-          >
-            INSERT
-          </button>
+          <div className=" flex ">
+            <button
+              onClick={(e) => setShowInput(true)}
+              className=" p-1 text-green-500 border rounded-md border-green-500 hover:text-white hover:bg-green-500 "
+            >
+              INSERT
+            </button>
+            <ButtonPrint onClick={print} />
+          </div>
         )}
 
         {showInput && (
