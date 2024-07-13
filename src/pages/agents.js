@@ -144,6 +144,7 @@ export default function Agents() {
                 onShowRoulement={onShowRoulement}
                 agent={curAgent}
                 onAgentCardEvent={onAgentCardEvent}
+                reloadComponents={reloadComponents}
               />
             )}
           </div>

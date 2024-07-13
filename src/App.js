@@ -90,7 +90,7 @@ function App() {
   }
 
   return user ? (
-    <UserContext.Provider value={[showImage, showData, user]}>
+    <UserContext.Provider value={[showImage, showData, user, setuser]}>
       <div>
         <div
           className={`  flex flex-col justify-center items-center bg-black/60 backdrop-blur-md text-white  absolute h-full w-full ${

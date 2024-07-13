@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   ACCESS_CODES,
   CLASS_BTN,
@@ -30,8 +30,10 @@ export default function AgentCard({
   onAgentCardEvent,
   agentCardEditMode,
   setAgentCardEditMode,
+  reloadComponents,
 }) {
-  const [, , user] = useContext(UserContext);
+  const [, , user, setuser] = useContext(UserContext);
+  const [access_codes, set_access_codes] = useState([]);
 
   const [loading, setloading] = useState(false);
 
@@ -94,6 +96,49 @@ export default function AgentCard({
     }
   }
 
+  useEffect(() => {
+    if (agent) set_access_codes(agent.access_codes);
+  }, []);
+
+  const [showAccessCode, setShowAccessCode] = useState(true);
+
+  useEffect(() => {
+    console.log("ac => ", access_codes);
+  }, [access_codes]);
+
+  function onChangeAccessCode(user, sel_access_code, activated) {
+    const ac = sel_access_code[1];
+    let o_access_codes = [...access_codes];
+    const idx_ac = o_access_codes.findIndex((it) => it === ac);
+
+    if (activated) {
+      if (idx_ac === -1) o_access_codes.push(ac);
+    } else {
+      o_access_codes = o_access_codes.filter((it, i) => it !== ac);
+    }
+
+    set_access_codes(o_access_codes);
+  }
+
+  function onUpdateAccessCodes(agent) {
+    //console.log(agent);
+    setloading(true);
+    SB.UpdateItem(
+      TABLES_NAMES.AGENTS,
+      { id: agent.id, access_codes: access_codes },
+      (s) => {
+        alert("Access codes updated");
+        setloading(false);
+        setShowAccessCode(false);
+        if (reloadComponents) reloadComponents();
+      },
+      (e) => {
+        alert("Error :\n" + JSON.stringify(e));
+        setloading(false);
+      }
+    );
+  }
+
   return (
     <section>
       <Loading isLoading={loading} />
@@ -111,38 +156,72 @@ export default function AgentCard({
             </div>
           </a>
           <div>
+            {UserHasAccessCode(user, ACCESS_CODES.ROOT) && (
+              <div>
+                SHOW ACCESS CODES
+                <input
+                  type="checkbox"
+                  className="toggle toggle-xs"
+                  checked={showAccessCode}
+                  onChange={(e) => setShowAccessCode(e.target.checked)}
+                />
+              </div>
+            )}
+
             <table>
-              {!agentCardEditMode && (
-                <tbody>
-                  <tr>
-                    <td></td>
-                    <td className="flex justify-center">
-                      {" "}
-                      {agent.chef_deq === "OUI" && (
-                        <span className="mx-2">
-                          <img src={shield} width={20} height={20} />
-                        </span>
-                      )}
-                    </td>
-                  </tr>
-                  {Object.entries(agent).map((agent_data, i) =>
-                    ["photo", "list_priority", "page"].includes(
-                      agent_data[0]
-                    ) ? null : (
-                      <tr key={i}>
-                        <td align="right" className="text-neutral-400 text-sm">
-                          {agent_data[0]}
-                        </td>
-                        <td className="text-sky-500 p-1 font-bold ">
-                          {agent_data[0] === "created_at" &&
-                            formatFrenchDate(agent_data[1])}
-                          {agent_data[0] !== "created_at" && agent_data[1]}
-                        </td>
-                      </tr>
-                    )
-                  )}
-                </tbody>
-              )}
+              {!agentCardEditMode &&
+                (showAccessCode ? (
+                  <div>
+                    {Object.entries(ACCESS_CODES).map((ac, i) => (
+                      <div>
+                        {ac[0]}
+                        <input
+                          type="checkbox"
+                          checked={access_codes.includes(ac[1])}
+                          onChange={(e) =>
+                            onChangeAccessCode(agent, ac, e.target.checked)
+                          }
+                        />
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <tbody>
+                    <tr>
+                      <td></td>
+                      <td className="flex justify-center">
+                        {" "}
+                        {agent.chef_deq === "OUI" && (
+                          <span className="mx-2">
+                            <img src={shield} width={20} height={20} />
+                          </span>
+                        )}
+                      </td>
+                    </tr>
+                    {Object.entries(agent).map((agent_data, i) =>
+                      [
+                        "photo",
+                        "list_priority",
+                        "page",
+                        "access_codes",
+                      ].includes(agent_data[0]) ? null : (
+                        <tr key={i}>
+                          <td
+                            align="right"
+                            className="text-neutral-400 text-sm"
+                          >
+                            {agent_data[0]}
+                          </td>
+                          <td className="text-sky-500 p-1 font-bold ">
+                            {agent_data[0] === "created_at" &&
+                              formatFrenchDate(agent_data[1])}
+                            {agent_data[0] !== "created_at" && agent_data[1]}
+                          </td>
+                        </tr>
+                      )
+                    )}
+                  </tbody>
+                ))}
 
               {agentCardEditMode && (
                 <tbody>
@@ -177,7 +256,40 @@ export default function AgentCard({
             </table>
           </div>
           <div className="flex justify-center items-center text-center ">
-            {!agentCardEditMode && (
+            {showAccessCode && (
+              <div>
+                <button
+                  onClick={(e) => {
+                    onUpdateAccessCodes(agent);
+                  }}
+                  className={CLASS_BTN}
+                >
+                  UPDATE ACCESS CODES
+                </button>
+                <button
+                  onClick={(e) => {
+                    if (
+                      window.confirm(
+                        "Are you sure you want to reset all access codes?"
+                      )
+                    ) {
+                      set_access_codes([]);
+                    }
+                  }}
+                  className={CLASS_BTN}
+                >
+                  CLEAR ALL
+                </button>
+                <button
+                  onClick={(e) => setShowAccessCode(false)}
+                  className={CLASS_BTN}
+                >
+                  ANNULER
+                </button>
+              </div>
+            )}
+
+            {!agentCardEditMode && !showAccessCode && (
               <>
                 {user.user_level >= USER_LEVEL.ADMIN && (
                   <>
