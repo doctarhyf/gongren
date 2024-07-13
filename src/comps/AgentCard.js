@@ -98,7 +98,7 @@ export default function AgentCard({
 
   useEffect(() => {
     if (agent) set_access_codes(agent.access_codes);
-  }, []);
+  }, [agent]);
 
   const [showAccessCode, setShowAccessCode] = useState(true);
 

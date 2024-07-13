@@ -39,7 +39,7 @@ import SacsContainer from "../comps/sacs/SacsContainer";
 const SAVING_TO_SB = true;
 
 export default function Sacs() {
-  const [curtab, setcurtab] = useState(Object.entries(SACS_SECTIONS)[0]);
+  const [curtab, setcurtab] = useState(Object.entries(SACS_SECTIONS)[2]);
   const [trans_cont, set_trans_cont] = useState([]);
   const [trans_prod, set_trans_prod] = useState([]);
   const [stock_cont, set_stock_cont] = useState({ s32: 0, s42: 0 });

@@ -22,12 +22,6 @@ export const SACS_CONTAINER_OPERATION_TYPE = {
   OUT: "out",
 };
 
-export const SACS_SECTIONS = {
-  CONTAINER: { label: "Sacs Container" },
-  PRODUCTION: { label: "Sacs Production" },
-  CALCULATOR: { label: "Sacs Calculator" },
-};
-
 export const STOCK_TYPE = {
   CONTAINER: TRANSACTION_TYPE.CONTAINER,
   PRODUCTION: TRANSACTION_TYPE.PRODUCTION,
@@ -104,6 +98,26 @@ export const ACCESS_CODES = {
   PAGE_DICO: "DIC",
   PAGE_SACS: "SAC",
   PAGE_LISTS: "LIST",
+  TAB_SAC_CONT: "SCONT",
+  TAB_SAC_PROD: "SPROD",
+  TAB_SAC_CALC: "SCAL",
+  ADD_SAC_CONT: "ASC",
+  ADD_SAC_PROD: "ASP",
+};
+
+export const SACS_SECTIONS = {
+  CONTAINER: {
+    label: "Sacs Container",
+    access_code: ACCESS_CODES.TAB_SAC_CONT,
+  },
+  PRODUCTION: {
+    label: "Sacs Production",
+    access_code: ACCESS_CODES.TAB_SAC_PROD,
+  },
+  CALCULATOR: {
+    label: "Sacs Calculator",
+    access_code: ACCESS_CODES.TAB_SAC_CALC,
+  },
 };
 
 export const SECTIONS = [
