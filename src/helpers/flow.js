@@ -103,6 +103,7 @@ export const ACCESS_CODES = {
   TAB_SAC_CALC: "SCAL",
   ADD_SAC_CONT: "ASC",
   ADD_SAC_PROD: "ASP",
+  UPDATE_ROULEMENT: "UPDRL",
 };
 
 export const SACS_SECTIONS = {

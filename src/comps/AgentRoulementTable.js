@@ -1,8 +1,15 @@
 import React, { useContext, useState } from "react";
-import { CLASS_BTN, CLASS_TD, CLASS_TODAY, USER_LEVEL } from "../helpers/flow";
+import {
+  ACCESS_CODES,
+  CLASS_BTN,
+  CLASS_TD,
+  CLASS_TODAY,
+  USER_LEVEL,
+} from "../helpers/flow";
 import Loading from "./Loading";
 import { GFMN } from "../helpers/GetRoulemenDaysData.mjs";
 import { UserContext } from "../App";
+import { UserHasAccessCode } from "../helpers/func";
 
 const POINTAGES_HOURS_LEN = {
   J: 10,
@@ -103,7 +110,9 @@ export default function AgentRoulementTable({
                 <div
                   className={` ${errors.length === 0 ? "block" : "hidden"} `}
                 >
-                  {user.user_level >= USER_LEVEL.ADMIN && (
+                  {((UserHasAccessCode(user, ACCESS_CODES.UPDATE_ROULEMENT) &&
+                    user.id === agentData.id) ||
+                    UserHasAccessCode(user, ACCESS_CODES.ROOT)) && (
                     <button
                       className={`${CLASS_BTN} ${
                         !editRoulement ? "block" : "hidden"
