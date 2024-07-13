@@ -6,6 +6,7 @@ import React, {
   useState,
 } from "react";
 import {
+  ACCESS_CODES,
   CLASS_BTN,
   CLASS_INPUT_TEXT,
   CLASS_TD,
@@ -14,7 +15,7 @@ import {
 import Excelexport from "../comps/Excelexport";
 import { TABLES_NAMES, supabase } from "../helpers/sb.config";
 import Loading from "../comps/Loading";
-import { _ } from "../helpers/func";
+import { _, UserHasAccessCode } from "../helpers/func";
 import * as SB from "../helpers/sb";
 import FormNewWord from "../comps/FormNewWord";
 import ItemNotSelected from "../comps/ItemNotSelected";
@@ -182,17 +183,16 @@ export default function Dico() {
     <div className="md:flex gap-4 mt-4">
       {!showFormNewWord && (
         <div className={` ${selectedWord ? "hidden" : "block"} `}>
-          {user.user_level > USER_LEVEL.ADMIN}
-
           {true && (
             <>
-              {" "}
-              <button
-                onClick={(e) => setShowFomrNewWord(true)}
-                className={CLASS_BTN}
-              >
-                ADD NEW WORD
-              </button>{" "}
+              {UserHasAccessCode(user, ACCESS_CODES.ADD_DICO_NEW_WORD) && (
+                <button
+                  onClick={(e) => setShowFomrNewWord(true)}
+                  className={CLASS_BTN}
+                >
+                  ADD NEW WORD
+                </button>
+              )}
             </>
           )}
           <button

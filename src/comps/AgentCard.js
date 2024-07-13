@@ -293,12 +293,12 @@ export default function AgentCard({
               <>
                 {user.user_level >= USER_LEVEL.ADMIN && (
                   <>
-                    <button
+                    {/* <button
                       onClick={(e) => onShowRoulement(agent)}
                       className={CLASS_BTN}
                     >
                       VOIR ROULEMENT
-                    </button>
+                    </button> */}
 
                     {UserHasAccessCode(user, ACCESS_CODES.UPDATE_AGENT) && (
                       <button
