@@ -176,7 +176,7 @@ export default function AgentsList({
                       </div>
                       <div className="text-xs text-neutral-300">
                         <div>
-                          {agent.section} - {agent.equipe}
+                          {agent.section} - {agent.equipe} - {agent.matricule}
                         </div>
                       </div>
                       {agent.chef_deq === "OUI" && (
