@@ -21,7 +21,7 @@ import {
   customSortDaysArray,
   formatFrenchDate,
   ParseTotalsData,
-  SortLoadsByShoftOfDay,
+  SortLoadsByShoftOfDay as SortLoadsByShiftOfDay,
 } from "../helpers/func";
 import ButtonPrint from "./ButtonPrint";
 import RepportCard from "./RepportCard";
@@ -261,7 +261,7 @@ export default function BagsDataList({
       return;
     }
 
-    const sortedByShiftOfDay = SortLoadsByShoftOfDay(
+    const sortedByShiftOfDay = SortLoadsByShiftOfDay(
       loads_by_item,
       year,
       month
