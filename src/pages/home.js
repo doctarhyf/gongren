@@ -7,8 +7,9 @@ import {
   GroupBySectionAndEquipe,
   ParseTotalsData,
   SortLoadsByShiftOfDay,
+  UserHasAccessCode,
 } from "../helpers/func";
-import { LANG_COOKIE_KEY } from "../helpers/flow";
+import { ACCESS_CODES, LANG_COOKIE_KEY } from "../helpers/flow";
 import { useCookies } from "react-cookie";
 import {
   GEN_TRANSLATIONS,
@@ -340,7 +341,13 @@ export default function Home() {
         <HUDProduction />
         <HUDGestionSacs />
         <HUDAgents />
-        <HUDTotals />
+        {UserHasAccessCode(
+          user,
+          ACCESS_CODES.IS_SUPERVISOR ||
+            ACCESS_CODES.IS_DEQUIPE ||
+            ACCESS_CODES.ROOT ||
+            ACCESS_CODES.IS_INTERPRETER
+        ) && <HUDTotals />}
       </div>
 
       {false && (
