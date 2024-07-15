@@ -21,7 +21,7 @@ import {
   customSortDaysArray,
   formatFrenchDate,
   ParseTotalsData,
-  SortLoadsByShoftOfDay as SortLoadsByShiftOfDay,
+  SortLoadsByShiftOfDay,
 } from "../helpers/func";
 import ButtonPrint from "./ButtonPrint";
 import RepportCard from "./RepportCard";

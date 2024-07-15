@@ -627,7 +627,7 @@ export const customSortShifts = (a, b) => {
 
 export const customOrderShift = { M: 1, N: 3, P: 2 };
 
-export function SortLoadsByShoftOfDay(data, y, m) {
+export function SortLoadsByShiftOfDay(data, y, m) {
   let year_data =
     data.filter && data.filter((it, i) => it.code.includes(`${y}_${m}`));
 

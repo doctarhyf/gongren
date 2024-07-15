@@ -2,7 +2,12 @@ import React, { Children, useContext, useEffect, useState } from "react";
 import * as SB from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
 import Loading from "../comps/Loading";
-import { formatAsMoney, GroupBySectionAndEquipe } from "../helpers/func";
+import {
+  formatAsMoney,
+  GroupBySectionAndEquipe,
+  ParseTotalsData,
+  SortLoadsByShiftOfDay,
+} from "../helpers/func";
 import { LANG_COOKIE_KEY } from "../helpers/flow";
 import { useCookies } from "react-cookie";
 import {
@@ -13,6 +18,7 @@ import {
   STRINGS,
 } from "../helpers/lang_strings";
 import { UserContext } from "../App";
+import TableLoadsTotals from "../comps/TableLoadsTotal";
 
 const COLORS = [
   " bg-teal-700 text-teal-300 border-teal-300 p-2 rounded-md w-full md:w-64 ",
@@ -26,7 +32,7 @@ const Card = ({ id, title, desc, children }) => {
   const [showChildren, setShowChildren] = useState(true);
 
   return (
-    <div className={` ${COLORS[id]} md:h-fit flex-grow `}>
+    <div className={` ${COLORS[id]} md:h-fit flex-grow  `}>
       <h1
         className=" cursor-pointer  font-bold  border-b border-b-white/20   "
         onClick={(e) => setShowChildren(!showChildren)}
@@ -269,6 +275,37 @@ function HUDAgents() {
   );
 }
 
+function HUDTotals() {
+  const today = new Date();
+  const y = today.getFullYear();
+  const m = today.getMonth();
+  const d = today.getDay();
+  const [date, setdate] = useState({ y: y, m: m });
+  const [loads_by_items, set_loads_by_items] = useState([]);
+  const [totalData, setTotalData] = useState([]);
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  async function loadData() {
+    const data = await SB.LoadAllItems(TABLES_NAMES.LOADS);
+    set_loads_by_items(data);
+
+    const sortedByShiftOfDay = SortLoadsByShiftOfDay(data, y, m);
+    setTotalData(ParseTotalsData(sortedByShiftOfDay));
+    console.log("d ==> ", ParseTotalsData(sortedByShiftOfDay));
+  }
+
+  return (
+    <div className="w-full">
+      <Card id={3} title={`Primes / 奖金`} desc={""}>
+        <TableLoadsTotals totalData={totalData} date={date} />
+      </Card>
+    </div>
+  );
+}
+
 export default function Home() {
   const [, , user] = useContext(UserContext);
   const [agents, setagents] = useState([]);
@@ -303,6 +340,7 @@ export default function Home() {
         <HUDProduction />
         <HUDGestionSacs />
         <HUDAgents />
+        <HUDTotals />
       </div>
 
       {false && (
