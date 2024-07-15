@@ -34,11 +34,13 @@ const COLORS = [
   " bg-rose-700 text-rose-300 border-rose-300 p-2 rounded-md w-full md:w-64 ",
 ];
 
-const Card = ({ id, title, desc, children }) => {
+const Card = ({ id, title, desc, children, wfull }) => {
   const [showChildren, setShowChildren] = useState(true);
 
   return (
-    <div className={` ${COLORS[id]} md:h-fit  w-auto  `}>
+    <div
+      className={` ${COLORS[id]} md:h-fit  ${wfull ? "w-full" : "w-auto"}  `}
+    >
       <h1
         className=" cursor-pointer  font-bold  border-b border-b-white/20   "
         onClick={(e) => setShowChildren(!showChildren)}
@@ -312,7 +314,7 @@ function HUDTotals() {
         totalData={totalData}
         date={date}
         columnsToHide={[COLUMNS_TO_HIDE.SACS, COLUMNS_TO_HIDE.CDF]}
-        lastUpdateDate={lastUpdateDate}
+        lastUpdateDate={new Date(lastUpdateDate)}
       />
     </Card>
   );
@@ -345,9 +347,18 @@ export default function Home() {
   return (
     <div className="md:w-[980pt] md:mx-auto ">
       <Loading isLoading={loading} />
-      {
-        // this is cool
-      }
+
+      <div className="w-full my-4">
+        <div></div>
+        <div>
+          Bonjour Mr.{" "}
+          <b>
+            {user.prenom}, {user.nom} {user.postnom}
+          </b>{" "}
+          et bienvenue sur le portal la cimenterie.
+        </div>
+      </div>
+
       <div className=" container flex gap-4 my-4 flex-col md:flex-row ">
         <HUDProduction />
         <HUDGestionSacs />

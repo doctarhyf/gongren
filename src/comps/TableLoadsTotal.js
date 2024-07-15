@@ -1,6 +1,6 @@
 import React from "react";
 import { CLASS_TD, COLUMNS_TO_HIDE } from "../helpers/flow";
-import { formatAsMoney, formatFrenchDate } from "../helpers/func";
+import { formatAsMoney, AddLeadingZero } from "../helpers/func";
 
 export default function TableLoadsTotals({
   totalData,
@@ -9,6 +9,18 @@ export default function TableLoadsTotals({
   lastUpdateDate,
 }) {
   const no_data = totalData.length === 0;
+
+  const ParseDate = (date) => {
+    const y = date.getFullYear();
+    const m = AddLeadingZero(date.getMonth());
+    const d = AddLeadingZero(date.getDate());
+
+    const h = AddLeadingZero(date.getHours());
+    const i = AddLeadingZero(date.getMinutes());
+    const s = AddLeadingZero(date.getSeconds());
+
+    return `Le ${d}/${m}/${y} a ${h}:${i}:${s}.`;
+  };
 
   return (
     <table>
@@ -91,7 +103,7 @@ export default function TableLoadsTotals({
 
           <tr>
             <td className={CLASS_TD} colSpan={5 - columnsToHide.length}>
-              Last Update : <b>{formatFrenchDate(new Date(lastUpdateDate))}</b>
+              Last Update : <b>{ParseDate(lastUpdateDate)}</b>
             </td>
           </tr>
         </>

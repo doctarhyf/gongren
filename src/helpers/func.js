@@ -18,6 +18,11 @@ export const CustomSortByListPriority = (a, b) => {
   return ata - atb;
 };
 
+export const AddLeadingZero = (v) => {
+  const vi = parseInt(v);
+  return vi < 10 ? "0" + vi : vi;
+};
+
 export function formatFrenchDate(inputDate) {
   // Assuming inputDate is either a JavaScript Date object or a date string
   const date = new Date(inputDate);
