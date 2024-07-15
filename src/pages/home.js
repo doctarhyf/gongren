@@ -27,6 +27,7 @@ import {
 } from "../helpers/lang_strings";
 import { UserContext } from "../App";
 import TableLoadsTotals from "../comps/TableLoadsTotal";
+import SacsCalc from "../comps/SacsCalc";
 
 const COLORS = [
   " bg-teal-700 text-teal-300 border-teal-300 p-2 rounded-md w-full md:w-64 ",
