@@ -330,6 +330,24 @@ function HUDTotals() {
   );
 }
 
+function HUDGreetings({ user }) {
+  return (
+    <div className="w-full my-4 p-2 bg-gray-800 text-white shadow-lg shadow-black/25 rounded-md">
+      <div></div>
+      <div>
+        Bonjour Mr.{" "}
+        <b>
+          {user.prenom}, {user.nom} {user.postnom} ({user.mingzi}),{" "}
+        </b>
+        {POSTES[user.poste].fr} de l'equipe {user.equipe}
+        {", "}
+        {EQUIPES_NAMES[user.equipe]} de la section {user.section} et bienvenue
+        sur le portal la cimenterie.
+      </div>
+    </div>
+  );
+}
+
 export default function Home() {
   const [, , user] = useContext(UserContext);
   const [agents, setagents] = useState([]);
@@ -358,19 +376,7 @@ export default function Home() {
     <div className="md:w-[980pt] md:mx-auto ">
       <Loading isLoading={loading} />
 
-      <div className="w-full my-4 p-2 bg-gray-800 text-white shadow-lg shadow-black/25 rounded-md">
-        <div></div>
-        <div>
-          Bonjour Mr.{" "}
-          <b>
-            {user.prenom}, {user.nom} {user.postnom} ({user.mingzi}),{" "}
-          </b>
-          {POSTES[user.poste].fr} de l'equipe {user.equipe}
-          {", "}
-          {EQUIPES_NAMES[user.equipe]} de la section {user.section} et bienvenue
-          sur le portal la cimenterie.
-        </div>
-      </div>
+      <HUDGreetings user={user} />
 
       <div className=" container flex gap-4 my-4 flex-col md:flex-row ">
         {(UserHasAccessCode(user, ACCESS_CODES.CAN_SEE_BONUS_TOTAL) ||
