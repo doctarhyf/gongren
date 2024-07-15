@@ -8,7 +8,7 @@ export default function SacsCalc() {
   const [sacs_restants, setsr] = useState(0);
   const [sacs_comptes, setsc] = useState(0);
   const [sacs_perdus, set_sacs_perdus] = useState(0);
-  const [lockdechires, setlockdechires] = useState(false);
+  const [lockdechires, setlockdechires] = useState(true);
 
   useEffect(() => {
     if (lockdechires) {
@@ -69,21 +69,21 @@ export default function SacsCalc() {
           value={sacs_sortis}
           onChange={(e) => setss(parseInt(e.target.value))}
         />
-         {!lockdechires && <>
-        
-        <div>Sacs dechires</div>
-      
-          <input
-            className={`   border-sky-200 hover:border-sky-500 
+        {!lockdechires && (
+          <>
+            <div>Sacs dechires</div>
+
+            <input
+              className={`   border-sky-200 hover:border-sky-500 
          outline-none border  p-1 rounded-md`}
-            type="number"
-            keyboardType={"numeric"}
-            disabled={lockdechires}
-            value={sacs_dechires}
-            onChange={(e) => setsd(parseInt(e.target.value))}
-          />
+              type="number"
+              keyboardType={"numeric"}
+              disabled={lockdechires}
+              value={sacs_dechires}
+              onChange={(e) => setsd(parseInt(e.target.value))}
+            />
           </>
-        }
+        )}
         <div>Sacs utilises</div>
         <input
           className="outline-none border border-sky-200 hover:border-sky-500 p-1 rounded-md"
