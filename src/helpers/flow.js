@@ -109,6 +109,7 @@ export const ACCESS_CODES = {
   IS_SUPERVISOR: "SUP",
   IS_DEQUIPE: "DEQ",
   IS_INTERPRETER: "INT",
+  CAN_SEE_BONUS_TOTAL: "BNST",
 };
 
 export const SACS_SECTIONS = {

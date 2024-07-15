@@ -341,13 +341,9 @@ export default function Home() {
         <HUDProduction />
         <HUDGestionSacs />
         <HUDAgents />
-        {UserHasAccessCode(
-          user,
-          ACCESS_CODES.IS_SUPERVISOR ||
-            ACCESS_CODES.IS_DEQUIPE ||
-            ACCESS_CODES.ROOT ||
-            ACCESS_CODES.IS_INTERPRETER
-        ) && <HUDTotals />}
+        {UserHasAccessCode(user, ACCESS_CODES.CAN_SEE_BONUS_TOTAL) && (
+          <HUDTotals />
+        )}
       </div>
 
       {false && (
