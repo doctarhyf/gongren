@@ -558,3 +558,62 @@ export function formatAsMoney(value) {
     currency: "CDF", // Change the currency code as needed
   });
 }
+
+export function ParseTotalsData(data) {
+  const model = {
+    sacs: 0,
+    retours: 0,
+    ajouts: 0,
+    tonnage: 0,
+    camions: 26,
+    dechires: 17,
+    bonus: 0,
+  };
+
+  let totalsData = {
+    A: { ...model },
+    B: { ...model },
+    C: { ...model },
+    D: { ...model },
+    TOTAL: { ...model },
+  };
+
+  const entries = Object.entries(data);
+  const no_data = entries.length === 0;
+
+  entries.forEach((d_entry, di) => {
+    const d = d_entry[0];
+    const d_data = d_entry[1];
+
+    d_data.forEach((s_data, si) => {
+      const { sacs, retours, ajouts, code, camions, dechires } = s_data;
+      const [t, s, y, m, d] = code.split("_");
+
+      let new_sacs = Number(sacs);
+      let new_tonnage = Number(sacs) / 20;
+      let new_retours = Number(retours);
+      let new_ajouts = Number(ajouts);
+      let new_camions = Number(camions);
+      let new_dechires = Number(dechires);
+      let new_bonus = new_tonnage < 600 ? 0 : new_tonnage - 600;
+
+      totalsData[t].sacs += new_sacs;
+      totalsData[t].tonnage += new_tonnage;
+      totalsData[t].retours += new_retours;
+      totalsData[t].ajouts += new_ajouts;
+      totalsData[t].camions += new_camions;
+      totalsData[t].dechires += new_dechires;
+      totalsData[t].bonus += new_bonus;
+
+      totalsData.TOTAL.sacs += new_sacs;
+      totalsData.TOTAL.tonnage += new_tonnage;
+      totalsData.TOTAL.retours += new_retours;
+      totalsData.TOTAL.ajouts += new_ajouts;
+      totalsData.TOTAL.camions += new_camions;
+      totalsData.TOTAL.dechires += new_dechires;
+      totalsData.TOTAL.bonus += new_bonus;
+    });
+  });
+
+  return totalsData;
+}

@@ -19,6 +19,7 @@ import {
   customSortByDate,
   customSortDaysArray,
   formatFrenchDate,
+  ParseTotalsData,
 } from "../helpers/func";
 import ButtonPrint from "./ButtonPrint";
 import RepportCard from "./RepportCard";
@@ -31,42 +32,6 @@ import {
   drawLogo,
   draw_en_tete,
 } from "../helpers/funcs_print";
-
-/* function MyForm() {
-  return (
-    <table>
-      <tbody>
-        <tr>
-          <td className={CLASS_TD} colSpan={8} align="center">
-            水泥包装每班产量统计分析
-          </td>
-        </tr>
-        <tr>
-          {[
-            "日期",
-            "班组",
-            "产量(T)",
-            "设备原因",
-            "电气原因",
-            "停电原因",
-            "其它原因",
-            "备注",
-          ].map((title, i) => (
-            <td key={i} className={CLASS_TD}>
-              {title}
-            </td>
-          ))}
-        </tr>
-        {[...Array(31)].map((r, i) => (
-          <tr key={i}>
-            <td className={CLASS_TD}>2023.01.{i + 1}</td>
-            <td className={CLASS_TD}>cool</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  );
-} */
 
 function DataSelector({
   loadsFiltered,
@@ -112,6 +77,7 @@ function DataSelector({
             }    `}
           >
             {year_data[0]}
+            {sely && sely[0] === year_data[0] && " ->"}
           </div>
         ))}
       </div>
@@ -145,6 +111,7 @@ function DataSelector({
                 `}
             >
               {CorrectZeroMonthIndexDisplay(month_data[0])}
+              {selm && selm[0] === month_data[0] && " ->"}
             </div>
           ))}
         </div>
@@ -178,6 +145,7 @@ function DataSelector({
                 `}
               >
                 {CorrectZeroMonthIndexDisplay(day_data[0])}
+                {seld && seld[0] === day_data[0] && " ->"}
               </div>
             ))}
         </div>
@@ -217,7 +185,8 @@ function DataSelector({
                 
                 `}
               >
-                {shift_data[1].code}
+                {shift_data[1].code}{" "}
+                {sels && sels[1].code === shift_data[1].code && "->"}
               </div>
             ))}
         </div>
@@ -253,7 +222,7 @@ export default function BagsDataList({
   const [showTotals, setShowTotals] = useState(false);
 
   const [yearTotals, setYearTotals] = useState();
-  const [loadsFilteredByYear, setLoadsFilteredByYear] = useState();
+  const [loadsByShiftOfDay, setLoadsByShiftOfDay] = useState();
 
   useEffect(() => {
     init();
@@ -273,7 +242,7 @@ export default function BagsDataList({
     setTotalData([]);
     setdate(new_date);
     setYearTotals(undefined);
-    setLoadsFilteredByYear([]);
+    setLoadsByShiftOfDay([]);
 
     setYearData([]);
     setMonthData([]);
@@ -286,104 +255,21 @@ export default function BagsDataList({
 
     setloads(data);
     if (data === undefined) {
-      setLoadsFilteredByYear([]);
+      setLoadsByShiftOfDay([]);
       return;
     }
-    const sortedData = SortLoadsByYearMonth(loads_by_item, year, month);
-    setLoadsFilteredByYear(sortedData);
-    setTotalData(ParseTotalsData(sortedData));
+
+    const sortedByShiftOfDay = SortLoadsByShoftOfDay(
+      loads_by_item,
+      year,
+      month
+    );
+    setLoadsByShiftOfDay(sortedByShiftOfDay);
+    setTotalData(ParseTotalsData(sortedByShiftOfDay));
+    setYearTotals(CalculateYearTotal(loads_by_item));
   }
 
   const [totalData, setTotalData] = useState([]);
-
-  function ParseTotalsData(data) {
-    let totalsData = {
-      A: {
-        sacs: 0,
-        retours: 0,
-        ajouts: 0,
-        tonnage: 0,
-        camions: 26,
-        dechires: 17,
-        bonus: 0,
-      },
-      B: {
-        sacs: 0,
-        retours: 0,
-        ajouts: 0,
-        tonnage: 0,
-        camions: 26,
-        dechires: 17,
-        bonus: 0,
-      },
-      C: {
-        sacs: 0,
-        retours: 0,
-        ajouts: 0,
-        tonnage: 0,
-        camions: 26,
-        dechires: 17,
-        bonus: 0,
-      },
-      D: {
-        sacs: 0,
-        retours: 0,
-        ajouts: 0,
-        tonnage: 0,
-        camions: 26,
-        dechires: 17,
-        bonus: 0,
-      },
-      TOTAL: {
-        sacs: 0,
-        retours: 0,
-        ajouts: 0,
-        tonnage: 0,
-        camions: 26,
-        dechires: 17,
-        bonus: 0,
-      },
-    };
-
-    const entries = Object.entries(data);
-    const no_data = entries.length === 0;
-
-    entries.forEach((d_entry, di) => {
-      const d = d_entry[0];
-      const d_data = d_entry[1];
-
-      d_data.forEach((s_data, si) => {
-        const { sacs, retours, ajouts, code, camions, dechires } = s_data;
-        const [t, s, y, m, d] = code.split("_");
-
-        let new_sacs = Number(sacs);
-        let new_tonnage = Number(sacs) / 20;
-        let new_retours = Number(retours);
-        let new_ajouts = Number(ajouts);
-        let new_camions = Number(camions);
-        let new_dechires = Number(dechires);
-        let new_bonus = new_tonnage < 600 ? 0 : new_tonnage - 600;
-
-        totalsData[t].sacs += new_sacs;
-        totalsData[t].tonnage += new_tonnage;
-        totalsData[t].retours += new_retours;
-        totalsData[t].ajouts += new_ajouts;
-        totalsData[t].camions += new_camions;
-        totalsData[t].dechires += new_dechires;
-        totalsData[t].bonus += new_bonus;
-
-        totalsData.TOTAL.sacs += new_sacs;
-        totalsData.TOTAL.tonnage += new_tonnage;
-        totalsData.TOTAL.retours += new_retours;
-        totalsData.TOTAL.ajouts += new_ajouts;
-        totalsData.TOTAL.camions += new_camions;
-        totalsData.TOTAL.dechires += new_dechires;
-        totalsData.TOTAL.bonus += new_bonus;
-      });
-    });
-
-    return totalsData;
-  }
 
   const customOrderShift = { M: 1, N: 3, P: 2 };
 
@@ -394,13 +280,8 @@ export default function BagsDataList({
     return customOrderShift[codeA] - customOrderShift[codeB];
   };
 
-  function SortLoadsByYearMonth(data, y, m) {
-    let year_data =
-      data.filter && data.filter((it, i) => it.code.includes(`${y}_${m}`));
-
-    year_data = year_data.sort(customSortByDate);
-
-    let sorted_loads = {};
+  const CalculateYearTotal = (year_data) => {
+    ////////
     let tot_sacs = 0;
     let tot_camions = 0;
     let tot_retours = 0;
@@ -409,6 +290,7 @@ export default function BagsDataList({
     let tot_bonus = 0;
 
     year_data.forEach((it, i) => {
+      ////// total math
       const { sacs, camions, ajouts, retours, dechires } = it;
 
       tot_sacs += sacs;
@@ -419,19 +301,6 @@ export default function BagsDataList({
 
       const bonus = Number(sacs) / 20 - 600 < 0 ? 0 : Number(sacs) / 20 - 600;
       tot_bonus += bonus;
-
-      const [team, shift, year, month, date] = it.code.split("_");
-      const day = `${year}_${month}_${date}`;
-
-      if (sorted_loads[day] == undefined) {
-        sorted_loads[day] = [it];
-      } else {
-        sorted_loads[day].push(it);
-      }
-
-      let old = sorted_loads[day];
-
-      sorted_loads[day] = [...old.sort(customSortShifts)];
     });
 
     const total_data = {
@@ -444,9 +313,33 @@ export default function BagsDataList({
       bonus: tot_bonus,
     };
 
-    setYearTotals(total_data);
-    console.log("total_data", total_data);
+    return total_data;
+  };
 
+  function SortLoadsByShoftOfDay(data, y, m) {
+    let year_data =
+      data.filter && data.filter((it, i) => it.code.includes(`${y}_${m}`));
+
+    year_data = year_data.sort(customSortByDate);
+
+    let sorted_loads = {};
+
+    year_data.forEach((it, i) => {
+      const [team, shift, year, month, date] = it.code.split("_");
+      const day = `${year}_${month}_${date}`;
+
+      if (sorted_loads[day] === undefined) {
+        sorted_loads[day] = [it];
+      } else {
+        sorted_loads[day].push(it);
+      }
+
+      let old = sorted_loads[day];
+
+      sorted_loads[day] = [...old.sort(customSortShifts)];
+    });
+
+    //console.log("sorted => \n", sorted_loads);
     return sorted_loads;
   }
 
@@ -814,11 +707,11 @@ export default function BagsDataList({
                           <ButtonPrint
                             title={"PRINT"}
                             onClick={(e) =>
-                              printLoadTabled(loadsFilteredByYear, yearTotals)
+                              printLoadTabled(loadsByShiftOfDay, yearTotals)
                             }
                           />
                           <Excelexport
-                            excelData={GenExcelLoadsData(loadsFilteredByYear)}
+                            excelData={GenExcelLoadsData(loadsByShiftOfDay)}
                           />
                         </>
                       )}
@@ -826,7 +719,7 @@ export default function BagsDataList({
                     <TableLoads
                       date={date}
                       totalData={yearTotals}
-                      loadsData={loadsFilteredByYear}
+                      loadsData={loadsByShiftOfDay}
                     />
                   </>
                 )}
