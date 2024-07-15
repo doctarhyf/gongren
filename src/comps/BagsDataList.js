@@ -16,10 +16,12 @@ import autoTable from "jspdf-autotable";
 import jsPDF from "jspdf";
 import {
   CorrectZeroMonthIndexDisplay,
+  customOrderShift,
   customSortByDate,
   customSortDaysArray,
   formatFrenchDate,
   ParseTotalsData,
+  SortLoadsByShoftOfDay,
 } from "../helpers/func";
 import ButtonPrint from "./ButtonPrint";
 import RepportCard from "./RepportCard";
@@ -271,15 +273,6 @@ export default function BagsDataList({
 
   const [totalData, setTotalData] = useState([]);
 
-  const customOrderShift = { M: 1, N: 3, P: 2 };
-
-  const customSortShifts = (a, b) => {
-    const codeA = a.code.charAt(2);
-    const codeB = b.code.charAt(2);
-
-    return customOrderShift[codeA] - customOrderShift[codeB];
-  };
-
   const CalculateYearTotal = (year_data) => {
     ////////
     let tot_sacs = 0;
@@ -315,33 +308,6 @@ export default function BagsDataList({
 
     return total_data;
   };
-
-  function SortLoadsByShoftOfDay(data, y, m) {
-    let year_data =
-      data.filter && data.filter((it, i) => it.code.includes(`${y}_${m}`));
-
-    year_data = year_data.sort(customSortByDate);
-
-    let sorted_loads = {};
-
-    year_data.forEach((it, i) => {
-      const [team, shift, year, month, date] = it.code.split("_");
-      const day = `${year}_${month}_${date}`;
-
-      if (sorted_loads[day] === undefined) {
-        sorted_loads[day] = [it];
-      } else {
-        sorted_loads[day].push(it);
-      }
-
-      let old = sorted_loads[day];
-
-      sorted_loads[day] = [...old.sort(customSortShifts)];
-    });
-
-    //console.log("sorted => \n", sorted_loads);
-    return sorted_loads;
-  }
 
   function stfy(d) {
     return JSON.stringify(d).toString();
@@ -696,6 +662,7 @@ export default function BagsDataList({
                         }
                       />
                     </div>
+
                     <TableLoadsTotals totalData={totalData} date={date} />
                   </>
                 )}

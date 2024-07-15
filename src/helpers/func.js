@@ -617,3 +617,39 @@ export function ParseTotalsData(data) {
 
   return totalsData;
 }
+
+export const customSortShifts = (a, b) => {
+  const codeA = a.code.charAt(2);
+  const codeB = b.code.charAt(2);
+
+  return customOrderShift[codeA] - customOrderShift[codeB];
+};
+
+export const customOrderShift = { M: 1, N: 3, P: 2 };
+
+export function SortLoadsByShoftOfDay(data, y, m) {
+  let year_data =
+    data.filter && data.filter((it, i) => it.code.includes(`${y}_${m}`));
+
+  year_data = year_data.sort(customSortByDate);
+
+  let sorted_loads = {};
+
+  year_data.forEach((it, i) => {
+    const [team, shift, year, month, date] = it.code.split("_");
+    const day = `${year}_${month}_${date}`;
+
+    if (sorted_loads[day] === undefined) {
+      sorted_loads[day] = [it];
+    } else {
+      sorted_loads[day].push(it);
+    }
+
+    let old = sorted_loads[day];
+
+    sorted_loads[day] = [...old.sort(customSortShifts)];
+  });
+
+  //console.log("sorted => \n", sorted_loads);
+  return sorted_loads;
+}
