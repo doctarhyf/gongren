@@ -10,7 +10,11 @@ import {
   UserHasAccessCode,
   UserHasAnyOfAccessCodes,
 } from "../helpers/func";
-import { ACCESS_CODES, LANG_COOKIE_KEY } from "../helpers/flow";
+import {
+  ACCESS_CODES,
+  COLUMNS_TO_HIDE,
+  LANG_COOKIE_KEY,
+} from "../helpers/flow";
 import { useCookies } from "react-cookie";
 import {
   GEN_TRANSLATIONS,
@@ -301,7 +305,11 @@ function HUDTotals() {
 
   return (
     <Card id={3} title={`Primes / 奖金`} desc={""}>
-      <TableLoadsTotals totalData={totalData} date={date} />
+      <TableLoadsTotals
+        totalData={totalData}
+        date={date}
+        columnsToHide={[COLUMNS_TO_HIDE.SACS, COLUMNS_TO_HIDE.CDF]}
+      />
     </Card>
   );
 }
@@ -340,9 +348,10 @@ export default function Home() {
         <HUDProduction />
         <HUDGestionSacs />
         <HUDAgents />
-        {UserHasAccessCode(user, ACCESS_CODES.CAN_SEE_BONUS_TOTAL) && (
-          <HUDTotals />
-        )}
+        {UserHasAccessCode(user, ACCESS_CODES.CAN_SEE_BONUS_TOTAL) ||
+          user.poste === "SUP" ||
+          user.poste === "DEQ" ||
+          (user.poste === "INT" && <HUDTotals />)}
       </div>
 
       {false && (

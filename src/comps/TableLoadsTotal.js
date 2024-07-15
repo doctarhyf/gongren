@@ -1,8 +1,12 @@
 import React from "react";
-import { CLASS_TD } from "../helpers/flow";
+import { CLASS_TD, COLUMNS_TO_HIDE } from "../helpers/flow";
 import { formatAsMoney } from "../helpers/func";
 
-export default function TableLoadsTotals({ totalData, date }) {
+export default function TableLoadsTotals({
+  totalData,
+  date,
+  columnsToHide = [],
+}) {
   const no_data = totalData.length === 0;
 
   return (
@@ -25,10 +29,18 @@ export default function TableLoadsTotals({ totalData, date }) {
         <>
           <tr>
             <td className={CLASS_TD}>EQ. 班组</td>
-            <td className={CLASS_TD}>SAC 袋袋数</td>
-            <td className={CLASS_TD}>T 吨</td>
-            <td className={CLASS_TD}>BONUS 奖金</td>
-            <td className={CLASS_TD}>CDF 钢狼</td>
+            {!columnsToHide.includes(COLUMNS_TO_HIDE.SACS) && (
+              <td className={CLASS_TD}>SAC 袋袋数</td>
+            )}
+            {!columnsToHide.includes(COLUMNS_TO_HIDE.TONNAGE) && (
+              <td className={CLASS_TD}>T 吨</td>
+            )}
+            {!columnsToHide.includes(COLUMNS_TO_HIDE.BONUS) && (
+              <td className={CLASS_TD}>BONUS 奖金(T)</td>
+            )}
+            {!columnsToHide.includes(COLUMNS_TO_HIDE.CDF) && (
+              <td className={CLASS_TD}>CDF 钢狼</td>
+            )}
           </tr>
           {Object.entries(totalData).map((td, i) => (
             <>
@@ -36,23 +48,41 @@ export default function TableLoadsTotals({ totalData, date }) {
               {td[0] !== "TOTAL" && (
                 <tr>
                   <td className={CLASS_TD}>{td[0]}</td>
-                  <td className={CLASS_TD}>{td[1].sacs}</td>
-                  <td className={CLASS_TD}> {td[1].tonnage.toFixed(2)}</td>
-                  <td className={CLASS_TD}>{td[1].bonus.toFixed(2)}</td>
-                  <td className={CLASS_TD}>
-                    {formatAsMoney((td[1].bonus * 1000).toFixed(2))}
-                  </td>
+                  {!columnsToHide.includes(COLUMNS_TO_HIDE.SACS) && (
+                    <td className={CLASS_TD}>{td[1].sacs}</td>
+                  )}
+                  {!columnsToHide.includes(COLUMNS_TO_HIDE.TONNAGE) && (
+                    <td className={CLASS_TD}> {td[1].tonnage.toFixed(2)}</td>
+                  )}
+                  {!columnsToHide.includes(COLUMNS_TO_HIDE.BONUS) && (
+                    <td className={CLASS_TD}>{td[1].bonus.toFixed(2)}</td>
+                  )}
+
+                  {!columnsToHide.includes(COLUMNS_TO_HIDE.CDF) && (
+                    <td className={CLASS_TD}>
+                      {formatAsMoney((td[1].bonus * 1000).toFixed(2))}
+                    </td>
+                  )}
                 </tr>
               )}{" "}
               {td[0] === "TOTAL" && (
                 <tr className="font-bold">
                   <td className={CLASS_TD}>{td[0]}</td>
-                  <td className={CLASS_TD}>{td[1].sacs}</td>
-                  <td className={CLASS_TD}> {td[1].tonnage.toFixed(2)}</td>
-                  <td className={CLASS_TD}>{td[1].bonus.toFixed(2)}</td>
-                  <td className={CLASS_TD}>
-                    {formatAsMoney(Number(td[1].bonus * 1000).toFixed(2))}
-                  </td>
+                  {!columnsToHide.includes(COLUMNS_TO_HIDE.SACS) && (
+                    <td className={CLASS_TD}>{td[1].sacs}</td>
+                  )}
+                  {!columnsToHide.includes(COLUMNS_TO_HIDE.TONNAGE) && (
+                    <td className={CLASS_TD}> {td[1].tonnage.toFixed(2)}</td>
+                  )}
+                  {!columnsToHide.includes(COLUMNS_TO_HIDE.BONUS) && (
+                    <td className={CLASS_TD}>{td[1].bonus.toFixed(2)}</td>
+                  )}
+
+                  {!columnsToHide.includes(COLUMNS_TO_HIDE.CDF) && (
+                    <td className={CLASS_TD}>
+                      {formatAsMoney(Number(td[1].bonus * 1000).toFixed(2))}
+                    </td>
+                  )}
                 </tr>
               )}
             </>

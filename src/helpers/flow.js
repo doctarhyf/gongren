@@ -112,6 +112,13 @@ export const ACCESS_CODES = {
   CAN_SEE_BONUS_TOTAL: "BNST",
 };
 
+export const COLUMNS_TO_HIDE = {
+  SACS: "sac",
+  TONNAGE: "ton",
+  BONUS: "bon",
+  CDF: "cdf",
+};
+
 export const SACS_SECTIONS = {
   CONTAINER: {
     label: "Sacs Container",
