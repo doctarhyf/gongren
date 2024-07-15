@@ -13,7 +13,9 @@ import {
 import {
   ACCESS_CODES,
   COLUMNS_TO_HIDE,
+  EQUIPES_NAMES,
   LANG_COOKIE_KEY,
+  POSTES,
 } from "../helpers/flow";
 import { useCookies } from "react-cookie";
 import {
@@ -348,14 +350,17 @@ export default function Home() {
     <div className="md:w-[980pt] md:mx-auto ">
       <Loading isLoading={loading} />
 
-      <div className="w-full my-4">
+      <div className="w-full my-4 p-2 bg-gray-800 text-white shadow-lg shadow-black/25 rounded-md">
         <div></div>
         <div>
           Bonjour Mr.{" "}
           <b>
-            {user.prenom}, {user.nom} {user.postnom}
-          </b>{" "}
-          et bienvenue sur le portal la cimenterie.
+            {user.prenom}, {user.nom} {user.postnom} ({user.mingzi}),{" "}
+          </b>
+          {POSTES[user.poste].fr} de l'equipe {user.equipe}
+          {", "}
+          {EQUIPES_NAMES[user.equipe]} de la section {user.section} et bienvenue
+          sur le portal la cimenterie.
         </div>
       </div>
 

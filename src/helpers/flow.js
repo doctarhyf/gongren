@@ -155,6 +155,12 @@ export const POSTE = [
 export const POSTES = {
   INT: { zh: "翻译", fr: "INTERPRETE" },
   MEC: { zh: "机修工", fr: "MECANICIEN" },
+  SUP: { zh: "班长", fr: "SUPERVISEUR" },
+  DEQ: { zh: "小班长", fr: "CHEF D'EQUIPE" },
+  CHARG: { zh: "装车工", fr: "CHARGEUR" },
+  NET: { zh: "扫地人", fr: "NETTOYEUR" },
+  EXP: { zh: "岗位工", fr: "EXPLOITANT" },
+  OPE: { zh: "插袋工", fr: "OPERATEUR" },
 };
 
 export const EQUIPES = [
