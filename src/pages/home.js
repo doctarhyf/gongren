@@ -294,12 +294,14 @@ function HUDTotals() {
   const [loads_by_items, set_loads_by_items] = useState([]);
   const [totalData, setTotalData] = useState([]);
   const [lastUpdateDate, setlastUpdateDate] = useState();
+  const [loading, setloading] = useState(false);
 
   useEffect(() => {
     loadData();
   }, []);
 
   async function loadData() {
+    setloading(true);
     const data = await SB.LoadAllItems(TABLES_NAMES.LOADS);
     set_loads_by_items(data);
 
@@ -308,16 +310,21 @@ function HUDTotals() {
     console.log("d ==> ", ParseTotalsData(sortedByShiftOfDay));
     // setlastUpdateDate(data[data.length].created_at);
     setlastUpdateDate(data[data.length - 1].created_at);
+    setloading(false);
   }
 
   return (
     <Card id={3} title={`Primes / 奖金`} desc={""}>
-      <TableLoadsTotals
-        totalData={totalData}
-        date={date}
-        columnsToHide={[COLUMNS_TO_HIDE.SACS, COLUMNS_TO_HIDE.CDF]}
-        lastUpdateDate={new Date(lastUpdateDate)}
-      />
+      {loading ? (
+        <Loading isLoading={true} />
+      ) : (
+        <TableLoadsTotals
+          totalData={totalData}
+          date={date}
+          columnsToHide={[COLUMNS_TO_HIDE.SACS, COLUMNS_TO_HIDE.CDF]}
+          lastUpdateDate={new Date(lastUpdateDate)}
+        />
+      )}
     </Card>
   );
 }
@@ -365,13 +372,13 @@ export default function Home() {
       </div>
 
       <div className=" container flex gap-4 my-4 flex-col md:flex-row ">
-        <HUDProduction />
-        <HUDGestionSacs />
-        <HUDAgents />
         {(UserHasAccessCode(user, ACCESS_CODES.CAN_SEE_BONUS_TOTAL) ||
           user.poste === "SUP" ||
           user.poste === "DEQ" ||
           user.poste === "INT") && <HUDTotals />}
+        <HUDProduction />
+        <HUDGestionSacs />
+        <HUDAgents />
       </div>
 
       {false && (
