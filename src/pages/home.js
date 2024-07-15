@@ -34,7 +34,7 @@ const Card = ({ id, title, desc, children }) => {
   const [showChildren, setShowChildren] = useState(true);
 
   return (
-    <div className={` ${COLORS[id]} md:h-fit flex-grow  `}>
+    <div className={` ${COLORS[id]} md:h-fit  w-auto  `}>
       <h1
         className=" cursor-pointer  font-bold  border-b border-b-white/20   "
         onClick={(e) => setShowChildren(!showChildren)}
@@ -300,11 +300,9 @@ function HUDTotals() {
   }
 
   return (
-    <div className="w-full">
-      <Card id={3} title={`Primes / 奖金`} desc={""}>
-        <TableLoadsTotals totalData={totalData} date={date} />
-      </Card>
-    </div>
+    <Card id={3} title={`Primes / 奖金`} desc={""}>
+      <TableLoadsTotals totalData={totalData} date={date} />
+    </Card>
   );
 }
 
