@@ -1,11 +1,12 @@
 import React from "react";
 import { CLASS_TD, COLUMNS_TO_HIDE } from "../helpers/flow";
-import { formatAsMoney } from "../helpers/func";
+import { formatAsMoney, formatFrenchDate } from "../helpers/func";
 
 export default function TableLoadsTotals({
   totalData,
   date,
   columnsToHide = [],
+  lastUpdateDate,
 }) {
   const no_data = totalData.length === 0;
 
@@ -87,6 +88,12 @@ export default function TableLoadsTotals({
               )}
             </>
           ))}
+
+          <tr>
+            <td className={CLASS_TD} colSpan={5 - columnsToHide.length}>
+              Last Update : <b>{formatFrenchDate(new Date(lastUpdateDate))}</b>
+            </td>
+          </tr>
         </>
       )}
     </table>

@@ -289,6 +289,7 @@ function HUDTotals() {
   const [date, setdate] = useState({ y: y, m: m });
   const [loads_by_items, set_loads_by_items] = useState([]);
   const [totalData, setTotalData] = useState([]);
+  const [lastUpdateDate, setlastUpdateDate] = useState();
 
   useEffect(() => {
     loadData();
@@ -301,6 +302,8 @@ function HUDTotals() {
     const sortedByShiftOfDay = SortLoadsByShiftOfDay(data, y, m);
     setTotalData(ParseTotalsData(sortedByShiftOfDay));
     console.log("d ==> ", ParseTotalsData(sortedByShiftOfDay));
+    // setlastUpdateDate(data[data.length].created_at);
+    setlastUpdateDate(data[data.length - 1].created_at);
   }
 
   return (
@@ -309,6 +312,7 @@ function HUDTotals() {
         totalData={totalData}
         date={date}
         columnsToHide={[COLUMNS_TO_HIDE.SACS, COLUMNS_TO_HIDE.CDF]}
+        lastUpdateDate={lastUpdateDate}
       />
     </Card>
   );
@@ -348,10 +352,10 @@ export default function Home() {
         <HUDProduction />
         <HUDGestionSacs />
         <HUDAgents />
-        {UserHasAccessCode(user, ACCESS_CODES.CAN_SEE_BONUS_TOTAL) ||
+        {(UserHasAccessCode(user, ACCESS_CODES.CAN_SEE_BONUS_TOTAL) ||
           user.poste === "SUP" ||
           user.poste === "DEQ" ||
-          (user.poste === "INT" && <HUDTotals />)}
+          user.poste === "INT") && <HUDTotals />}
       </div>
 
       {false && (
