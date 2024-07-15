@@ -233,11 +233,19 @@ export function printPDF1(agents, customTitle) {
 }
 
 export function UserHasAccessCode(user, ACCESS_CODE) {
+  if (!user) return false;
+
   return (
     (user.access_codes && user.access_codes.includes(ACCESS_CODE)) ||
     user.matricule === "L0501" ||
     user.access_codes.includes(ACCESS_CODES.ROOT)
   );
+}
+
+export function UserHasAnyOfAccessCodes(user, ACCESS_CODE_ARRAY) {
+  const access = ACCESS_CODE_ARRAY.map((it, i) => UserHasAccessCode(it));
+
+  console.log(access);
 }
 
 export function GroupBySectionAndEquipe(data) {
