@@ -17,6 +17,14 @@ export const TRANSACTION_TYPE = {
   PRODUCTION: "prod",
 };
 
+export const CARDS_BG_COLORS = [
+  "bg-teal-500",
+  "bg-sky-500",
+  "bg-indigo-500",
+  "bg-violet-500",
+  "bg-rose-500",
+];
+
 export const SACS_CONTAINER_OPERATION_TYPE = {
   IN: "in",
   OUT: "out",
