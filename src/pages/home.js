@@ -4,6 +4,8 @@ import { TABLES_NAMES } from "../helpers/sb.config";
 import Loading from "../comps/Loading";
 import {
   formatAsMoney,
+  GetDateParts,
+  GetMonthNumDays,
   GroupBySectionAndEquipe,
   ParseTotalsData,
   SortLoadsByShiftOfDay,
@@ -28,6 +30,14 @@ import {
 import { UserContext } from "../App";
 import TableLoadsTotals from "../comps/TableLoadsTotal";
 import SacsCalc from "../comps/SacsCalc";
+
+const colors = [
+  "bg-teal-500",
+  "bg-sky-500",
+  "bg-indigo-500",
+  "bg-violet-500",
+  "bg-rose-500",
+];
 
 const COLORS = [
   " bg-teal-700 text-teal-300 border-teal-300 p-2 rounded-md w-full md:w-64 ",
@@ -348,6 +358,18 @@ function HUDGreetings({ user }) {
   );
 }
 
+function StatsCard({ bgColor, children }) {
+  bgColor = bgColor === undefined ? "bg-sky-500" : bgColor;
+
+  return (
+    <div
+      className={`${bgColor} hover:shadow-md hover:shadow-slate-400 text-white p-4 flex-grow rounded-lg`}
+    >
+      {children}
+    </div>
+  );
+}
+
 export default function Home() {
   const [, , user] = useContext(UserContext);
   const [agents, setagents] = useState([]);
@@ -378,7 +400,7 @@ export default function Home() {
 
       <HUDGreetings user={user} />
 
-      <div className=" container flex gap-4 my-4 flex-col md:flex-row ">
+      <div className=" container flex gap-4 my-4 flex-col md:flex-row flex-wrap ">
         {(UserHasAccessCode(user, ACCESS_CODES.CAN_SEE_BONUS_TOTAL) ||
           user.poste === "SUP" ||
           user.poste === "DEQ" ||
@@ -386,6 +408,43 @@ export default function Home() {
         <HUDProduction />
         <HUDGestionSacs />
         <HUDAgents />
+
+        {/* <StatsCard bgColor={colors[2]}>
+          <div>PROGR. TONNAGE MENSUEL/月度吨位</div>
+
+          <div className="p-1 bg-black w-fit text-white rounded-full px-2 ">
+            TARGET: 60000T
+          </div>
+
+          <progress
+            className="progress progress-success w-full "
+            value={
+              curMonthTrucksData.reduce((acc, cv) => acc + cv.sacs, 0) / 20
+            }
+            max={60000}
+          ></progress>
+          <div className="text-[42pt]">
+            {
+              curMonthTrucksData.reduce((acc, cv) => acc + cv.sacs, 0) / 20
+              //currentMonthLoad
+            }{" "}
+            T
+          </div>
+        </StatsCard> */}
+
+        <StatsCard bgColor={colors[3]}>
+          <div>JOURS RESTANT DU MOIS / 本月剩余天数</div>
+          <div className="p-1 bg-black w-max text-white rounded-full px-2 ">
+            {JSON.stringify(GetDateParts().day)}th / {GetMonthNumDays().count}
+            {GetMonthNumDays().ext}
+          </div>
+          <progress
+            className="progress progress-success w-full "
+            value={GetDateParts().day}
+            max={GetMonthNumDays().count}
+          ></progress>
+          <div className="text-[42pt]">{GetMonthNumDays().remaining} J/天</div>
+        </StatsCard>
       </div>
 
       {false && (

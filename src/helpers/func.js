@@ -11,6 +11,44 @@ const LOGOH = 66;
 // Default export is a4 paper, portrait, using millimeters for units
 const orientation = "landscape";
 
+export function GetDateParts(part = "all", date = new Date()) {
+  const y = date.getFullYear();
+  const m = date.getMonth();
+  const d = date.getDate();
+
+  const h = date.getHours();
+  const i = date.getMinutes();
+  const s = date.getSeconds();
+
+  const parts = {
+    year: y,
+    month: m,
+    day: d,
+    hours: h,
+    minutes: i,
+    seconds: s,
+  };
+
+  return part === "all" ? parts : parts[part];
+}
+
+export function GetMonthNumDays(year, month) {
+  const date = new Date();
+  const today = date.getDate();
+  year = year === undefined ? date.getFullYear() : year;
+  month = month === undefined ? date.getMonth() : month;
+
+  const count = new Date(year, month + 1, 0).getDate();
+  const ext = count === 31 ? "st" : "th";
+  const remaining = count - today;
+
+  return {
+    count: count,
+    ext: ext,
+    remaining: remaining,
+  };
+}
+
 export const CustomSortByListPriority = (a, b) => {
   const ata = a.list_priority;
   const atb = b.list_priority;
