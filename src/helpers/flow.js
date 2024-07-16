@@ -118,6 +118,7 @@ export const ACCESS_CODES = {
   IS_DEQUIPE: "DEQ",
   IS_INTERPRETER: "INT",
   CAN_SEE_BONUS_TOTAL: "BNST",
+  CAN_SEE_ALL_AGENTS_LIST: "SAGL",
 };
 
 export const COLUMNS_TO_HIDE = {

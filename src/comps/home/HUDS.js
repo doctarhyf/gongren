@@ -49,7 +49,7 @@ function AgentStats({ agentsGrouped }) {
   );
 }
 
-function AgentCardMini({ agent }) {
+function AgentCardMini({ agent, moreInfo }) {
   return (
     <div>
       {agent.matricule && (
@@ -57,25 +57,36 @@ function AgentCardMini({ agent }) {
           {agent.matricule}
         </div>
       )}
-      <div className=" font-bold text-2xl  ">
-        {agent.prenom}, {agent.nom} {agent.postnom}{" "}
-        {agent.mingzi && `- ${agent.mingzi}`}
+      <div className="  text-3xl  ">
+        <div>Mr. {agent.prenom}</div>
+        <div>
+          {" "}
+          {agent.nom} {agent.postnom}{" "}
+          {agent.mingzi && <span className=" text-sm  ">{agent.mingzi}</span>}
+        </div>
       </div>
       <div>
-        {POSTES[agent.poste] && POSTES[agent.poste].fr}, {agent.equipe},{" "}
-        {agent.section}
+        <span className=" text-white/50  ">Section:</span> {agent.section}
+      </div>{" "}
+      <div>
+        <span className=" text-white/50  ">Poste:</span>{" "}
+        {POSTES[agent.poste].fr}
+      </div>
+      <div>
+        <span className=" text-white/50  ">Equipe:</span>{" "}
+        {EQUIPES_NAMES[agent.equipe] || agent.equipe}
       </div>
       {agent.phone && (
         <div>
-          Phone: <b>{agent.phone}</b>
+          <span className=" text-white/50  ">Phone:</span> {agent.phone}
         </div>
       )}
-      <div>
-        Depuis: <b>{formatFrenchDate(agent.created_at)}</b>
-      </div>
-      <div>
-        Active: <b>{agent.active}</b>
-      </div>
+      {moreInfo &&
+        moreInfo.map((it, i) => (
+          <div>
+            <span className=" text-white/50  ">{it}:</span> {agent[it]}
+          </div>
+        ))}
     </div>
   );
 }
@@ -180,33 +191,9 @@ export function HUDProduction() {
 export function HUDGreetings({ user }) {
   return (
     <div className="w-full my-4 p-2 bg-gray-800 text-white shadow-lg shadow-black/25 rounded-md">
-      <div></div>
-      <div>
-        Bienvenu au portal de la cimenterie
-        <div className="  text-3xl font-thin ">
-          <b>
-            <div>Mr. {user.prenom}, </div>
-            <div>
-              {user.nom} {user.postnom}{" "}
-              <span className=" text-sm  ">({user.mingzi})</span>
-            </div>
-          </b>
-        </div>
-        <div>
-          <span className=" text-white/50  ">Matricule :</span> {user.matricule}
-        </div>
-        <div>
-          <span className=" text-white/50  ">Poste:</span>{" "}
-          {POSTES[user.poste].fr}
-        </div>
-        <div>
-          <span className=" text-white/50  ">Equipe:</span>{" "}
-          {EQUIPES_NAMES[user.equipe] || user.equipe}
-        </div>
-        <div>
-          <span className=" text-white/50  ">Section:</span> {user.section}
-        </div>{" "}
-      </div>
+      <div> Bienvenu au portal de la cimenterie</div>
+
+      <AgentCardMini agent={user} />
     </div>
   );
 }
@@ -523,21 +510,24 @@ export function HUDAgents() {
             <button
               className={` ${
                 !showingAgentsList
-                  ? " bg-sky-600 outline-sky-500 text-white "
-                  : " bg-white text-sky-600  "
+                  ? " bg-sky-600 hover:outline-sky-500/20 text-white "
+                  : " bg-white/25 text-sky-600  "
               } p-1 rounded-md text-sm  hover:bg-gray-400 outline-none   `}
               onClick={(e) => {
                 setShowingAgentsList(!showingAgentsList);
                 if (showingAgentsList) setSelectedAgent(undefined);
               }}
             >
-              {showingAgentsList ? "HIDE" : "SHOW"} {"AGENTS LIST"}
+              {showingAgentsList ? "OK" : "SEARH AGENT"}
             </button>
           </div>
 
           {showingAgentsList ? (
             selectedAgent ? (
-              <AgentCardMini agent={selectedAgent} />
+              <AgentCardMini
+                agent={selectedAgent}
+                moreInfo={["contrat", "active"]}
+              />
             ) : (
               <AgentsList perPage={5} onAgentClick={onAgentClick} />
             )

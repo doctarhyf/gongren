@@ -2,7 +2,7 @@ import React, { Children, useContext, useEffect, useState } from "react";
 
 import Loading from "../comps/Loading";
 import { UserHasAccessCode } from "../helpers/func";
-import { ACCESS_CODES, LANG_COOKIE_KEY } from "../helpers/flow";
+import { ACCESS_CODES, LANG_COOKIE_KEY, POSTE, POSTES } from "../helpers/flow";
 import { useCookies } from "react-cookie";
 import {
   GEN_TRANSLATIONS,
@@ -61,7 +61,9 @@ export default function Home() {
           user.poste === "INT") && <HUDBonus />}
 
         <HUDSacsCalc />
-        <HUDAgents />
+        {(UserHasAccessCode(user, ACCESS_CODES.ROOT) ||
+          user.poste === "SUP" ||
+          user.poste === "INT") && <HUDAgents />}
         <HUDGestionSacs />
       </div>
 
