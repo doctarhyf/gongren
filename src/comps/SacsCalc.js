@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { UserHasAccessCode } from "../helpers/func";
 import { ACCESS_CODES } from "../helpers/flow";
+import { UserContext } from "../App";
 
 export default function SacsCalc() {
   const [sacs_trouves, setstv] = useState(0);
@@ -11,6 +12,7 @@ export default function SacsCalc() {
   const [sacs_comptes, setsc] = useState(0);
   const [sacs_perdus, set_sacs_perdus] = useState(0);
   const [lockdechires, setlockdechires] = useState(true);
+  const [, , user, setuser] = useContext(UserContext);
 
   useEffect(() => {
     if (lockdechires) {
@@ -42,7 +44,7 @@ export default function SacsCalc() {
 
   return (
     <div>
-      <div className=" font-bold  ">CALCULATEUR DE SACS/袋子计算</div>
+      {/* <div className=" font-bold  ">CALCULATEUR DE SACS/袋子计算</div> */}
 
       <div className=" text-white p-2 bg-slate-800 border  border-slate-200 rounded-md my-2 ">
         <div

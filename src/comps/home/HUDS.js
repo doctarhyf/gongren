@@ -276,7 +276,7 @@ export function HUDMonthProgress() {
     <Card
       id={0}
       bgColor={CARDS_BG_COLORS[2]}
-      title={`SUVI CHARGEMENT - ${AddLeadingZero(m + 1)}/${y}`}
+      title={`SUVI CHARGEMENT/月份装量计算 - ${AddLeadingZero(m + 1)}/${y}`}
       desc="Evolution chargement mois actuel"
     >
       {loading ? (
@@ -350,7 +350,7 @@ export function HUDBonus() {
   return (
     <Card
       id={1}
-      title={`SUIVI BONUS/奖金 - ${y}年${m + 1}月`}
+      title={`SUIVI BONUS/奖金计算 - ${y}年${m + 1}月`}
       desc={"Suivi bonus du mois actuel"}
     >
       {loading ? (
@@ -371,7 +371,7 @@ export function HUDSacsCalc({}) {
   return (
     <Card
       id={2}
-      title={"CALCULATRICE POUR SACS"}
+      title={"CALCULATRICE POUR SACS/破袋计算"}
       desc={"Calcul sacs dechires/restants"}
     >
       <SacsCalc />
