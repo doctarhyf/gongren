@@ -53,6 +53,7 @@ export default function Home() {
       <HUDGreetings user={user} />
 
       <div className=" container flex gap-4 my-4 flex-col md:flex-row flex-wrap ">
+        <HUDMonthLoadTarget />
         {(UserHasAccessCode(user, ACCESS_CODES.CAN_SEE_BONUS_TOTAL) ||
           user.poste === "SUP" ||
           user.poste === "DEQ" ||
@@ -61,7 +62,6 @@ export default function Home() {
         {/*  <HUDProduction /> */}
         <HUDGestionSacs />
         <HUDAgents />
-        <HUDMonthLoadTarget />
       </div>
 
       {false && (
