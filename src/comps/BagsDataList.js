@@ -22,6 +22,7 @@ import {
   formatFrenchDate,
   CaclculateAllTeamsTotals,
   SortLoadsByShiftOfDay,
+  CalculateYearTotal,
 } from "../helpers/func";
 import ButtonPrint from "./ButtonPrint";
 import RepportCard from "./RepportCard";
@@ -271,42 +272,6 @@ export default function BagsDataList({
     setAllTeamsTotals(CaclculateAllTeamsTotals(sortedByShiftOfDay));
     setYearTotal(CalculateYearTotal(loads_by_item));
   }
-
-  const CalculateYearTotal = (year_data) => {
-    ////////
-    let tot_sacs = 0;
-    let tot_camions = 0;
-    let tot_retours = 0;
-    let tot_ajouts = 0;
-    let tot_dechires = 0;
-    let tot_bonus = 0;
-
-    year_data.forEach((it, i) => {
-      ////// total math
-      const { sacs, camions, ajouts, retours, dechires } = it;
-
-      tot_sacs += sacs;
-      tot_camions += camions;
-      tot_ajouts += ajouts;
-      tot_retours += retours;
-      tot_dechires += dechires;
-
-      const bonus = Number(sacs) / 20 - 600 < 0 ? 0 : Number(sacs) / 20 - 600;
-      tot_bonus += bonus;
-    });
-
-    const total_data = {
-      sacs: tot_sacs,
-      camions: tot_camions,
-      t: (Number(tot_sacs) / 20).toFixed(2),
-      ajouts: tot_ajouts,
-      retours: tot_retours,
-      dechires: tot_dechires,
-      bonus: tot_bonus,
-    };
-
-    return total_data;
-  };
 
   function stfy(d) {
     return JSON.stringify(d).toString();

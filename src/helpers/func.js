@@ -612,7 +612,7 @@ export function formatAsMoney(value) {
   });
 }
 
-export function CaclculateAllTeamsTotals(data) {
+export function CaclculateAllTeamsTotals(data, addSacsAdj) {
   const model = {
     sacs: 0,
     retours: 0,
@@ -639,10 +639,15 @@ export function CaclculateAllTeamsTotals(data) {
     const d_data = d_entry[1];
 
     d_data.forEach((s_data, si) => {
-      const { sacs, retours, ajouts, code, camions, dechires } = s_data;
+      const { sacs, sacs_adj, retours, ajouts, code, camions, dechires } =
+        s_data;
       const [t, s, y, m, d] = code.split("_");
 
       let new_sacs = Number(sacs);
+      ////
+      let new_sacs_adj = Number(sacs_adj);
+      if (addSacsAdj) new_sacs += new_sacs_adj;
+      ////
       let new_tonnage = Number(sacs) / 20;
       let new_retours = Number(retours);
       let new_ajouts = Number(ajouts);
@@ -670,6 +675,45 @@ export function CaclculateAllTeamsTotals(data) {
 
   return totalsData;
 }
+
+export const CalculateYearTotal = (year_data, addSacsAdj) => {
+  ////////
+  let tot_sacs = 0;
+  let tot_camions = 0;
+  let tot_retours = 0;
+  let tot_ajouts = 0;
+  let tot_dechires = 0;
+  let tot_bonus = 0;
+
+  year_data.forEach((it, i) => {
+    ////// total math
+    let { sacs, sacs_adj, camions, ajouts, retours, dechires } = it;
+
+    ////
+    if (addSacsAdj) sacs += sacs_adj;
+    ////
+    tot_sacs += sacs;
+    tot_camions += camions;
+    tot_ajouts += ajouts;
+    tot_retours += retours;
+    tot_dechires += dechires;
+
+    const bonus = Number(sacs) / 20 - 600 < 0 ? 0 : Number(sacs) / 20 - 600;
+    tot_bonus += bonus;
+  });
+
+  const total_data = {
+    sacs: tot_sacs,
+    camions: tot_camions,
+    t: (Number(tot_sacs) / 20).toFixed(2),
+    ajouts: tot_ajouts,
+    retours: tot_retours,
+    dechires: tot_dechires,
+    bonus: tot_bonus,
+  };
+
+  return total_data;
+};
 
 export const customSortShifts = (a, b) => {
   const codeA = a.code.charAt(2);
