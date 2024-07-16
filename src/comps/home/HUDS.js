@@ -371,8 +371,8 @@ export function HUDSacsCalc({}) {
   return (
     <Card
       id={2}
-      title={"CALCULATEUR DE SACS"}
-      desc={"Pour effectuer le calcul de sacs dechires"}
+      title={"CALCULATRICE POUR SACS"}
+      desc={"Calcul sacs dechires/restants"}
     >
       <SacsCalc />
     </Card>
