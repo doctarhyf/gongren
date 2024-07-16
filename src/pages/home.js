@@ -319,15 +319,13 @@ function HUDTotals() {
 
     const sortedByShiftOfDay = SortLoadsByShiftOfDay(data, y, m);
 
-    const addSacsAdj = UserHasAccessCode(user, ACCESS_CODES.ROOT);
-
-    setTotalData(CaclculateAllTeamsTotals(sortedByShiftOfDay, addSacsAdj));
+    setTotalData(CaclculateAllTeamsTotals(sortedByShiftOfDay));
     setlastUpdateDate(data[data.length - 1].created_at);
     setloading(false);
   }
 
   return (
-    <Card id={3} title={`Primes / 奖金`} desc={""}>
+    <Card id={3} title={`Primes / 奖金 ${m}/${y}`} desc={""}>
       {loading ? (
         <Loading isLoading={true} />
       ) : (
