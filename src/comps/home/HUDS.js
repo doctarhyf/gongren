@@ -332,7 +332,7 @@ export function HUDMonthProgress() {
   );
 }
 
-export function HUDPrimes() {
+export function HUDBonus() {
   const [, , user, setuser] = useContext(UserContext);
   const today = new Date();
   const y = today.getFullYear();
@@ -363,8 +363,8 @@ export function HUDPrimes() {
   return (
     <Card
       id={1}
-      title={`Primes/奖金 - ${y}年${m + 1}月`}
-      desc={"Suivi primes du mois actuel"}
+      title={`SUIVI BONUS/奖金 - ${y}年${m + 1}月`}
+      desc={"Suivi bonus du mois actuel"}
     >
       {loading ? (
         <Loading isLoading={true} />

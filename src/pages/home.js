@@ -18,7 +18,7 @@ import {
   HUDAgents,
   HUDGestionSacs,
   HUDGreetings,
-  HUDPrimes,
+  HUDBonus,
   HUDMonthProgress,
   HUDSacsCalc,
 } from "../comps/home/HUDS";
@@ -58,7 +58,7 @@ export default function Home() {
         {(UserHasAccessCode(user, ACCESS_CODES.CAN_SEE_BONUS_TOTAL) ||
           user.poste === "SUP" ||
           user.poste === "DEQ" ||
-          user.poste === "INT") && <HUDPrimes />}
+          user.poste === "INT") && <HUDBonus />}
 
         <HUDSacsCalc />
         <HUDAgents />
