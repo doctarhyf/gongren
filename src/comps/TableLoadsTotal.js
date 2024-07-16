@@ -7,6 +7,7 @@ export default function TableLoadsTotals({
   date,
   columnsToHide = [],
   lastUpdateDate,
+  tableMode = true,
 }) {
   const no_data = totalData.length === 0;
 
@@ -39,76 +40,79 @@ export default function TableLoadsTotals({
           </td>
         </tr>
       )}
-      {!no_data && (
-        <>
-          <tr>
-            <td className={CLASS_TD}>EQ. 班组</td>
-            {!columnsToHide.includes(COLUMNS_TO_HIDE.SACS) && (
-              <td className={CLASS_TD}>SAC 袋袋数</td>
-            )}
-            {!columnsToHide.includes(COLUMNS_TO_HIDE.TONNAGE) && (
-              <td className={CLASS_TD}>T 吨</td>
-            )}
-            {!columnsToHide.includes(COLUMNS_TO_HIDE.BONUS) && (
-              <td className={CLASS_TD}>BONUS 奖金(T)</td>
-            )}
-            {!columnsToHide.includes(COLUMNS_TO_HIDE.CDF) && (
-              <td className={CLASS_TD}>CDF 钢狼</td>
-            )}
-          </tr>
-          {Object.entries(totalData).map((td, i) => (
-            <>
-              {" "}
-              {td[0] !== "TOTAL" && (
-                <tr>
-                  <td className={CLASS_TD}>{td[0]}</td>
-                  {!columnsToHide.includes(COLUMNS_TO_HIDE.SACS) && (
-                    <td className={CLASS_TD}>{td[1].sacs}</td>
-                  )}
-                  {!columnsToHide.includes(COLUMNS_TO_HIDE.TONNAGE) && (
-                    <td className={CLASS_TD}> {td[1].tonnage.toFixed(2)}</td>
-                  )}
-                  {!columnsToHide.includes(COLUMNS_TO_HIDE.BONUS) && (
-                    <td className={CLASS_TD}>{td[1].bonus.toFixed(2)}</td>
-                  )}
-
-                  {!columnsToHide.includes(COLUMNS_TO_HIDE.CDF) && (
-                    <td className={CLASS_TD}>
-                      {formatAsMoney((td[1].bonus * 1000).toFixed(2))}
-                    </td>
-                  )}
-                </tr>
-              )}{" "}
-              {td[0] === "TOTAL" && (
-                <tr className="font-bold">
-                  <td className={CLASS_TD}>{td[0]}</td>
-                  {!columnsToHide.includes(COLUMNS_TO_HIDE.SACS) && (
-                    <td className={CLASS_TD}>{td[1].sacs}</td>
-                  )}
-                  {!columnsToHide.includes(COLUMNS_TO_HIDE.TONNAGE) && (
-                    <td className={CLASS_TD}> {td[1].tonnage.toFixed(2)}</td>
-                  )}
-                  {!columnsToHide.includes(COLUMNS_TO_HIDE.BONUS) && (
-                    <td className={CLASS_TD}>{td[1].bonus.toFixed(2)}</td>
-                  )}
-
-                  {!columnsToHide.includes(COLUMNS_TO_HIDE.CDF) && (
-                    <td className={CLASS_TD}>
-                      {formatAsMoney(Number(td[1].bonus * 1000).toFixed(2))}
-                    </td>
-                  )}
-                </tr>
+      {!no_data &&
+        (tableMode ? (
+          <div>
+            <tr>
+              <td className={CLASS_TD}>EQ. 班组</td>
+              {!columnsToHide.includes(COLUMNS_TO_HIDE.SACS) && (
+                <td className={CLASS_TD}>SAC 袋袋数</td>
               )}
-            </>
-          ))}
+              {!columnsToHide.includes(COLUMNS_TO_HIDE.TONNAGE) && (
+                <td className={CLASS_TD}>T 吨</td>
+              )}
+              {!columnsToHide.includes(COLUMNS_TO_HIDE.BONUS) && (
+                <td className={CLASS_TD}>BONUS 奖金(T)</td>
+              )}
+              {!columnsToHide.includes(COLUMNS_TO_HIDE.CDF) && (
+                <td className={CLASS_TD}>CDF 钢狼</td>
+              )}
+            </tr>
+            {Object.entries(totalData).map((td, i) => (
+              <>
+                {" "}
+                {td[0] !== "TOTAL" && (
+                  <tr>
+                    <td className={CLASS_TD}>{td[0]}</td>
+                    {!columnsToHide.includes(COLUMNS_TO_HIDE.SACS) && (
+                      <td className={CLASS_TD}>{td[1].sacs}</td>
+                    )}
+                    {!columnsToHide.includes(COLUMNS_TO_HIDE.TONNAGE) && (
+                      <td className={CLASS_TD}> {td[1].tonnage.toFixed(2)}</td>
+                    )}
+                    {!columnsToHide.includes(COLUMNS_TO_HIDE.BONUS) && (
+                      <td className={CLASS_TD}>{td[1].bonus.toFixed(2)}</td>
+                    )}
 
-          <tr>
-            <td className={CLASS_TD} colSpan={5 - columnsToHide.length}>
-              Last Update : <b>{ParseDate(lastUpdateDate)}</b>
-            </td>
-          </tr>
-        </>
-      )}
+                    {!columnsToHide.includes(COLUMNS_TO_HIDE.CDF) && (
+                      <td className={CLASS_TD}>
+                        {formatAsMoney((td[1].bonus * 1000).toFixed(2))}
+                      </td>
+                    )}
+                  </tr>
+                )}{" "}
+                {td[0] === "TOTAL" && (
+                  <tr className="font-bold">
+                    <td className={CLASS_TD}>{td[0]}</td>
+                    {!columnsToHide.includes(COLUMNS_TO_HIDE.SACS) && (
+                      <td className={CLASS_TD}>{td[1].sacs}</td>
+                    )}
+                    {!columnsToHide.includes(COLUMNS_TO_HIDE.TONNAGE) && (
+                      <td className={CLASS_TD}> {td[1].tonnage.toFixed(2)}</td>
+                    )}
+                    {!columnsToHide.includes(COLUMNS_TO_HIDE.BONUS) && (
+                      <td className={CLASS_TD}>{td[1].bonus.toFixed(2)}</td>
+                    )}
+
+                    {!columnsToHide.includes(COLUMNS_TO_HIDE.CDF) && (
+                      <td className={CLASS_TD}>
+                        {formatAsMoney(Number(td[1].bonus * 1000).toFixed(2))}
+                      </td>
+                    )}
+                  </tr>
+                )}
+              </>
+            ))}
+
+            <tr>
+              <td className={CLASS_TD} colSpan={5 - columnsToHide.length}>
+                Last Update : <b>{ParseDate(lastUpdateDate)}</b>
+              </td>
+            </tr>
+          </div>
+        ) : (
+          <div>Cool</div>
+        ))}
     </table>
   );
 }
