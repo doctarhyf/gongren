@@ -434,7 +434,7 @@ export default function Home() {
 
         <StatsCard bgColor={colors[3]}>
           <div>JOURS RESTANT DU MOIS / 本月剩余天数</div>
-          <div className="p-1 bg-black w-max text-white rounded-full px-2 ">
+          <div className="p-1 bg-black w-auto text-white rounded-full px-2 ">
             {JSON.stringify(GetDateParts().day)}th / {GetMonthNumDays().count}
             {GetMonthNumDays().ext}
           </div>
