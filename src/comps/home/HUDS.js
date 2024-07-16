@@ -12,6 +12,7 @@ import {
   SortLoadsByShiftOfDay,
   UserHasAccessCode,
   UserHasAnyOfAccessCodes,
+  formatFrenchDate,
 } from "../../helpers/func";
 import { UserContext } from "../../App";
 import TableLoadsTotals from "../TableLoadsTotal";
@@ -21,6 +22,7 @@ import {
   EQUIPES_NAMES,
   POSTES,
 } from "../../helpers/flow";
+import AgentsList from "../AgentsList";
 
 export function HUDProduction() {
   const date = new Date();
@@ -189,15 +191,73 @@ export function HUDGestionSacs() {
   );
 }
 
-export function HUDAgents() {
-  const [loading, setloading] = useState(false);
+function AgentStats({ agentsGrouped }) {
+  return (
+    <div>
+      {Object.entries(agentsGrouped).map((sec) => (
+        <div>
+          <div>{sec[0]}</div>
+          <div className=" justify-center gap-4 align-middle   flex ">
+            {Object.entries(sec[1]).map((it, i) => (
+              <div>
+                <div className=" text-[24pt] ">{it[1].length}</div>
+                <div className=" w-fit text-xs bg-white/25 rounded-md py-1 px-2  ">
+                  {it[0]}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
 
+function AgentCardMini({ agent }) {
+  return (
+    <div>
+      {agent.matricule && (
+        <div className=" font-bold inline-block  bg-black p-1 text-xs rounded-md ">
+          {agent.matricule}
+        </div>
+      )}
+      <div className=" font-bold text-2xl  ">
+        {agent.prenom}, {agent.nom} {agent.postnom}{" "}
+        {agent.mingzi && `- ${agent.mingzi}`}
+      </div>
+      <div>
+        {agent.poste}, {agent.equipe}, {agent.section}
+      </div>
+      {agent.phone && (
+        <div>
+          Phone: <b>{agent.phone}</b>
+        </div>
+      )}
+      <div>
+        Depuis: <b>{formatFrenchDate(agent.created_at)}</b>
+      </div>
+      <div>
+        Active: <b>{agent.active}</b>
+      </div>
+    </div>
+  );
+}
+
+export function HUDAgents() {
+  const [showingAgentsList, setShowingAgentsList] = useState(false);
+  const [loading, setloading] = useState(false);
+  const [q, setq] = useState();
   const [agentsFiltered, setAgentsFiltered] = useState([]);
   const [agentsGrouped, setAgentsGrouped] = useState([]);
+  const [selectedAgent, setSelectedAgent] = useState();
 
   useEffect(() => {
     loadData();
   }, []);
+
+  useEffect(() => {
+    console.log("q => ", q);
+  }, [q]);
 
   function loadData() {
     setloading(true);
@@ -221,6 +281,11 @@ export function HUDAgents() {
     );
   }
 
+  function onAgentClick(ag) {
+    console.log(ag);
+    setSelectedAgent(ag);
+  }
+
   return (
     <Card
       id={2}
@@ -231,21 +296,31 @@ export function HUDAgents() {
         <Loading isLoading={true} />
       ) : (
         <div>
-          {Object.entries(agentsGrouped).map((sec) => (
-            <div>
-              <div>{sec[0]}</div>
-              <div className=" justify-center gap-4 align-middle   flex ">
-                {Object.entries(sec[1]).map((it, i) => (
-                  <div>
-                    <div className=" text-[24pt] ">{it[1].length}</div>
-                    <div className=" w-fit text-xs bg-white/25 rounded-md py-1 px-2  ">
-                      {it[0]}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))}
+          <div className="  py-2  ">
+            <button
+              className={` ${
+                !showingAgentsList
+                  ? " bg-sky-600 outline-sky-500 text-white "
+                  : " bg-white text-sky-600  "
+              } p-1 rounded-md text-sm  hover:bg-gray-400 outline-none   `}
+              onClick={(e) => {
+                setShowingAgentsList(!showingAgentsList);
+                if (showingAgentsList) setSelectedAgent(undefined);
+              }}
+            >
+              {showingAgentsList ? "SHOW" : "HIDE"} {"AGENTS LIST"}
+            </button>
+          </div>
+
+          {!showingAgentsList ? (
+            selectedAgent ? (
+              <AgentCardMini agent={selectedAgent} />
+            ) : (
+              <AgentsList perPage={5} onAgentClick={onAgentClick} />
+            )
+          ) : (
+            <AgentStats agentsGrouped={agentsGrouped} />
+          )}
         </div>
       )}
     </Card>

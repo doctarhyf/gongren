@@ -9,8 +9,6 @@ import {
   GroupBySectionAndEquipe,
 } from "../helpers/func";
 
-const PER_PAGE = 10;
-
 export default function AgentsList({
   onAgentClick,
   curAgent,
@@ -18,6 +16,7 @@ export default function AgentsList({
   showToggleTableMode,
   showToggleTeamsView,
   onlyActive,
+  perPage = 10,
 }) {
   const [q, setq] = useState("");
 
@@ -68,15 +67,15 @@ export default function AgentsList({
 
     setteams(GroupBySectionAndEquipe(items_raw));
     const items_len = items_raw.length;
-    const num_pages = Math.ceil(items_len / PER_PAGE);
+    const num_pages = Math.ceil(items_len / perPage);
     setNumPages(num_pages);
 
     items_raw = items_raw.sort(CustomSortByListPriority);
     //console.log("atarow", items_raw[0]);
-    let items = GetSplittedItemsIntoPages(items_raw, PER_PAGE);
+    let items = GetSplittedItemsIntoPages(items_raw, perPage);
     setagents(items);
 
-    setagentf(items.slice(0, PER_PAGE));
+    setagentf(items.slice(0, perPage));
     setloading(false);
   }
 
@@ -176,7 +175,8 @@ export default function AgentsList({
                       </div>
                       <div className="text-xs text-neutral-300">
                         <div>
-                          {agent.section}, Eq.: {agent.equipe}, Mat.:{agent.matricule}
+                          {agent.section}, Eq.: {agent.equipe}, Mat.:
+                          {agent.matricule}
                         </div>
                       </div>
                       {agent.chef_deq === "OUI" && (
@@ -219,8 +219,8 @@ export default function AgentsList({
         </div>
       )}
       {!showTeamMode && (
-        <div className="text-center">
-          <div className="max-w-44">
+        <div className="text-center ">
+          <div className="md:max-w-44">
             {[...Array(numPages).fill(0)].map((it, i) => (
               <button
                 key={i}
