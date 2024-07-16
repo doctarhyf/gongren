@@ -23,7 +23,7 @@ export default function TableLoadsTotals({
   };
 
   return (
-    <table className=" w-full  ">
+    <table className=" w-full rounded-md  ">
       <tr className="  font-bold">
         <td colSpan={5} align="center" className={CLASS_TD}>
           水泥车间包装奖金 - {date.y}年{date.m + 1}月
