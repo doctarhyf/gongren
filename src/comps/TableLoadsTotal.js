@@ -11,6 +11,7 @@ export default function TableLoadsTotals({
   const no_data = totalData.length === 0;
 
   const ParseDate = (date) => {
+    if (!date || !date.getFullYear) date = new Date();
     const y = date.getFullYear();
     const m = AddLeadingZero(date.getMonth());
     const d = AddLeadingZero(date.getDate());

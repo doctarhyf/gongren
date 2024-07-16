@@ -20,7 +20,7 @@ import {
   customSortByDate,
   customSortDaysArray,
   formatFrenchDate,
-  ParseTotalsData,
+  CaclculateAllTeamsTotals,
   SortLoadsByShiftOfDay,
 } from "../helpers/func";
 import ButtonPrint from "./ButtonPrint";
@@ -221,10 +221,11 @@ export default function BagsDataList({
     d: "",
     shift: "",
   });
-  const [showTotals, setShowTotals] = useState(false);
-
-  const [yearTotals, setYearTotals] = useState();
+  const [showAllTeamsTotals, setShowAllTeamsTotals] = useState(false);
   const [loadsByShiftOfDay, setLoadsByShiftOfDay] = useState();
+
+  const [yearTotals, setYearTotal] = useState();
+  const [allTeamsTotals, setAllTeamsTotals] = useState([]);
 
   useEffect(() => {
     init();
@@ -241,9 +242,9 @@ export default function BagsDataList({
   function onDateSelected(new_date) {
     console.log(`New date selected : ${JSON.stringify(new_date)}`);
 
-    setTotalData([]);
+    setAllTeamsTotals([]);
     setdate(new_date);
-    setYearTotals(undefined);
+    setYearTotal(undefined);
     setLoadsByShiftOfDay([]);
 
     setYearData([]);
@@ -267,11 +268,9 @@ export default function BagsDataList({
       month
     );
     setLoadsByShiftOfDay(sortedByShiftOfDay);
-    setTotalData(ParseTotalsData(sortedByShiftOfDay));
-    setYearTotals(CalculateYearTotal(loads_by_item));
+    setAllTeamsTotals(CaclculateAllTeamsTotals(sortedByShiftOfDay));
+    setYearTotal(CalculateYearTotal(loads_by_item));
   }
-
-  const [totalData, setTotalData] = useState([]);
 
   const CalculateYearTotal = (year_data) => {
     ////////
@@ -644,7 +643,7 @@ export default function BagsDataList({
               <div className="flex">
                 <div>
                   <button
-                    onClick={(e) => setShowTotals(!showTotals)}
+                    onClick={(e) => setShowAllTeamsTotals(!showAllTeamsTotals)}
                     className={CLASS_BTN}
                   >
                     SHOW/HIDE TOTALS
@@ -652,24 +651,24 @@ export default function BagsDataList({
                 </div>
               </div>
               <div className="">
-                {showTotals && (
+                {showAllTeamsTotals && (
                   <>
                     <div>
                       <ButtonPrint
                         title={"PRINT TOTAL"}
                         onClick={(e) =>
-                          printTotalsTable(totalData, date.y, date.m)
+                          printTotalsTable(allTeamsTotals, date.y, date.m)
                         }
                       />
                     </div>
 
-                    <TableLoadsTotals totalData={totalData} date={date} />
+                    <TableLoadsTotals totalData={allTeamsTotals} date={date} />
                   </>
                 )}
-                {!showTotals && (
+                {!showAllTeamsTotals && (
                   <>
                     <div className="flex gap-4">
-                      {!showTotals && (
+                      {!showAllTeamsTotals && (
                         <>
                           <ButtonPrint
                             title={"PRINT"}

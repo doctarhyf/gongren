@@ -612,7 +612,7 @@ export function formatAsMoney(value) {
   });
 }
 
-export function ParseTotalsData(data) {
+export function CaclculateAllTeamsTotals(data) {
   const model = {
     sacs: 0,
     retours: 0,

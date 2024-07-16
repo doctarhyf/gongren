@@ -7,7 +7,7 @@ import {
   GetDateParts,
   GetMonthNumDays,
   GroupBySectionAndEquipe,
-  ParseTotalsData,
+  CaclculateAllTeamsTotals,
   SortLoadsByShiftOfDay,
   UserHasAccessCode,
   UserHasAnyOfAccessCodes,
@@ -317,8 +317,8 @@ function HUDTotals() {
     set_loads_by_items(data);
 
     const sortedByShiftOfDay = SortLoadsByShiftOfDay(data, y, m);
-    setTotalData(ParseTotalsData(sortedByShiftOfDay));
-    console.log("d ==> ", ParseTotalsData(sortedByShiftOfDay));
+    setTotalData(CaclculateAllTeamsTotals(sortedByShiftOfDay));
+    console.log("d ==> ", CaclculateAllTeamsTotals(sortedByShiftOfDay));
     // setlastUpdateDate(data[data.length].created_at);
     setlastUpdateDate(data[data.length - 1].created_at);
     setloading(false);
@@ -521,12 +521,11 @@ export default function Home() {
           user.poste === "SUP" ||
           user.poste === "DEQ" ||
           user.poste === "INT") && <HUDTotals />}
-      
+
         <HUDProduction />
         <HUDGestionSacs />
         <HUDAgents />
-          <HUDMonthLoadTarget />
-        
+        <HUDMonthLoadTarget />
       </div>
 
       {false && (
