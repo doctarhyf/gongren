@@ -325,7 +325,7 @@ function HUDTotals() {
   }
 
   return (
-    <Card id={3} title={`Primes / 奖金 ${m}/${y}`} desc={""}>
+    <Card id={3} title={`Primes/奖金 - ${y}年${y}月`} desc={""}>
       {loading ? (
         <Loading isLoading={true} />
       ) : (
