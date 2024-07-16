@@ -1,4 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
+import { UserHasAccessCode } from "../helpers/func";
+import { ACCESS_CODES } from "../helpers/flow";
 
 export default function SacsCalc() {
   const [sacs_trouves, setstv] = useState(0);
@@ -43,7 +45,11 @@ export default function SacsCalc() {
       <div className=" font-bold  ">CALCULATEUR DE SACS/袋子计算</div>
 
       <div className=" text-white p-2 bg-slate-800 border  border-slate-200 rounded-md my-2 ">
-        <div>
+        <div
+          className={`  ${
+            !UserHasAccessCode(user, ACCESS_CODES.ROOT) && "hidden"
+          } `}
+        >
           <input
             type="checkbox"
             checked={lockdechires}
