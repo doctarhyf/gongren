@@ -25,9 +25,9 @@ export default function TableLoadsTotals({
   };
 
   return (
-    <table className=" w-full rounded-md  ">
+    <table className=" w-full rounded-md   ">
       <tr className="  font-bold">
-        <td colSpan={5} align="center" className={CLASS_TD}>
+        <td align="center" className="  border-0 ">
           水泥车间包装奖金 - {date.y}年{date.m + 1}月
         </td>
       </tr>{" "}
@@ -43,7 +43,7 @@ export default function TableLoadsTotals({
       {!no_data &&
         (tableMode ? (
           <div>
-            <tr>
+            <tr className="  w-full  ">
               <td className={CLASS_TD}>EQ. 班组</td>
               {!columnsToHide.includes(COLUMNS_TO_HIDE.SACS) && (
                 <td className={CLASS_TD}>SAC 袋袋数</td>

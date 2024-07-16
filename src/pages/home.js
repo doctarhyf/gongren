@@ -18,8 +18,8 @@ import {
   HUDAgents,
   HUDGestionSacs,
   HUDGreetings,
-  HUDTotals,
-  HUDMonthLoadTarget,
+  HUDPrimes,
+  HUDMonthProgress,
   HUDSacsCalc,
 } from "../comps/home/HUDS";
 
@@ -54,47 +54,28 @@ export default function Home() {
       <HUDGreetings user={user} />
 
       <div className=" container flex gap-4 my-4 flex-col md:flex-row flex-wrap ">
-        <HUDMonthLoadTarget />
+        <HUDMonthProgress />
         {(UserHasAccessCode(user, ACCESS_CODES.CAN_SEE_BONUS_TOTAL) ||
           user.poste === "SUP" ||
           user.poste === "DEQ" ||
-          user.poste === "INT") && <HUDTotals />}
+          user.poste === "INT") && <HUDPrimes />}
 
         <HUDSacsCalc />
         <HUDAgents />
         <HUDGestionSacs />
       </div>
 
-      {false && (
-        <div className="oldmain">
-          <div>
-            {trads[GET_STRINGS_KEYS(STRINGS["Agents count"].default)]} :
-            {agents.length}
-          </div>
-          <div className="w-fit ">
-            {Object.entries(agents_by_teams).map((section, i) => (
-              <details key={i}>
-                <summary className="cursor-pointer">{section[0]}</summary>
-                <div>
-                  {Object.entries(section[1])
-                    .sort()
-                    .map((team, i) => (
-                      <div className="ml-8">
-                        {trads[GET_STRINGS_KEYS(STRINGS.Team.default)]} :
-                        {
-                          trads[
-                            GET_STRINGS_KEYS(STRINGS["Agents count"].default)
-                          ]
-                        }{" "}
-                        :{team[0]} : <b>{team[1].length}</b>
-                      </div>
-                    ))}
-                </div>
-              </details>
-            ))}
-          </div>{" "}
-        </div>
-      )}
+      <div className="text-sm text-center">
+        Code & Design by{" "}
+        <b>
+          <a
+            className="text-sky-500  italic"
+            href="https://github.com/doctarhyf"
+          >
+            Ir. Franvale Mutunda K. (库齐) / @doctarhyf
+          </a>
+        </b>
+      </div>
     </div>
   );
 }
