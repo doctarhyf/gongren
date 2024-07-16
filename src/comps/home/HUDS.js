@@ -201,7 +201,7 @@ export function HUDGreetings({ user }) {
         </div>
         <div>
           <span className=" text-white/50  ">Equipe:</span>{" "}
-          {EQUIPES_NAMES[user.equipe]}
+          {EQUIPES_NAMES[user.equipe] || user.equipe}
         </div>
         <div>
           <span className=" text-white/50  ">Section:</span> {user.section}
