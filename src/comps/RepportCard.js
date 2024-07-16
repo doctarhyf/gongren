@@ -156,7 +156,7 @@ Superviseur班长: @${nom} ${zh} 
               {rep_data.year}年{Number(rep_data.month) + 1}月{rep_data.day}日
             </div>
             <div>
-              Équipe班：<span className="font-bold">{rep_data.team}</span>
+              Équipe班:<span className="font-bold">{rep_data.team}</span>
             </div>
             <div>
               Superviseur班长:
