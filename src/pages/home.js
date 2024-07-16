@@ -300,7 +300,7 @@ function HUDTotals() {
   const [, , user, setuser] = useContext(UserContext);
   const today = new Date();
   const y = today.getFullYear();
-  const m = today.getMonth() - 1;
+  const m = today.getMonth();
   const d = today.getDay();
   const [date, setdate] = useState({ y: y, m: m });
   const [loads_by_items, set_loads_by_items] = useState([]);
