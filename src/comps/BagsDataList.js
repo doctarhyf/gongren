@@ -206,6 +206,7 @@ export default function BagsDataList({
   repportData,
   onUpdateShiftData,
   onDeleteShiftData,
+  addSacsAdj,
 }) {
   const [loading, setloading] = useState(false);
   const [loads, setloads] = useState([]);

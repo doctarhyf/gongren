@@ -330,6 +330,7 @@ export function ParseYearRepport(year_data) {
     Object.values(m).map((d, i) => {
       Object.values(d).map((shift, i) => {
         sacs += Number(shift.sacs);
+
         ret += Number(shift.retours);
         ajt += Number(shift.ajouts);
         t = sacs / 20;

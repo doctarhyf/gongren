@@ -28,10 +28,15 @@ export default function Chargement() {
   const [loadsf, setloadsf] = useState([]);
   const [loads_by_item, set_loads_by_item] = useState();
   const [showRepportMode, setShowRepportMode] = useState(false);
+  const [addSacsAdj, setAddSacsAdj] = useState(false);
 
   useEffect(() => {
     loadData();
   }, []);
+
+  useEffect(() => {
+    loadData();
+  }, [addSacsAdj]);
 
   async function loadData() {
     setloading(true);
@@ -40,7 +45,19 @@ export default function Chargement() {
     setRepportData({});
     set_loads_by_item([]);
 
-    const d = await SB.LoadAllItems(TABLES_NAMES.LOADS);
+    let d = await SB.LoadAllItems(TABLES_NAMES.LOADS);
+    if (addSacsAdj) {
+      const new_d = [];
+      d.forEach((it, i) => {
+        let new_sacs = it.sacs + it.sacs_adj;
+        it.sacs = new_sacs;
+        it.sacs_adj = 0;
+        new_d.push({ ...it });
+      });
+
+      d = [...new_d];
+      console.log("new d ", new_d);
+    }
 
     set_loads_by_item(d);
     setloads(groupByYearMonthAndDay(d));
@@ -115,12 +132,22 @@ export default function Chargement() {
 
   function onUpdateShiftData(data) {
     //console.log(data);
+    if (addSacsAdj) {
+      alert("Cant update in addSacsAdj mode!");
+      return;
+    }
     setShiftDataToUpdate(data);
     setAddDataMode(true);
     loadData();
   }
 
   async function onDeleteShiftData(data) {
+    //console.log(data);
+    if (addSacsAdj) {
+      alert("Cant delete in addSacsAdj mode!");
+      return;
+    }
+
     setloading(true);
 
     const error = await SB.DeleteItem(TABLES_NAMES.LOADS, data);
@@ -197,6 +224,17 @@ export default function Chargement() {
               onChange={(e) => setShowRepportMode(e.target.checked)}
             />
           </div>
+          {UserHasAccessCode(user, ACCESS_CODES.ROOT) && (
+            <div>
+              ADD SACS ADJ
+              <input
+                type="checkbox"
+                className="toggle toggle-xs"
+                checked={addSacsAdj}
+                onChange={(e) => setAddSacsAdj(e.target.checked)}
+              />
+            </div>
+          )}
           <div className="flex  gap-4">
             {true && (
               <BagsDataList
@@ -207,6 +245,7 @@ export default function Chargement() {
                 repportData={repportData}
                 onUpdateShiftData={onUpdateShiftData}
                 onDeleteShiftData={onDeleteShiftData}
+                addSacsAdj={addSacsAdj}
               />
             )}
           </div>
