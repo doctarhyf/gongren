@@ -120,7 +120,7 @@ Superviseur班长: @${nom} ${zh} 
               <span>
                 <img src={wechat} width={30} />
               </span>
-              <span className="label-text">Weixin Repport</span>
+              <span className="label-text">Weixin Repport </span>
               <input
                 type="checkbox"
                 className="toggle"

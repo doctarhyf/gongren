@@ -522,6 +522,7 @@ export function ParseShiftRepport(shift_data) {
   repport.equipe = t;
   repport.heure = `${SHIFT_HOURS_ZH[s][0]}, ${SHIFT_HOURS_ZH[s][2]}`;
   repport.sacs = shift.sacs;
+  repport.sacs_adj = shift.sacs_adj;
   repport.camions = shift.camions;
   repport.tonnage = Number(shift.sacs / 20);
   repport.code = shift.code;
@@ -538,6 +539,7 @@ export function ParseShiftRepport(shift_data) {
     team: t, //SHIF_HOURS_ZH[shift.code[0]][1],
     date: `${d}/${m}/${y}`,
     sacs: shift.sacs,
+    sacs_adj: shift.sacs_adj,
     camions: shift.camions,
     retours: shift.retours,
     ajouts: shift.ajouts,

@@ -27,6 +27,7 @@ export default function BagsDataInput({
   const ref_team = useRef();
   const ref_shift = useRef();
   const ref_sacs = useRef();
+  const ref_sacs_adj = useRef();
   const ref_camions = useRef();
   const ref_retours = useRef();
   const ref_ajouts = useRef();
@@ -57,6 +58,7 @@ export default function BagsDataInput({
 
     const shift = _(ref_shift);
     const sacs = Number(_(ref_sacs));
+    const sacs_adj = Number(_(ref_sacs_adj));
     const camions = Number(_(ref_camions));
     const retours = Number(_(ref_retours));
     const ajouts = Number(_(ref_ajouts));
@@ -76,6 +78,7 @@ export default function BagsDataInput({
     const load = {
       code: code,
       sacs: sacs,
+      sacs_adj: sacs_adj,
       camions: camions,
       retours: retours,
       ajouts: ajouts,
@@ -189,6 +192,19 @@ export default function BagsDataInput({
               ref={ref_sacs}
               type="number"
               defaultValue={(upd && upd.sacs) || 0}
+            />
+          </div>
+
+          <div>
+            <span className={CLASS_SELECT_TITLE}>SACS ADJ:</span>
+            <input
+              className={CLASS_INPUT_TEXT}
+              onChange={(e) => {
+                console.log(e); //settonnage(Number(Number(e.target.value) / 20).toFixed(2))
+              }}
+              ref={ref_sacs_adj}
+              type="number"
+              defaultValue={(upd && upd.sacs_adj) || 0}
             />
           </div>
 
