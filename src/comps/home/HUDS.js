@@ -21,6 +21,7 @@ import {
   CARDS_BG_COLORS,
   EQUIPES_NAMES,
   POSTES,
+  SECTIONS,
 } from "../../helpers/flow";
 import AgentsList from "../AgentsList";
 
@@ -226,7 +227,8 @@ function AgentCardMini({ agent }) {
         {agent.mingzi && `- ${agent.mingzi}`}
       </div>
       <div>
-        {agent.poste}, {agent.equipe}, {agent.section}
+        {POSTES[agent.poste] && POSTES[agent.poste].fr}, {agent.equipe},{" "}
+        {agent.section}
       </div>
       {agent.phone && (
         <div>
