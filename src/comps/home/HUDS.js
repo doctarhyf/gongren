@@ -24,6 +24,7 @@ import {
   SECTIONS,
 } from "../../helpers/flow";
 import AgentsList from "../AgentsList";
+import SacsCalc from "../SacsCalc";
 
 export function HUDProduction() {
   const date = new Date();
@@ -160,7 +161,11 @@ export function HUDGestionSacs() {
   }
 
   return (
-    <Card id={1} title={`GESTIONS SACS/编织袋管理`} desc={""}>
+    <Card
+      id={1}
+      title={`GESTIONS SACS/编织袋管理`}
+      desc={"Gestion sacs container/production"}
+    >
       {loading ? (
         <Loading isLoading={true} />
       ) : (
@@ -292,7 +297,7 @@ export function HUDAgents() {
     <Card
       id={2}
       title={`AGENTS/ 员工 (${agentsFiltered.length}) Agents`}
-      desc={""}
+      desc={"Information sur les agents"}
     >
       {loading ? (
         <Loading isLoading={true} />
@@ -358,7 +363,11 @@ export function HUDTotals() {
   }
 
   return (
-    <Card id={3} title={`Primes/奖金 - ${y}年${m + 1}月`} desc={""}>
+    <Card
+      id={3}
+      title={`Primes/奖金 - ${y}年${m + 1}月`}
+      desc={"Suivi primes du mois actuel"}
+    >
       {loading ? (
         <Loading isLoading={true} />
       ) : (
@@ -378,14 +387,28 @@ export function HUDGreetings({ user }) {
     <div className="w-full my-4 p-2 bg-gray-800 text-white shadow-lg shadow-black/25 rounded-md">
       <div></div>
       <div>
-        Bonjour Mr.{" "}
-        <b>
-          {user.prenom}, {user.nom} {user.postnom} ({user.mingzi}),{" "}
-        </b>
-        {POSTES[user.poste].fr} de l'equipe {user.equipe}
-        {", "}
-        {EQUIPES_NAMES[user.equipe]} de la section {user.section} et bienvenue
-        sur le portal la cimenterie.
+        Bienvenu au portal de la cimenterie
+        <div className="  text-3xl font-thin ">
+          Mr.{" "}
+          <b>
+            {user.prenom}, {user.nom} {user.postnom}{" "}
+            <span className=" text-sm  ">({user.mingzi})</span>
+          </b>
+        </div>
+        <div>
+          <span className=" text-white/50  ">Matricule :</span> {user.matricule}
+        </div>
+        <div>
+          <span className=" text-white/50  ">Poste:</span>{" "}
+          {POSTES[user.poste].fr}
+        </div>
+        <div>
+          <span className=" text-white/50  ">Equipe:</span>{" "}
+          {EQUIPES_NAMES[user.equipe]}
+        </div>
+        <div>
+          <span className=" text-white/50  ">Section:</span> {user.section}
+        </div>{" "}
       </div>
     </div>
   );
@@ -466,7 +489,12 @@ export function HUDMonthLoadTarget() {
   }
 
   return (
-    <Card id={4} bgColor={CARDS_BG_COLORS[2]} title={"MONTH PROGRESS"}>
+    <Card
+      id={4}
+      bgColor={CARDS_BG_COLORS[2]}
+      title={"CURRENTMONTH PROGRESS"}
+      desc="Evolution chargement mois actuel"
+    >
       {loading ? (
         <Loading isLoading={true} />
       ) : (
@@ -503,6 +531,18 @@ export function HUDMonthLoadTarget() {
           </div>
         </div>
       )}
+    </Card>
+  );
+}
+
+export function HUDSacsCalc({}) {
+  return (
+    <Card
+      id={4}
+      title={"CALCULATEUR DE SACS"}
+      desc={"Pour effectuer le calcul de sacs dechires"}
+    >
+      <SacsCalc />
     </Card>
   );
 }

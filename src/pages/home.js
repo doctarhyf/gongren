@@ -20,6 +20,7 @@ import {
   HUDGreetings,
   HUDTotals,
   HUDMonthLoadTarget,
+  HUDSacsCalc,
 } from "../comps/home/HUDS";
 
 export default function Home() {
@@ -59,9 +60,9 @@ export default function Home() {
           user.poste === "DEQ" ||
           user.poste === "INT") && <HUDTotals />}
 
-        {/*  <HUDProduction /> */}
-        <HUDGestionSacs />
+        <HUDSacsCalc />
         <HUDAgents />
+        <HUDGestionSacs />
       </div>
 
       {false && (
