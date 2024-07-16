@@ -521,10 +521,12 @@ export default function Home() {
           user.poste === "SUP" ||
           user.poste === "DEQ" ||
           user.poste === "INT") && <HUDTotals />}
-        <HUDMonthLoadTarget />
+      
         <HUDProduction />
         <HUDGestionSacs />
         <HUDAgents />
+          <HUDMonthLoadTarget />
+        
       </div>
 
       {false && (
