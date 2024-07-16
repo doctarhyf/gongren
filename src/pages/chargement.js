@@ -226,7 +226,9 @@ export default function Chargement() {
           </div>
           {UserHasAccessCode(user, ACCESS_CODES.ROOT) && (
             <div>
-              ADD SACS ADJ
+              <span className=" font-bold text-white bg-green-800 p-1 rounded-md my-2 inline-block ">
+                ADD SACS ADJ
+              </span>
               <input
                 type="checkbox"
                 className="toggle toggle-xs"
