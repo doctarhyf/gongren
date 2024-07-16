@@ -52,7 +52,7 @@ const Card = ({ id, title, desc, children, wfull }) => {
 
   return (
     <div
-      className={` ${COLORS[id]} md:h-fit  ${wfull ? "w-full" : "w-auto"}  `}
+      className={` flex-grow  ${COLORS[id]}   ${wfull ? "w-full" : "w-auto"}  `}
     >
       <h1
         className=" cursor-pointer  font-bold  border-b border-b-white/20   "
@@ -370,6 +370,122 @@ function StatsCard({ bgColor, children }) {
   );
 }
 
+function HUDMonthLoadTarget() {
+  const date = new Date();
+  const m = date.getMonth();
+  const y = date.getFullYear();
+  const d = date.getDate();
+  const [loading, setloading] = useState(false);
+
+  const [loads, setloads] = useState([]);
+  const [data, setdata] = useState({
+    camions: 100,
+    sacs: 200,
+    tonnage: 300,
+    dechires: 0,
+  });
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  function loadData() {
+    setloading(true);
+    SB.LoadAllItems2(
+      TABLES_NAMES.LOADS,
+      (s) => {
+        setloading(false);
+
+        const curMonthLoads = s.filter(
+          (it, i) => it.code.includes(`${y}_${m}`) //it.created_at.split(":")[0].split(`-${mstring}-`)[0] == y
+        );
+        setloads(curMonthLoads);
+
+        let totCamions = 0;
+        let totSacs = 0;
+        let totTonnage = 0;
+        let totDechires = 0;
+
+        curMonthLoads.forEach((el) => {
+          const {
+            ajouts,
+            autre,
+            camions,
+            code,
+            created_at,
+            dechires,
+            id,
+            prob_courant,
+            prob_machine,
+            retours,
+            sacs,
+          } = el;
+
+          totSacs += parseInt(sacs);
+          totTonnage = totSacs / 20;
+          totCamions += parseInt(camions);
+          totDechires += parseInt(dechires);
+        });
+
+        setdata({
+          camions: totCamions,
+          sacs: totSacs,
+          tonnage: `${totTonnage} T`,
+          dechires: totDechires,
+        });
+
+        console.log("totdata => ", data);
+      },
+      (e) => {
+        setloading(false);
+        console.log(e);
+        alert(`Error \n ${JSON.stringify(e)}`);
+      }
+    );
+  }
+
+  return (
+    <Card id={4} bgColor={colors[2]} title={"MONTH PROGRESS"}>
+      {loading ? (
+        <Loading isLoading={true} />
+      ) : (
+        <div>
+          <div>
+            <div>PROGR. TONNAGE MENSUEL/月度吨位</div>
+
+            <div className="p-1 bg-black w-fit text-white rounded-full px-2 ">
+              TARGET: 60000T
+            </div>
+
+            <progress
+              className="progress  progress-success w-full "
+              value={parseInt(data.tonnage)}
+              max={60000}
+            ></progress>
+            <div className="text-[42pt]">{data.tonnage}</div>
+          </div>
+
+          <div>
+            <div>JOURS RESTANT DU MOIS / 本月剩余天数</div>
+            <div className="p-1 bg-black w-auto text-white rounded-full px-2 ">
+              {JSON.stringify(GetDateParts().day)}th / {GetMonthNumDays().count}
+              {GetMonthNumDays().ext}
+            </div>
+            <progress
+              className="progress progress-success w-full "
+              value={GetDateParts().day}
+              max={GetMonthNumDays().count}
+            ></progress>
+            <div className="text-[42pt]">
+              {GetMonthNumDays().remaining} J/天
+            </div>
+          </div>
+        </div>
+      )}
+    </Card>
+  );
+}
+
 export default function Home() {
   const [, , user] = useContext(UserContext);
   const [agents, setagents] = useState([]);
@@ -405,46 +521,10 @@ export default function Home() {
           user.poste === "SUP" ||
           user.poste === "DEQ" ||
           user.poste === "INT") && <HUDTotals />}
+        <HUDMonthLoadTarget />
         <HUDProduction />
         <HUDGestionSacs />
         <HUDAgents />
-
-        {/* <StatsCard bgColor={colors[2]}>
-          <div>PROGR. TONNAGE MENSUEL/月度吨位</div>
-
-          <div className="p-1 bg-black w-fit text-white rounded-full px-2 ">
-            TARGET: 60000T
-          </div>
-
-          <progress
-            className="progress progress-success w-full "
-            value={
-              curMonthTrucksData.reduce((acc, cv) => acc + cv.sacs, 0) / 20
-            }
-            max={60000}
-          ></progress>
-          <div className="text-[42pt]">
-            {
-              curMonthTrucksData.reduce((acc, cv) => acc + cv.sacs, 0) / 20
-              //currentMonthLoad
-            }{" "}
-            T
-          </div>
-        </StatsCard> */}
-
-        <StatsCard bgColor={colors[3]}>
-          <div>JOURS RESTANT DU MOIS / 本月剩余天数</div>
-          <div className="p-1 bg-black w-auto text-white rounded-full px-2 ">
-            {JSON.stringify(GetDateParts().day)}th / {GetMonthNumDays().count}
-            {GetMonthNumDays().ext}
-          </div>
-          <progress
-            className="progress progress-success w-full "
-            value={GetDateParts().day}
-            max={GetMonthNumDays().count}
-          ></progress>
-          <div className="text-[42pt]">{GetMonthNumDays().remaining} J/天</div>
-        </StatsCard>
       </div>
 
       {false && (
