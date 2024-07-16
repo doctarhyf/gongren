@@ -190,7 +190,7 @@ export const EQUIPES_NAMES = {
   MEC: "MECANICIENS",
   NET: "NETTOYEURS",
   INT: "INTERPRETES",
-  CHIN: "CHIOISE",
+  CHIN: "CHINOISE",
 };
 
 export const CONTRATS = ["BNC", "KAY", "GCK"];
