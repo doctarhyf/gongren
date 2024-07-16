@@ -297,6 +297,7 @@ function HUDAgents() {
 }
 
 function HUDTotals() {
+  const [, , user, setuser] = useContext(UserContext);
   const today = new Date();
   const y = today.getFullYear();
   const m = today.getMonth();
@@ -308,18 +309,19 @@ function HUDTotals() {
   const [loading, setloading] = useState(false);
 
   useEffect(() => {
-    loadData();
+    loadData(user);
   }, []);
 
-  async function loadData() {
+  async function loadData(user) {
     setloading(true);
     const data = await SB.LoadAllItems(TABLES_NAMES.LOADS);
     set_loads_by_items(data);
 
     const sortedByShiftOfDay = SortLoadsByShiftOfDay(data, y, m);
-    setTotalData(CaclculateAllTeamsTotals(sortedByShiftOfDay));
-    console.log("d ==> ", CaclculateAllTeamsTotals(sortedByShiftOfDay));
-    // setlastUpdateDate(data[data.length].created_at);
+
+    const addSacsAdj = UserHasAccessCode(user, ACCESS_CODES.ROOT);
+
+    setTotalData(CaclculateAllTeamsTotals(sortedByShiftOfDay, addSacsAdj));
     setlastUpdateDate(data[data.length - 1].created_at);
     setloading(false);
   }

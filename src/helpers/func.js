@@ -640,15 +640,12 @@ export function CaclculateAllTeamsTotals(data, addSacsAdj) {
     const d_data = d_entry[1];
 
     d_data.forEach((s_data, si) => {
-      const { sacs, sacs_adj, retours, ajouts, code, camions, dechires } =
-        s_data;
+      let { sacs, sacs_adj, retours, ajouts, code, camions, dechires } = s_data;
       const [t, s, y, m, d] = code.split("_");
 
-      let new_sacs = Number(sacs);
-      ////
       let new_sacs_adj = Number(sacs_adj);
-      if (addSacsAdj) new_sacs += new_sacs_adj;
-      ////
+      if (addSacsAdj) sacs += new_sacs_adj;
+      let new_sacs = Number(sacs);
       let new_tonnage = Number(sacs) / 20;
       let new_retours = Number(retours);
       let new_ajouts = Number(ajouts);
