@@ -109,9 +109,9 @@ export default function TableLoadsTotals({
         <div>
           {Object.entries(totalData).map((td, i) => (
             <div className="  py-1 border-b border-white/15">
-              <div className=" text-[21pt] ">{td[0]}</div>
+              <div className=" font-bold  ">{td[0]}</div>
               <div>
-                <div className=" font-bold text-xs p-1 rounded-md mx-2  ">
+                <div className=" text-[12pt]  text-xs p-1 rounded-md mx-2  ">
                   {td[1].sacs} SACS / {(td[1].sacs / 20).toFixed(2)} T
                 </div>
                 {i !== 4 && (
@@ -125,7 +125,7 @@ export default function TableLoadsTotals({
                 )}
               </div>
               <div>
-                <div className=" font-bold text-xs p-1 rounded-md mx-2  ">
+                <div className=" text-[14pt]  text-xs p-1 rounded-md mx-2  ">
                   BONUS : {td[1].bonus.toFixed(2)} T
                 </div>
                 {i !== 4 && (
