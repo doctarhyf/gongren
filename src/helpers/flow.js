@@ -161,6 +161,11 @@ export const POSTE = [
   "AIDOP",
 ];
 
+export const LOG_OPERATION = {
+  LOGIN: "LOGIN",
+  LOGOUT: "LOGOUT",
+};
+
 export const POSTES = {
   INT: { zh: "翻译", fr: "INTERPRETE" },
   MEC: { zh: "机修工", fr: "MECANICIEN" },

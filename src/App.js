@@ -1,11 +1,11 @@
 import logo from "./logo.svg";
 import "./App.css";
-import { CLASS_BTN, LOGO, MAIN_MENU } from "./helpers/flow";
+import { CLASS_BTN, LOG_OPERATION, LOGO, MAIN_MENU } from "./helpers/flow";
 import { useEffect, useRef, useState } from "react";
 import MainNav from "./comps/MainNav";
 import Loading from "./comps/Loading";
 import * as SB from "./helpers/sb";
-import { _ } from "./helpers/func";
+import { _, UpdateOperationsLogs } from "./helpers/func";
 import { TABLES_NAMES, supabase } from "./helpers/sb.config";
 import FormLogin from "./comps/FormLogin";
 import GongRen from "./GongRen";
@@ -22,14 +22,6 @@ function App() {
   const [showModal, setShowModal] = useState(false);
   const [modalData, setModalData] = useState("");
   const [modalType, setModalType] = useState("img");
-
-  /*  useEffect(() => {
-    const myCookieValue = cookies.gr_user;
-
-    if (myCookieValue) {
-      setuser(myCookieValue);
-    }
-  });  */
 
   async function onLogin(matricule, pin) {
     let err;
@@ -54,6 +46,9 @@ function App() {
 
     if (data.length === 1) {
       setuser(data[0]);
+
+      const l = await UpdateOperationsLogs(SB, data[0], LOG_OPERATION.LOGIN);
+      console.log("res log login ", l);
     } else {
       if (error === null) {
         err = `User matricule: "${matricule}", pin : "${pin}" cant be found`;
@@ -72,7 +67,9 @@ function App() {
     setloading(false);
   }
 
-  function onLogout() {
+  async function onLogout() {
+    const l = await UpdateOperationsLogs(SB, user, LOG_OPERATION.LOGOUT);
+    console.log("res logout ", l);
     removeCookie("gr_user", { path: "/" });
     setuser(undefined);
   }
