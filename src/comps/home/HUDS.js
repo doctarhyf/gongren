@@ -52,11 +52,23 @@ function AgentStats({ agentsGrouped }) {
 function AgentCardMini({ agent, moreInfo }) {
   return (
     <div>
-      {agent.matricule && (
-        <div className=" font-bold inline-block  bg-black p-1 text-xs rounded-md ">
-          {agent.matricule}
-        </div>
-      )}
+      <div className="flex gap-1">
+        {agent.matricule && (
+          <div className=" font-bold inline-block  bg-black p-1 text-xs rounded-md ">
+            {agent.matricule}
+          </div>
+        )}
+        {agent.poste === "SUP" && (
+          <div className=" font-bold inline-block  bg-red-500 p-1 text-xs rounded-md ">
+            SUP
+          </div>
+        )}
+        {agent.chef_deq === "OUI" && (
+          <div className=" font-bold inline-block  bg-lime-600 p-1 text-xs rounded-md ">
+            CHEF D'EQ.
+          </div>
+        )}
+      </div>
       <div className="  text-3xl  ">
         <div>Mr. {agent.prenom}</div>
         <div>
@@ -220,6 +232,8 @@ export function HUDMyTeam({ user }) {
         it.active === "OUI"
     );
 
+    a = a.sort((a, b) => a.list_priority - b.list_priority);
+
     setagents(a);
     setagentr(a);
     console.log(`Agents ${user.section}, equipe ${a.equipe} => \n`, a);
@@ -246,8 +260,8 @@ export function HUDMyTeam({ user }) {
   return (
     <Card
       id={5}
-      title={`MY TEAM:${user.equipe},${user.section} (${agents.length})`}
-      desc={"Liste des agents de votre equipe"}
+      title={`MON EQUIPE/班组 : ${user.section}, ${user.equipe}`}
+      desc={`Liste des agents. (${agents.length} agents)`}
     >
       {loading ? (
         <Loading isLoading={true} />
@@ -267,7 +281,7 @@ export function HUDMyTeam({ user }) {
             <input
               placeholder="Recherche ... ex: Franvale/库齐"
               type="text"
-              className=" bg-slate-800 text-white px-1 hover:outline-white/50 w-full rounded-md outline-none my-1 "
+              className=" bg-slate-800 p-1 text-white px-1 hover:outline-white/50 w-full rounded-md outline-none my-1 "
               onChange={(e) => setq(e.target.value)}
             />
           </div>

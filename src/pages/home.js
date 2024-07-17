@@ -55,7 +55,7 @@ export default function Home() {
       <HUDGreetings user={user} />
 
       <div className=" container flex gap-4 my-4 flex-col md:flex-row flex-wrap ">
-        {<HUDMyTeam user={user} />}
+        <HUDMyTeam user={user} />
         <HUDMonthProgress />
         {(UserHasAccessCode(user, ACCESS_CODES.CAN_SEE_BONUS_TOTAL) ||
           user.poste === "SUP" ||
