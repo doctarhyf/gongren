@@ -149,6 +149,9 @@ export default function TableLoadsTotals({
               </div>
             </div>
           ))}
+          <div>
+            Last Update : <b>{upddate}</b>
+          </div>
         </div>
       )}
     </table>
