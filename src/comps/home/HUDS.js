@@ -69,12 +69,19 @@ function AgentCardMini({ agent, moreInfo }) {
           </div>
         )}
       </div>
-      <div className="  text-3xl  ">
-        <div>Mr. {agent.prenom}</div>
+      {/* <div className=" flex justify-center ">
+        <div className=" object-cover bg-white/25 rounded-full flex justify-center align-middle items-center w-[60pt] overflow-hidden h-[60pt] ">
+          <img src={agent.photo} />
+        </div>
+      </div> */}
+      <div className=" flex justify-between text-3xl  ">
         <div>
-          {" "}
-          {agent.nom} {agent.postnom}{" "}
-          {agent.mingzi && <span className=" text-sm  ">{agent.mingzi}</span>}
+          <div>Mr. {agent.prenom}</div>
+          <div>
+            {" "}
+            {agent.nom} {agent.postnom}{" "}
+            {agent.mingzi && <span className=" text-sm  ">{agent.mingzi}</span>}
+          </div>
         </div>
       </div>
       <div>
@@ -273,7 +280,7 @@ export function HUDMyTeam({ user }) {
           >
             OK
           </button>
-          <AgentCardMini agent={selagent} moreInfo={["phone"]} />
+          <AgentCardMini agent={selagent} />
         </div>
       ) : (
         <div className="   ">
