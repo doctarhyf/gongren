@@ -111,15 +111,32 @@ export default function TableLoadsTotals({
             <div className="  py-1 border-b border-white/15">
               <div className=" text-[21pt] ">{td[0]}</div>
               <div>
-                <div>{td[1].sacs} sacs</div>
+                <div className=" font-bold text-xs p-1 rounded-md mx-2  ">
+                  {td[1].sacs} SACS / {(td[1].sacs / 20).toFixed(2)} T
+                </div>
                 {i !== 4 && (
-                  <progress className=" progress progress-warning  w-full  " />
+                  <progress
+                    className=" progress progress-warning  w-full  "
+                    max={totalData.TOTAL.sacs}
+                    value={
+                      (td[1].sacs / totalData.TOTAL.sacs) * totalData.TOTAL.sacs
+                    }
+                  />
                 )}
               </div>
               <div>
-                <div>{td[1].bonus}</div>
+                <div className=" font-bold text-xs p-1 rounded-md mx-2  ">
+                  BONUS : {td[1].bonus.toFixed(2)} T
+                </div>
                 {i !== 4 && (
-                  <progress className=" progress progress-success w-full  " />
+                  <progress
+                    className=" progress progress-success w-full  "
+                    max={totalData.TOTAL.bonus}
+                    value={
+                      (td[1].bonus / totalData.TOTAL.bonus) *
+                      totalData.TOTAL.bonus
+                    }
+                  />
                 )}
               </div>
             </div>
