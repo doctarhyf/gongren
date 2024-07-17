@@ -267,14 +267,14 @@ export function HUDMyTeam({ user }) {
             <input
               placeholder="Recherche ... ex: Franvale/库齐"
               type="text"
-              className=" text-black px-1 hover:outline-white/50 w-full rounded-md outline-none my-1 "
+              className=" bg-slate-800 text-white px-1 hover:outline-white/50 w-full rounded-md outline-none my-1 "
               onChange={(e) => setq(e.target.value)}
             />
           </div>
           {agents.map((ag, i) => (
             <div
               onClick={(e) => setselagent(ag)}
-              className=" p-1 flex hover:cursor-pointer hover:bg-white/10 rounded-md "
+              className=" border-b border-white/25 p-1 flex hover:cursor-pointer hover:bg-white/10 rounded-md "
             >
               <div>{`${i + 1}. `} </div>
               <div>
