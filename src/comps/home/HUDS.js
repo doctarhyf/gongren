@@ -681,7 +681,7 @@ function OpsLogs({}) {
 
   async function loadData() {
     const a = await SB.LoadAllItems(TABLES_NAMES.OPERATIONS_LOGS);
-    setlogs(a.reverse());
+    setlogs(a.reverse().slice(0,5));
     console.log("longs \n", a);
   }
 
