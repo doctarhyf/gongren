@@ -55,6 +55,10 @@ export default function Home() {
 
       <HUDGreetings user={user} />
 
+      <div className="p-2 text-center text-lg font-thin px-2">
+        Cliquer sur une rubrique pour voir plus de details.{" "}
+      </div>
+
       <div className=" container flex gap-4 my-4 flex-col md:flex-row flex-wrap ">
         <HUDMyTeam user={user} />
         <HUDMonthProgress />
