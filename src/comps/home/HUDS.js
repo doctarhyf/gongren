@@ -200,8 +200,10 @@ export function HUDGreetings({ user }) {
 
 export function HUDMyTeam({ user }) {
   const [agents, setagents] = useState([]);
+  const [agentsr, setagentr] = useState([]);
   const [loading, setloading] = useState(false);
   const [selagent, setselagent] = useState();
+  const [q, setq] = useState("");
 
   useEffect(() => {
     loadData();
@@ -219,9 +221,28 @@ export function HUDMyTeam({ user }) {
     );
 
     setagents(a);
+    setagentr(a);
     console.log(`Agents ${user.section}, equipe ${a.equipe} => \n`, a);
   }
 
+  useEffect(() => {
+    if (q && q.trim() === "") {
+      setagents(agentsr);
+      return;
+    }
+
+    const f = agentsr.filter(
+      (t) =>
+        t.nom.toLowerCase().includes(q.toLocaleLowerCase()) ||
+        t.postnom.toLowerCase().includes(q.toLocaleLowerCase()) ||
+        t.prenom.toLowerCase().includes(q.toLocaleLowerCase()) ||
+        t.mingzi.toLowerCase().includes(q.toLocaleLowerCase()) ||
+        t.poste.toLowerCase().includes(q.toLocaleLowerCase()) ||
+        t.matricule.toLowerCase().includes(q.toLocaleLowerCase())
+    );
+
+    setagents(f);
+  }, [q]);
   return (
     <Card
       id={5}
@@ -242,6 +263,13 @@ export function HUDMyTeam({ user }) {
         </div>
       ) : (
         <div className="   ">
+          <div className="  ">
+            <input
+              type="text"
+              className=" w-full rounded-md outline-none my-1 "
+              onChange={(e) => setq(e.target.value)}
+            />
+          </div>
           {agents.map((ag, i) => (
             <div
               onClick={(e) => setselagent(ag)}
@@ -255,8 +283,18 @@ export function HUDMyTeam({ user }) {
                     POSTES[ag.poste] && POSTES[ag.poste].zh
                   }`}</span>
                   {ag.chef_deq === "OUI" && (
-                    <span className=" bg-white/50 text-[8pt] font-bold text-black/90 mx-2 p-1 rounded-md  ">
+                    <span className=" font-bold inline-block  bg-black p-1 text-xs rounded-md ">
                       CHEF D'EQ.
+                    </span>
+                  )}
+                  {ag.poste === "SUP" && (
+                    <span className=" font-bold inline-block  bg-black p-1 text-xs rounded-md ">
+                      SUP.
+                    </span>
+                  )}
+                  {ag.contrat === "GCK" && (
+                    <span className=" bg-blue-800 text-white p-1 text-xs px-2 rounded-md mx-1 ">
+                      GCK
                     </span>
                   )}
                 </div>
