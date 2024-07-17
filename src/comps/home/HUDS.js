@@ -485,6 +485,7 @@ export function HUDBonus() {
           date={date}
           columnsToHide={[COLUMNS_TO_HIDE.SACS, COLUMNS_TO_HIDE.CDF]}
           lastUpdateDate={new Date(lastUpdateDate)}
+          tableMode={false}
         />
       )}
     </Card>

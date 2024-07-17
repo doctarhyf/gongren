@@ -674,6 +674,25 @@ export function CaclculateAllTeamsTotals(data, addSacsAdj) {
   return totalsData;
 }
 
+export const ParseDate = (date) => {
+  if (!date || !date.getFullYear) date = new Date();
+  const y = date.getFullYear();
+  const m = AddLeadingZero(date.getMonth() + 1);
+  const d = AddLeadingZero(date.getDate());
+
+  const h = AddLeadingZero(date.getHours());
+  const i = AddLeadingZero(date.getMinutes());
+  const s = AddLeadingZero(date.getSeconds());
+  return {
+    y: y,
+    m: m,
+    d: d,
+    h: h,
+    i: i,
+    s: s,
+  };
+};
+
 export const CalculateYearTotal = (year_data, addSacsAdj) => {
   ////////
   let tot_sacs = 0;
