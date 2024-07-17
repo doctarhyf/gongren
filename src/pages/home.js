@@ -22,6 +22,7 @@ import {
   HUDMonthProgress,
   HUDSacsCalc,
   HUDMyTeam,
+  HUDOpsLogs,
 } from "../comps/home/HUDS";
 
 export default function Home() {
@@ -66,6 +67,8 @@ export default function Home() {
         {(UserHasAccessCode(user, ACCESS_CODES.ROOT) ||
           user.poste === "INT") && <HUDAgents />}
         <HUDGestionSacs />
+        {(UserHasAccessCode(user, ACCESS_CODES.ROOT) ||
+          user.poste === "INT") && <HUDOpsLogs />}
       </div>
 
       <div className="text-sm text-center">

@@ -671,3 +671,35 @@ export function HUDAgents() {
     </Card>
   );
 }
+
+function OpsLogs({}) {
+  const [logs, setlogs] = useState([]);
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  async function loadData() {
+    const a = await SB.LoadAllItems(TABLES_NAMES.OPERATIONS_LOGS);
+    setlogs(a.reverse());
+    console.log("longs \n", a);
+  }
+
+  return (
+    <div>
+      {logs.map((lg, i) => (
+        <div>
+          <span>{i + 1}.</span> <b>{lg.mat}</b>, {lg.op} on {lg.created_at}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+export function HUDOpsLogs() {
+  return (
+    <Card id={0} title={"OPERATIONS LOGS"} desc={"Logs des operations"}>
+      <OpsLogs />
+    </Card>
+  );
+}
