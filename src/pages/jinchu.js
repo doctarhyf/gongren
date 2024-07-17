@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import imageCompression from "browser-image-compression";
+import * as SB from "../helpers/sb";
+import { TABLES_NAMES } from "../helpers/sb.config";
 
 function ImageCompressor() {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -55,13 +57,38 @@ function ImageCompressor() {
   );
 }
 
+function OpsLogs({}) {
+  const [logs, setlogs] = useState([]);
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  async function loadData() {
+    const a = await SB.LoadAllItems(TABLES_NAMES.OPERATIONS_LOGS);
+    setlogs(a.reverse());
+    console.log("longs \n", a);
+  }
+
+  return (
+    <div>
+      {logs.map((lg, i) => (
+        <div>
+          <span>{i + 1}.</span> <b>{lg.mat}</b>, {lg.op} on {lg.created_at}
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export default function JinChu() {
   return (
     <div>
       <div>JinChu</div>
-      <div>
+      {/* <div>
         <ImageCompressor />
-      </div>
+      </div> */}
+      <OpsLogs />
     </div>
   );
 }
