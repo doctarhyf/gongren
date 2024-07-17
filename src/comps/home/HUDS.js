@@ -414,12 +414,8 @@ export function HUDMonthProgress() {
         <Loading isLoading={true} />
       ) : (
         <div>
-          <div>
+          <div className=" border-b border-white/15 my-1 py-1 ">
             <div>PROGR. TONNAGE MENSUEL/月度吨位</div>
-
-            <div className="p-1 bg-black w-fit text-white rounded-full px-2 ">
-              TARGET: 60000T
-            </div>
 
             <progress
               className="progress  progress-success w-full "
@@ -427,14 +423,15 @@ export function HUDMonthProgress() {
               max={60000}
             ></progress>
             <div className="text-[42pt]">{data.tonnage}</div>
+
+            <div className="p-1 bg-black w-fit text-white rounded-full px-2 ">
+              TARGET: 60000T
+            </div>
           </div>
 
-          <div>
+          <div className=" border-b border-white/15 my-1 py-1 ">
             <div>JOURS RESTANT DU MOIS / 本月剩余天数</div>
-            <div className="p-1 bg-black w-auto text-white rounded-full px-2 ">
-              {JSON.stringify(GetDateParts().day)}th / {GetMonthNumDays().count}
-              {GetMonthNumDays().ext}
-            </div>
+
             <progress
               className="progress progress-success w-full "
               value={GetDateParts().day}
@@ -442,6 +439,10 @@ export function HUDMonthProgress() {
             ></progress>
             <div className="text-[42pt]">
               {GetMonthNumDays().remaining} J/天
+            </div>
+            <div className="p-1 bg-black w-fit text-white rounded-full px-2  ">
+              {JSON.stringify(GetDateParts().day)}th / {GetMonthNumDays().count}
+              {GetMonthNumDays().ext}
             </div>
           </div>
         </div>
@@ -681,7 +682,7 @@ function OpsLogs({}) {
 
   async function loadData() {
     const a = await SB.LoadAllItems(TABLES_NAMES.OPERATIONS_LOGS);
-    setlogs(a.reverse().slice(0,5));
+    setlogs(a.reverse().slice(0, 5));
     console.log("longs \n", a);
   }
 
