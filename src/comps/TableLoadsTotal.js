@@ -109,12 +109,25 @@ export default function TableLoadsTotals({
         <div>
           {Object.entries(totalData).map((td, i) => (
             <div className="  py-1 border-b border-white/15">
-              <div className=" font-bold  ">{td[0]}</div>
-              <div>
-                <div className=" text-[12pt]  text-xs p-1 rounded-md mx-2  ">
-                  {td[1].sacs} SACS / {(td[1].sacs / 20).toFixed(2)} T
+              <div className=" flex justify-between ">
+                <div className=" font-bold  ">{td[0]}</div>
+                <div className=" text-end   ">
+                  <div className=" text-[12pt]  text-xs p-1 rounded-md   ">
+                    <span className="  font-bold ">
+                      {td[1].sacs} SACS / {(td[1].sacs / 20).toFixed(2)} T
+                    </span>
+                    <span className="  opacity-50  "> - CHARG.</span>
+                  </div>
+                  <div className=" text-[14pt]  text-xs p-1 rounded-md  ">
+                    <span className=" font-black bg-emerald-950 p-1 mx-1 rounded-md  ">
+                      {td[1].bonus.toFixed(2)} T
+                    </span>{" "}
+                    <span className="  opacity-50 "> - BONUS</span>
+                  </div>
                 </div>
-                {i !== 4 && (
+              </div>
+              <div>
+                {/* {i !== 4 && (
                   <progress
                     className=" progress progress-warning  w-full  "
                     max={totalData.TOTAL.sacs}
@@ -122,12 +135,7 @@ export default function TableLoadsTotals({
                       (td[1].sacs / totalData.TOTAL.sacs) * totalData.TOTAL.sacs
                     }
                   />
-                )}
-              </div>
-              <div>
-                <div className=" text-[14pt]  text-xs p-1 rounded-md mx-2  ">
-                  BONUS : {td[1].bonus.toFixed(2)} T
-                </div>
+                )} */}
                 {i !== 4 && (
                   <progress
                     className=" progress progress-success w-full  "
@@ -137,7 +145,7 @@ export default function TableLoadsTotals({
                       totalData.TOTAL.bonus
                     }
                   />
-                )}
+                )}{" "}
               </div>
             </div>
           ))}

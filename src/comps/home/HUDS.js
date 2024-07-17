@@ -279,7 +279,7 @@ export function HUDMyTeam({ user }) {
         <div className="   ">
           <div className="  ">
             <input
-              placeholder="Recherche ... ex: Franvale/库齐"
+              placeholder="Recherche agent ... ex: Franvale/库齐"
               type="text"
               className=" bg-slate-800 p-1 text-white px-1 hover:outline-white/50 w-full rounded-md outline-none my-1 "
               onChange={(e) => setq(e.target.value)}
