@@ -139,7 +139,7 @@ export default function TableLoadsTotals({
                 {i !== 4 && (
                   <progress
                     className=" progress progress-success w-full  "
-                    max={totalData.TOTAL.bonus}
+                    max={60000 /* totalData.TOTAL.bonus */}
                     value={
                       (td[1].bonus / totalData.TOTAL.bonus) *
                       totalData.TOTAL.bonus
