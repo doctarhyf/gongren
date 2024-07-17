@@ -127,7 +127,7 @@ export default function TableLoadsTotals({
                         <span className="  font-bold ">
                           {td[1].sacs} SACS / {(td[1].sacs / 20).toFixed(2)} T
                         </span>
-                        <span className="  opacity-50  "> - CHARG.</span>
+                        <span className="  opacity-50  "> - CHARG</span>
                       </div>
                       <div className=" text-[14pt]  text-xs p-1 rounded-md  ">
                         {/* <span className=" font-black bg-emerald-950 p-1 mx-1 rounded-md  ">
