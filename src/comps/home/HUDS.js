@@ -265,8 +265,9 @@ export function HUDMyTeam({ user }) {
         <div className="   ">
           <div className="  ">
             <input
+              placeholder="Recherche ... ex: Franvale/库齐"
               type="text"
-              className=" w-full rounded-md outline-none my-1 "
+              className=" text-black px-1 hover:outline-white/50 w-full rounded-md outline-none my-1 "
               onChange={(e) => setq(e.target.value)}
             />
           </div>
