@@ -198,6 +198,77 @@ export function HUDGreetings({ user }) {
   );
 }
 
+export function HUDMyTeam({ user }) {
+  const [agents, setagents] = useState([]);
+  const [loading, setloading] = useState(false);
+  const [selagent, setselagent] = useState();
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  async function loadData() {
+    console.log("sup => ", user);
+
+    let a = await SB.LoadAllItems(TABLES_NAMES.AGENTS);
+    a = a.filter(
+      (it) =>
+        it.equipe === user.equipe &&
+        it.section === user.section &&
+        it.active === "OUI"
+    );
+
+    setagents(a);
+    console.log(`Agents ${user.section}, equipe ${a.equipe} => \n`, a);
+  }
+
+  return (
+    <Card
+      id={5}
+      title={`MY TEAM:${user.equipe},${user.section} (${agents.length})`}
+      desc={"Liste des agents de votre equipe"}
+    >
+      {loading ? (
+        <Loading isLoading={true} />
+      ) : selagent ? (
+        <div>
+          <button
+            onClick={(e) => setselagent(undefined)}
+            className=" bg-white/10 hover:bg-white/40 p-1 px-2 text-xs rounded-md "
+          >
+            OK
+          </button>
+          <AgentCardMini agent={selagent} moreInfo={["phone"]} />
+        </div>
+      ) : (
+        <div className="   ">
+          {agents.map((ag, i) => (
+            <div
+              onClick={(e) => setselagent(ag)}
+              className=" p-1 flex hover:cursor-pointer hover:bg-white/10 rounded-md "
+            >
+              <div>{`${i + 1}. `} </div>
+              <div>
+                <div className=" font-bold  ">{`${ag.nom} ${ag.postnom} ${ag.prenom}`}</div>
+                <div className="  text-xs ">
+                  <span>{`${POSTES[ag.poste] && POSTES[ag.poste].fr}/${
+                    POSTES[ag.poste] && POSTES[ag.poste].zh
+                  }`}</span>
+                  {ag.chef_deq === "OUI" && (
+                    <span className=" bg-white/50 text-[8pt] font-bold text-black/90 mx-2 p-1 rounded-md  ">
+                      CHEF D'EQ.
+                    </span>
+                  )}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </Card>
+  );
+}
+
 export function HUDMonthProgress() {
   const date = new Date();
   const m = date.getMonth();

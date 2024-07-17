@@ -21,6 +21,7 @@ import {
   HUDBonus,
   HUDMonthProgress,
   HUDSacsCalc,
+  HUDMyTeam,
 } from "../comps/home/HUDS";
 
 export default function Home() {
@@ -54,6 +55,10 @@ export default function Home() {
       <HUDGreetings user={user} />
 
       <div className=" container flex gap-4 my-4 flex-col md:flex-row flex-wrap ">
+        {(UserHasAccessCode(user, ACCESS_CODES.ROOT) ||
+          user.poste === "SUP" ||
+          user.poste === "DEQ" ||
+          true) && <HUDMyTeam user={user} />}
         <HUDMonthProgress />
         {(UserHasAccessCode(user, ACCESS_CODES.CAN_SEE_BONUS_TOTAL) ||
           user.poste === "SUP" ||
@@ -62,7 +67,6 @@ export default function Home() {
 
         <HUDSacsCalc />
         {(UserHasAccessCode(user, ACCESS_CODES.ROOT) ||
-          user.poste === "SUP" ||
           user.poste === "INT") && <HUDAgents />}
         <HUDGestionSacs />
       </div>

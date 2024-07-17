@@ -6,6 +6,7 @@ const COLORS = [
   " bg-indigo-700 text-indigo-300 border-indigo-300 p-2 rounded-md w-full md:w-64 ",
   " bg-purple-700 text-purple-300 border-purple-300 p-2 rounded-md w-full md:w-64 ",
   " bg-rose-700 text-rose-300 border-rose-300 p-2 rounded-md w-full md:w-64 ",
+  "  bg-lime-700 text-lime-300 border-lime-300 p-2 rounded-md w-full md:w-64 ",
 ];
 
 const Card = ({ id, title, desc, children, wfull }) => {
