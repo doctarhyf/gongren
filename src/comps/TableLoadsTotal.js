@@ -116,9 +116,9 @@ export default function TableLoadsTotals({
         <div>
           {Object.entries(totalData).map((td, i) => (
             <div className="  py-1 ">
-              {(td[0] === user.equipe ||
+              {/* td[0] === user.equipe ||
                 UserHasAccessCode(user, ACCESS_CODES.ROOT) ||
-                user.poste === "INT") && (
+                user.poste === "INT" */ true && (
                 <div className=" border-b border-white/15 ">
                   <div className=" flex justify-between ">
                     <div className=" font-bold  ">{td[0]}</div>
