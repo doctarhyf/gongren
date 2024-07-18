@@ -67,7 +67,12 @@ function AgentCardMini({ agent, moreInfo, showUpdatePoste, onAgentUpdate }) {
       async (s) => {
         setloading(false);
         console.log(s);
-        await UpdateOperationsLogs(SB, user, LOG_OPERATION.AGENT_POST_UPDATE);
+        await UpdateOperationsLogs(
+          SB,
+          user,
+          LOG_OPERATION.AGENT_POST_UPDATE,
+          `Old poste "${agent.poste}", new poste "${new_poste}"`
+        );
       },
       (e) => {
         console.log(e);

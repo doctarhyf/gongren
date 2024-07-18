@@ -276,7 +276,7 @@ export function printPDF1(agents, customTitle) {
   doc.save(`${section}_${equipe}.pdf`);
 }
 
-export async function UpdateOperationsLogs(SB, user, LOG_OPERATION) {
+export async function UpdateOperationsLogs(SB, user, LOG_OPERATION, desc) {
   const userAgent = navigator.userAgent;
   const browser = navigator.appName;
   const browserVersion = navigator.appVersion;
@@ -284,6 +284,7 @@ export async function UpdateOperationsLogs(SB, user, LOG_OPERATION) {
   const data = {
     mat: user.matricule,
     device: `${userAgent}, ${browser} ${browserVersion}`,
+    desc: desc,
     op: LOG_OPERATION,
   };
   const r = await SB.InsertItem(TABLES_NAMES.OPERATIONS_LOGS, data);
