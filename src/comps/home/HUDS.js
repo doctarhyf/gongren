@@ -23,6 +23,7 @@ import {
   EQUIPES_NAMES,
   POSTES,
   SECTIONS,
+  POSTE,
 } from "../../helpers/flow";
 import AgentsList from "../AgentsList";
 import SacsCalc from "../SacsCalc";
@@ -112,7 +113,7 @@ function AgentCardMini({ agent, moreInfo, showUpdatePoste, onAgentUpdate }) {
       </div>{" "}
       <div>
         <span className=" text-white/50  ">Poste:</span>{" "}
-        {POSTES[agent.poste].fr}
+        {(POSTES[agent.poste] && POSTES[agent.poste].fr) || POSTE[3]}
       </div>
       <div>
         <span className=" text-white/50  ">Equipe:</span>{" "}
@@ -135,7 +136,7 @@ function AgentCardMini({ agent, moreInfo, showUpdatePoste, onAgentUpdate }) {
             <span className=" text-white/50  ">Poste:</span>
             <select
               onChange={(e) => updatePoste(agent, e.target.value)}
-              className=" text-black outline-none rounded-md mx-1 text-sm dark:bg-slate-800 dark:text-white "
+              className=" text-black w-auto outline-none rounded-md mx-1 text-sm dark:bg-slate-800 dark:text-white "
             >
               {Object.keys(POSTES).map((p, i) => (
                 <option value={p} selected={p === agent.poste}>

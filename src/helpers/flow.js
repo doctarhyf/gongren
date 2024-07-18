@@ -119,8 +119,7 @@ export const ACCESS_CODES = {
   IS_INTERPRETER: "INT",
   CAN_SEE_BONUS_TOTAL: "BNST",
   CAN_SEE_ALL_AGENTS_LIST: "SAGL",
-  CAN_SEE_ALL_BONUS:"SABN"
-  
+  CAN_SEE_ALL_BONUS: "SABN",
 };
 
 export const COLUMNS_TO_HIDE = {
@@ -177,6 +176,7 @@ export const POSTES = {
   NET: { zh: "扫地人", fr: "NETTOYEUR" },
   EXP: { zh: "岗位工", fr: "EXPLOITANT" },
   OPE: { zh: "插袋工", fr: "OPERATEUR" },
+  AIDOP: { zh: "副插袋", fr: "AIDE OPERATEUR" },
 };
 
 export const EQUIPES = [
