@@ -165,6 +165,7 @@ export const POSTE = [
 export const LOG_OPERATION = {
   LOGIN: "LOGIN",
   LOGOUT: "LOGOUT",
+  AGENT_POST_UPDATE: "AGENT_POST_UPDATE",
 };
 
 export const POSTES = {

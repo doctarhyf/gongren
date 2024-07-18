@@ -14,6 +14,7 @@ import {
   UserHasAnyOfAccessCodes,
   formatFrenchDate,
   AddLeadingZero,
+  UpdateOperationsLogs,
 } from "../../helpers/func";
 import { UserContext } from "../../App";
 import TableLoadsTotals from "../TableLoadsTotal";
@@ -24,6 +25,7 @@ import {
   POSTES,
   SECTIONS,
   POSTE,
+  LOG_OPERATION,
 } from "../../helpers/flow";
 import AgentsList from "../AgentsList";
 import SacsCalc from "../SacsCalc";
@@ -64,6 +66,7 @@ function AgentCardMini({ agent, moreInfo, showUpdatePoste, onAgentUpdate }) {
       (s) => {
         setloading(false);
         console.log(s);
+        UpdateOperationsLogs(SB, user, LOG_OPERATION.AGENT_POST_UPDATE);
       },
       (e) => {
         console.log(e);
