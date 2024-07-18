@@ -64,10 +64,10 @@ function AgentCardMini({ agent, moreInfo, showUpdatePoste, onAgentUpdate }) {
     const r = await SB.UpdateItem(
       TABLES_NAMES.AGENTS,
       upd,
-      (s) => {
+      async (s) => {
         setloading(false);
         console.log(s);
-        UpdateOperationsLogs(SB, user, LOG_OPERATION.AGENT_POST_UPDATE);
+        await UpdateOperationsLogs(SB, user, LOG_OPERATION.AGENT_POST_UPDATE);
       },
       (e) => {
         console.log(e);
