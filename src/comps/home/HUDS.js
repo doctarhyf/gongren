@@ -754,7 +754,14 @@ function OpsLogs({}) {
     <div>
       {logs.map((lg, i) => (
         <div className=" border-b border-white/15 ">
-          <span>{i + 1}.</span> <b>{lg.mat}</b>, {lg.op} on {lg.created_at}
+          <div>
+            <span>{i + 1}.</span> <b>{lg.mat}</b>, {lg.op} on {lg.created_at}
+          </div>
+          {lg.desc && (
+            <div className="  text-xs opacity-50 italic font-serif ">
+              {lg.desc}
+            </div>
+          )}
         </div>
       ))}
     </div>
