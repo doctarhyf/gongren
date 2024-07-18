@@ -26,6 +26,7 @@ import {
 } from "../../helpers/flow";
 import AgentsList from "../AgentsList";
 import SacsCalc from "../SacsCalc";
+import CountdownTimer from "../CountdownTimer";
 
 function AgentStats({ agentsGrouped }) {
   return (
@@ -249,7 +250,7 @@ export function HUDProduction() {
 
 export function HUDGreetings({ user }) {
   return (
-    <div className="w-full my-4 p-2 bg-gray-800 text-white shadow-lg shadow-black/25 rounded-md">
+    <div className="w-auto my-4 p-2 bg-gray-800 text-white shadow-lg shadow-black/25 rounded-md">
       <div> Bienvenu au portal de la cimenterie</div>
 
       <AgentCardMini agent={user} />
@@ -472,7 +473,9 @@ export function HUDMonthProgress() {
               value={parseInt(data.tonnage)}
               max={60000}
             ></progress>
-            <div className="text-[42pt]">{data.tonnage}</div>
+            <div className="text-[42pt]">
+              {parseFloat(data.tonnage).toFixed(2)} T
+            </div>
 
             <div className="p-1 bg-black w-fit text-white rounded-full px-2 ">
               TARGET: 60000T
@@ -488,7 +491,8 @@ export function HUDMonthProgress() {
               max={GetMonthNumDays().count}
             ></progress>
             <div className="text-[42pt]">
-              {GetMonthNumDays().remaining} J/天
+              {/*  {GetMonthNumDays().remaining} J/天 */}
+              <CountdownTimer />
             </div>
             <div className="p-1 bg-black w-fit text-white rounded-full px-2  ">
               {JSON.stringify(GetDateParts().day)}th / {GetMonthNumDays().count}

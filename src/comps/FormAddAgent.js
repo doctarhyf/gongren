@@ -58,6 +58,7 @@ export default function FormAddAgent({
   const ref_section = useRef();
   const ref_phone = useRef();
   const ref_matricule = useRef();
+  const ref_pin = useRef();
   const ref_chef_deq = useRef();
   const ref_list_priority = useRef();
   const ref_tenue = useRef();
@@ -86,6 +87,7 @@ export default function FormAddAgent({
       section: _(ref_section),
       phone: _(ref_phone),
       matricule: _(ref_matricule),
+      pin: _(ref_pin),
       list_priority: _(ref_list_priority),
       tenue: _(ref_tenue),
       active: _(ref_active),
@@ -241,6 +243,7 @@ export default function FormAddAgent({
         [ref_contrat, "contrat", agent.contrat, CONTRATS],
 
         [ref_matricule, "matricule", agent.matricule],
+        [ref_pin, "pin", agent.pin],
         [ref_nationalite, "nationalite", agent.nationalite, NATIONALITIES],
         [ref_phone, "phone", agent.phone],
         [ref_list_priority, "liste priority", agent.list_priority],
