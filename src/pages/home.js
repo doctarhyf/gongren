@@ -50,7 +50,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="md:w-[980pt] md:mx-auto ">
+    <div className=" container md:mx-auto ">
       <Loading isLoading={loading} />
 
       <HUDGreetings user={user} />
