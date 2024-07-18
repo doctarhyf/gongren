@@ -54,6 +54,7 @@ function AgentStats({ agentsGrouped }) {
 }
 
 function AgentCardMini({ agent, moreInfo, showUpdatePoste, onAgentUpdate }) {
+  const [, , user, setuser] = useContext(UserContext);
   const [loading, setloading] = useState(false);
 
   async function updatePoste(ag, new_poste) {
