@@ -26,6 +26,7 @@ import {
   SECTIONS,
   POSTE,
   LOG_OPERATION,
+  ACCESS_CODES,
 } from "../../helpers/flow";
 import AgentsList from "../AgentsList";
 import SacsCalc from "../SacsCalc";
@@ -139,7 +140,7 @@ function AgentCardMini({ agent, moreInfo, showUpdatePoste, onAgentUpdate }) {
             <span className=" text-white/50  ">{it}:</span> {agent[it]}
           </div>
         ))}
-      {showUpdatePoste && (
+      {showUpdatePoste && agent.poste !== "SUP" && user.poste === "SUP" && (
         <div>
           <div>
             <span className=" text-white/50  ">Poste:</span>
