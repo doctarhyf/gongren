@@ -208,11 +208,11 @@ export async function UpdateItem(table_name, upd_data, onSuccess, onError) {
   if (data && data.length === 1 && error === null) {
     onSuccess && onSuccess(data);
   } else {
-    onError(error);
+    onError && onError(error);
   }
 
   if (error) {
-    onError(error);
+    onError && onError(error);
     return error;
   }
 

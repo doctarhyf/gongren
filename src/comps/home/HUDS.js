@@ -49,7 +49,29 @@ function AgentStats({ agentsGrouped }) {
   );
 }
 
-function AgentCardMini({ agent, moreInfo }) {
+function AgentCardMini({ agent, moreInfo, showUpdatePoste, onAgentUpdate }) {
+  const [loading, setloading] = useState(false);
+
+  async function updatePoste(ag, new_poste) {
+    console.log("new_poste => ", new_poste, ag);
+    setloading(true);
+    const upd = { id: ag.id, poste: new_poste };
+    const r = await SB.UpdateItem(
+      TABLES_NAMES.AGENTS,
+      upd,
+      (s) => {
+        setloading(false);
+        console.log(s);
+      },
+      (e) => {
+        console.log(e);
+        setloading(false);
+      }
+    );
+
+    onAgentUpdate(upd);
+  }
+
   return (
     <div>
       <div className="flex gap-1">
@@ -106,6 +128,24 @@ function AgentCardMini({ agent, moreInfo }) {
             <span className=" text-white/50  ">{it}:</span> {agent[it]}
           </div>
         ))}
+      {showUpdatePoste && (
+        <div>
+          <div>
+            <span className=" text-white/50  ">Poste:</span>
+            <select
+              onChange={(e) => updatePoste(agent, e.target.value)}
+              className=" text-black outline-none rounded-md mx-1 text-sm  "
+            >
+              {Object.keys(POSTES).map((p, i) => (
+                <option value={p} selected={p === agent.poste}>
+                  {POSTES[p].fr}
+                </option>
+              ))}
+            </select>
+          </div>
+          <Loading isLoading={loading} />
+        </div>
+      )}
     </div>
   );
 }
@@ -264,6 +304,12 @@ export function HUDMyTeam({ user }) {
 
     setagents(f);
   }, [q]);
+
+  function onAgentUpdate(ag) {
+    setselagent({ ...selagent, ...ag });
+    loadData();
+  }
+
   return (
     <Card
       id={5}
@@ -274,13 +320,17 @@ export function HUDMyTeam({ user }) {
         <Loading isLoading={true} />
       ) : selagent ? (
         <div>
+          <AgentCardMini
+            agent={selagent}
+            showUpdatePoste={true}
+            onAgentUpdate={onAgentUpdate}
+          />
           <button
             onClick={(e) => setselagent(undefined)}
-            className=" bg-white/10 hover:bg-white/40 p-1 px-2 text-xs rounded-md "
+            className=" my-2 w-full bg-white/10 hover:bg-white/40 p-1 px-2 text-xs rounded-md "
           >
             OK
           </button>
-          <AgentCardMini agent={selagent} />
         </div>
       ) : (
         <div className="   ">
