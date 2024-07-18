@@ -55,7 +55,7 @@ export default function Home() {
 
       <HUDGreetings user={user} />
 
-      <div className="p-2 text-center text-lg font-thin px-2">
+      <div className="p-2 text-cente mx-auto text-center text-lg font-thin px-2">
         Cliquer sur une rubrique pour voir plus de details.{" "}
       </div>
 
