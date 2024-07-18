@@ -86,7 +86,7 @@ function AgentCardMini({ agent, moreInfo, showUpdatePoste, onAgentUpdate }) {
 
   return (
     <div>
-      <div className="flex gap-1">
+      <div className="flex gap-1 md:text-center md:justify-center">
         {agent.matricule && (
           <div className=" font-bold inline-block  bg-black p-1 text-xs rounded-md ">
             {agent.matricule}
@@ -103,12 +103,7 @@ function AgentCardMini({ agent, moreInfo, showUpdatePoste, onAgentUpdate }) {
           </div>
         )}
       </div>
-      {/* <div className=" flex justify-center ">
-        <div className=" object-cover bg-white/25 rounded-full flex justify-center align-middle items-center w-[60pt] overflow-hidden h-[60pt] ">
-          <img src={agent.photo} />
-        </div>
-      </div> */}
-      <div className=" flex justify-between text-3xl  ">
+      <div className=" flex  md:justify-center  text-3xl  ">
         <div>
           <div>Mr. {agent.prenom}</div>
           <div>
@@ -261,7 +256,7 @@ export function HUDProduction() {
 
 export function HUDGreetings({ user }) {
   return (
-    <div className="w-auto my-4 p-2 bg-gray-800 text-white shadow-lg shadow-black/25 rounded-md">
+    <div className=" md:text-center w-auto my-4 p-2 bg-gray-800 text-white shadow-lg shadow-black/25 rounded-md">
       <div> Bienvenu au portal de la cimenterie</div>
 
       <AgentCardMini agent={user} />
