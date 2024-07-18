@@ -135,7 +135,7 @@ function AgentCardMini({ agent, moreInfo, showUpdatePoste, onAgentUpdate }) {
             <span className=" text-white/50  ">Poste:</span>
             <select
               onChange={(e) => updatePoste(agent, e.target.value)}
-              className=" text-black outline-none rounded-md mx-1 text-sm  "
+              className=" text-black outline-none rounded-md mx-1 text-sm dark:bg-slate-800 dark:text-white "
             >
               {Object.keys(POSTES).map((p, i) => (
                 <option value={p} selected={p === agent.poste}>
