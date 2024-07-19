@@ -737,7 +737,7 @@ export function HUDAgents() {
 export function HUDCalculsBons() {
   return (
     <Card
-      id={0}
+      id={5}
       title={"CALCULS BONS/装量"}
       desc={"Pour calculer le tonnage effectuer avec les bons"}
     >

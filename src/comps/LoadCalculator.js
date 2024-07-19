@@ -48,7 +48,7 @@ export default function LoadsCalculator({
         <div className="text-sky-500 border-b my-1">Calculator</div>
       )}
 
-      <div>{`${data.count} camions, ${data.sacs} sacs, ${data.t} T. `}</div>
+      <div className="  bg-black text-white rounded-md p-1 text-center  text-sm my-1 ">{`${data.count} camions, ${data.sacs} sacs, ${data.t} T. `}</div>
 
       <div>
         {camions.map((sacs, i) => (
