@@ -114,7 +114,11 @@ function DataSelector({
                 `}
             >
               {CorrectZeroMonthIndexDisplay(month_data[0])}
-              {selm && selm[0] === month_data[0] && " ->"}
+              {selm && selm[0] === month_data[0] && (
+                <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
+                  -&gt;
+                </span>
+              )}
             </div>
           ))}
         </div>
@@ -148,7 +152,11 @@ function DataSelector({
                 `}
               >
                 {CorrectZeroMonthIndexDisplay(day_data[0])}
-                {seld && seld[0] === day_data[0] && " ->"}
+                {seld && seld[0] === day_data[0] && (
+                  <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
+                    -&gt;
+                  </span>
+                )}
               </div>
             ))}
         </div>
