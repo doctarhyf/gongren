@@ -61,21 +61,20 @@ export default function Home() {
       </div>
 
       <div className=" container flex gap-4 my-4 flex-col md:flex-row flex-wrap ">
-        <HUDMyTeam user={user} />
-        <HUDMonthProgress />
         {(UserHasAccessCode(user, ACCESS_CODES.CAN_SEE_BONUS_TOTAL) ||
           user.poste === "SUP" ||
           user.poste === "DEQ" ||
           user.poste === "INT") && <HUDBonus />}
+        <HUDMonthProgress />
+        <HUDMyTeam user={user} />
 
         <HUDSacsCalc />
+        <HUDCalculsBons />
         {(UserHasAccessCode(user, ACCESS_CODES.ROOT) ||
           user.poste === "INT") && <HUDAgents />}
         <HUDGestionSacs />
         {(UserHasAccessCode(user, ACCESS_CODES.ROOT) ||
           user.poste === "INT") && <HUDOpsLogs />}
-
-        <HUDCalculsBons />
       </div>
 
       <div className="text-sm text-center">
