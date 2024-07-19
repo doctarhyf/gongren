@@ -104,56 +104,64 @@ function AgentCardMini({ agent, moreInfo, showUpdatePoste, onAgentUpdate }) {
           </div>
         )}
       </div>
-      <div className=" flex  md:justify-center  text-3xl  ">
-        <div>
-          <div>Mr. {agent.prenom}</div>
+
+      <div className={`  ${!showUpdatePoste && "md:flex justify-around"} `}>
+        <div className=" flex  md:justify-center  text-3xl  ">
           <div>
-            {" "}
-            {agent.nom} {agent.postnom}{" "}
-            {agent.mingzi && <span className=" text-sm  ">{agent.mingzi}</span>}
+            <div>Mr. {agent.prenom}</div>
+            <div>
+              {" "}
+              {agent.nom} {agent.postnom}{" "}
+              {agent.mingzi && (
+                <span className=" text-sm  ">{agent.mingzi}</span>
+              )}
+            </div>
           </div>
         </div>
-      </div>
-      <div>
-        <span className=" text-white/50  ">Section:</span> {agent.section}
-      </div>{" "}
-      <div>
-        <span className=" text-white/50  ">Poste:</span>{" "}
-        {(POSTES[agent.poste] && POSTES[agent.poste].fr) || POSTE[3]}
-      </div>
-      <div>
-        <span className=" text-white/50  ">Equipe:</span>{" "}
-        {EQUIPES_NAMES[agent.equipe] || agent.equipe}
-      </div>
-      {agent.phone && (
-        <div>
-          <span className=" text-white/50  ">Phone:</span> {agent.phone}
-        </div>
-      )}
-      {moreInfo &&
-        moreInfo.map((it, i) => (
-          <div>
-            <span className=" text-white/50  ">{it}:</span> {agent[it]}
-          </div>
-        ))}
-      {showUpdatePoste && agent.poste !== "SUP" && user.poste === "SUP" && (
+
         <div>
           <div>
-            <span className=" text-white/50  ">Poste:</span>
-            <select
-              onChange={(e) => updatePoste(agent, e.target.value)}
-              className=" text-black w-auto outline-none rounded-md mx-1 text-sm dark:bg-slate-800 dark:text-white "
-            >
-              {Object.keys(POSTES).map((p, i) => (
-                <option value={p} selected={p === agent.poste}>
-                  {POSTES[p].fr}
-                </option>
-              ))}
-            </select>
+            <span className=" text-white/50  ">Section:</span> {agent.section}
+          </div>{" "}
+          <div>
+            <span className=" text-white/50  ">Poste:</span>{" "}
+            {(POSTES[agent.poste] && POSTES[agent.poste].fr) || POSTE[3]}
           </div>
-          <Loading isLoading={loading} />
+          <div>
+            <span className=" text-white/50  ">Equipe:</span>{" "}
+            {EQUIPES_NAMES[agent.equipe] || agent.equipe}
+          </div>
+          {agent.phone && (
+            <div>
+              <span className=" text-white/50  ">Phone:</span> {agent.phone}
+            </div>
+          )}
+          {moreInfo &&
+            moreInfo.map((it, i) => (
+              <div>
+                <span className=" text-white/50  ">{it}:</span> {agent[it]}
+              </div>
+            ))}
+          {showUpdatePoste && agent.poste !== "SUP" && user.poste === "SUP" && (
+            <div>
+              <div>
+                <span className=" text-white/50  ">Poste:</span>
+                <select
+                  onChange={(e) => updatePoste(agent, e.target.value)}
+                  className=" text-black w-auto outline-none rounded-md mx-1 text-sm dark:bg-slate-800 dark:text-white "
+                >
+                  {Object.keys(POSTES).map((p, i) => (
+                    <option value={p} selected={p === agent.poste}>
+                      {POSTES[p].fr}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <Loading isLoading={loading} />
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 }
