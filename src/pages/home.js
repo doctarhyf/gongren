@@ -72,7 +72,7 @@ export default function Home() {
         <HUDCalculsBons />
         {(UserHasAccessCode(user, ACCESS_CODES.ROOT) ||
           user.poste === "INT") && <HUDAgents />}
-        <HUDGestionSacs />
+        {false && <HUDGestionSacs />}
         {(UserHasAccessCode(user, ACCESS_CODES.ROOT) ||
           user.poste === "INT") && <HUDOpsLogs />}
       </div>

@@ -573,8 +573,8 @@ export function HUDSacsCalc({}) {
   return (
     <Card
       id={2}
-      title={"CALCULATRICE POUR SACS/破袋计算"}
-      desc={"Calcul sacs dechires/restants"}
+      title={"CALCUL SACS DECHIRES/破袋计算"}
+      desc={"Calcul de sacs dechires/restants"}
     >
       <SacsCalc />
     </Card>
@@ -746,8 +746,8 @@ export function HUDCalculsBons() {
   return (
     <Card
       id={5}
-      title={"CALCULS BONS/装量"}
-      desc={"Pour calculer le tonnage effectuer avec les bons"}
+      title={"CALCULS TONNAGE EFFECTUE/本日产量"}
+      desc={"Calcul du tonnage effectue, apartir de bons"}
     >
       <LoadsCalculator show={true} showTitle={false} showSaveBtn={false} />
     </Card>
