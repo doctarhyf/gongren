@@ -1,14 +1,17 @@
 import { useState } from "react";
 import Bon from "./Bon";
-import { CLASS_BTN, CLASS_SELECT_TITLE } from "../helpers/flow";
+import { CLASS_BTN } from "../helpers/flow";
 
 export default function LoadsCalculator({
   show,
   onAddCamion,
   onSaveTotalSacs,
   onCancel,
+  showTitle = true,
+  showSaveBtn = true,
 }) {
   const [camions, setcamions] = useState([0]);
+  const [data, setdata] = useState({ count: 0, sacs: 0, t: 0 });
 
   function onSacsChange(id, sacs) {
     const nb_sacs = Number(sacs) || 0;
@@ -17,7 +20,15 @@ export default function LoadsCalculator({
 
     const new_array = [...old];
     setcamions(new_array);
-    console.log(new_array);
+
+    const _data = {
+      count: camions.length,
+      sacs: camions.reduce((acc, cv) => acc + cv, 0),
+      t: (camions.reduce((acc, cv) => acc + cv, 0) / 20).toFixed(2),
+    };
+    setdata(_data);
+
+    console.log(_data);
   }
 
   function onRemoveBon(index) {
@@ -33,27 +44,12 @@ export default function LoadsCalculator({
 
   return (
     <div className={` ${show ? "block" : "hidden"} `}>
-      <div className="text-sky-500 border-b my-1">Calculator</div>
-      <div>
-        {" "}
-        <span className={CLASS_SELECT_TITLE}> Camions :</span> {camions.length}
-      </div>
-      <div>
-        <span className={CLASS_SELECT_TITLE}> Sacs Total: </span>
-        {camions.reduce(
-          (accumulator, currentValue) => accumulator + currentValue,
-          0
-        )}{" "}
-        Sacs
-      </div>
-      <div>
-        <span className={CLASS_SELECT_TITLE}>Tonnage Total: </span>
-        {camions.reduce(
-          (accumulator, currentValue) => accumulator + currentValue,
-          0
-        ) / 20}{" "}
-        T
-      </div>
+      {showTitle && (
+        <div className="text-sky-500 border-b my-1">Calculator</div>
+      )}
+
+      <div>{`${data.count} camions, ${data.sacs} sacs, ${data.t} T. `}</div>
+
       <div>
         {camions.map((sacs, i) => (
           <Bon
@@ -64,42 +60,82 @@ export default function LoadsCalculator({
           />
         ))}
       </div>
-      <div>
+
+      <div className=" flex gap-2 my-2  shadow-md py-2 ">
         <button
           onClick={(e) => {
             setcamions((old) => [...old, 0]);
             console.log(camions);
           }}
-          className={CLASS_BTN}
+          className={
+            " text-xs bg-white/20 hover:bg-white/10 rounded-md px-2 p-1  "
+          }
         >
-          Ajouter Camion
+          AJOUT CAMION
         </button>
         <button
           onClick={(e) => {
             setcamions([0]);
           }}
-          className={CLASS_BTN}
+          className={
+            " text-xs bg-white/20 hover:bg-white/10 rounded-md px-2 p-1  "
+          }
         >
-          Clear
+          REFAIRE
         </button>
+        {showSaveBtn && (
+          <button
+            onClick={(e) => {
+              onSaveTotalSacs &&
+                onSaveTotalSacs(
+                  camions.reduce(
+                    (accumulator, currentValue) => accumulator + currentValue,
+                    0
+                  ),
+                  camions.length
+                );
+            }}
+            className={""}
+          >
+            Save
+          </button>
+        )}
         <button
-          onClick={(e) => {
-            onSaveTotalSacs &&
-              onSaveTotalSacs(
-                camions.reduce(
-                  (accumulator, currentValue) => accumulator + currentValue,
-                  0
-                ),
-                camions.length
-              );
-          }}
-          className={CLASS_BTN}
+          className={
+            " text-xs bg-red-800 hover:bg-red-800/50 text-white rounded-md px-2 p-1  "
+          }
+          onClick={(e) => onCancel && onCancel()}
         >
-          Save
+          ANNULER
         </button>
-        <button className={CLASS_BTN} onClick={(e) => onCancel && onCancel()}>
-          CANCEL
-        </button>
+      </div>
+
+      <div className="  mt-2 border-t border-white/20 ">
+        <div>
+          {" "}
+          <span className={" opacity-50 "}> Nbr. Camions: </span>{" "}
+          <b> {camions.length}</b>
+        </div>
+        <div>
+          <span className={" opacity-50"}> Total Sacs: </span>
+          <b>
+            {camions.reduce(
+              (accumulator, currentValue) => accumulator + currentValue,
+              0
+            )}{" "}
+            Sacs
+          </b>
+        </div>
+        <div>
+          <span className={" opacity-50"}>Tonnage Total: </span>
+          <b>
+            {camions.reduce(
+              (accumulator, currentValue) => accumulator + currentValue,
+              0
+            ) / 20}{" "}
+            T
+          </b>
+        </div>
       </div>
     </div>
   );

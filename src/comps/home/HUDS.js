@@ -31,6 +31,7 @@ import {
 import AgentsList from "../AgentsList";
 import SacsCalc from "../SacsCalc";
 import CountdownTimer from "../CountdownTimer";
+import LoadsCalculator from "../LoadCalculator";
 
 function AgentStats({ agentsGrouped }) {
   return (
@@ -729,6 +730,18 @@ export function HUDAgents() {
           )}
         </div>
       )}
+    </Card>
+  );
+}
+
+export function HUDCalculsBons() {
+  return (
+    <Card
+      id={0}
+      title={"CALCULS BONS/装量"}
+      desc={"Pour calculer le tonnage effectuer avec les bons"}
+    >
+      <LoadsCalculator show={true} showTitle={false} showSaveBtn={false} />
     </Card>
   );
 }

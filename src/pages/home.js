@@ -23,6 +23,7 @@ import {
   HUDSacsCalc,
   HUDMyTeam,
   HUDOpsLogs,
+  HUDCalculsBons,
 } from "../comps/home/HUDS";
 
 export default function Home() {
@@ -73,6 +74,8 @@ export default function Home() {
         <HUDGestionSacs />
         {(UserHasAccessCode(user, ACCESS_CODES.ROOT) ||
           user.poste === "INT") && <HUDOpsLogs />}
+
+        <HUDCalculsBons />
       </div>
 
       <div className="text-sm text-center">

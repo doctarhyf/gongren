@@ -49,6 +49,9 @@ function App() {
 
       const l = await UpdateOperationsLogs(SB, data[0], LOG_OPERATION.LOGIN);
       console.log("res log login ", l);
+      setCookie("u", data[0], {
+        expires: new Date(new Date().getTime() + 3600 * 10 * 10), //Expires after 10 minuties of inactivity
+      });
     } else {
       if (error === null) {
         err = `User matricule: "${matricule}", pin : "${pin}" cant be found`;
@@ -70,7 +73,7 @@ function App() {
   async function onLogout() {
     const l = await UpdateOperationsLogs(SB, user, LOG_OPERATION.LOGOUT);
     console.log("res logout ", l);
-    removeCookie("gr_user", { path: "/" });
+    removeCookie("u", { path: "/" });
     setuser(undefined);
   }
 
@@ -85,6 +88,13 @@ function App() {
     setModalData(data);
     setShowModal(true);
   }
+
+  useEffect(() => {
+    console.log("cookies ==>> \n", cookies["u"]);
+    if (user === undefined && cookies["u"]) {
+      setuser(cookies["u"]);
+    }
+  }, []);
 
   return user ? (
     <UserContext.Provider value={[showImage, showData, user, setuser]}>
