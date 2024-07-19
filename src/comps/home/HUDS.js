@@ -756,6 +756,7 @@ export function HUDCalculsBons() {
 
 function OpsLogs({}) {
   const [logs, setlogs] = useState([]);
+  const [loading, setloading] = useState(false);
 
   useEffect(() => {
     loadData();
@@ -767,7 +768,9 @@ function OpsLogs({}) {
     console.log("longs \n", a);
   }
 
-  return (
+  return loading ? (
+    <Loading isLoading={true} />
+  ) : (
     <div>
       {logs.map((lg, i) => (
         <div className=" border-b border-white/15 ">
