@@ -25,7 +25,9 @@ export default function TableLoadsTotals({
     setupddate(date);
   }, [lastUpdateDate]);
 
-  console.log("tdata => ", totalData);
+  const td = Object.entries(totalData).sort((a, b) => b[1].bonus - a[1].bonus);
+  td.push(td.shift());
+  console.log("tdata => ", td);
 
   return (
     <table className=" w-full rounded-md   ">
@@ -60,51 +62,53 @@ export default function TableLoadsTotals({
               <td className={CLASS_TD}>CDF 钢狼</td>
             )}
           </tr>
-          {Object.entries(totalData).map((td, i) => (
-            <>
-              {" "}
-              {td[0] !== "TOTAL" && (
-                <tr>
-                  <td className={CLASS_TD}>{td[0]}</td>
-                  {!columnsToHide.includes(COLUMNS_TO_HIDE.SACS) && (
-                    <td className={CLASS_TD}>{td[1].sacs}</td>
-                  )}
-                  {!columnsToHide.includes(COLUMNS_TO_HIDE.TONNAGE) && (
-                    <td className={CLASS_TD}> {td[1].tonnage.toFixed(2)}</td>
-                  )}
-                  {!columnsToHide.includes(COLUMNS_TO_HIDE.BONUS) && (
-                    <td className={CLASS_TD}>{td[1].bonus.toFixed(2)}</td>
-                  )}
+          {Object.entries(totalData)
+            .sort((a, b) => a[1].bonus - b[1].bonus)
+            .map((td, i) => (
+              <>
+                {" "}
+                {td[0] !== "TOTAL" && (
+                  <tr>
+                    <td className={CLASS_TD}>{`${i + 1}). ${td[0]}`}</td>
+                    {!columnsToHide.includes(COLUMNS_TO_HIDE.SACS) && (
+                      <td className={CLASS_TD}>{td[1].sacs}</td>
+                    )}
+                    {!columnsToHide.includes(COLUMNS_TO_HIDE.TONNAGE) && (
+                      <td className={CLASS_TD}> {td[1].tonnage.toFixed(2)}</td>
+                    )}
+                    {!columnsToHide.includes(COLUMNS_TO_HIDE.BONUS) && (
+                      <td className={CLASS_TD}>{td[1].bonus.toFixed(2)}</td>
+                    )}
 
-                  {!columnsToHide.includes(COLUMNS_TO_HIDE.CDF) && (
-                    <td className={CLASS_TD}>
-                      {formatAsMoney((td[1].bonus * 1000).toFixed(2))}
-                    </td>
-                  )}
-                </tr>
-              )}{" "}
-              {td[0] === "TOTAL" && (
-                <tr className="font-bold">
-                  <td className={CLASS_TD}>{td[0]}</td>
-                  {!columnsToHide.includes(COLUMNS_TO_HIDE.SACS) && (
-                    <td className={CLASS_TD}>{td[1].sacs}</td>
-                  )}
-                  {!columnsToHide.includes(COLUMNS_TO_HIDE.TONNAGE) && (
-                    <td className={CLASS_TD}> {td[1].tonnage.toFixed(2)}</td>
-                  )}
-                  {!columnsToHide.includes(COLUMNS_TO_HIDE.BONUS) && (
-                    <td className={CLASS_TD}>{td[1].bonus.toFixed(2)}</td>
-                  )}
+                    {!columnsToHide.includes(COLUMNS_TO_HIDE.CDF) && (
+                      <td className={CLASS_TD}>
+                        {formatAsMoney((td[1].bonus * 1000).toFixed(2))}
+                      </td>
+                    )}
+                  </tr>
+                )}{" "}
+                {td[0] === "TOTAL" && (
+                  <tr className="font-bold">
+                    <td className={CLASS_TD}>{td[0]}</td>
+                    {!columnsToHide.includes(COLUMNS_TO_HIDE.SACS) && (
+                      <td className={CLASS_TD}>{td[1].sacs}</td>
+                    )}
+                    {!columnsToHide.includes(COLUMNS_TO_HIDE.TONNAGE) && (
+                      <td className={CLASS_TD}> {td[1].tonnage.toFixed(2)}</td>
+                    )}
+                    {!columnsToHide.includes(COLUMNS_TO_HIDE.BONUS) && (
+                      <td className={CLASS_TD}>{td[1].bonus.toFixed(2)}</td>
+                    )}
 
-                  {!columnsToHide.includes(COLUMNS_TO_HIDE.CDF) && (
-                    <td className={CLASS_TD}>
-                      {formatAsMoney(Number(td[1].bonus * 1000).toFixed(2))}
-                    </td>
-                  )}
-                </tr>
-              )}
-            </>
-          ))}
+                    {!columnsToHide.includes(COLUMNS_TO_HIDE.CDF) && (
+                      <td className={CLASS_TD}>
+                        {formatAsMoney(Number(td[1].bonus * 1000).toFixed(2))}
+                      </td>
+                    )}
+                  </tr>
+                )}
+              </>
+            ))}
 
           <tr>
             <td className={CLASS_TD} colSpan={5 - columnsToHide.length}>
@@ -114,13 +118,12 @@ export default function TableLoadsTotals({
         </div>
       ) : (
         <div>
-          {Object.entries(totalData).map((td, i) => (
+          {td.map((td, i) => (
             <div className="  py-1 ">
               {(td[0] === user.equipe ||
                 UserHasAccessCode(user, ACCESS_CODES.ROOT) ||
                 UserHasAccessCode(user, ACCESS_CODES.CAN_SEE_ALL_BONUS) ||
-                
-                user.poste === "INT")  && (
+                user.poste === "INT") && (
                 <div className=" border-b border-white/15 ">
                   <div className=" flex justify-between ">
                     <div className=" font-bold  ">{td[0]}</div>
@@ -132,9 +135,6 @@ export default function TableLoadsTotals({
                         <span className="  opacity-50  "> - CHARG</span>
                       </div>
                       <div className=" text-[14pt]  text-xs p-1 rounded-md  ">
-                        {/* <span className=" font-black bg-emerald-950 p-1 mx-1 rounded-md  ">
-                      {td[1].bonus.toFixed(2)} T
-                    </span>{" "} */}
                         <span className=" font-black bg-emerald-950 p-1 mx-1 rounded-md  ">
                           {formatAsMoney((td[1].bonus * 1000).toFixed(2))}
                         </span>{" "}
@@ -143,15 +143,6 @@ export default function TableLoadsTotals({
                     </div>
                   </div>
                   <div>
-                    {/* {i !== 4 && (
-                  <progress
-                    className=" progress progress-warning  w-full  "
-                    max={totalData.TOTAL.sacs}
-                    value={
-                      (td[1].sacs / totalData.TOTAL.sacs) * totalData.TOTAL.sacs
-                    }
-                  />
-                )} */}
                     {i !== 4 && (
                       <progress
                         className=" progress progress-success w-full  "
