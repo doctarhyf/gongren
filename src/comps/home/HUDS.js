@@ -539,11 +539,33 @@ export function HUDBonus() {
   async function loadData(user) {
     setloading(true);
     const data = await SB.LoadAllItems(TABLES_NAMES.LOADS);
+    let teams = await SB.LoadAllItems(TABLES_NAMES.AGENTS);
+
     set_loads_by_items(data);
 
     const sortedByShiftOfDay = SortLoadsByShiftOfDay(data, y, m);
 
-    setTotalData(CaclculateAllTeamsTotals(sortedByShiftOfDay));
+    const t_data = CaclculateAllTeamsTotals(sortedByShiftOfDay);
+    t_data.A.agents = teams.filter(
+      (it) =>
+        it.equipe === "A" && it.active === "OUI" && it.section === SECTIONS[1]
+    ).length;
+    t_data.B.agents = teams.filter(
+      (it) =>
+        it.equipe === "B" && it.active === "OUI" && it.section === SECTIONS[1]
+    ).length;
+    t_data.C.agents = teams.filter(
+      (it) =>
+        it.equipe === "C" && it.active === "OUI" && it.section === SECTIONS[1]
+    ).length;
+    t_data.D.agents = teams.filter(
+      (it) =>
+        it.equipe === "D" && it.active === "OUI" && it.section === SECTIONS[1]
+    ).length;
+
+    console.log("new t_data", t_data);
+
+    setTotalData(t_data);
     setlastUpdateDate(data[data.length - 1].created_at);
     setloading(false);
   }
