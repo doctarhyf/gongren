@@ -615,7 +615,7 @@ export function GetTodaysDateYMDObject() {
   return { y: y, m: m, d: d };
 }
 
-export function formatAsMoney(value) {
+export function formatAsMoney(value, currency) {
   // Convert the input to a number if it's a string
   const number = typeof value === "string" ? parseFloat(value) : value;
 
@@ -627,7 +627,7 @@ export function formatAsMoney(value) {
   // Format the number as currency using toLocaleString
   return number.toLocaleString("en-US", {
     style: "currency",
-    currency: "CDF", // Change the currency code as needed
+    currency: currency || "CDF", // Change the currency code as needed
   });
 }
 

@@ -514,6 +514,18 @@ export function HUDMonthProgress() {
               {GetMonthNumDays().ext}
             </div>
           </div>
+
+          <div className=" border-b border-white/15 my-1 py-1 ">
+            <div>CIMENT EXPEDIE EN USD / 买的水泥</div>
+
+            <div className="text-[22pt]">
+              {formatAsMoney(parseFloat(data.tonnage) * 124, "USD")}
+            </div>
+            {/* <div className="p-1 bg-black w-fit text-white rounded-full px-2  ">
+              {JSON.stringify(GetDateParts().day)}th / {GetMonthNumDays().count}
+              {GetMonthNumDays().ext}
+            </div> */}
+          </div>
         </div>
       )}
     </Card>
