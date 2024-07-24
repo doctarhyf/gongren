@@ -149,6 +149,7 @@ export const SECTIONS = [
   "ENSACHAGE",
   "NETTOYAGE",
   "CIMENTERIE",
+  "BIGBAG",
   "N/A",
 ];
 export const POSTE = [
