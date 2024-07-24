@@ -63,7 +63,7 @@ export default function TableLoadsTotals({
             )}
           </tr>
           {Object.entries(totalData)
-            .sort((a, b) => a[1].bonus - b[1].bonus)
+            .sort((a, b) => - a[1].bonus + b[1].bonus)
             .map((td, i) => (
               <>
                 {" "}
