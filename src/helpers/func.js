@@ -282,7 +282,7 @@ export async function UpdateOperationsLogs(SB, user, LOG_OPERATION, desc) {
   const browserVersion = navigator.appVersion;
 
   const data = {
-    mat: user.matricule,
+    mat: `${user.prenom} ${user.nom} [${user.matricule}]`,
     device: `${userAgent}, ${browser} ${browserVersion}`,
     desc: desc,
     op: LOG_OPERATION,
