@@ -149,7 +149,6 @@ export const SECTIONS = [
   "ENSACHAGE",
   "NETTOYAGE",
   "CIMENTERIE",
-  "BIGBAG",
   "N/A",
 ];
 export const POSTE = [
@@ -192,6 +191,7 @@ export const EQUIPES = [
   "INT",
   "CHIN",
   "N/A",
+  "BIGBAG",
 ];
 
 export const EQUIPES_NAMES = {
