@@ -287,6 +287,8 @@ export async function UpdateOperationsLogs(SB, user, LOG_OPERATION, desc) {
     desc: desc,
     op: LOG_OPERATION,
   };
+
+  console.log("log data => ", data);
   const r = await SB.InsertItem(TABLES_NAMES.OPERATIONS_LOGS, data);
 
   console.log("ops logs res => ", r);
