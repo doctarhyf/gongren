@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { CLASS_SELECT, CLASS_SELECT_TITLE, MONTHS } from "../helpers/flow";
-import { getDaysInMonth } from "../helpers/func";
+import { getDaysInMonth, ParseDate } from "../helpers/func";
 
 export default function DateSelector({
   onDateSelected,
@@ -9,6 +9,11 @@ export default function DateSelector({
   hideSelectDateType,
   horizontal,
 }) {
+  if (defaultDate && defaultDate.getDay) {
+    defaultDate = ParseDate(defaultDate, false); //
+    //alert(JSON.stringify(defaultDate));
+  }
+
   const DATE_TYPE = { Y: "Year", M: "Month", D: "Day" };
 
   const [dateType, setDateType] = useState(defaultDateType || "D");
@@ -112,7 +117,10 @@ export default function DateSelector({
             onChange={onDateChange}
           >
             {[...Array(12)].map((it, i) => (
-              <option value={i} selected={defaultDate && defaultDate.m === i}>
+              <option
+                value={i}
+                selected={defaultDate && parseInt(defaultDate.m) === i}
+              >
                 {MONTHS[i]}
               </option>
             ))}
