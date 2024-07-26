@@ -9,6 +9,7 @@ import Magasin from "../pages/magasin";
 import Dico from "../pages/dico";
 import Sacs from "../pages/sacs";
 import JinChu from "../pages/jinchu";
+import { Bigbag } from "../pages/bigbag";
 
 export const LANG_COOKIE_KEY = "gongren_lang";
 
@@ -99,6 +100,7 @@ export const ACCESS_CODES = {
   PAGE_HOME: "HME",
   PAGE_AGENTS: "AGT",
   PAGE_CHARGEMENT: "LDS",
+  PAGE_BIGBAG: "BB",
   PAGE_JINCHU: "JC",
   PAGE_ROULEMENT: "RL",
   PAGE_EQUIPE: "TMZ",
@@ -222,6 +224,12 @@ export const MAIN_MENU = [
     name: "Chargement",
     path: "/chargement",
     el: Chargement,
+    access_code: ACCESS_CODES.PAGE_CHARGEMENT,
+  },
+  {
+    name: "BIGBAG",
+    path: "/bigbag",
+    el: Bigbag,
     access_code: ACCESS_CODES.PAGE_CHARGEMENT,
   },
   {
