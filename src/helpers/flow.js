@@ -147,13 +147,13 @@ export const SACS_SECTIONS = {
 };
 
 export const BIGBAG_SECTIONS = {
-  NEW: {
-    label: "NEW",
-    access_code: "", //ACCESS_CODES.TAB_SAC_CONT,
-  },
   BIGBAG: {
     label: "BIGBAG",
     access_code: "", // ACCESS_CODES.TAB_SAC_PROD,
+  },
+  NEW: {
+    label: "NEW",
+    access_code: "", //ACCESS_CODES.TAB_SAC_CONT,
   },
 };
 

@@ -2,9 +2,11 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { UserContext } from "../App";
 import { UserHasAccessCode } from "../helpers/func";
 
-export default function TabCont({ tabs, onSelectTab }) {
+export default function TabCont({ tabs, onSelectTab, selectedIndex = 0 }) {
   const [, , user] = useContext(UserContext);
-  const [selected_tab, set_selected_tab] = useState(Object.entries(tabs)[0]);
+  const [selected_tab, set_selected_tab] = useState(
+    Object.entries(tabs)[selectedIndex]
+  );
 
   return (
     <div className=" gap-4 flex py-4 sm:flex-row flex-col ">
