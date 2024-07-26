@@ -1,25 +1,34 @@
 import { useState } from "react";
 import { CLASS_BTN, CLASS_INPUT_TEXT } from "../../helpers/flow";
+import ImageUpload from "../ImageUpload";
+import { UploadFile } from "../../helpers/FileUpload";
+import { supabase } from "../../helpers/sb.config";
 
 export default function FormNewBigbagTruck({ onSaveBibag }) {
   const [data, setdata] = useState({ plaque: "", t: "" });
-  const [selimg, setselimg] = useState("");
-  const [selimgf, setselimgf] = useState();
+  const [imgdata, setimgdata] = useState({ b64: undefined, file: undefined });
+  const [imguploaded, setimguploaded] = useState(false);
 
   const handleFileChange = (event) => {
-    setselimg(event.target.value);
     const file = event.target.files[0];
-    console.log(file);
+    setimgdata((old) => ({ ...old, file: file }));
+
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
         const imgb64 = reader.result;
-        setselimgf(imgb64);
+        setimgdata((old) => ({ ...old, b64: imgb64 }));
         console.log(imgb64);
       };
       reader.readAsDataURL(file);
     }
   };
+
+  async function onSave() {
+    const r = await UploadFile(supabase, imgdata.file, "bigbag", true);
+
+    console.log("Res => ", r);
+  }
 
   return (
     <div className=" container  ">
@@ -31,7 +40,7 @@ export default function FormNewBigbagTruck({ onSaveBibag }) {
           onChange={handleFileChange}
         />
         <div className=" w-40 h-auto bg-slate-600 rounded-md overflow-hidden border-slate-700    ">
-          <img src={selimgf} />
+          <img src={imgdata.b64} />
         </div>
       </div>
       <div>
@@ -73,7 +82,7 @@ export default function FormNewBigbagTruck({ onSaveBibag }) {
         </div>
       </div>
       <div>
-        <button onClick={(e) => onSaveBibag(data)} className={CLASS_BTN}>
+        <button onClick={(e) => onSave()} className={CLASS_BTN}>
           SAVE
         </button>
         <button className={CLASS_BTN}>CANCEL</button>
