@@ -48,7 +48,7 @@ export async function UploadFile(
   compressImage = false,
   allowed_types = ["image/jpeg", "image/gif", "image/png"]
 ) {
-  /* if (!file) return { error: true, code: 1, message: "File cant be null!" };
+  if (!file) return { error: true, code: 1, message: "File cant be null!" };
   const { type } = file;
   if (!allowed_types.includes(type)) {
     return { error: true, code: 2, message: "File type not allowed!" };
@@ -65,22 +65,14 @@ export async function UploadFile(
 
   if (error) {
     return { error: true, code: 3, message: `${JSON.stringify(error)}` };
-  } 
-  
-  console.log("Image uploaded successfully:", data);
-  */
+  }
 
-  const data = {
-    path: "1721997670863_7l5i7zq29.jpeg",
-    id: "85e0d2f2-11e4-4b39-a4eb-ded0ff0a1375",
-    fullPath: "bigbag/1721997670863_7l5i7zq29.jpeg",
-  };
+  // console.log("Image uploaded successfully:", data);
 
-  const { data1, error2 } = await supabase.storage
-    .from(bucketName)
-    .getPublicUrl(data.fullPath);
+  const publicUrl = supabase.storage.from(bucketName).getPublicUrl(data.path)
+    .data.publicUrl;
 
-  console.log(data1, error2);
+  //.log(publicUrl);
 
-  return { data: data, name: uniqueFilename };
+  return { ...data, publicUrl: publicUrl };
 }
