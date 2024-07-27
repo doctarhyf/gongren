@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import DateSelector from "../DateSelector";
-import { ParseDate } from "../../helpers/func";
+import { AddLeadingZero, dt2YYYYmmdd, ParseDate } from "../../helpers/func";
 import * as SB from "../../helpers/sb";
 import { TABLES_NAMES } from "../../helpers/sb.config";
 import { CLASS_TD } from "../../helpers/flow";
@@ -8,23 +8,37 @@ import Loading from "../Loading";
 
 export default function ListBigbagTrucks() {
   const [dt, setdt] = useState(ParseDate(new Date(), false));
-  const [ls, setls] = useState([]);
+  const [trucks, settrucks] = useState([]);
+  const [trucksf, settrucksf] = useState([]);
   const [loading, setloading] = useState(false);
 
   useEffect(() => {
     loadData();
   }, []);
 
+  useEffect(() => {
+    const ftrucks = trucks.filter((t) => t.date === dt2YYYYmmdd(dt));
+    settrucksf(ftrucks);
+  }, [dt]);
+
   async function loadData() {
     setloading(true);
     const d = await SB.LoadAllItems(TABLES_NAMES.BIGBAG);
-    console.log(d);
-    setls(d);
+    settrucks(d);
+
+    const filter_date = dt2YYYYmmdd(dt);
+    const df = d.filter((t) => t.date === filter_date);
+    settrucksf(df);
+
     setloading(false);
   }
 
   function onDateSelected(d) {
     setdt(d);
+  }
+
+  function onTruckClick(truck) {
+    console.log(truck);
   }
 
   return (
@@ -53,34 +67,47 @@ export default function ListBigbagTrucks() {
               <td className={CLASS_TD}>front</td>
               <td className={CLASS_TD}>side</td>
             </tr>
-            {ls.map((l, i) => (
-              <tr>
-                <td className={CLASS_TD}>{l.id}</td>
-                <td className={CLASS_TD}>{l.equipe}</td>
-                <td className={CLASS_TD}>{l.plaque}</td>
-                <td className={CLASS_TD}>{l.t}</td>
-                <td className={CLASS_TD}>{l.bags}</td>
+            {trucksf.map((truck, i) => (
+              <tr
+                key={truck.created_at}
+                className=" hover:bg-slate-500 cursor-pointer   "
+                onClick={onTruckClick(truck)}
+              >
+                <td className={CLASS_TD}>{truck.id}</td>
+                <td className={CLASS_TD}>{truck.equipe}</td>
+                <td className={CLASS_TD}>{truck.plaque}</td>
+                <td className={CLASS_TD}>{truck.t}</td>
+                <td className={CLASS_TD}>{truck.bags}</td>
                 <td className={CLASS_TD}>
-                  {l.date} a {l.time}
+                  {truck.date} a {truck.time}
                 </td>
                 <td className={CLASS_TD}>
                   <div className=" bg-slate-700 w-32 h-16 rounded-md overflow-hidden  ">
-                    <a href={l.photos[0]}>
-                      <img src={l.photos[0]} className=" cursor-pointer  " />
+                    <a href={truck.photos[0]}>
+                      <img
+                        src={truck.photos[0]}
+                        className=" cursor-pointer  "
+                      />
                     </a>
                   </div>
                 </td>
                 <td className={CLASS_TD}>
                   <div className=" bg-slate-700 w-32 h-16 rounded-md overflow-hidden  ">
-                    <a href={l.photos[0]}>
-                      <img src={l.photos[1]} className=" cursor-pointer  " />
+                    <a href={truck.photos[0]}>
+                      <img
+                        src={truck.photos[1]}
+                        className=" cursor-pointer  "
+                      />
                     </a>
                   </div>
                 </td>
                 <td className={CLASS_TD}>
                   <div className=" bg-slate-700 w-32 h-16 rounded-md overflow-hidden  ">
-                    <a href={l.photos[0]}>
-                      <img src={l.photos[2]} className=" cursor-pointer  " />
+                    <a href={truck.photos[0]}>
+                      <img
+                        src={truck.photos[2]}
+                        className=" cursor-pointer  "
+                      />
                     </a>
                   </div>
                 </td>

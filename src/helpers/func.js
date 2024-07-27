@@ -694,6 +694,14 @@ export function CaclculateAllTeamsTotals(data, addSacsAdj) {
   return totalsData;
 }
 
+export function dt2YYYYmmdd(dt) {
+  const { y, m: month, d: day } = dt;
+
+  const m = AddLeadingZero(parseInt(month) + 1);
+  const d = AddLeadingZero(day);
+  const filter_date = `${y}-${m}-${d}`;
+  return filter_date;
+}
 export const ParseDate = (date, monthPlusOne = true) => {
   if (!date || !date.getFullYear) date = new Date();
   const y = date.getFullYear();
