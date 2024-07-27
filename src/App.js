@@ -87,6 +87,8 @@ function App() {
       left: 0,
       behavior: "smooth", // Optional: adds smooth scrolling effect
     });
+
+    console.log(window);
   }
 
   function showData(data) {
@@ -106,11 +108,11 @@ function App() {
     <UserContext.Provider value={[showImage, showData, user, setuser]}>
       <div>
         <div
-          className={`  flex flex-col justify-center items-center bg-black/60 backdrop-blur-md text-white  absolute h-full w-full ${
+          className={`  flex flex-col justify-center items-center bg-black/60 backdrop-blur-md text-white  absolute h-lvh w-lvw ${
             showModal ? "absolute" : "hidden"
           } `}
         >
-          <div>
+          <div className="   ">
             {modalType === "img" && <img src={modalData} alt={modalData} />}
             {modalType === "data" &&
               Object.entries(modalData).map(([k, v], i) => (
