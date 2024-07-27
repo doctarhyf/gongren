@@ -7,13 +7,17 @@ import ListBigbagTrucks from "../comps/bigbag/ListBigbagTrucks";
 
 export function Bigbag() {
   const [curs, setcurs] = useState(Object.entries(BIGBAG_SECTIONS)[0]);
+  const [loading, setloading] = useState(false);
 
   function onSaveBibag(data) {
     console.log(data);
+    //1.upload images
+    //2.save data
   }
 
   function onDataNotValid(arr) {
     console.log(arr);
+    alert(`All fields are required\n ${JSON.stringify(arr)}`);
   }
 
   return (

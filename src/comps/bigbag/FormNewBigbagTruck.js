@@ -16,7 +16,7 @@ export default function FormNewBigbagTruck({
     date: new Date().toISOString().split("T")[0],
     time: new Date().toISOString().split("T")[1].split(".")[0],
   });
-  const [loading, setloading] = useState(false);
+  const [error, seterror] = useState({});
 
   function onImageSelectChange(images) {
     // console.log("Pictures \n", pictures);
@@ -36,11 +36,13 @@ export default function FormNewBigbagTruck({
     const tm = time !== undefined && time !== "" && time.length !== 0;
 
     const valid = img && p && t && b && d && tm;
+    const error = { img: img, p: p, t: t, b: b, d: d, tm: tm };
+    seterror(error);
 
     if (valid) {
       onSaveBibag(data);
     } else {
-      onDataNotValid({ img: img, p: p, t: t, b: b, d: d, tm: tm });
+      onDataNotValid(error);
     }
   }
 
@@ -54,6 +56,11 @@ export default function FormNewBigbagTruck({
           titles={["Bon", "Truck Front", "Truck Side"]}
           onImageSelectChange={onImageSelectChange}
         />
+        {!error.img && (
+          <div className=" bg-red-300 border border-red-900 text-xs text-red-500 inline-block rounded-md px-2   ">
+            Field is required
+          </div>
+        )}
       </div>
 
       <div>
@@ -68,6 +75,11 @@ export default function FormNewBigbagTruck({
               }
             />
           </div>
+          {!error.p && (
+            <div className=" bg-red-300 border border-red-900 text-xs text-red-500 inline-block rounded-md px-2   ">
+              Field is required
+            </div>
+          )}
         </div>
         <div>
           <div>Tonnage</div>
@@ -80,6 +92,11 @@ export default function FormNewBigbagTruck({
               }
             />
           </div>
+          {!error.t && (
+            <div className=" bg-red-300 border border-red-900 text-xs text-red-500 inline-block rounded-md px-2   ">
+              Field is required
+            </div>
+          )}
         </div>
         <div>
           <div>SACS</div>
@@ -92,6 +109,11 @@ export default function FormNewBigbagTruck({
               }
             />
           </div>
+          {!error.b && (
+            <div className=" bg-red-300 border border-red-900 text-xs text-red-500 inline-block rounded-md px-2   ">
+              Field is required
+            </div>
+          )}
         </div>
         <div>
           <div>DATE</div>
@@ -105,6 +127,11 @@ export default function FormNewBigbagTruck({
               }
             />
           </div>
+          {!error.d && (
+            <div className=" bg-red-300 border border-red-900 text-xs text-red-500 inline-block rounded-md px-2   ">
+              Field is required
+            </div>
+          )}
         </div>
         <div>
           <div>TIME</div>
@@ -121,6 +148,11 @@ export default function FormNewBigbagTruck({
               }
             />
           </div>
+          {!error.tm && (
+            <div className=" bg-red-300 border border-red-900 text-xs text-red-500 inline-block rounded-md px-2   ">
+              Field is required
+            </div>
+          )}
         </div>
       </div>
 
