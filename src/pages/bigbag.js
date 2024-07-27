@@ -4,7 +4,8 @@ import TabCont from "../comps/TabCont";
 import { BIGBAG_SECTIONS, CLASS_INPUT_TEXT, SECTIONS } from "../helpers/flow";
 import FormNewBigbagTruck from "../comps/bigbag/FormNewBigbagTruck";
 import ListBigbagTrucks from "../comps/bigbag/ListBigbagTrucks";
-import { supabase } from "../helpers/sb.config";
+import { supabase, TABLES_NAMES } from "../helpers/sb.config";
+import * as SB from "../helpers/sb";
 import { UploadFile } from "../helpers/FileUpload";
 import Loading from "../comps/Loading";
 
@@ -16,20 +17,35 @@ export function Bigbag() {
     //setcurs(Object.entries(BIGBAG_SECTIONS)[0]);
     setloading(true);
     console.log(data);
-    //1.upload images
-    const { images } = data;
-    const [p1, p2, p3] = Object.values(images);
-    try {
-      const pp1 = await UploadFile(supabase, p1.file, "bigbag", true);
-      const pp2 = await UploadFile(supabase, p2.file, "bigbag", true);
-      const pp3 = await UploadFile(supabase, p3.file, "bigbag", true);
 
-      console.log(pp1, pp2, pp3);
+    const { plaque, t, date, time, images, bags } = data;
+    const [img1, img2, img3] = Object.values(images);
+    try {
+      //1.upload images
+      const pms1 = await UploadFile(supabase, img1.file, "bigbag", true);
+      const pms2 = await UploadFile(supabase, img2.file, "bigbag", true);
+      const pms3 = await UploadFile(supabase, img3.file, "bigbag", true);
+      //2.save data
+      const photos = [pms1.publicUrl, pms2.publicUrl, pms3.publicUrl];
+      const bigbag = {
+        plaque: plaque.toUpperCase(),
+        t: parseInt(t),
+        bags: parseInt(bags),
+        photos: photos,
+        date: date,
+        time: time,
+        stat: "",
+        equipe: equipe,
+      };
+      //console.log(pms1, pms2, pms3);
+
+      const r = await SB.InsertItem(TABLES_NAMES.BIGBAG, bigbag);
+      console.log(bigbag);
+      console.log(r);
     } catch (e) {
       alert(`Error upload data \n `);
       setloading(false);
     }
-    //2.save data
   }
 
   function onDataNotValid(arr) {

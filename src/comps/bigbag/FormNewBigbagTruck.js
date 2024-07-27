@@ -23,6 +23,7 @@ export default function FormNewBigbagTruck({
     b: true,
     d: true,
     tm: true,
+    eq: true,
   });
 
   function onImageSelectChange(images) {
@@ -31,7 +32,7 @@ export default function FormNewBigbagTruck({
   }
 
   async function onSave() {
-    const { images, plaque, t: tonnage, bags, date, time } = data;
+    const { images, plaque, t: tonnage, bags, date, time, equipe } = data;
 
     const img = Object.entries(images).length === 3;
     const p = plaque !== undefined && plaque !== "" && plaque.length !== 0;
@@ -39,9 +40,10 @@ export default function FormNewBigbagTruck({
     const b = bags !== undefined && bags !== "" && bags.length !== 0;
     const d = date !== undefined && date !== "" && date.length !== 0;
     const tm = time !== undefined && time !== "" && time.length !== 0;
+    const eq = equipe !== undefined && equipe !== "" && equipe.length !== 0;
 
     const valid = img && p && t && b && d && tm;
-    const error = { img: img, p: p, t: t, b: b, d: d, tm: tm };
+    const error = { img: img, p: p, t: t, b: b, d: d, tm: tm, eq: eq };
     seterror(error);
 
     if (valid) {
@@ -71,6 +73,36 @@ export default function FormNewBigbagTruck({
       </div>
 
       <div>
+        <div>
+          <div>
+            Equipe
+            {!error.p && (
+              <div className=" bg-red-300/50 border border-red-900 text-xs text-red-700 inline-block rounded-md px-2   ">
+                Field is required
+              </div>
+            )}
+          </div>
+          <div>
+            <select
+              className={CLASS_INPUT_TEXT}
+              value={data.equipe || "A"}
+              onChange={(e) =>
+                setdata((old) => ({ ...old, equipe: e.target.value }))
+              }
+            >
+              {["A", "B", "C", "D"].map((it, i) => (
+                <option value={it}>{it}</option>
+              ))}
+            </select>
+            {/* <input
+              className={CLASS_INPUT_TEXT}
+              value={data.plaque || ""}
+              onChange={(e) =>
+                setdata((old) => ({ ...old, plaque: e.target.value }))
+              }
+            /> */}
+          </div>
+        </div>
         <div>
           <div>
             Plaque
