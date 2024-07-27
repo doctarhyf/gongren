@@ -16,7 +16,14 @@ export default function FormNewBigbagTruck({
     date: new Date().toISOString().split("T")[0],
     time: new Date().toISOString().split("T")[1].split(".")[0],
   });
-  const [error, seterror] = useState({});
+  const [error, seterror] = useState({
+    img: true,
+    p: true,
+    t: true,
+    b: true,
+    d: true,
+    tm: true,
+  });
 
   function onImageSelectChange(images) {
     // console.log("Pictures \n", pictures);
@@ -24,8 +31,6 @@ export default function FormNewBigbagTruck({
   }
 
   async function onSave() {
-    // const r = await UploadFile(supabase, imgdata.file, "bigbag", true);
-
     const { images, plaque, t: tonnage, bags, date, time } = data;
 
     const img = Object.entries(images).length === 3;
@@ -49,23 +54,32 @@ export default function FormNewBigbagTruck({
   return (
     <div className=" container  ">
       <div>
-        <div>Photos</div>
+        <div>
+          Photos{" "}
+          {!error.img && (
+            <div className=" bg-red-300/50 border border-red-900 text-xs text-red-700 inline-block rounded-md px-2   ">
+              Field is required
+            </div>
+          )}
+        </div>
 
         <ImageItemContainer
           count={3}
           titles={["Bon", "Truck Front", "Truck Side"]}
           onImageSelectChange={onImageSelectChange}
         />
-        {!error.img && (
-          <div className=" bg-red-300/50 border border-red-900 text-xs text-red-700 inline-block rounded-md px-2   ">
-            Field is required
-          </div>
-        )}
       </div>
 
       <div>
         <div>
-          <div>Plaque</div>
+          <div>
+            Plaque
+            {!error.p && (
+              <div className=" bg-red-300/50 border border-red-900 text-xs text-red-700 inline-block rounded-md px-2   ">
+                Field is required
+              </div>
+            )}
+          </div>
           <div>
             <input
               className={CLASS_INPUT_TEXT}
@@ -75,14 +89,16 @@ export default function FormNewBigbagTruck({
               }
             />
           </div>
-          {!error.p && (
-            <div className=" bg-red-300/50 border border-red-900 text-xs text-red-700 inline-block rounded-md px-2   ">
-              Field is required
-            </div>
-          )}
         </div>
         <div>
-          <div>Tonnage</div>
+          <div>
+            Tonnage
+            {!error.t && (
+              <div className=" bg-red-300/50 border border-red-900 text-xs text-red-700 inline-block rounded-md px-2   ">
+                Field is required
+              </div>
+            )}
+          </div>
           <div>
             <input
               className={CLASS_INPUT_TEXT}
@@ -92,14 +108,16 @@ export default function FormNewBigbagTruck({
               }
             />
           </div>
-          {!error.t && (
-            <div className=" bg-red-300/50 border border-red-900 text-xs text-red-700 inline-block rounded-md px-2   ">
-              Field is required
-            </div>
-          )}
         </div>
         <div>
-          <div>SACS</div>
+          <div>
+            SACS{" "}
+            {!error.b && (
+              <div className=" bg-red-300/50 border border-red-900 text-xs text-red-700 inline-block rounded-md px-2   ">
+                Field is required
+              </div>
+            )}
+          </div>
           <div>
             <input
               className={CLASS_INPUT_TEXT}
@@ -109,14 +127,16 @@ export default function FormNewBigbagTruck({
               }
             />
           </div>
-          {!error.b && (
-            <div className=" bg-red-300/50 border border-red-900 text-xs text-red-700 inline-block rounded-md px-2   ">
-              Field is required
-            </div>
-          )}
         </div>
         <div>
-          <div>DATE</div>
+          <div>
+            DATE{" "}
+            {!error.d && (
+              <div className=" bg-red-300/50 border border-red-900 text-xs text-red-700 inline-block rounded-md px-2   ">
+                Field is required
+              </div>
+            )}
+          </div>
           <div>
             <input
               type="date"
@@ -127,14 +147,16 @@ export default function FormNewBigbagTruck({
               }
             />
           </div>
-          {!error.d && (
-            <div className=" bg-red-300/50 border border-red-900 text-xs text-red-700 inline-block rounded-md px-2   ">
-              Field is required
-            </div>
-          )}
         </div>
         <div>
-          <div>TIME</div>
+          <div>
+            TIME
+            {!error.tm && (
+              <div className=" bg-red-300/50 border border-red-900 text-xs text-red-700 inline-block rounded-md px-2   ">
+                Field is required
+              </div>
+            )}
+          </div>
           <div>
             <input
               type="time"
@@ -148,11 +170,6 @@ export default function FormNewBigbagTruck({
               }
             />
           </div>
-          {!error.tm && (
-            <div className=" bg-red-300/50 border border-red-900 text-xs text-red-700 inline-block rounded-md px-2   ">
-              Field is required
-            </div>
-          )}
         </div>
       </div>
 
