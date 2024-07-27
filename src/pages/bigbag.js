@@ -8,8 +8,12 @@ import ListBigbagTrucks from "../comps/bigbag/ListBigbagTrucks";
 export function Bigbag() {
   const [curs, setcurs] = useState(Object.entries(BIGBAG_SECTIONS)[0]);
 
-  function onSaveBibag(d) {
-    console.log(d);
+  function onSaveBibag(data) {
+    console.log(data);
+  }
+
+  function onDataNotValid(arr) {
+    console.log(arr);
   }
 
   return (
@@ -20,7 +24,11 @@ export function Bigbag() {
         selectedIndex={0}
       />
       {curs[0] === BIGBAG_SECTIONS.NEW.label && (
-        <FormNewBigbagTruck onSaveBibag={onSaveBibag} />
+        <FormNewBigbagTruck
+          onSaveBibag={onSaveBibag}
+          onDataNotValid={onDataNotValid}
+          onCancel={(e) => setcurs(Object.entries(BIGBAG_SECTIONS)[0])}
+        />
       )}
       {curs[0] === BIGBAG_SECTIONS.BIGBAG.label && <ListBigbagTrucks />}
     </div>
