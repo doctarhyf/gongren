@@ -16,9 +16,9 @@ export function Bigbag() {
   async function onSaveBibag(data) {
     //setcurs(Object.entries(BIGBAG_SECTIONS)[0]);
     setloading(true);
-    console.log(data);
+    //console.log(data);
 
-    const { plaque, t, date, time, images, bags } = data;
+    const { plaque, t, date, time, images, bags, equipe } = data;
     const [img1, img2, img3] = Object.values(images);
     try {
       //1.upload images
@@ -27,6 +27,7 @@ export function Bigbag() {
       const pms3 = await UploadFile(supabase, img3.file, "bigbag", true);
       //2.save data
       const photos = [pms1.publicUrl, pms2.publicUrl, pms3.publicUrl];
+      console.log("photos => ", photos);
       const bigbag = {
         plaque: plaque.toUpperCase(),
         t: parseInt(t),
@@ -40,12 +41,16 @@ export function Bigbag() {
       //console.log(pms1, pms2, pms3);
 
       const r = await SB.InsertItem(TABLES_NAMES.BIGBAG, bigbag);
-      console.log(bigbag);
-      console.log(r);
+      console.log("bigbag \n", bigbag);
+      console.log("bigbag insert result => ", r);
+      setcurs(Object.entries(BIGBAG_SECTIONS)[0]);
+      alert("Data saved!");
     } catch (e) {
       alert(`Error upload data \n ${JSON.stringify(e)} `);
       setloading(false);
     }
+
+    setloading(false);
   }
 
   function onDataNotValid(arr) {
@@ -53,9 +58,10 @@ export function Bigbag() {
     //alert(`All fields are required\n ${JSON.stringify(arr)}`);
   }
 
-  return (
+  return loading ? (
+    <Loading isLoading={true} />
+  ) : (
     <div>
-      {loading && <Loading isLoading={true} />}
       <TabCont
         tabs={BIGBAG_SECTIONS}
         onSelectTab={(e) => setcurs(e)}

@@ -11,6 +11,7 @@ export default function FormNewBigbagTruck({
   onCancel,
 }) {
   const [data, setdata] = useState({
+    equipe: "A",
     plaque: "",
     t: "",
     date: new Date().toISOString().split("T")[0],
@@ -76,7 +77,7 @@ export default function FormNewBigbagTruck({
         <div>
           <div>
             Equipe
-            {!error.p && (
+            {!error.eq && (
               <div className=" bg-red-300/50 border border-red-900 text-xs text-red-700 inline-block rounded-md px-2   ">
                 Field is required
               </div>
@@ -91,7 +92,9 @@ export default function FormNewBigbagTruck({
               }
             >
               {["A", "B", "C", "D"].map((it, i) => (
-                <option value={it}>{it}</option>
+                <option selected={it === data.equipe || it === "A"} value={it}>
+                  {it}
+                </option>
               ))}
             </select>
             {/* <input
