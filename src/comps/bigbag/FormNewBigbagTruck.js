@@ -57,7 +57,7 @@ export default function FormNewBigbagTruck({
           onImageSelectChange={onImageSelectChange}
         />
         {!error.img && (
-          <div className=" bg-red-300 border border-red-900 text-xs text-red-500 inline-block rounded-md px-2   ">
+          <div className=" bg-red-300/50 border border-red-900 text-xs text-red-700 inline-block rounded-md px-2   ">
             Field is required
           </div>
         )}
@@ -76,7 +76,7 @@ export default function FormNewBigbagTruck({
             />
           </div>
           {!error.p && (
-            <div className=" bg-red-300 border border-red-900 text-xs text-red-500 inline-block rounded-md px-2   ">
+            <div className=" bg-red-300/50 border border-red-900 text-xs text-red-700 inline-block rounded-md px-2   ">
               Field is required
             </div>
           )}
@@ -93,7 +93,7 @@ export default function FormNewBigbagTruck({
             />
           </div>
           {!error.t && (
-            <div className=" bg-red-300 border border-red-900 text-xs text-red-500 inline-block rounded-md px-2   ">
+            <div className=" bg-red-300/50 border border-red-900 text-xs text-red-700 inline-block rounded-md px-2   ">
               Field is required
             </div>
           )}
@@ -110,7 +110,7 @@ export default function FormNewBigbagTruck({
             />
           </div>
           {!error.b && (
-            <div className=" bg-red-300 border border-red-900 text-xs text-red-500 inline-block rounded-md px-2   ">
+            <div className=" bg-red-300/50 border border-red-900 text-xs text-red-700 inline-block rounded-md px-2   ">
               Field is required
             </div>
           )}
@@ -128,7 +128,7 @@ export default function FormNewBigbagTruck({
             />
           </div>
           {!error.d && (
-            <div className=" bg-red-300 border border-red-900 text-xs text-red-500 inline-block rounded-md px-2   ">
+            <div className=" bg-red-300/50 border border-red-900 text-xs text-red-700 inline-block rounded-md px-2   ">
               Field is required
             </div>
           )}
@@ -149,7 +149,7 @@ export default function FormNewBigbagTruck({
             />
           </div>
           {!error.tm && (
-            <div className=" bg-red-300 border border-red-900 text-xs text-red-500 inline-block rounded-md px-2   ">
+            <div className=" bg-red-300/50 border border-red-900 text-xs text-red-700 inline-block rounded-md px-2   ">
               Field is required
             </div>
           )}
