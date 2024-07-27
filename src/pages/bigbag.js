@@ -43,7 +43,7 @@ export function Bigbag() {
       console.log(bigbag);
       console.log(r);
     } catch (e) {
-      alert(`Error upload data \n `);
+      alert(`Error upload data \n ${JSON.stringify(e)} `);
       setloading(false);
     }
   }
