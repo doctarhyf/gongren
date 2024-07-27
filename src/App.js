@@ -81,6 +81,12 @@ function App() {
     setModalType("img");
     setModalData(url);
     setShowModal(true);
+
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "smooth", // Optional: adds smooth scrolling effect
+    });
   }
 
   function showData(data) {
