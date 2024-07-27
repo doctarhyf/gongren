@@ -1,12 +1,14 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import DateSelector from "../DateSelector";
 import { AddLeadingZero, dt2YYYYmmdd, ParseDate } from "../../helpers/func";
 import * as SB from "../../helpers/sb";
 import { TABLES_NAMES } from "../../helpers/sb.config";
 import { CLASS_TD } from "../../helpers/flow";
 import Loading from "../Loading";
+import { UserContext } from "../../App";
 
 export default function ListBigbagTrucks() {
+  const [showImage] = useContext(UserContext);
   const [dt, setdt] = useState(ParseDate(new Date(), false));
   const [trucks, settrucks] = useState([]);
   const [trucksf, settrucksf] = useState([]);
@@ -83,32 +85,32 @@ export default function ListBigbagTrucks() {
                 </td>
                 <td className={CLASS_TD}>
                   <div className=" bg-slate-700 w-32 h-16 rounded-md overflow-hidden  ">
-                    <a href={truck.photos[0]}>
+                    <button onClick={(e) => showImage(truck.photos[0])}>
                       <img
                         src={truck.photos[0]}
                         className=" cursor-pointer  "
                       />
-                    </a>
+                    </button>
                   </div>
                 </td>
                 <td className={CLASS_TD}>
                   <div className=" bg-slate-700 w-32 h-16 rounded-md overflow-hidden  ">
-                    <a href={truck.photos[0]}>
+                    <button onClick={(e) => showImage(truck.photos[1])}>
                       <img
                         src={truck.photos[1]}
                         className=" cursor-pointer  "
                       />
-                    </a>
+                    </button>
                   </div>
                 </td>
                 <td className={CLASS_TD}>
                   <div className=" bg-slate-700 w-32 h-16 rounded-md overflow-hidden  ">
-                    <a href={truck.photos[0]}>
+                    <button onClick={(e) => showImage(truck.photos[2])}>
                       <img
                         src={truck.photos[2]}
                         className=" cursor-pointer  "
                       />
-                    </a>
+                    </button>
                   </div>
                 </td>
               </tr>
