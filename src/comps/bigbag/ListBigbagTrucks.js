@@ -7,7 +7,7 @@ import { CLASS_BTN, CLASS_TD } from "../../helpers/flow";
 import Loading from "../Loading";
 import { UserContext } from "../../App";
 
-export default function ListBigbagTrucks() {
+export default function ListBigbagTrucks({ onUpdate }) {
   const [showImage] = useContext(UserContext);
   const [dt, setdt] = useState(ParseDate(new Date(), false));
   const [trucks, settrucks] = useState([]);
@@ -64,10 +64,6 @@ export default function ListBigbagTrucks() {
       loadData();
     }
     setloading(false);
-  }
-
-  function onUpdate(truck) {
-    console.log(truck);
   }
 
   return (
@@ -131,7 +127,8 @@ export default function ListBigbagTrucks() {
                 <td className={CLASS_TD}>{truck.t}</td>
                 <td className={CLASS_TD}>{truck.bags}</td>
                 <td className={CLASS_TD}>
-                  {truck.date} a {truck.time}
+                  <div className="  text-xs font-bold">{truck.date}</div>
+                  <div className="  font-bold text-xs">{truck.time}</div>
                 </td>
                 <td className={CLASS_TD}>
                   <div className=" bg-slate-700 w-32 h-16 rounded-md overflow-hidden  ">
@@ -167,12 +164,12 @@ export default function ListBigbagTrucks() {
                   <button onClick={(e) => onDel(truck)} className={CLASS_BTN}>
                     DELETE
                   </button>
-                  <button
+                  {/* <button
                     onClick={(e) => onUpdate(truck)}
                     className={CLASS_BTN}
                   >
                     UPDATE
-                  </button>
+                  </button> */}
                 </td>
               </tr>
             ))}

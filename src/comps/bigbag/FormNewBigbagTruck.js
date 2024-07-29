@@ -9,14 +9,17 @@ export default function FormNewBigbagTruck({
   onSaveBibag,
   onDataNotValid,
   onCancel,
+  updData,
 }) {
-  const [data, setdata] = useState({
-    equipe: "A",
-    plaque: "",
-    t: "",
-    date: new Date().toISOString().split("T")[0],
-    time: new Date().toISOString().split("T")[1].split(".")[0],
-  });
+  const [data, setdata] = useState(
+    updData || {
+      equipe: "A",
+      plaque: "",
+      t: "",
+      date: new Date().toISOString().split("T")[0],
+      time: new Date().toISOString().split("T")[1].split(".")[0],
+    }
+  );
   const [error, seterror] = useState({
     img: true,
     p: true,
@@ -35,7 +38,7 @@ export default function FormNewBigbagTruck({
   async function onSave() {
     const { images, plaque, t: tonnage, bags, date, time, equipe } = data;
 
-    const img = Object.entries(images).length === 3;
+    const img = updData ? true : Object.entries(images).length === 3;
     const p = plaque !== undefined && plaque !== "" && plaque.length !== 0;
     const t = tonnage !== undefined && tonnage !== "" && tonnage.length !== 0;
     const b = bags !== undefined && bags !== "" && bags.length !== 0;
@@ -48,7 +51,7 @@ export default function FormNewBigbagTruck({
     seterror(error);
 
     if (valid) {
-      onSaveBibag(data);
+      onSaveBibag(data, updData);
     } else {
       onDataNotValid(error);
     }
@@ -56,6 +59,11 @@ export default function FormNewBigbagTruck({
 
   return (
     <div className=" container  ">
+      {updData && (
+        <div className=" bg-green-600 inline-block text-xs p-1 text-white font-bold px-2 rounded-md">
+          UPDATING ... {updData.plaque}
+        </div>
+      )}
       <div>
         <div>
           Photos{" "}

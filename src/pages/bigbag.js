@@ -12,9 +12,15 @@ import Loading from "../comps/Loading";
 export function Bigbag() {
   const [curs, setcurs] = useState(Object.entries(BIGBAG_SECTIONS)[0]);
   const [loading, setloading] = useState(false);
+  const [updData, setupdData] = useState(true);
 
-  async function onSaveBibag(data) {
+  async function onSaveBibag(data, upd) {
     //setcurs(Object.entries(BIGBAG_SECTIONS)[0]);
+
+    if (upd) {
+      alert("updating ...");
+      return;
+    }
     setloading(true);
     //console.log(data);
 
@@ -58,6 +64,11 @@ export function Bigbag() {
     //alert(`All fields are required\n ${JSON.stringify(arr)}`);
   }
 
+  function onUpdate(truck) {
+    console.log("upd", truck);
+    setupdData(truck);
+  }
+
   return loading ? (
     <Loading isLoading={true} />
   ) : (
@@ -67,14 +78,20 @@ export function Bigbag() {
         onSelectTab={(e) => setcurs(e)}
         selectedIndex={0}
       />
-      {curs[0] === BIGBAG_SECTIONS.NEW.label && (
+      {(curs[0] === BIGBAG_SECTIONS.NEW.label || updData) && (
         <FormNewBigbagTruck
+          updData={updData}
           onSaveBibag={onSaveBibag}
           onDataNotValid={onDataNotValid}
-          onCancel={(e) => setcurs(Object.entries(BIGBAG_SECTIONS)[0])}
+          onCancel={(e) => {
+            setcurs(Object.entries(BIGBAG_SECTIONS)[0]);
+            setupdData(undefined);
+          }}
         />
       )}
-      {curs[0] === BIGBAG_SECTIONS.BIGBAG.label && <ListBigbagTrucks />}
+      {curs[0] === BIGBAG_SECTIONS.BIGBAG.label && !updData && (
+        <ListBigbagTrucks onUpdate={onUpdate} />
+      )}
     </div>
   );
 }
