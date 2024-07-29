@@ -3,7 +3,7 @@ import DateSelector from "../DateSelector";
 import { AddLeadingZero, dt2YYYYmmdd, ParseDate } from "../../helpers/func";
 import * as SB from "../../helpers/sb";
 import { TABLES_NAMES } from "../../helpers/sb.config";
-import { CLASS_TD } from "../../helpers/flow";
+import { CLASS_BTN, CLASS_TD } from "../../helpers/flow";
 import Loading from "../Loading";
 import { UserContext } from "../../App";
 
@@ -43,6 +43,33 @@ export default function ListBigbagTrucks() {
     console.log(truck);
   }
 
+  async function onDel(truck) {
+    setloading(true);
+    if (window.confirm(`Delete truck "${truck.plaque}"`)) {
+      const { photos } = truck;
+
+      const promises = photos.map((p, i) =>
+        SB.RemoveFile("bigbag", p.split("/")[p.split("/").length - 1])
+      );
+
+      let r = await Promise.all(promises);
+
+      if (r.error) {
+        alert(`Error deleting files! \n${JSON.stringify(r)}`);
+      }
+
+      const ri = await SB.DeleteItem(TABLES_NAMES.BIGBAG, truck);
+      alert(`Del result \n ${JSON.stringify(ri)}`);
+
+      loadData();
+    }
+    setloading(false);
+  }
+
+  function onUpdate(truck) {
+    console.log(truck);
+  }
+
   return (
     <div className=" container  ">
       <div>
@@ -68,6 +95,29 @@ export default function ListBigbagTrucks() {
               <td className={CLASS_TD}>Bon</td>
               <td className={CLASS_TD}>front</td>
               <td className={CLASS_TD}>side</td>
+              <td className={CLASS_TD}>Controls</td>
+            </tr>
+            <tr>
+              <td className={CLASS_TD}></td>
+              <td className={CLASS_TD}></td>
+              <td className={CLASS_TD}>
+                <span className="  font-bold  ">TOTAL</span>
+              </td>
+              <td className={CLASS_TD}>
+                <span className="  font-bold  ">
+                  {trucksf.reduce((acc, cv) => acc + cv.t, 0)}
+                </span>
+              </td>
+              <td className={CLASS_TD}>
+                <span className="  font-bold  ">
+                  {trucksf.reduce((acc, cv) => acc + cv.bags, 0)}
+                </span>
+              </td>
+              <td className={CLASS_TD}></td>
+              <td className={CLASS_TD}></td>
+              <td className={CLASS_TD}></td>
+              <td className={CLASS_TD}></td>
+              <td className={CLASS_TD}></td>
             </tr>
             {trucksf.map((truck, i) => (
               <tr
@@ -112,6 +162,17 @@ export default function ListBigbagTrucks() {
                       />
                     </button>
                   </div>
+                </td>
+                <td className={CLASS_TD}>
+                  <button onClick={(e) => onDel(truck)} className={CLASS_BTN}>
+                    DELETE
+                  </button>
+                  <button
+                    onClick={(e) => onUpdate(truck)}
+                    className={CLASS_BTN}
+                  >
+                    UPDATE
+                  </button>
                 </td>
               </tr>
             ))}

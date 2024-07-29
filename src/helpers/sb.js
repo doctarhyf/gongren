@@ -228,6 +228,15 @@ export async function DeleteItem(table_name, item_data) {
   return error;
 }
 
+export async function RemoveFile(bucketName, path) {
+  const { data, error } = await supabase.storage.from(bucketName).remove(path);
+
+  console.log(data);
+  if (error) return { error: true, ...error };
+
+  return data;
+}
+
 export async function DeleteItemByColEqVal(table_name, col_name, col_val) {
   const { error } = await supabase
     .from(table_name)
