@@ -1,5 +1,5 @@
 import React, { Children, useContext, useEffect, useState } from "react";
-
+import * as SB from "../helpers/sb";
 import Loading from "../comps/Loading";
 import { UserHasAccessCode } from "../helpers/func";
 import { ACCESS_CODES, LANG_COOKIE_KEY, POSTE, POSTES } from "../helpers/flow";
@@ -25,12 +25,19 @@ import {
   HUDOpsLogs,
   HUDCalculsBons,
 } from "../comps/home/HUDS";
+import DateSelector from "../comps/DateSelector";
+import { TABLES_NAMES } from "../helpers/sb.config";
 
 export default function Home() {
   const [, , user] = useContext(UserContext);
-  const [agents, setagents] = useState([]);
   const [loading, setloading] = useState(false);
-  const [agents_by_teams, set_agents_by_teams] = useState({});
+  const [loads, setloads] = useState([]);
+  const [agents, setagents] = useState([]);
+  const today = new Date();
+  const y = today.getFullYear();
+  const m = today.getMonth();
+  const d = today.getDay();
+  const [date, setdate] = useState({ y: y, m: m });
 
   const [cookies, setCookie, removeCookie] = useCookies([LANG_COOKIE_KEY]);
 
@@ -47,8 +54,24 @@ export default function Home() {
     setlang(sellang);
     settrads(GEN_TRANSLATIONS(TRANSLATIONS, sellang));
 
-    console.log("sellang : ", sellang);
+    loadData();
   }, []);
+
+  async function loadData() {
+    setloading(true);
+    const ldz = await SB.LoadAllItems(TABLES_NAMES.LOADS);
+    let agz = await SB.LoadAllItems(TABLES_NAMES.AGENTS);
+    setloads(ldz);
+    setagents(agz);
+    setloading(false);
+  }
+
+  function onDateSelected(d) {
+    console.log(d);
+    const clamp = { y: 2024, m: 6 };
+    if (d.m < clamp.m && d.y === clamp.y) d.m = clamp;
+    setdate(d);
+  }
 
   return (
     <div className=" container md:mx-auto ">
@@ -60,12 +83,25 @@ export default function Home() {
         Cliquer sur une rubrique pour voir plus de details.{" "}
       </div>
 
+      <div className=" flex flex-col md:flex-row justify-center items-center  ">
+        <div className=" text-center font-bold  ">
+          Afficher donnees du mois de:
+        </div>
+        <DateSelector
+          onDateSelected={onDateSelected}
+          defaultDate={new Date()}
+          defaultDateType={"M"}
+        />
+      </div>
+
       <div className=" container flex gap-4 my-4 flex-col md:flex-row flex-wrap ">
         {(UserHasAccessCode(user, ACCESS_CODES.CAN_SEE_BONUS_TOTAL) ||
           user.poste === "SUP" ||
           user.poste === "DEQ" ||
-          user.poste === "INT") && <HUDBonus />}
-        <HUDMonthProgress />
+          user.poste === "INT") && (
+          <HUDBonus loads={loads} agents={agents} date={date} />
+        )}
+        <HUDMonthProgress loads={loads} date={date} />
         <HUDMyTeam user={user} />
 
         <HUDSacsCalc />

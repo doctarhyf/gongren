@@ -5,8 +5,8 @@ import { getDaysInMonth, ParseDate } from "../helpers/func";
 export default function DateSelector({
   onDateSelected,
   defaultDate,
-  defaultDateType,
-  hideSelectDateType,
+  defaultDateType = "M",
+  hideSelectDateType = true,
   horizontal,
 }) {
   if (defaultDate && defaultDate.getDay) {

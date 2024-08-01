@@ -395,14 +395,9 @@ export function HUDMyTeam({ user }) {
   );
 }
 
-export function HUDMonthProgress() {
-  const date = new Date();
-  const m = date.getMonth();
-  const y = date.getFullYear();
-  const d = date.getDate();
+export function HUDMonthProgress({ loads, date }) {
   const [loading, setloading] = useState(false);
 
-  const [loads, setloads] = useState([]);
   const [data, setdata] = useState({
     camions: 100,
     sacs: 200,
@@ -411,69 +406,56 @@ export function HUDMonthProgress() {
   });
 
   useEffect(() => {
-    loadData();
-  }, []);
+    parseData(loads);
+  }, [loads, date]);
 
-  function loadData() {
-    setloading(true);
-    SB.LoadAllItems2(
-      TABLES_NAMES.LOADS,
-      (s) => {
-        setloading(false);
-
-        const curMonthLoads = s.filter(
-          (it, i) => it.code.includes(`${y}_${m}`) //it.created_at.split(":")[0].split(`-${mstring}-`)[0] == y
-        );
-        setloads(curMonthLoads);
-
-        let totCamions = 0;
-        let totSacs = 0;
-        let totTonnage = 0;
-        let totDechires = 0;
-
-        curMonthLoads.forEach((el) => {
-          const {
-            ajouts,
-            autre,
-            camions,
-            code,
-            created_at,
-            dechires,
-            id,
-            prob_courant,
-            prob_machine,
-            retours,
-            sacs,
-          } = el;
-
-          totSacs += parseInt(sacs);
-          totTonnage = totSacs / 20;
-          totCamions += parseInt(camions);
-          totDechires += parseInt(dechires);
-        });
-
-        setdata({
-          camions: totCamions,
-          sacs: totSacs,
-          tonnage: `${totTonnage} T`,
-          dechires: totDechires,
-        });
-
-        console.log("totdata => ", data);
-      },
-      (e) => {
-        setloading(false);
-        console.log(e);
-        alert(`Error \n ${JSON.stringify(e)}`);
-      }
+  function parseData(loads_data) {
+    const curMonthLoads = loads_data.filter(
+      (it, i) => it.code.includes(`${date.y}_${date.m}`) //it.created_at.split(":")[0].split(`-${mstring}-`)[0] == y
     );
+    //setloads(curMonthLoads);
+
+    let totCamions = 0;
+    let totSacs = 0;
+    let totTonnage = 0;
+    let totDechires = 0;
+
+    curMonthLoads.forEach((el) => {
+      const {
+        ajouts,
+        autre,
+        camions,
+        code,
+        created_at,
+        dechires,
+        id,
+        prob_courant,
+        prob_machine,
+        retours,
+        sacs,
+      } = el;
+
+      totSacs += parseInt(sacs);
+      totTonnage = totSacs / 20;
+      totCamions += parseInt(camions);
+      totDechires += parseInt(dechires);
+    });
+
+    setdata({
+      camions: totCamions,
+      sacs: totSacs,
+      tonnage: `${totTonnage} T`,
+      dechires: totDechires,
+    });
   }
 
   return (
     <Card
       id={0}
       bgColor={CARDS_BG_COLORS[2]}
-      title={`SUVI CHARGEMENT/月份装量计算 - ${AddLeadingZero(m + 1)}/${y}`}
+      title={`SUVI CHARGEMENT/月份装量计算 - ${AddLeadingZero(date.m + 1)}/${
+        date.y
+      }`}
       desc="Evolution chargement mois actuel"
     >
       {loading ? (
@@ -502,16 +484,20 @@ export function HUDMonthProgress() {
 
             <progress
               className="progress progress-success w-full "
-              value={GetDateParts().day}
-              max={GetMonthNumDays().count}
+              value={
+                GetDateParts("all", new Date(`${date.y}-${date.m}-${date.d}`))
+                  .day
+              }
+              max={GetMonthNumDays(date.y, date.m).count}
             ></progress>
             <div className="text-[42pt]">
               {/*  {GetMonthNumDays().remaining} J/天 */}
               <CountdownTimer />
             </div>
             <div className="p-1 bg-black w-fit text-white rounded-full px-2  ">
-              {JSON.stringify(GetDateParts().day)}th / {GetMonthNumDays().count}
-              {GetMonthNumDays().ext}
+              {JSON.stringify(date.d)}th /{" "}
+              {GetMonthNumDays(date.y, date.m).count}
+              {GetMonthNumDays(date.y, date.m).ext}
             </div>
           </div>
 
@@ -521,10 +507,6 @@ export function HUDMonthProgress() {
             <div className="text-[22pt]">
               {formatAsMoney(parseFloat(data.tonnage) * 124, "USD")}
             </div>
-            {/* <div className="p-1 bg-black w-fit text-white rounded-full px-2  ">
-              {JSON.stringify(GetDateParts().day)}th / {GetMonthNumDays().count}
-              {GetMonthNumDays().ext}
-            </div> */}
           </div>
         </div>
       )}
@@ -532,45 +514,38 @@ export function HUDMonthProgress() {
   );
 }
 
-export function HUDBonus() {
+export function HUDBonus({ loads, agents, date }) {
   const [, , user, setuser] = useContext(UserContext);
-  const today = new Date();
-  const y = today.getFullYear();
-  const m = today.getMonth();
-  const d = today.getDay();
-  const [date, setdate] = useState({ y: y, m: m });
   const [loads_by_items, set_loads_by_items] = useState([]);
   const [totalData, setTotalData] = useState([]);
   const [lastUpdateDate, setlastUpdateDate] = useState();
   const [loading, setloading] = useState(false);
 
   useEffect(() => {
-    loadData(user);
-  }, []);
+    parseData(user, loads, agents, date.y, date.m);
+  }, [loads, agents, date]);
 
-  async function loadData(user) {
+  async function parseData(user, loads, agents, y, m) {
     setloading(true);
-    const data = await SB.LoadAllItems(TABLES_NAMES.LOADS);
-    let teams = await SB.LoadAllItems(TABLES_NAMES.AGENTS);
 
-    set_loads_by_items(data);
+    set_loads_by_items(loads);
 
-    const sortedByShiftOfDay = SortLoadsByShiftOfDay(data, y, m);
+    const sortedByShiftOfDay = SortLoadsByShiftOfDay(loads, y, m);
 
     const t_data = CaclculateAllTeamsTotals(sortedByShiftOfDay);
-    t_data.A.agents = teams.filter(
+    t_data.A.agents = agents.filter(
       (it) =>
         it.equipe === "A" && it.active === "OUI" && it.section === SECTIONS[1]
     ).length;
-    t_data.B.agents = teams.filter(
+    t_data.B.agents = agents.filter(
       (it) =>
         it.equipe === "B" && it.active === "OUI" && it.section === SECTIONS[1]
     ).length;
-    t_data.C.agents = teams.filter(
+    t_data.C.agents = agents.filter(
       (it) =>
         it.equipe === "C" && it.active === "OUI" && it.section === SECTIONS[1]
     ).length;
-    t_data.D.agents = teams.filter(
+    t_data.D.agents = agents.filter(
       (it) =>
         it.equipe === "D" && it.active === "OUI" && it.section === SECTIONS[1]
     ).length;
@@ -578,14 +553,21 @@ export function HUDBonus() {
     console.log("new t_data", t_data);
 
     setTotalData(t_data);
-    setlastUpdateDate(data[data.length - 1].created_at);
+
+    let last_load = loads[0];
+    if (loads.length === 0) {
+      last_load = { created_at: "N/A" };
+    } else if (loads.length > 1) {
+      last_load = loads[loads.length - 1];
+    }
+    setlastUpdateDate(last_load.created_at);
     setloading(false);
   }
 
   return (
     <Card
       id={1}
-      title={`SUIVI BONUS/奖金计算 - ${y}年${m + 1}月`}
+      title={`SUIVI BONUS/奖金计算 - ${date.y}年${date.m + 1}月`}
       desc={"Suivi bonus du mois actuel"}
     >
       {loading ? (
