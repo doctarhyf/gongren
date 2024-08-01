@@ -25,9 +25,9 @@ export default function TableLoadsTotals({
     setupddate(date);
   }, [lastUpdateDate]);
 
-  const td = Object.entries(totalData).sort((a, b) => b[1].bonus - a[1].bonus);
-  td.push(td.shift());
-  console.log("tdata => ", td);
+  let dt = Object.entries(totalData);
+  // const tots = dt.pop();
+  //dt = [...[dt[0], dt[1], dt[2]].sort((a, b) => b[1].bonus - a[1].bonus), tots];
 
   return (
     <table className=" w-full rounded-md   ">
@@ -63,7 +63,7 @@ export default function TableLoadsTotals({
             )}
           </tr>
           {Object.entries(totalData)
-            .sort((a, b) => - a[1].bonus + b[1].bonus)
+            .sort((a, b) => -a[1].bonus + b[1].bonus)
             .map((td, i) => (
               <>
                 {" "}
@@ -118,7 +118,7 @@ export default function TableLoadsTotals({
         </div>
       ) : (
         <div>
-          {td.map((td, i) => (
+          {dt.map((td, i) => (
             <div className="  py-1 ">
               {(td[0] === user.equipe ||
                 UserHasAccessCode(user, ACCESS_CODES.ROOT) ||
