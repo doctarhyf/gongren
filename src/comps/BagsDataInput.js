@@ -155,6 +155,7 @@ export default function BagsDataInput({
               onDateSelected={onDateSelected}
               hideSelectDateType={true}
               horizontal={true}
+              defaultDateType={"D"}
               defaultDate={
                 (dataToUpdate &&
                   GetDatesPartsFromShiftCode(dataToUpdate.code)) ||
