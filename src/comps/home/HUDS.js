@@ -15,6 +15,7 @@ import {
   formatFrenchDate,
   AddLeadingZero,
   UpdateOperationsLogs,
+  FrenchDate,
 } from "../../helpers/func";
 import { UserContext } from "../../App";
 import TableLoadsTotals from "../TableLoadsTotal";
@@ -791,13 +792,12 @@ function OpsLogs({}) {
       {logs.map((lg, i) => (
         <div className=" border-b border-white/15 ">
           <div>
-            <span>{i + 1}.</span>{" "}
-            <b>
-              {lg.mat} - {lg.op}
-            </b>{" "}
-            <span className=" inline-block md:inline text-xs bg-white/20 p-1 rounded-md ">
-              {lg.created_at}
-            </span>
+            <div>
+              {i + 1}.{lg.mat} - {lg.op}
+            </div>{" "}
+            <div className="   block md:inline text-xs bg-white/20 p-1 rounded-md ">
+              {FrenchDate(new Date(lg.created_at))}
+            </div>
           </div>
           {lg.desc && (
             <div className="  text-xs opacity-50 italic font-serif ">

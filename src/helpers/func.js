@@ -33,6 +33,22 @@ export function GetDateParts(part = "all", date = new Date()) {
   return part === "all" ? parts : parts[part];
 }
 
+export function FrenchDate(date) {
+  // Format date and time in French
+  let formattedDateTime = date.toLocaleString("fr-FR", {
+    weekday: "long", // "dimanche"
+    year: "numeric", // "2024"
+    month: "long", // "août"
+    day: "numeric", // "4"
+    hour: "2-digit", // "14"
+    minute: "2-digit", // "34"
+    second: "2-digit", // "56"
+    hour12: false, // 24-hour clock
+  });
+
+  return formattedDateTime;
+}
+
 export function GetMonthNumDays(year, month) {
   const date = new Date();
   const today = date.getDate();
