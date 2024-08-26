@@ -162,7 +162,7 @@ export default function AgentRoulementTable({
                   <td
                     className={`${CLASS_TD}  ${
                       i === daysData.dates.indexOf(new Date().getDate()) &&
-                      daysData.date.m === new Date().getMonth()
+                      daysData.date.m === new Date().getMonth() + 1
                         ? CLASS_TODAY
                         : ""
                     } ${["S", "D"].includes(d) ? "bg-black text-white" : ""} `}
@@ -180,7 +180,7 @@ export default function AgentRoulementTable({
                   <td
                     className={`${CLASS_TD}  ${
                       i === daysData.dates.indexOf(new Date().getDate()) &&
-                      daysData.date.m === new Date().getMonth()
+                      daysData.date.m === new Date().getMonth() + 1
                         ? CLASS_TODAY
                         : ""
                     } `}
@@ -205,7 +205,7 @@ export default function AgentRoulementTable({
               <td
                 className={`${CLASS_TD}  ${
                   i === daysData.dates.indexOf(new Date().getDate()) &&
-                  daysData.date.m === new Date().getMonth()
+                  daysData.date.m === new Date().getMonth() + 1
                     ? CLASS_TODAY
                     : ""
                 } `}
