@@ -6,11 +6,12 @@ import Loading from "../comps/Loading";
 import gck from "../img/gck.png";
 import copy from "../img/copy.png";
 import wechat from "../img/wechat.png";
-import { SHIFT_HOURS_ZH, SUPERVISORS } from "../helpers/flow";
+import { LOG_OPERATION, SHIFT_HOURS_ZH, SUPERVISORS } from "../helpers/flow";
 import {
   AddLeadingZero,
   customSortShifts,
   GetDateParts,
+  UpdateOperationsLogs,
 } from "../helpers/func";
 import * as SB from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
@@ -20,14 +21,20 @@ import save from "../img/save.png";
 import pdf from "../img/pdf.png";
 import reload from "../img/reload.png";
 
+const TEAMS = ["A", "B", "C", "D"];
+
 function FormAddLoad({ onDataUpdate }) {
+  const [, , user, setuser] = useContext(UserContext);
   const [date, setdate] = useState(GetDateParts("input"));
-  const [team, setteam] = useState("A");
+  const [team, setteam] = useState(
+    TEAMS.includes(user.equipe) ? user.equipe : "A"
+  );
   const [shift, setshift] = useState("M");
   const [sacs, setsacs] = useState(0);
   const [camions, setcamions] = useState(0);
   const [dechires, setdechires] = useState(0);
-  const [, , user, setuser] = useContext(UserContext);
+
+  //alert(user.equipe);
 
   useEffect(() => {
     prepData(date, team, shift, sacs);
@@ -246,6 +253,13 @@ Superviseur班长: @${nom} ${zh} 
     if (r === null) {
       alert("Donnee ajoutees avec success");
       loadData();
+      const l = await UpdateOperationsLogs(
+        SB,
+        user,
+        LOG_OPERATION.LOGIN,
+        JSON.stringify(load)
+      );
+      console.log(l);
       setadding(false);
     } else {
       alert("Erreur ajout donnees\n" + JSON.stringify(r));
