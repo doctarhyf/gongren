@@ -3,7 +3,8 @@ import { UserContext } from "../App";
 import ActionButton from "../comps/ActionButton";
 import DateSelector from "../comps/DateSelector";
 import Loading from "../comps/Loading";
-import { SHIFT_HOURS_ZH } from "../helpers/flow";
+import gck from "../img/gck.png";
+import { SHIFT_HOURS_ZH, SUPERVISORS } from "../helpers/flow";
 import {
   AddLeadingZero,
   customSortShifts,
@@ -14,6 +15,7 @@ import { TABLES_NAMES } from "../helpers/sb.config";
 import multiply from "../img/multiply.png";
 import plus from "../img/plus.png";
 import save from "../img/save.png";
+import pdf from "../img/pdf.png";
 import reload from "../img/reload.png";
 
 function FormAddLoad({ onDataUpdate }) {
@@ -134,6 +136,17 @@ export default function SuiviChargement() {
   const [adding, setadding] = useState(false);
   const [newdata, setnewdata] = useState();
 
+  /*return `•EMBALLAGE CIMENT水泥包装
+${y}年${Number(m) + 1}月${d}日
+Équipe班：${team}
+Superviseur班长: @${nom} ${zh} 
+     •${shift_data}
+装车${camions}辆/Camions Chargés 
+袋子用${sacs}个/Sacs Utilisés 
+共计${tonnage.toFixed(2)}吨/Tonne 
+撕裂的袋子${dechires}个/Sacs déchirés`;
+  } */
+
   useEffect(() => {
     loadData();
     const parts = GetDateParts("all");
@@ -251,8 +264,42 @@ export default function SuiviChargement() {
     }
   }
 
+  const [repportdata, setrepportdata] = useState({});
   function onDataUpdate(nd) {
     console.log("nd", nd);
+    /* {
+    "sacs": 0,
+    "retours": 0,
+    "ajouts": 0,
+    "code": "A_M_2024_8_26",
+    "prob_machine": null,
+    "prob_courant": null,
+    "autre": null,
+    "camions": 0,
+    "dechires": 0,
+    "sacs_adj": 0
+} */
+    const [team, shift, y, m, d] = nd.code.split("_");
+    const sup = SUPERVISORS[team];
+
+    const { camions, sacs, dechires } = nd;
+    const t = parseFloat(sacs) / 20;
+    const rep = {
+      team: team,
+      y: parseInt(y),
+      m: parseInt(m),
+      d: parseInt(d),
+      sup: sup,
+      shift: `${SHIFT_HOURS_ZH[shift][0]} - ${SHIFT_HOURS_ZH[shift][1]} - ${SHIFT_HOURS_ZH[shift][2]}`,
+      s: shift,
+      camions: camions,
+      sacs: sacs,
+      t: t,
+      dechires: dechires,
+    };
+
+    console.log("rep", rep);
+    setrepportdata(rep);
     setnewdata(nd);
   }
 
@@ -299,6 +346,28 @@ export default function SuiviChargement() {
       </div>
 
       <div>
+        {adding && (
+          <div role="alert" className="alert my-4 alert-warning">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6 shrink-0 stroke-current"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+              />
+            </svg>
+            <span>
+              Veuillez insert toutes donnees sans aucune erreur svp! votre prime
+              en depend!
+            </span>
+          </div>
+        )}
+
         <table class="table-auto">
           <thead>
             <tr>
@@ -379,24 +448,70 @@ export default function SuiviChargement() {
         </table>
 
         {adding && (
-          <div role="alert" className="alert my-4 alert-warning">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6 shrink-0 stroke-current"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+          <div>
+            <div className=" flex w-fit justify-between my-2 ">
+              <span className=" font-bold underline italic font-serif ">
+                RAPPORT CHARGEMENT
+              </span>
+              <ActionButton
+                icon={pdf}
+                title={"Print"}
+                onClick={(e) => alert("printing ...")}
               />
-            </svg>
-            <span>
-              Veuillez insert toutes donnees sans aucune erreur svp! votre prime
-              en depend!
-            </span>
+            </div>
+            <div className="  border border-slate-600 shadow-lg shadow-slate-400 max-w-[18rem] p-2 ">
+              <div className="  text-end ">
+                <span className=" font-bold underline">{repportdata.y}</span>年
+                <span className=" font-bold underline">{repportdata.m}</span>月
+                <span className=" font-bold underline">{repportdata.d}</span>日
+              </div>
+              <div className=" w-32 h-fit  ">
+                <img src={gck} />
+              </div>
+              <div className="  text-center underline font-bold ">
+                •EMBALLAGE CIMENT水泥包装{" "}
+              </div>
+              <div>•Équipe班:{repportdata.team}</div>
+              <div>
+                •Superviseur班长: @
+                <span className=" font-bold underline ">
+                  {" "}
+                  {`${repportdata.sup.nom} - ${repportdata.sup.zh}`}{" "}
+                </span>
+              </div>
+              <div>
+                •
+                <span className=" font-bold underline ">
+                  {repportdata.shift}
+                </span>
+              </div>
+              <div>
+                •装车
+                <span className=" font-bold underline ">
+                  {repportdata.camions}
+                </span>
+                辆/Camions Chargés
+              </div>
+              <div>
+                •袋子用
+                <span className=" font-bold underline ">
+                  {repportdata.sacs}
+                </span>
+                个/Sacs Utilisés
+              </div>
+              <div>
+                •共计
+                <span className=" font-bold underline ">{repportdata.t}</span>
+                吨/Tonne
+              </div>
+              <div>
+                •撕裂的袋子
+                <span className=" font-bold underline ">
+                  {repportdata.dechires}
+                </span>
+                个/Sacs déchirés`;
+              </div>
+            </div>
           </div>
         )}
       </div>
