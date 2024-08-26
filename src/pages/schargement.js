@@ -4,6 +4,8 @@ import ActionButton from "../comps/ActionButton";
 import DateSelector from "../comps/DateSelector";
 import Loading from "../comps/Loading";
 import gck from "../img/gck.png";
+import copy from "../img/copy.png";
+import wechat from "../img/wechat.png";
 import { SHIFT_HOURS_ZH, SUPERVISORS } from "../helpers/flow";
 import {
   AddLeadingZero,
@@ -38,7 +40,9 @@ function FormAddLoad({ onDataUpdate }) {
   function prepData(date, team, shift, sacs, camions, dechires) {
     const parts = GetDateParts("input", new Date(date));
     const [year, month, day] = parts.split("-");
-    const code = `${team}_${shift}_${year}_${parseInt(month)}_${parseInt(day)}`; //"A_M_2024_7_1",
+    const code = `${team}_${shift}_${year}_${parseInt(month) - 1}_${parseInt(
+      day
+    )}`; //"A_M_2024_7_1",
 
     const load = {
       sacs: sacs,
@@ -287,7 +291,7 @@ Superviseur班长: @${nom} ${zh} 
     const rep = {
       team: team,
       y: parseInt(y),
-      m: parseInt(m),
+      m: parseInt(m) + 1,
       d: parseInt(d),
       sup: sup,
       shift: `${SHIFT_HOURS_ZH[shift][0]} - ${SHIFT_HOURS_ZH[shift][1]} - ${SHIFT_HOURS_ZH[shift][2]}`,
@@ -324,12 +328,13 @@ Superviseur班长: @${nom} ${zh} 
           </select>
         </div>
       </div>
-      <div className=" md:flex gap-2 my-4 ">
+      <div className=" md:flex ">
         <ActionButton
           icon={adding ? save : plus}
           title={adding ? "Save" : "Nouveau Rapport"}
           onClick={onClick}
         />
+
         {adding ? (
           <ActionButton
             icon={multiply}
@@ -344,7 +349,6 @@ Superviseur班长: @${nom} ${zh} 
           />
         )}
       </div>
-
       <div>
         {adding && (
           <div role="alert" className="alert my-4 alert-warning">
@@ -449,7 +453,7 @@ Superviseur班长: @${nom} ${zh} 
 
         {adding && (
           <div>
-            <div className=" flex w-fit justify-between my-2 ">
+            <div className=" md:flex w-fit justify-between my-2 ">
               <span className=" font-bold underline italic font-serif ">
                 RAPPORT CHARGEMENT
               </span>
@@ -457,6 +461,11 @@ Superviseur班长: @${nom} ${zh} 
                 icon={pdf}
                 title={"Print"}
                 onClick={(e) => alert("printing ...")}
+              />
+              <ActionButton
+                icon={wechat}
+                title={"Copier pour Wechat"}
+                onClick={(e) => alert("Copy ...")}
               />
             </div>
             <div className="  border border-slate-600 shadow-lg shadow-slate-400 max-w-[18rem] p-2 ">
@@ -476,7 +485,7 @@ Superviseur班长: @${nom} ${zh} 
                 •Superviseur班长: @
                 <span className=" font-bold underline ">
                   {" "}
-                  {`${repportdata.sup.nom} - ${repportdata.sup.zh}`}{" "}
+                  {`${repportdata.sup?.nom} - ${repportdata.sup?.zh}`}{" "}
                 </span>
               </div>
               <div>
