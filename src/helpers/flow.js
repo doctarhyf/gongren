@@ -5,6 +5,7 @@ import Equipes from "../pages/equipes";
 import Sections from "../pages/sections";
 import Listes from "../pages/listes";
 import Chargement from "../pages/chargement";
+import SuiviChargement from "../pages/schargement";
 import Magasin from "../pages/magasin";
 import Dico from "../pages/dico";
 import Sacs from "../pages/sacs";
@@ -54,9 +55,9 @@ export const NO_IMAGE =
 
 export const SHIFTS_ZH = ["白班", "中班", "夜班"];
 export const SHIFT_HOURS_ZH = {
-  M: ["MATIN", "白班", "07h00 - 15h00"],
-  P: ["APREM", "中班", "15h00 - 23h00"],
-  N: ["NUIT", "夜班", "23h00 - 07h00"],
+  M: ["MATIN", "白班", "07h00 - 15h00", "M"],
+  P: ["APREM", "中班", "15h00 - 23h00", "P"],
+  N: ["NUIT", "夜班", "23h00 - 07h00", "N"],
 };
 
 export const CLASS_REPPORT_CARD = `border mt-2 rounded-md p-1 h-min bg-neutral-100 shadow-md`;
@@ -100,6 +101,7 @@ export const ACCESS_CODES = {
   PAGE_HOME: "HME",
   PAGE_AGENTS: "AGT",
   PAGE_CHARGEMENT: "LDS",
+  PAGE_SUIVI_CHARGEMENT: "SLDS",
   PAGE_BIGBAG: "BB",
   PAGE_JINCHU: "JC",
   PAGE_ROULEMENT: "RL",
@@ -235,6 +237,12 @@ export const MAIN_MENU = [
     name: "Chargement",
     path: "/chargement",
     el: Chargement,
+    access_code: ACCESS_CODES.PAGE_CHARGEMENT,
+  },
+  {
+    name: "Suivi Chargement",
+    path: "/schargement",
+    el: SuiviChargement,
     access_code: ACCESS_CODES.PAGE_CHARGEMENT,
   },
   {

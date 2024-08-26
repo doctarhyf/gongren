@@ -130,8 +130,15 @@ export async function CountAllItems(tableName) {
   return data.length;
 }
 
-export async function LoadAllItems(tableName) {
-  let { data, error } = await supabase.from(tableName).select("*");
+export async function LoadAllItems(
+  tableName,
+  orderby = "created_at",
+  ascending = false
+) {
+  let { data, error } = await supabase
+    .from(tableName)
+    .select("*")
+    .order(orderby, { ascending: ascending });
 
   if (error) return error;
 
