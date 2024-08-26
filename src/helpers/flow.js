@@ -243,7 +243,7 @@ export const MAIN_MENU = [
     name: "Suivi Chargement",
     path: "/schargement",
     el: SuiviChargement,
-    access_code: ACCESS_CODES.PAGE_CHARGEMENT,
+    access_code: ACCESS_CODES.PAGE_SUIVI_CHARGEMENT,
   },
   {
     name: "BIGBAG",

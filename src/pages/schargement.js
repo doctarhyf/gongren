@@ -10,23 +10,44 @@ import ActionButton from "../comps/ActionButton";
 import plus from "../img/plus.png";
 import save from "../img/save.png";
 
-function FormAddingRow() {
+function FormAddingRow({ onDataUpdate }) {
+  const [date, setdate] = useState();
   const [team, setteam] = useState("A");
   const [shift, setshift] = useState("M");
   const [sacs, setsacs] = useState(0);
+  const [, , user, setuser] = useContext(UserContext);
+
+  useEffect(() => {
+    const data = {
+      date: date,
+      team: team,
+      shift: shift,
+      sacs: sacs,
+    };
+
+    onDataUpdate(data);
+  }, [date, team, shift, sacs]);
   return (
     <tr>
       <td className="  border border-slate-500 p-1 text-end ">
-        <input type="date" />
+        <input
+          type="date"
+          value={date}
+          onChange={(e) => setdate(e.target.value)}
+        />
       </td>
       <td className="  border border-slate-500 p-1 text-end ">
-        <select onChange={(e) => setteam(e.target.value)}>
-          {["A", "B", "C", "D", "ALL"].map((op) => (
-            <option selected={op === team} value={op}>
-              {op}
-            </option>
-          ))}
-        </select>
+        {["A", "B", "C", "D"].includes(user.equipe) ? (
+          user.equipe
+        ) : (
+          <select onChange={(e) => setteam(e.target.value)}>
+            {["A", "B", "C", "D"].map((op) => (
+              <option selected={op === team} value={op}>
+                {op}
+              </option>
+            ))}
+          </select>
+        )}
       </td>
       <td className="  border border-slate-500 p-1 text-end ">
         <select onChange={(e) => setshift(e.target.value)}>
@@ -39,6 +60,7 @@ function FormAddingRow() {
       </td>
       <td className="  border border-slate-500 p-1 text-end ">
         <input
+          className="border border-purple-700 rounded-md"
           type="number"
           value={sacs}
           onChange={(e) => setsacs(parseInt(e.target.value))}
@@ -61,6 +83,7 @@ export default function SuiviChargement() {
   const [team, setteam] = useState("A");
   const [bonustot, setbonustot] = useState(0);
   const [adding, setadding] = useState(false);
+  const [newdata, setnewdata] = useState();
 
   useEffect(() => {
     loadData();
@@ -136,10 +159,15 @@ export default function SuiviChargement() {
     setadding(!adding);
 
     if (adding) {
-      console.log("will save data ...");
+      console.log("will save data ...", newdata);
     } else {
       console.log("will toggle adding to yes");
     }
+  }
+
+  function onDataUpdate(nd) {
+    console.log("nd", nd);
+    setnewdata(nd);
   }
 
   return (
@@ -182,7 +210,7 @@ export default function SuiviChargement() {
           </thead>
           {adding ? (
             <tbody>
-              <FormAddingRow />
+              <FormAddingRow onDataUpdate={onDataUpdate} />
             </tbody>
           ) : (
             <tbody>
@@ -241,6 +269,28 @@ export default function SuiviChargement() {
             </tbody>
           )}
         </table>
+
+        {adding && (
+          <div role="alert" className="alert my-4 alert-warning">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6 shrink-0 stroke-current"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+              />
+            </svg>
+            <span>
+              Veuillez insert toutes donnees sans aucune erreur svp! votre prime
+              en depend!
+            </span>
+          </div>
+        )}
       </div>
     </div>
   );
