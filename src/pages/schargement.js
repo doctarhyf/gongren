@@ -482,7 +482,7 @@ Superviseur班长: @${nom} ${zh} 
                 onClick={(e) => alert("Copy ...")}
               />
             </div>
-            <div className="  border border-slate-600 shadow-lg shadow-slate-400 max-w-[18rem] p-2 ">
+            <div className="  border dark:bg-white dark:text-white border-slate-600 shadow-lg dark:bg-white/25 shadow-slate-400 max-w-[18rem] p-2 ">
               <div className="  text-end ">
                 <span className=" font-bold underline">{repportdata.y}</span>年
                 <span className=" font-bold underline">{repportdata.m}</span>月
