@@ -30,7 +30,11 @@ export function GetDateParts(part = "all", date = new Date()) {
     seconds: s,
   };
 
-  return part === "all" ? parts : parts[part];
+  return part === "all"
+    ? parts
+    : part === "input"
+    ? `${y}-${AddLeadingZero(m + 1)}-${AddLeadingZero(d)}`
+    : parts[part];
 }
 
 export function FrenchDate(date) {
