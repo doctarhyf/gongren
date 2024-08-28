@@ -1,5 +1,11 @@
 import GetRoulemenDaysData from "./GetRoulemenDaysData.mjs";
-import { ACCESS_CODES, MONTHS, POSTE, SHIFT_HOURS_ZH } from "./flow";
+import {
+  ACCESS_CODES,
+  MONTHS,
+  POSTE,
+  SHIFT_HOURS_ZH,
+  SUPERVISORS,
+} from "./flow";
 import { jsPDF } from "jspdf";
 import { TABLES_NAMES } from "./sb.config";
 
@@ -11,6 +17,29 @@ const LOGOW = 286;
 const LOGOH = 66;
 // Default export is a4 paper, portrait, using millimeters for units
 const orientation = "landscape";
+
+export function ParseBaozhuang(nd) {
+  const [team, shift, y, m, d] = nd.code.split("_");
+  const sup = SUPERVISORS[team];
+
+  const { camions, sacs, dechires } = nd;
+  const t = parseFloat(sacs) / 20;
+  const rep = {
+    team: team,
+    y: parseInt(y),
+    m: parseInt(m) + 1,
+    d: parseInt(d),
+    sup: `${sup.nom} - ${sup.zh}`,
+    shift: `${SHIFT_HOURS_ZH[shift][0]} - ${SHIFT_HOURS_ZH[shift][1]} - ${SHIFT_HOURS_ZH[shift][2]}`,
+    s: shift,
+    camions: camions,
+    sacs: sacs,
+    t: t,
+    dechires: dechires,
+  };
+
+  return rep;
+}
 
 export function GetDateParts(part = "all", date = new Date()) {
   const y = date.getFullYear();

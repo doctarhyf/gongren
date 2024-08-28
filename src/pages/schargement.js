@@ -3,23 +3,24 @@ import { UserContext } from "../App";
 import ActionButton from "../comps/ActionButton";
 import DateSelector from "../comps/DateSelector";
 import Loading from "../comps/Loading";
-import gck from "../img/gck.png";
-import copy from "../img/copy.png";
-import wechat from "../img/wechat.png";
+
+import Boazhuang from "../comps/sacs/Baozhuang";
 import { LOG_OPERATION, SHIFT_HOURS_ZH, SUPERVISORS } from "../helpers/flow";
 import {
   AddLeadingZero,
   customSortShifts,
   GetDateParts,
+  ParseBaozhuang,
   UpdateOperationsLogs,
 } from "../helpers/func";
 import * as SB from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
 import multiply from "../img/multiply.png";
-import plus from "../img/plus.png";
-import save from "../img/save.png";
 import pdf from "../img/pdf.png";
+import plus from "../img/plus.png";
 import reload from "../img/reload.png";
+import save from "../img/save.png";
+import wechat from "../img/wechat.png";
 
 const TEAMS = ["A", "B", "C", "D"];
 
@@ -270,6 +271,7 @@ Superviseur班长: @${nom} ${zh} 
 
   function onClick(e) {
     //setadding(!adding);
+    //setviewload(false);
 
     if (adding) {
       console.log("will save data ...", newdata);
@@ -284,41 +286,20 @@ Superviseur班长: @${nom} ${zh} 
 
   const [repportdata, setrepportdata] = useState({});
   function onDataUpdate(nd) {
-    console.log("nd", nd);
-    /* {
-    "sacs": 0,
-    "retours": 0,
-    "ajouts": 0,
-    "code": "A_M_2024_8_26",
-    "prob_machine": null,
-    "prob_courant": null,
-    "autre": null,
-    "camions": 0,
-    "dechires": 0,
-    "sacs_adj": 0
-} */
-    const [team, shift, y, m, d] = nd.code.split("_");
-    const sup = SUPERVISORS[team];
+    const rep = ParseBaozhuang(nd);
 
-    const { camions, sacs, dechires } = nd;
-    const t = parseFloat(sacs) / 20;
-    const rep = {
-      team: team,
-      y: parseInt(y),
-      m: parseInt(m) + 1,
-      d: parseInt(d),
-      sup: sup,
-      shift: `${SHIFT_HOURS_ZH[shift][0]} - ${SHIFT_HOURS_ZH[shift][1]} - ${SHIFT_HOURS_ZH[shift][2]}`,
-      s: shift,
-      camions: camions,
-      sacs: sacs,
-      t: t,
-      dechires: dechires,
-    };
-
-    console.log("rep", rep);
+    console.log(rep);
     setrepportdata(rep);
     setnewdata(nd);
+  }
+
+  const [baozhuangrep, setbaozhuangrep] = useState();
+  function onClickLoad(load) {
+    console.log(load);
+    const bz = ParseBaozhuang(load);
+    setbaozhuangrep(bz);
+    console.log(bz);
+    //setviewload(true);
   }
 
   return (
@@ -329,40 +310,46 @@ Superviseur班长: @${nom} ${zh} 
           <Loading isLoading={loading} />
         </span>
       </div>
-      <div className="  flex items-center gap-2 align-middle ">
-        <DateSelector onDateSelected={onDateSelected} />
-        <div className="flex gap-2 align-middle items-center">
-          <div className=" font-bold">EQUIPE</div>
-          <select onChange={(e) => setteam(e.target.value)}>
-            {["A", "B", "C", "D", "ALL"].map((op) => (
-              <option selected={op === team} value={op}>
-                {op}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
-      <div className=" md:flex ">
-        <ActionButton
-          icon={adding ? save : plus}
-          title={adding ? "Save" : "Nouveau Rapport"}
-          onClick={onClick}
-        />
 
-        {adding ? (
-          <ActionButton
-            icon={multiply}
-            title={"Cancel"}
-            onClick={(e) => setadding(false)}
-          />
-        ) : (
-          <ActionButton
-            icon={reload}
-            title={"Refresh"}
-            onClick={(e) => loadData()}
-          />
-        )}
-      </div>
+      {!baozhuangrep && (
+        <>
+          <div className="  flex items-center gap-2 align-middle ">
+            <DateSelector onDateSelected={onDateSelected} />
+            <div className="flex gap-2 align-middle items-center">
+              <div className=" font-bold">EQUIPE</div>
+              <select onChange={(e) => setteam(e.target.value)}>
+                {["A", "B", "C", "D", "ALL"].map((op) => (
+                  <option selected={op === team} value={op}>
+                    {op}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+          <div className=" md:flex ">
+            <ActionButton
+              icon={adding ? save : plus}
+              title={adding ? "Save" : "Nouveau Rapport"}
+              onClick={onClick}
+            />
+
+            {adding ? (
+              <ActionButton
+                icon={multiply}
+                title={"Cancel"}
+                onClick={(e) => setadding(false)}
+              />
+            ) : (
+              <ActionButton
+                icon={reload}
+                title={"Refresh"}
+                onClick={(e) => loadData()}
+              />
+            )}
+          </div>
+        </>
+      )}
+
       <div>
         {adding && (
           <div role="alert" className="alert my-4 alert-warning">
@@ -386,156 +373,133 @@ Superviseur班长: @${nom} ${zh} 
           </div>
         )}
 
-        <table class="table-auto">
-          <thead>
-            <tr>
-              <th className="border border-slate-500 p-1">Date</th>
-              <th className="border border-slate-500 p-1">EQ.</th>
-              <th className="border border-slate-500 p-1">Shift</th>
-              <th className="border border-slate-500 p-1">Sacs</th>
-              {adding && (
-                <>
-                  <th className="border border-slate-500 p-1">Camions</th>
-                  <th className="border border-slate-500 p-1">Dechires</th>
-                </>
-              )}
-              <th className="border border-slate-500 p-1">T</th>
-              <th className="border border-slate-500 p-1">BNS</th>
-            </tr>
-          </thead>
-          {adding ? (
-            <tbody>
-              <FormAddLoad onDataUpdate={onDataUpdate} />
-            </tbody>
-          ) : (
-            <tbody>
-              <tr>
-                <td className="  border border-slate-500 p-1 text-end "></td>
-                <td className="  border border-slate-500 p-1 text-end "></td>
-                <td className="  border border-slate-500 p-1 text-end "></td>
-                <td className="  border border-slate-500 p-1 text-end "></td>
-                <td className="  border border-slate-500 p-1 text-end ">
-                  T. Bonus
-                </td>
-                <td className="  border border-slate-500 p-1 text-end ">
-                  {bonustot}
-                </td>
-              </tr>
-              {loadsf.map((ld) => (
-                <tr>
-                  <td className="  border border-slate-500 p-1 text-end ">
-                    {ld.meta?.date}
-                  </td>
-                  <td className="  border border-slate-500 p-1 text-end ">
-                    {ld.meta?.team}
-                  </td>
-                  <td className="  border border-slate-500 p-1 text-end ">
-                    {ld.meta?.shift}
-                  </td>
-                  <td className="  border border-slate-500 p-1 text-end ">
-                    {ld.sacs}
-                  </td>
-                  <td className="  border border-slate-500 p-1 text-end ">
-                    {parseFloat(ld.sacs) / 20}
-                  </td>
-                  <td className="  border border-slate-500 p-1 text-end ">
-                    {parseFloat(ld.sacs) / 20 > 600 ? (
-                      <span className=" font-serif text-sky-700 font-bold ">
-                        {parseFloat(ld.sacs) / 20 - 600}
-                      </span>
-                    ) : (
-                      0
-                    )}
-                  </td>
-                </tr>
-              ))}{" "}
-              <tr>
-                <td className="  border border-slate-500 p-1 text-end "></td>
-                <td className="  border border-slate-500 p-1 text-end "></td>
-                <td className="  border border-slate-500 p-1 text-end "></td>
-                <td className="  border border-slate-500 p-1 text-end "></td>
-                <td className="  border border-slate-500 p-1 text-end ">
-                  T. Bonus
-                </td>
-                <td className="  border border-slate-500 p-1 text-end ">
-                  {bonustot}
-                </td>
-              </tr>
-            </tbody>
-          )}
-        </table>
-
-        {adding && (
+        {baozhuangrep ? (
           <div>
-            <div className=" md:flex w-fit justify-between my-2 ">
-              <span className=" font-bold underline italic font-serif ">
-                RAPPORT CHARGEMENT
-              </span>
+            <Boazhuang repportdata={baozhuangrep} />
+            <div className="flex">
               <ActionButton
-                icon={pdf}
+                icon={""}
+                title={"OK"}
+                onClick={(e) => setbaozhuangrep(undefined)}
+              />
+              {/* <ActionButton
+                icon={""}
+                title={"Update"}
+                onClick={(e) => setbaozhuangrep(undefined)}
+              />
+              <ActionButton
+                icon={""}
                 title={"Print"}
-                onClick={(e) => alert("printing ...")}
-              />
-              <ActionButton
-                icon={wechat}
-                title={"Copier pour Wechat"}
-                onClick={(e) => alert("Copy ...")}
-              />
-            </div>
-            <div className="  border dark:bg-white dark:text-black border-slate-600 shadow-lg dark:shadow-white/20 shadow-slate-400 max-w-[18rem] p-2 ">
-              <div className="  text-end ">
-                <span className=" font-bold underline">{repportdata.y}</span>年
-                <span className=" font-bold underline">{repportdata.m}</span>月
-                <span className=" font-bold underline">{repportdata.d}</span>日
-              </div>
-              <div className=" w-32 h-fit  ">
-                <img src={gck} />
-              </div>
-              <div className="  text-center underline font-bold ">
-                •EMBALLAGE CIMENT水泥包装{" "}
-              </div>
-              <div>•Équipe班:{repportdata.team}</div>
-              <div>
-                •Superviseur班长: @
-                <span className=" font-bold underline ">
-                  {" "}
-                  {`${repportdata.sup?.nom} - ${repportdata.sup?.zh}`}{" "}
-                </span>
-              </div>
-              <div>
-                •
-                <span className=" font-bold underline ">
-                  {repportdata.shift}
-                </span>
-              </div>
-              <div>
-                •装车
-                <span className=" font-bold underline ">
-                  {repportdata.camions}
-                </span>
-                辆/Camions Chargés
-              </div>
-              <div>
-                •袋子用
-                <span className=" font-bold underline ">
-                  {repportdata.sacs}
-                </span>
-                个/Sacs Utilisés
-              </div>
-              <div>
-                •共计
-                <span className=" font-bold underline ">{repportdata.t}</span>
-                吨/Tonne
-              </div>
-              <div>
-                •撕裂的袋子
-                <span className=" font-bold underline ">
-                  {repportdata.dechires}
-                </span>
-                个/Sacs déchirés`;
-              </div>
+                onClick={(e) => setbaozhuangrep(undefined)}
+              /> */}
             </div>
           </div>
+        ) : (
+          <>
+            <table class="table-auto">
+              <thead>
+                <tr>
+                  <th className="border border-slate-500 p-1">Date</th>
+                  <th className="border border-slate-500 p-1">EQ.</th>
+                  <th className="border border-slate-500 p-1">Shift</th>
+                  <th className="border border-slate-500 p-1">Sacs</th>
+                  {adding && (
+                    <>
+                      <th className="border border-slate-500 p-1">Camions</th>
+                      <th className="border border-slate-500 p-1">Dechires</th>
+                    </>
+                  )}
+                  <th className="border border-slate-500 p-1">T</th>
+                  <th className="border border-slate-500 p-1">BNS</th>
+                </tr>
+              </thead>
+              {adding ? (
+                <tbody>
+                  <FormAddLoad onDataUpdate={onDataUpdate} />
+                </tbody>
+              ) : (
+                <tbody>
+                  <tr>
+                    <td className="  border border-slate-500 p-1 text-end "></td>
+                    <td className="  border border-slate-500 p-1 text-end "></td>
+                    <td className="  border border-slate-500 p-1 text-end "></td>
+                    <td className="  border border-slate-500 p-1 text-end "></td>
+                    <td className="  border border-slate-500 p-1 text-end ">
+                      T. Bonus
+                    </td>
+                    <td className="  border border-slate-500 p-1 text-end ">
+                      {bonustot}
+                    </td>
+                  </tr>
+                  {loadsf.map((ld) => (
+                    <tr
+                      className=" hover:bg-slate-400 cursor-pointer  "
+                      onClick={(e) => onClickLoad(ld)}
+                    >
+                      <td className="  border border-slate-500 p-1 text-end ">
+                        {ld.meta?.date}
+                      </td>
+                      <td className="  border border-slate-500 p-1 text-end ">
+                        {ld.meta?.team}
+                      </td>
+                      <td className="  border border-slate-500 p-1 text-end ">
+                        {ld.meta?.shift}
+                      </td>
+                      <td className="  border border-slate-500 p-1 text-end ">
+                        {ld.sacs}
+                      </td>
+                      <td className="  border border-slate-500 p-1 text-end ">
+                        {parseFloat(ld.sacs) / 20}
+                      </td>
+                      <td className="  border border-slate-500 p-1 text-end ">
+                        {parseFloat(ld.sacs) / 20 > 600 ? (
+                          <span className=" font-serif text-sky-700 font-bold ">
+                            {parseFloat(ld.sacs) / 20 - 600}
+                          </span>
+                        ) : (
+                          0
+                        )}
+                      </td>
+                    </tr>
+                  ))}{" "}
+                  <tr>
+                    <td className="  border border-slate-500 p-1 text-end "></td>
+                    <td className="  border border-slate-500 p-1 text-end "></td>
+                    <td className="  border border-slate-500 p-1 text-end "></td>
+                    <td className="  border border-slate-500 p-1 text-end "></td>
+                    <td className="  border border-slate-500 p-1 text-end ">
+                      T. Bonus
+                    </td>
+                    <td className="  border border-slate-500 p-1 text-end ">
+                      {bonustot}
+                    </td>
+                  </tr>
+                </tbody>
+              )}
+            </table>
+
+            {adding && (
+              <div>
+                <div className=" md:flex w-fit justify-between my-2 ">
+                  <span className=" font-bold underline italic font-serif ">
+                    RAPPORT CHARGEMENT
+                  </span>
+                  <ActionButton
+                    icon={pdf}
+                    title={"Print"}
+                    onClick={(e) => alert("printing ...")}
+                  />
+                  <ActionButton
+                    icon={wechat}
+                    title={"Copier pour Wechat"}
+                    onClick={(e) => alert("Copy ...")}
+                  />
+                </div>
+
+                <Boazhuang repportdata={repportdata} />
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>
