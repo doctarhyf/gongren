@@ -13,7 +13,10 @@ export default function Boazhuang({ repportdata }) {
       <div className="  text-center underline font-bold ">
         •EMBALLAGE CIMENT水泥包装{" "}
       </div>
-      <div>•Équipe班:{repportdata.team}</div>
+      <div>
+        •Équipe班:
+        <span className=" font-bold underline ">{repportdata.team}</span>
+      </div>
       <div>
         •Superviseur班长: @
         <span className=" font-bold underline ">{repportdata.sup}</span>
