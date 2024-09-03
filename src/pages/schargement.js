@@ -5,7 +5,7 @@ import DateSelector from "../comps/DateSelector";
 import Loading from "../comps/Loading";
 
 import Boazhuang from "../comps/sacs/Baozhuang";
-import { LOG_OPERATION, SHIFT_HOURS_ZH, SUPERVISORS } from "../helpers/flow";
+import { LOG_OPERATION, SHIFT_HOURS_ZH } from "../helpers/flow";
 import {
   AddLeadingZero,
   customSortShifts,
@@ -21,6 +21,7 @@ import plus from "../img/plus.png";
 import reload from "../img/reload.png";
 import save from "../img/save.png";
 import wechat from "../img/wechat.png";
+import { printTable } from "../helpers/print";
 
 const TEAMS = ["A", "B", "C", "D"];
 
@@ -302,6 +303,57 @@ Superviseur班长: @${nom} ${zh} 
     //setviewload(true);
   }
 
+  function onPrint(loads) {
+    if (loads.length === 0) {
+      alert("Cant print empty data!\nPlease select a month with load data!");
+      return;
+    }
+
+    let finaldate;
+    const headers = [["DATE", "EQ.", "SHIFT", "SACS", "T", "BONUS"]];
+    const data = loads
+      .map((item) => {
+        const meta = {
+          ...item.meta,
+          sacs: item.sacs,
+          t: parseFloat((parseFloat(item.sacs) / 20).toFixed(2)),
+        };
+
+        return meta;
+      })
+      .map((item) => {
+        /*
+{
+    "date": "29/07/2024",
+    "shift": "N : 23h00 - 07h00",
+    "team": "A",
+    "bonus": 0,
+    "sacs": 3490,
+    "t": 174.5
+}
+        */
+
+        const { date, team, shift, sacs, t, bonus } = item;
+
+        const [d, m, y] = item.date.split("/");
+
+        const month = AddLeadingZero(parseInt(m) + 1);
+
+        finaldate = `${y}.${month}.${d}`;
+        //console.log("dt => ", dt);
+        const finalitem = [finaldate, team, shift, sacs, t, bonus];
+        console.log("finalitem => ", finalitem);
+        return finalitem; //[date, team, shift, sacs, t, bonus];
+      });
+
+    let [year, month, date] = finaldate.split(".");
+
+    const title = `CHARGEMENT CIMENT ${year}.${month}`;
+    const filename = title.replaceAll(" ", "_") + ".pdf";
+
+    printTable(data, title, headers, filename);
+  }
+
   return (
     <div className=" container  ">
       <div>
@@ -396,6 +448,11 @@ Superviseur班长: @${nom} ${zh} 
           </div>
         ) : (
           <>
+            <ActionButton
+              icon={pdf}
+              title={"Print"}
+              onClick={(e) => onPrint(loadsf)}
+            />
             <table class="table-auto">
               <thead>
                 <tr>
