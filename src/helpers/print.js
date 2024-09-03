@@ -48,7 +48,7 @@ people: [
 
   const rect = drawLogo(doc, logo, marginLeft);
 
-  console.log(rect);
+  //console.log(rect);
 
   let content = {
     startY: rect.h + marginLeft / 2, //rect.y + rect.h,
@@ -64,8 +64,8 @@ people: [
 
 function drawLogo(doc, logo, margin, yspacefactor = 4) {
   const ofs = doc.getFontSize();
-  const text = "GongRen © 2024";
-  const LOGO = { W: 25, H: 15 };
+  const text = "SHUINI CHEJIAN © 2024";
+  const LOGO = { W: 55, H: 15 };
   doc.addImage(logo, "PNG", margin, margin, LOGO.W, LOGO.H);
   const logotexty = margin + LOGO.H * 1.5;
 

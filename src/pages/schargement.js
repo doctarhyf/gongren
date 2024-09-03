@@ -309,48 +309,52 @@ Superviseur班长: @${nom} ${zh} 
       return;
     }
 
+    const tot = {
+      sacs: 0,
+      t: 0,
+      bonus: 0,
+    };
     let finaldate;
     const headers = [["DATE", "EQ.", "SHIFT", "SACS", "T", "BONUS"]];
     const data = loads
       .map((item) => {
         const meta = {
           ...item.meta,
-          sacs: item.sacs,
+          sacs: parseInt(item.sacs),
           t: parseFloat((parseFloat(item.sacs) / 20).toFixed(2)),
         };
 
+        tot.sacs += meta.sacs;
+        tot.t += meta.t;
+        tot.bonus += parseFloat(meta.bonus);
         return meta;
       })
       .map((item) => {
-        /*
-{
-    "date": "29/07/2024",
-    "shift": "N : 23h00 - 07h00",
-    "team": "A",
-    "bonus": 0,
-    "sacs": 3490,
-    "t": 174.5
-}
-        */
-
         const { date, team, shift, sacs, t, bonus } = item;
-
-        const [d, m, y] = item.date.split("/");
-
+        const [d, m, y] = date.split("/");
         const month = AddLeadingZero(parseInt(m) + 1);
 
         finaldate = `${y}.${month}.${d}`;
-        //console.log("dt => ", dt);
+
         const finalitem = [finaldate, team, shift, sacs, t, bonus];
-        console.log("finalitem => ", finalitem);
+        //console.log("finalitem => ", finalitem);
         return finalitem; //[date, team, shift, sacs, t, bonus];
       });
 
-    let [year, month, date] = finaldate.split(".");
+    let [year, month, day] = finaldate.split(".");
 
     const title = `CHARGEMENT CIMENT ${year}.${month}`;
     const filename = title.replaceAll(" ", "_") + ".pdf";
 
+    const totrow = [
+      ,
+      ,
+      "TOTAL",
+      tot.sacs,
+      tot.t.toFixed(2),
+      tot.bonus.toFixed(2),
+    ];
+    data.push(totrow);
     printTable(data, title, headers, filename);
   }
 
