@@ -9,7 +9,7 @@ import {
 import Loading from "./Loading";
 import { GFMN } from "../helpers/GetRoulemenDaysData.mjs";
 import { UserContext } from "../App";
-import { UserHasAccessCode } from "../helpers/func";
+import { AddOneToRoulementCurMonth, UserHasAccessCode } from "../helpers/func";
 
 const POINTAGES_HOURS_LEN = {
   J: 10,
@@ -162,7 +162,8 @@ export default function AgentRoulementTable({
                   <td
                     className={`${CLASS_TD}  ${
                       i === daysData.dates.indexOf(new Date().getDate()) &&
-                      daysData.date.m === new Date().getMonth() + 1
+                      daysData.date.m ===
+                        new Date().getMonth() + AddOneToRoulementCurMonth()
                         ? CLASS_TODAY
                         : ""
                     } ${["S", "D"].includes(d) ? "bg-black text-white" : ""} `}
@@ -180,7 +181,8 @@ export default function AgentRoulementTable({
                   <td
                     className={`${CLASS_TD}  ${
                       i === daysData.dates.indexOf(new Date().getDate()) &&
-                      daysData.date.m === new Date().getMonth() + 1
+                      daysData.date.m ===
+                        new Date().getMonth() + +AddOneToRoulementCurMonth()
                         ? CLASS_TODAY
                         : ""
                     } `}
@@ -205,7 +207,8 @@ export default function AgentRoulementTable({
               <td
                 className={`${CLASS_TD}  ${
                   i === daysData.dates.indexOf(new Date().getDate()) &&
-                  daysData.date.m === new Date().getMonth() + 1
+                  daysData.date.m ===
+                    new Date().getMonth() + AddOneToRoulementCurMonth()
                     ? CLASS_TODAY
                     : ""
                 } `}

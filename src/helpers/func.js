@@ -18,6 +18,14 @@ const LOGOH = 66;
 // Default export is a4 paper, portrait, using millimeters for units
 const orientation = "landscape";
 
+export function AddOneToRoulementCurMonth() {
+  const date = new Date();
+  const d = date.getDate();
+  const add = d < 21 ? 0 : 1;
+  console.log("addOne", add, d);
+  return add;
+}
+
 export function ParseBaozhuang(nd) {
   const [team, shift, y, m, d] = nd.code.split("_");
   const sup = SUPERVISORS[team];

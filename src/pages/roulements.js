@@ -182,7 +182,7 @@ export default function Roulements() {
         curAgent={curAgent}
       />
 
-      <ItemNotSelected show={curAgent} />
+      {/* <ItemNotSelected show={!curAgent} /> */}
 
       <TableRoulement agentData={curAgent} />
     </div>

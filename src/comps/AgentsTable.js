@@ -5,6 +5,7 @@ import shield from "../img/shield.png";
 import sup from "../img/sup.png";
 import pdf from "../img/pdf.png";
 import {
+  AddOneToRoulementCurMonth,
   CountAgentsByPostType,
   _,
   getDaysInMonth,
@@ -199,8 +200,10 @@ export default function AgentsTable({
                   <td
                     key={i}
                     className={`${CLASS_TD} ${
-                      isCurrentMonth && i === todayIndex ? CLASS_TODAY : ""
-                    } ${["S", "D"].includes(d) ? "bg-black text-white" : ""} `}
+                      isCurrentMonth && cal.dates[i] === new Date().getDate()
+                        ? CLASS_TODAY
+                        : ""
+                    } `}
                   >
                     {d}
                   </td>
@@ -230,8 +233,10 @@ export default function AgentsTable({
                   <td
                     key={i}
                     className={`${CLASS_TD} ${
-                      isCurrentMonth && i === todayIndex ? CLASS_TODAY : ""
-                    }   `}
+                      isCurrentMonth && cal.dates[i] === new Date().getDate()
+                        ? CLASS_TODAY
+                        : ""
+                    }  `}
                   >
                     {d}
                   </td>
