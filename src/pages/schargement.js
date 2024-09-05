@@ -21,7 +21,7 @@ import pdf from "../img/pdf.png";
 import plus from "../img/plus.png";
 import reload from "../img/reload.png";
 import save from "../img/save.png";
-import wechat from "../img/wechat.png";
+import check from "../img/check.svg";
 import { printTable } from "../helpers/print";
 
 const TEAMS = ["A", "B", "C", "D"];
@@ -437,14 +437,13 @@ Superviseur班长: @${nom} ${zh} 
 
         {baozhuangrep ? (
           <div>
-            {/* <Boazhuang repportdata={baozhuangrep} /> */}
             <Boazhuang2
               repportdata={baozhuangrep}
               onBaozhuangSave={onBaozhuangSave}
             />
             <div className="flex">
               <ActionButton
-                icon={""}
+                icon={check}
                 title={"OK"}
                 onClick={(e) => setbaozhuangrep(undefined)}
               />
@@ -467,28 +466,29 @@ Superviseur班长: @${nom} ${zh} 
               title={"Print"}
               onClick={(e) => onPrint(loadsf)}
             />
-            <table class="table-auto">
-              <thead>
-                <tr>
-                  <th className="border border-slate-500 p-1">Date</th>
-                  <th className="border border-slate-500 p-1">EQ.</th>
-                  <th className="border border-slate-500 p-1">Shift</th>
-                  <th className="border border-slate-500 p-1">Sacs</th>
-                  {adding && (
-                    <>
-                      <th className="border border-slate-500 p-1">Camions</th>
-                      <th className="border border-slate-500 p-1">Dechires</th>
-                    </>
-                  )}
-                  <th className="border border-slate-500 p-1">T</th>
-                  <th className="border border-slate-500 p-1">BNS</th>
-                </tr>
-              </thead>
-              {adding ? (
-                <tbody>
-                  <FormAddLoad onDataUpdate={onDataUpdate} />
-                </tbody>
-              ) : (
+            {adding ? (
+              <Boazhuang2 onBaozhuangSave={onBaozhuangSave} editmode={true} />
+            ) : (
+              <table class="table-auto">
+                <thead>
+                  <tr>
+                    <th className="border border-slate-500 p-1">Date</th>
+                    <th className="border border-slate-500 p-1">EQ.</th>
+                    <th className="border border-slate-500 p-1">Shift</th>
+                    <th className="border border-slate-500 p-1">Sacs</th>
+                    {adding && (
+                      <>
+                        <th className="border border-slate-500 p-1">Camions</th>
+                        <th className="border border-slate-500 p-1">
+                          Dechires
+                        </th>
+                      </>
+                    )}
+                    <th className="border border-slate-500 p-1">T</th>
+                    <th className="border border-slate-500 p-1">BNS</th>
+                  </tr>
+                </thead>
+
                 <tbody>
                   <tr>
                     <td className="  border border-slate-500 p-1 text-end "></td>
@@ -546,29 +546,7 @@ Superviseur班长: @${nom} ${zh} 
                     </td>
                   </tr>
                 </tbody>
-              )}
-            </table>
-
-            {adding && (
-              <div>
-                <div className=" md:flex w-fit justify-between my-2 ">
-                  <span className=" font-bold underline italic font-serif ">
-                    RAPPORT CHARGEMENT
-                  </span>
-                  <ActionButton
-                    icon={pdf}
-                    title={"Print"}
-                    onClick={(e) => alert("printing ...")}
-                  />
-                  <ActionButton
-                    icon={wechat}
-                    title={"Copier pour Wechat"}
-                    onClick={(e) => alert("Copy ...")}
-                  />
-                </div>
-
-                <Boazhuang repportdata={repportdata} />
-              </div>
+              </table>
             )}
           </>
         )}

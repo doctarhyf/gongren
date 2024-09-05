@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { SHIFT_HOURS_ZH, SUPERVISORS } from "../../helpers/flow";
-import { AddLeadingZero } from "../../helpers/func";
+import { AddLeadingZero, GetDateParts } from "../../helpers/func";
 import * as SB from "../../helpers/sb";
 import { TABLES_NAMES } from "../../helpers/sb.config";
 import gck from "../../img/gck.png";
@@ -10,13 +10,25 @@ import cancel from "../../img/shield.png";
 import ActionButton from "../ActionButton";
 import Loading from "../Loading";
 
-export default function Boazhuang2({ repportdata, onBaozhuangSave }) {
+export default function Boazhuang2({ repportdata, onBaozhuangSave, editmode }) {
   const [data, setdata] = useState({});
   const [editing, setediting] = useState(false);
   const [loading, setloading] = useState(false);
 
   useEffect(() => {
-    setdata(repportdata);
+    let defaultdata = { team: "A" };
+    if (!repportdata) {
+      const dateparts = GetDateParts("all");
+      defaultdata = {
+        ...defaultdata,
+        y: dateparts.year,
+        m: dateparts.month + 1,
+        d: dateparts.day,
+      };
+    }
+
+    setdata(repportdata || defaultdata);
+    setediting(editmode);
     console.log("rd => ", repportdata);
   }, []);
 
@@ -86,7 +98,7 @@ export default function Boazhuang2({ repportdata, onBaozhuangSave }) {
   }
 
   return (
-    <div className="  border dark:bg-white dark:text-black border-slate-600 shadow-lg dark:shadow-white/20 shadow-slate-400 mx-auto  sm:max-w-[20rem] p-2 ">
+    <div className="  border dark:bg-white dark:text-black border-slate-600 shadow-lg dark:shadow-white/20 shadow-slate-400 mx-auto  sm:max-w-[20rem] p-4 ">
       <div className="  text-end ">
         {editing ? (
           <input
@@ -113,7 +125,7 @@ export default function Boazhuang2({ repportdata, onBaozhuangSave }) {
       <div className=" w-32 h-fit  ">
         <img src={gck} />
       </div>
-      <div className="  text-center underline font-bold ">
+      <div className=" my-4  text-center underline font-bold ">
         •EMBALLAGE CIMENT水泥包装{" "}
       </div>
       <div>
@@ -156,7 +168,7 @@ export default function Boazhuang2({ repportdata, onBaozhuangSave }) {
           >
             {Object.entries(SHIFT_HOURS_ZH).map((shiftd, i) => (
               <option key={i} value={shiftd[0]}>
-                {`${shiftd[1][0]} - ${shiftd[1][1]} - ${shiftd[1][2]}`}
+                {GetShiftString(shiftd[0])}
               </option>
             ))}
           </select>
@@ -228,7 +240,7 @@ export default function Boazhuang2({ repportdata, onBaozhuangSave }) {
         )}
         个/Sacs déchirés`;
       </div>
-      <div className=" justify-between m-1 flex ">
+      <div className=" my-4 justify-between m-1 flex ">
         <ActionButton
           disabled={loading}
           icon={editing ? save : pen}
