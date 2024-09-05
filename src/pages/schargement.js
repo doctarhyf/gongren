@@ -461,92 +461,96 @@ Superviseur班长: @${nom} ${zh} 
           </div>
         ) : (
           <>
-            <ActionButton
-              icon={pdf}
-              title={"Print"}
-              onClick={(e) => onPrint(loadsf)}
-            />
             {adding ? (
               <Boazhuang2 onBaozhuangSave={onBaozhuangSave} editmode={true} />
             ) : (
-              <table class="table-auto">
-                <thead>
-                  <tr>
-                    <th className="border border-slate-500 p-1">Date</th>
-                    <th className="border border-slate-500 p-1">EQ.</th>
-                    <th className="border border-slate-500 p-1">Shift</th>
-                    <th className="border border-slate-500 p-1">Sacs</th>
-                    {adding && (
-                      <>
-                        <th className="border border-slate-500 p-1">Camions</th>
-                        <th className="border border-slate-500 p-1">
-                          Dechires
-                        </th>
-                      </>
-                    )}
-                    <th className="border border-slate-500 p-1">T</th>
-                    <th className="border border-slate-500 p-1">BNS</th>
-                  </tr>
-                </thead>
+              <>
+                <ActionButton
+                  icon={pdf}
+                  title={"Print Repport"}
+                  onClick={(e) => onPrint(loadsf)}
+                />
+                <table class="table-auto">
+                  <thead>
+                    <tr>
+                      <th className="border border-slate-500 p-1">Date</th>
+                      <th className="border border-slate-500 p-1">EQ.</th>
+                      <th className="border border-slate-500 p-1">Shift</th>
+                      <th className="border border-slate-500 p-1">Sacs</th>
+                      {adding && (
+                        <>
+                          <th className="border border-slate-500 p-1">
+                            Camions
+                          </th>
+                          <th className="border border-slate-500 p-1">
+                            Dechires
+                          </th>
+                        </>
+                      )}
+                      <th className="border border-slate-500 p-1">T</th>
+                      <th className="border border-slate-500 p-1">BNS</th>
+                    </tr>
+                  </thead>
 
-                <tbody>
-                  <tr>
-                    <td className="  border border-slate-500 p-1 text-end "></td>
-                    <td className="  border border-slate-500 p-1 text-end "></td>
-                    <td className="  border border-slate-500 p-1 text-end "></td>
-                    <td className="  border border-slate-500 p-1 text-end "></td>
-                    <td className="  border border-slate-500 p-1 text-end ">
-                      T. Bonus
-                    </td>
-                    <td className="  border border-slate-500 p-1 text-end ">
-                      {bonustot}
-                    </td>
-                  </tr>
-                  {loadsf.map((ld) => (
-                    <tr
-                      className=" hover:bg-slate-400 cursor-pointer  "
-                      onClick={(e) => onClickLoad(ld)}
-                    >
+                  <tbody>
+                    <tr>
+                      <td className="  border border-slate-500 p-1 text-end "></td>
+                      <td className="  border border-slate-500 p-1 text-end "></td>
+                      <td className="  border border-slate-500 p-1 text-end "></td>
+                      <td className="  border border-slate-500 p-1 text-end "></td>
                       <td className="  border border-slate-500 p-1 text-end ">
-                        {ld.meta?.date}
+                        T. Bonus
                       </td>
                       <td className="  border border-slate-500 p-1 text-end ">
-                        {ld.meta?.team}
-                      </td>
-                      <td className="  border border-slate-500 p-1 text-end ">
-                        {ld.meta?.shift}
-                      </td>
-                      <td className="  border border-slate-500 p-1 text-end ">
-                        {ld.sacs}
-                      </td>
-                      <td className="  border border-slate-500 p-1 text-end ">
-                        {parseFloat(ld.sacs) / 20}
-                      </td>
-                      <td className="  border border-slate-500 p-1 text-end ">
-                        {parseFloat(ld.sacs) / 20 > 600 ? (
-                          <span className=" font-serif text-sky-700 font-bold ">
-                            {parseFloat(ld.sacs) / 20 - 600}
-                          </span>
-                        ) : (
-                          0
-                        )}
+                        {bonustot}
                       </td>
                     </tr>
-                  ))}{" "}
-                  <tr>
-                    <td className="  border border-slate-500 p-1 text-end "></td>
-                    <td className="  border border-slate-500 p-1 text-end "></td>
-                    <td className="  border border-slate-500 p-1 text-end "></td>
-                    <td className="  border border-slate-500 p-1 text-end "></td>
-                    <td className="  border border-slate-500 p-1 text-end ">
-                      T. Bonus
-                    </td>
-                    <td className="  border border-slate-500 p-1 text-end ">
-                      {bonustot}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+                    {loadsf.map((ld) => (
+                      <tr
+                        className=" hover:bg-slate-400 cursor-pointer  "
+                        onClick={(e) => onClickLoad(ld)}
+                      >
+                        <td className="  border border-slate-500 p-1 text-end ">
+                          {ld.meta?.date}
+                        </td>
+                        <td className="  border border-slate-500 p-1 text-end ">
+                          {ld.meta?.team}
+                        </td>
+                        <td className="  border border-slate-500 p-1 text-end ">
+                          {ld.meta?.shift}
+                        </td>
+                        <td className="  border border-slate-500 p-1 text-end ">
+                          {ld.sacs}
+                        </td>
+                        <td className="  border border-slate-500 p-1 text-end ">
+                          {parseFloat(ld.sacs) / 20}
+                        </td>
+                        <td className="  border border-slate-500 p-1 text-end ">
+                          {parseFloat(ld.sacs) / 20 > 600 ? (
+                            <span className=" font-serif text-sky-700 font-bold ">
+                              {parseFloat(ld.sacs) / 20 - 600}
+                            </span>
+                          ) : (
+                            0
+                          )}
+                        </td>
+                      </tr>
+                    ))}{" "}
+                    <tr>
+                      <td className="  border border-slate-500 p-1 text-end "></td>
+                      <td className="  border border-slate-500 p-1 text-end "></td>
+                      <td className="  border border-slate-500 p-1 text-end "></td>
+                      <td className="  border border-slate-500 p-1 text-end "></td>
+                      <td className="  border border-slate-500 p-1 text-end ">
+                        T. Bonus
+                      </td>
+                      <td className="  border border-slate-500 p-1 text-end ">
+                        {bonustot}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </>
             )}
           </>
         )}

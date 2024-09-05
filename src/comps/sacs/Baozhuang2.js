@@ -5,7 +5,9 @@ import * as SB from "../../helpers/sb";
 import { TABLES_NAMES } from "../../helpers/sb.config";
 import gck from "../../img/gck.png";
 import pen from "../../img/pen.png";
+import pdf from "../../img/pdf.png";
 import save from "../../img/save.png";
+import wechat from "../../img/wechat.png";
 import cancel from "../../img/shield.png";
 import ActionButton from "../ActionButton";
 import Loading from "../Loading";
@@ -73,7 +75,7 @@ export default function Boazhuang2({ repportdata, onBaozhuangSave, editmode }) {
         sacs_adj: 0,
       };
 
-      console.log(load_data);
+      //console.log(load_data);
 
       const res = await SB.UpsertItem(TABLES_NAMES.LOADS, load_data, "code");
 
@@ -97,8 +99,16 @@ export default function Boazhuang2({ repportdata, onBaozhuangSave, editmode }) {
     return shiftstring;
   }
 
+  function onPrint() {
+    alert("Printing bon ...");
+  }
+
+  function onCopy() {
+    alert("Copying for Wechat ...");
+  }
+
   return (
-    <div className="  border dark:bg-white dark:text-black border-slate-600 shadow-lg dark:shadow-white/20 shadow-slate-400 mx-auto  sm:max-w-[20rem] p-4 ">
+    <div className="  border dark:bg-white dark:text-black border-slate-600 shadow-lg dark:shadow-white/20 shadow-slate-400 mx-auto  sm:max-w-[26rem] p-4 ">
       <div className="  text-end ">
         {editing ? (
           <input
@@ -247,6 +257,17 @@ export default function Boazhuang2({ repportdata, onBaozhuangSave, editmode }) {
           onClick={onSaveData}
           title={editing ? "SAVE" : "EDIT"}
         />
+        {!editing && !loading && (
+          <ActionButton icon={pdf} onClick={onPrint} title={"Print"} />
+        )}
+
+        {!editing && !loading && (
+          <ActionButton
+            icon={wechat}
+            onClick={onCopy}
+            title={"Copy for Wechat"}
+          />
+        )}
         {editing && !loading && (
           <ActionButton
             icon={cancel}
