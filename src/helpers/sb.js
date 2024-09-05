@@ -82,6 +82,22 @@ export async function UpdateRoulement2(
   return count;
 }
 
+export async function UpsertItem(tablename, item, onConflict) {
+  //if(!item.id) throw new Error('Item to Upsert must have an id')
+  const { data, error } = await supabase
+    .from(tablename)
+    .upsert(item, { onConflict: onConflict })
+    .select()
+    .single();
+
+  if (error) {
+    //console.log(error);
+    return error;
+  }
+
+  return data;
+}
+
 export async function UpdateRoulement(month_code, newData) {
   const { data, error } = await supabase
     .from(TABLES_NAMES.AGENTS_RLD)

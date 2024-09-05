@@ -5,6 +5,7 @@ import DateSelector from "../comps/DateSelector";
 import Loading from "../comps/Loading";
 
 import Boazhuang from "../comps/sacs/Baozhuang";
+import Boazhuang2 from "../comps/sacs/Baozhuang2";
 import { LOG_OPERATION, SHIFT_HOURS_ZH } from "../helpers/flow";
 import {
   AddLeadingZero,
@@ -358,10 +359,15 @@ Superviseur班长: @${nom} ${zh} 
     printTable(data, title, headers, filename);
   }
 
+  function onBaozhuangSave(nd) {
+    setbaozhuangrep(undefined);
+    loadData();
+  }
+
   return (
     <div className=" container  ">
       <div>
-        Suivi Chargement{" "}
+        SUIVI CHARGEMENT{" "}
         <span>
           <Loading isLoading={loading} />
         </span>
@@ -431,7 +437,11 @@ Superviseur班长: @${nom} ${zh} 
 
         {baozhuangrep ? (
           <div>
-            <Boazhuang repportdata={baozhuangrep} />
+            {/* <Boazhuang repportdata={baozhuangrep} /> */}
+            <Boazhuang2
+              repportdata={baozhuangrep}
+              onBaozhuangSave={onBaozhuangSave}
+            />
             <div className="flex">
               <ActionButton
                 icon={""}
