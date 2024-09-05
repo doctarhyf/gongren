@@ -91,7 +91,7 @@ export default function Boazhuang2({ repportdata, onBaozhuangSave }) {
         {editing ? (
           <input
             type="date"
-            className="p-1 rounded-md outline-none border-2 mx-1 border-purple-500"
+            className="p-1 dark:bg-slate-700 dark:text-white rounded-md outline-none border-2 mx-1 border-purple-500"
             value={`${data.y}-${AddLeadingZero(data.m)}-${AddLeadingZero(
               data.d
             )}`}
@@ -120,7 +120,7 @@ export default function Boazhuang2({ repportdata, onBaozhuangSave }) {
         •Équipe班:
         {editing ? (
           <select
-            className="p-1 rounded-md outline-none border-2 mx-1  border-purple-500"
+            className="p-1 dark:bg-slate-700 dark:text-white rounded-md outline-none border-2 mx-1  border-purple-500"
             value={data.team}
             onChange={(e) =>
               setdata((prev) => ({ ...prev, team: e.target.value }))
@@ -146,7 +146,7 @@ export default function Boazhuang2({ repportdata, onBaozhuangSave }) {
         •
         {editing ? (
           <select
-            className="p-1 rounded-md outline-none border-2 mx-1  border-purple-500"
+            className="p-1 dark:bg-slate-700 dark:text-white rounded-md outline-none border-2 mx-1  border-purple-500"
             value={data.s}
             onChange={(e) => {
               const s = e.target.value;
@@ -168,7 +168,7 @@ export default function Boazhuang2({ repportdata, onBaozhuangSave }) {
         •装车
         {editing ? (
           <input
-            className="p-1 rounded-md outline-none border-2 mx-1 w-16 border-purple-500"
+            className="p-1 dark:bg-slate-700 dark:text-white rounded-md outline-none border-2 mx-1 w-16 border-purple-500"
             type="number"
             value={data.camions}
             onChange={(e) =>
@@ -188,7 +188,7 @@ export default function Boazhuang2({ repportdata, onBaozhuangSave }) {
         {editing ? (
           <input
             type="number"
-            className="p-1 rounded-md outline-none border-2 mx-1 w-20 border-purple-500"
+            className="p-1 dark:bg-slate-700 dark:text-white rounded-md outline-none border-2 mx-1 w-20 border-purple-500"
             value={data.sacs}
             onChange={(e) => {
               const sacs = parseInt(e.target.value);
@@ -214,7 +214,7 @@ export default function Boazhuang2({ repportdata, onBaozhuangSave }) {
         {editing ? (
           <input
             type="number"
-            className="p-1 rounded-md outline-none border-2 mx-1 w-20 border-purple-500"
+            className="p-1 dark:bg-slate-700 dark:text-white rounded-md outline-none border-2 mx-1 w-20 border-purple-500"
             value={data.dechires}
             onChange={(e) => {
               setdata((prev) => ({
