@@ -9,11 +9,12 @@ import { LOG_OPERATION, SHIFT_HOURS_ZH } from "../helpers/flow";
 import {
   AddLeadingZero,
   customSortShifts,
+  formatFrenchDate,
   GetDateParts,
   ParseBaozhuang,
   UpdateOperationsLogs,
 } from "../helpers/func";
-import { printTable } from "../helpers/print";
+import { printDailyRepport, printTable } from "../helpers/print";
 import * as SB from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
 import check from "../img/check.svg";
@@ -251,7 +252,7 @@ export default function SuiviChargement() {
         LOG_OPERATION.LOGIN,
         JSON.stringify(load)
       );
-      console.log(l);
+      // console.log(l);
       setadding(false);
     } else {
       alert("Erreur ajout donnees\n" + JSON.stringify(r));
@@ -358,12 +359,20 @@ export default function SuiviChargement() {
     setadding(false);
   }
 
-  function onPrintDailyRepport(ld, idx) {
-    const date = ld.code.split("M_")[1];
-    const loads = loadsf.filter((it) => it.code.includes(date));
+  function onPrintDailyRepport(load_data, idx) {
+    const loads = loadsf.filter((it) =>
+      it.code.includes(load_data.code.split("M_")[1])
+    );
 
-    console.log("date => ", date);
-    console.log("loads => ", loads);
+    let datestr = AddOneMonth(
+      loads[0].code.split("M_")[1].replaceAll("_", "/")
+    );
+
+    const date = new Date(datestr);
+    const frenchdate = formatFrenchDate(date);
+    const filename = `PRIME_DU_${frenchdate}.pdf`;
+
+    printDailyRepport(loads, date, filename);
   }
 
   async function onDeleteShiftRepport(ld) {
@@ -377,6 +386,14 @@ export default function SuiviChargement() {
         alert(`Error\n${JSON.stringify(error)}`);
       }
     }
+  }
+
+  function AddOneMonth(date) {
+    console.log("AddOneMonth ", date);
+    if (!date) return;
+    const date_fix = date.split("/");
+    date_fix[1] = AddLeadingZero(parseInt(date_fix[1]) + 1);
+    return date_fix.join("/");
   }
 
   return (
@@ -524,11 +541,13 @@ export default function SuiviChargement() {
                     </tr>
                     {loadsf.map((ld, i) => (
                       <tr
-                        className=" hover:bg-slate-400 cursor-pointer  "
+                        className={` hover:bg-slate-400 cursor-pointer  ${
+                          i % 3 === 0 && " bg-slate-100  "
+                        }  `}
                         onClick={(e) => onClickLoad(ld)}
                       >
                         <td className="  border border-slate-500 p-1 text-end ">
-                          {ld.meta?.date}
+                          {AddOneMonth(ld.meta?.date)}
                         </td>
                         <td className="  border border-slate-500 p-1 text-end ">
                           {ld.meta?.team}

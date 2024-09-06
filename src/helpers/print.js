@@ -1,6 +1,13 @@
 import jsPDF from "jspdf";
-import autoTable from "jspdf-autotable";
 import logo from "../img/gck.png";
+import {
+  draw_daily_repport_table,
+  draw_watermark,
+  draw_logo,
+  draw_daily_repport_title,
+  draw_date,
+  GCK_LOGO,
+} from "./print_utils";
 export function printTable(
   data,
   title,
@@ -46,7 +53,7 @@ people: [
 
   //const data = this.state.people.map((elt) => [elt.name, elt.profession]);
 
-  const rect = drawLogo(doc, logo, marginLeft);
+  const rect = draw_logo(doc, logo, marginLeft);
 
   //console.log(rect);
 
@@ -58,43 +65,8 @@ people: [
 
   doc.text(title, marginLeft, rect.hm);
   doc.autoTable(content);
-  printWatermark(doc, marginLeft);
+  draw_watermark(doc, marginLeft);
   doc.save(filename);
-}
-
-function drawLogo(doc, logo, margin, yspacefactor = 4) {
-  const ofs = doc.getFontSize();
-  const text = "SHUINI CHEJIAN © 2024";
-  const LOGO = { W: 55, H: 15 };
-  doc.addImage(logo, "PNG", margin, margin, LOGO.W, LOGO.H);
-  const logotexty = margin + LOGO.H * 1.5;
-
-  doc.setFontSize(10);
-  doc.text(text, margin, logotexty);
-  const textdims = doc.getTextDimensions(text);
-
-  doc.setFontSize(ofs);
-  return {
-    x: margin,
-    y: margin,
-    w: textdims.w,
-    h: textdims.h + logotexty,
-    hm: textdims.h + logotexty + margin / yspacefactor,
-  };
-}
-
-function printWatermark(doc, margin, watermark) {
-  const oldfs = doc.getFontSize();
-  doc.setFontSize(8);
-  const text = watermark || "https://gongren.vercel.app/";
-  const pageWidth = doc.internal.pageSize.getWidth();
-  const pageHeight = doc.internal.pageSize.getHeight();
-  const textWidth = doc.getTextWidth(text);
-  const x = pageWidth - textWidth - margin;
-  const y = pageHeight - margin;
-  doc.text(new Date().toISOString(), margin, y);
-  doc.text(text, x, y);
-  doc.setFontSize(oldfs);
 }
 
 function printBaozhuang(doc, data) {
@@ -111,4 +83,43 @@ function printBaozhuang(doc, data) {
     "t": 794,
     "dechires": 0
 } */
+}
+
+export function printDailyRepport(data, date, filename) {
+  const PAGE_WIDTH = 210;
+  const PAGE_HEIGHT = 297;
+  const PAGE_MARGIN = 15;
+  const FONT_SIZE = 8;
+
+  const doc = new jsPDF();
+  let fontr = doc.addFont(
+    "./fonts/DroidSansFallback.ttf",
+    "DroidSansFallback",
+    "normal"
+  );
+
+  const rect_logo = draw_logo(doc, GCK_LOGO, PAGE_MARGIN, 1);
+
+  //const date = parseFrenchDate(data.date.replaceAll("Du ", ""));
+
+  draw_date(doc, PAGE_WIDTH, PAGE_MARGIN, FONT_SIZE, date, true);
+  const rect_title = draw_daily_repport_title(
+    doc,
+    rect_logo.h / 2,
+    PAGE_WIDTH,
+    PAGE_MARGIN,
+    12
+  );
+
+  draw_daily_repport_table(
+    doc,
+    PAGE_WIDTH,
+    PAGE_HEIGHT,
+    PAGE_MARGIN,
+    rect_title,
+    FONT_SIZE,
+    data
+  );
+
+  doc.save(filename);
 }
