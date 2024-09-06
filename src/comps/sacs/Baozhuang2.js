@@ -12,12 +12,19 @@ import cancel from "../../img/shield.png";
 import ActionButton from "../ActionButton";
 import Loading from "../Loading";
 
-export default function Boazhuang2({ repportdata, onBaozhuangSave, editmode }) {
+export default function Boazhuang2({
+  repportdata,
+  onBaozhuangSave,
+  editmode,
+  onBaozhuangCancel,
+}) {
   const [data, setdata] = useState({});
   const [editing, setediting] = useState(false);
   const [loading, setloading] = useState(false);
+  const [newrep, setnewrep] = useState(false);
 
   useEffect(() => {
+    setnewrep(false);
     let defaultdata = { team: "A" };
     if (!repportdata) {
       const dateparts = GetDateParts("all");
@@ -31,6 +38,7 @@ export default function Boazhuang2({ repportdata, onBaozhuangSave, editmode }) {
 
     setdata(repportdata || defaultdata);
     setediting(editmode);
+    setnewrep(undefined === repportdata);
     console.log("rd => ", repportdata);
   }, []);
 
@@ -103,8 +111,30 @@ export default function Boazhuang2({ repportdata, onBaozhuangSave, editmode }) {
     alert("Printing bon ...");
   }
 
-  function onCopy() {
-    alert("Copying for Wechat ...");
+  async function onCopy(data) {
+    const { team, y, m, d, sup, shift, s, camions, sacs, t, dechires } = data;
+
+    const text = `•EMBALLAGE CIMENT水泥包装
+${y}年${Number(m)}月${d}日
+Équipe班：${team}
+Superviseur班长: @${sup} 
+     •${shift}
+装车${camions}辆/Camions Chargés 
+袋子用${sacs}个/Sacs Utilisés 
+共计${t.toFixed(2)}吨/Tonne 
+撕裂的袋子${dechires}个/Sacs déchirés`;
+
+    await navigator.clipboard
+      .writeText(text)
+      .then(() => {
+        console.log("Text copied to clipboard");
+        alert("Text copied to clipboard");
+        console.log(text);
+      })
+      .catch((err) => {
+        console.error("Failed to copy text: ", err);
+        alert("Failed to copy text:!\n" + JSON.stringify(err));
+      });
   }
 
   return (
@@ -161,7 +191,7 @@ export default function Boazhuang2({ repportdata, onBaozhuangSave, editmode }) {
       <div>
         •Superviseur班长: @
         <span className=" font-bold underline ">
-          {`${SUPERVISORS[data.team]?.nom} - ${SUPERVISORS[data.team]?.nom}`}
+          {`${SUPERVISORS[data.team]?.nom} - ${SUPERVISORS[data.team]?.zh}`}
         </span>
       </div>
       <div>
@@ -264,7 +294,10 @@ export default function Boazhuang2({ repportdata, onBaozhuangSave, editmode }) {
         {!editing && !loading && (
           <ActionButton
             icon={wechat}
-            onClick={onCopy}
+            onClick={(e) => {
+              e.preventDefault();
+              onCopy(data);
+            }}
             title={"Copy for Wechat"}
           />
         )}
@@ -274,6 +307,8 @@ export default function Boazhuang2({ repportdata, onBaozhuangSave, editmode }) {
             onClick={(e) => {
               setediting(false);
               setloading(false);
+
+              if (newrep) onBaozhuangCancel();
             }}
             title={"CANCEL"}
           />

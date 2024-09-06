@@ -96,3 +96,19 @@ function printWatermark(doc, margin, watermark) {
   doc.text(text, x, y);
   doc.setFontSize(oldfs);
 }
+
+function printBaozhuang(doc, data) {
+  /* {
+    "team": "A",
+    "y": 2024,
+    "m": 8,
+    "d": 30,
+    "sup": "ALBERT KANKOBWE - 刚果贝",
+    "shift": "NUIT - 夜班 - 23h00 - 07h00",
+    "s": "N",
+    "camions": 0,
+    "sacs": 15880,
+    "t": 794,
+    "dechires": 0
+} */
+}

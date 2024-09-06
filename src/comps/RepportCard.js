@@ -21,6 +21,8 @@ export default function RepportCard({
   const [, , user] = useContext(UserContext);
 
   function onPrintDailyRepport(data) {
+    console.log(data);
+    // return;
     draw_load_table(data);
     //console.log("print day rep", data);
   }

@@ -4,7 +4,6 @@ import ActionButton from "../comps/ActionButton";
 import DateSelector from "../comps/DateSelector";
 import Loading from "../comps/Loading";
 
-import Boazhuang from "../comps/sacs/Baozhuang";
 import Boazhuang2 from "../comps/sacs/Baozhuang2";
 import { LOG_OPERATION, SHIFT_HOURS_ZH } from "../helpers/flow";
 import {
@@ -14,15 +13,16 @@ import {
   ParseBaozhuang,
   UpdateOperationsLogs,
 } from "../helpers/func";
+import { printTable } from "../helpers/print";
 import * as SB from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
+import check from "../img/check.svg";
 import multiply from "../img/multiply.png";
 import pdf from "../img/pdf.png";
 import plus from "../img/plus.png";
 import reload from "../img/reload.png";
 import save from "../img/save.png";
-import check from "../img/check.svg";
-import { printTable } from "../helpers/print";
+import del from "../img/delete.png";
 
 const TEAMS = ["A", "B", "C", "D"];
 
@@ -150,17 +150,6 @@ export default function SuiviChargement() {
   const [adding, setadding] = useState(false);
   const [newdata, setnewdata] = useState();
 
-  /*return `•EMBALLAGE CIMENT水泥包装
-${y}年${Number(m) + 1}月${d}日
-Équipe班：${team}
-Superviseur班长: @${nom} ${zh} 
-     •${shift_data}
-装车${camions}辆/Camions Chargés 
-袋子用${sacs}个/Sacs Utilisés 
-共计${tonnage.toFixed(2)}吨/Tonne 
-撕裂的袋子${dechires}个/Sacs déchirés`;
-  } */
-
   useEffect(() => {
     loadData();
     const parts = GetDateParts("all");
@@ -271,7 +260,7 @@ Superviseur班长: @${nom} ${zh} 
     setloading(false);
   }
 
-  function onClick(e) {
+  function onAddNewLoad(e) {
     //setadding(!adding);
     //setviewload(false);
 
@@ -364,6 +353,32 @@ Superviseur班长: @${nom} ${zh} 
     loadData();
   }
 
+  function onBaozhuangCancel() {
+    setbaozhuangrep(undefined);
+    setadding(false);
+  }
+
+  function onPrintDailyRepport(ld, idx) {
+    const date = ld.code.split("M_")[1];
+    const loads = loadsf.filter((it) => it.code.includes(date));
+
+    console.log("date => ", date);
+    console.log("loads => ", loads);
+  }
+
+  async function onDeleteShiftRepport(ld) {
+    if (window.confirm(`Are you sure you wanna delete " ${ld.code} "`)) {
+      const error = await SB.DeleteItem(TABLES_NAMES.LOADS, ld);
+
+      if (null === error) {
+        alert(`Item " ${ld.code} " delete successfully!`);
+        loadData();
+      } else {
+        alert(`Error\n${JSON.stringify(error)}`);
+      }
+    }
+  }
+
   return (
     <div className=" container  ">
       <div>
@@ -388,26 +403,32 @@ Superviseur班长: @${nom} ${zh} 
               </select>
             </div>
           </div>
-          <div className=" md:flex ">
-            <ActionButton
-              icon={adding ? save : plus}
-              title={adding ? "Save" : "Nouveau Rapport"}
-              onClick={onClick}
-            />
-
-            {adding ? (
+          <div className=" flex justify-between  sm:justify-center  gap-2 my-2   ">
+            {!adding && (
               <ActionButton
-                icon={multiply}
-                title={"Cancel"}
-                onClick={(e) => setadding(false)}
+                icon={adding ? save : plus}
+                title={adding ? "Save" : "Nouveau Rapport"}
+                onClick={onAddNewLoad}
               />
-            ) : (
+            )}
+
+            {!adding && (
               <ActionButton
                 icon={reload}
                 title={"Refresh"}
                 onClick={(e) => loadData()}
               />
             )}
+
+            {/*  {adding ? (
+              <ActionButton
+                icon={multiply}
+                title={"Cancel"}
+                onClick={(e) => setadding(false)}
+              />
+            ) : (
+              
+            )} */}
           </div>
         </>
       )}
@@ -447,48 +468,41 @@ Superviseur班长: @${nom} ${zh} 
                 title={"OK"}
                 onClick={(e) => setbaozhuangrep(undefined)}
               />
-              {/* <ActionButton
-                icon={""}
-                title={"Update"}
-                onClick={(e) => setbaozhuangrep(undefined)}
-              />
-              <ActionButton
-                icon={""}
-                title={"Print"}
-                onClick={(e) => setbaozhuangrep(undefined)}
-              /> */}
             </div>
           </div>
         ) : (
           <>
             {adding ? (
-              <Boazhuang2 onBaozhuangSave={onBaozhuangSave} editmode={true} />
+              <Boazhuang2
+                onBaozhuangSave={onBaozhuangSave}
+                editmode={true}
+                onBaozhuangCancel={onBaozhuangCancel}
+              />
             ) : (
               <>
-                <ActionButton
-                  icon={pdf}
-                  title={"Print Repport"}
-                  onClick={(e) => onPrint(loadsf)}
-                />
-                <table class="table-auto">
+                <div className=" flex justify-center py-2  ">
+                  <ActionButton
+                    icon={pdf}
+                    title={"Print Repport"}
+                    onClick={(e) => onPrint(loadsf)}
+                  />
+                </div>
+                <table class="table-auto mx-auto">
                   <thead>
                     <tr>
                       <th className="border border-slate-500 p-1">Date</th>
                       <th className="border border-slate-500 p-1">EQ.</th>
                       <th className="border border-slate-500 p-1">Shift</th>
                       <th className="border border-slate-500 p-1">Sacs</th>
-                      {adding && (
-                        <>
-                          <th className="border border-slate-500 p-1">
-                            Camions
-                          </th>
-                          <th className="border border-slate-500 p-1">
-                            Dechires
-                          </th>
-                        </>
-                      )}
+                      <th className="border border-slate-500 p-1 hidden sm:table-cell">
+                        Camions
+                      </th>
+                      <th className="border border-slate-500 p-1 hidden sm:table-cell">
+                        Dechires
+                      </th>
                       <th className="border border-slate-500 p-1">T</th>
                       <th className="border border-slate-500 p-1">BNS</th>
+                      <th className="border border-slate-500 p-1">ACT</th>
                     </tr>
                   </thead>
 
@@ -498,14 +512,17 @@ Superviseur班长: @${nom} ${zh} 
                       <td className="  border border-slate-500 p-1 text-end "></td>
                       <td className="  border border-slate-500 p-1 text-end "></td>
                       <td className="  border border-slate-500 p-1 text-end "></td>
+                      <td className="  border border-slate-500 p-1 text-end hidden sm:table-cell"></td>
+                      <td className="  border border-slate-500 p-1 text-end hidden sm:table-cell"></td>
                       <td className="  border border-slate-500 p-1 text-end ">
                         T. Bonus
                       </td>
                       <td className="  border border-slate-500 p-1 text-end ">
                         {bonustot}
                       </td>
+                      <td className="  border border-slate-500 p-1 text-end "></td>
                     </tr>
-                    {loadsf.map((ld) => (
+                    {loadsf.map((ld, i) => (
                       <tr
                         className=" hover:bg-slate-400 cursor-pointer  "
                         onClick={(e) => onClickLoad(ld)}
@@ -522,6 +539,13 @@ Superviseur班长: @${nom} ${zh} 
                         <td className="  border border-slate-500 p-1 text-end ">
                           {ld.sacs}
                         </td>
+                        <td className="  border border-slate-500 p-1 text-end hidden sm:table-cell ">
+                          {ld.camions}
+                        </td>
+                        <td className="  border border-slate-500 p-1 text-end hidden sm:table-cell ">
+                          {ld.dechires}
+                        </td>
+
                         <td className="  border border-slate-500 p-1 text-end ">
                           {parseFloat(ld.sacs) / 20}
                         </td>
@@ -534,6 +558,24 @@ Superviseur班长: @${nom} ${zh} 
                             0
                           )}
                         </td>
+                        <td className="  border border-slate-500 p-1 text-end ">
+                          {i % 3 === 0 && (
+                            <ActionButton
+                              icon={pdf}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                onPrintDailyRepport(ld, i);
+                              }}
+                            />
+                          )}
+                          <ActionButton
+                            icon={del}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              onDeleteShiftRepport(ld);
+                            }}
+                          />
+                        </td>
                       </tr>
                     ))}{" "}
                     <tr>
@@ -541,12 +583,15 @@ Superviseur班长: @${nom} ${zh} 
                       <td className="  border border-slate-500 p-1 text-end "></td>
                       <td className="  border border-slate-500 p-1 text-end "></td>
                       <td className="  border border-slate-500 p-1 text-end "></td>
+                      <td className="  border border-slate-500 p-1 text-end hidden sm:table-cell"></td>
+                      <td className="  border border-slate-500 p-1 text-end hidden sm:table-cell"></td>
                       <td className="  border border-slate-500 p-1 text-end ">
                         T. Bonus
                       </td>
                       <td className="  border border-slate-500 p-1 text-end ">
                         {bonustot}
                       </td>
+                      <td className="  border border-slate-500 p-1 text-end "></td>
                     </tr>
                   </tbody>
                 </table>

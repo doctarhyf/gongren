@@ -1,11 +1,9 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
-import { ACCESS_CODES, CLASS_BTN, MONTHS, USER_LEVEL } from "../helpers/flow";
-import DateSelector from "../comps/DateSelector";
-import Loading from "../comps/Loading";
+import React, { useContext, useEffect, useState } from "react";
+import { UserContext } from "../App";
 import BagsDataInput from "../comps/BagsDataInput";
-import * as SB from "../helpers/sb";
-import { TABLES_NAMES } from "../helpers/sb.config";
 import BagsDataList from "../comps/BagsDataList";
+import Loading from "../comps/Loading";
+import { ACCESS_CODES, CLASS_BTN, MONTHS } from "../helpers/flow";
 import {
   ParseDayRepport,
   ParseMonthRepport,
@@ -13,8 +11,8 @@ import {
   ParseYearRepport,
   UserHasAccessCode,
 } from "../helpers/func";
-import RepportCard from "../comps/RepportCard";
-import { UserContext } from "../App";
+import * as SB from "../helpers/sb";
+import { TABLES_NAMES } from "../helpers/sb.config";
 
 const bg = "bg-neutral-100";
 
