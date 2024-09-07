@@ -351,6 +351,7 @@ export default function SuiviChargement() {
 
   function onBaozhuangSave(nd) {
     setbaozhuangrep(undefined);
+    setadding(false);
     loadData();
   }
 

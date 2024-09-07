@@ -31,7 +31,7 @@ function MainNav({ user, onMenuClick, curPage, onLogout }) {
   const [hidden, sethidden] = useState(true);
 
   return (
-    <section className="bg-sky-500 h-min md:h-fit w-full  md:flex justify-between">
+    <section className="relative bg-sky-500 h-min md:h-fit w-full  md:flex justify-between">
       <div
         onClick={(e) => sethidden(!hidden)}
         className="p-1 cursor-pointer mx-auto w-fit max-w-[120pt] flex justify-center items-center "
@@ -40,9 +40,9 @@ function MainNav({ user, onMenuClick, curPage, onLogout }) {
       </div>
 
       <div
-        className={` ${
-          hidden ? "hidden" : "block"
-        } md:block transition ease-in-out delay-150 duration-300 `}
+        className={`${
+          hidden ? "max-h-0" : "max-h-[500px] "
+        } md:block   overflow-hidden transition-all duration-[250ms] ease-in-out`}
       >
         <div className=" border-b md:flex gap-4 items-center mx-auto md:mr-0  justify-end w-fit  ">
           <UserInfo user={user} />
@@ -51,20 +51,20 @@ function MainNav({ user, onMenuClick, curPage, onLogout }) {
         <div className={`md:flex  items-center justify-between `}>
           <ul className="text-end p-2 md:flex gap-2 flex-wrap ">
             {MAIN_MENU.map((menu_item, i) => (
-              <li className="mb-2" key={i}>
+              <li className="mb-2 " key={i}>
                 {UserHasAccessCode(user, menu_item.access_code) && (
                   <button
                     onClick={(e) => {
                       onMenuClick(menu_item);
                       sethidden(true);
                     }}
-                    className={`
+                    className={` p-2
                 ${curPage === menu_item.path ? "text-sky-500 bg-white" : ""}
 
-                text-right cursor-pointer
+                text-center cursor-pointer
                  hover:text-sky-500 
                  hover:bg-white 
-                 w-full  
+                 w-full 
                  rounded-md px-1 `}
                   >
                     {menu_item.name}

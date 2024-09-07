@@ -25,7 +25,7 @@ export default function Boazhuang2({
 
   useEffect(() => {
     setnewrep(false);
-    let defaultdata = { team: "A" };
+    let defaultdata = { team: "A", s: "M" };
     if (!repportdata) {
       const dateparts = GetDateParts("all");
       defaultdata = {
@@ -83,13 +83,38 @@ export default function Boazhuang2({
         sacs_adj: 0,
       };
 
-      //console.log(load_data);
+      console.log(load_data);
+
+      /*
+{
+    "retours": 0,
+    "ajouts": 0,
+    "code": "A_undefined_2024_8_7",
+    "prob_machine": null,
+    "prob_courant": null,
+    "autre": null,
+    "sacs_adj": 0
+}
+      */
+
+      const camions_isu = undefined === camions;
+      const dechires_isu = undefined === dechires;
+      const sacs_isu = undefined === sacs;
+      const s_isu = undefined === s.includes("");
+
+      if (camions_isu || dechires_isu || sacs_isu || s_isu) {
+        alert("All data are required [camions, dechires, sacs, shift]!");
+        setloading(false);
+        return;
+      }
 
       const res = await SB.UpsertItem(TABLES_NAMES.LOADS, load_data, "code");
 
       if (res && res.id) {
-        alert(`Item with code " ${load_data.code} " was updated successfully`);
+        const text = newrep ? "saved" : "updated";
+        alert(`Item with code " ${load_data.code} " was ${text} successfully`);
         setediting(false);
+
         onBaozhuangSave && onBaozhuangSave(res);
       }
       setloading(false);
