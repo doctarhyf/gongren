@@ -3,29 +3,6 @@ import { MAIN_MENU, USER_LEVEL } from "../helpers/flow";
 import gck from "../img/gck.png";
 import { UserHasAccessCode } from "../helpers/func";
 
-function UserInfo({ user }) {
-  return (
-    <div className="flex">
-      <div>
-        <div className="text-white text-xl font-bold w-fit  pb-4 p-2 text-center">
-          水泥车间
-        </div>
-      </div>
-      <div className=" justify-center text-xs uppercase  items-center  p-1 mr-2 ">
-        <div>
-          Hello,{" "}
-          <span className="text-white">
-            {user.prenom} {user.nom}
-          </span>
-        </div>
-        <div>
-          User level : <span className="text-white"> {user.user_level}</span>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 function MainNav({ user, onMenuClick, curPage, onLogout }) {
   // console.log(user);
   const [hidden, sethidden] = useState(true);
@@ -36,7 +13,7 @@ function MainNav({ user, onMenuClick, curPage, onLogout }) {
         onClick={(e) => sethidden(!hidden)}
         className="p-1 cursor-pointer mx-auto w-fit max-w-[120pt] flex justify-center items-center "
       >
-        <img src={gck} height={20} />
+        <img src={gck} height={10} />
       </div>
 
       <div
@@ -44,10 +21,6 @@ function MainNav({ user, onMenuClick, curPage, onLogout }) {
           hidden ? "max-h-0" : "max-h-[500px] "
         } md:block   overflow-hidden transition-all duration-[250ms] ease-in-out`}
       >
-        <div className=" border-b md:flex gap-4 items-center mx-auto md:mr-0  justify-end w-fit  ">
-          <UserInfo user={user} />
-        </div>
-
         <div className={`md:flex  items-center justify-between `}>
           <ul className="text-end p-2 md:flex gap-2 flex-wrap ">
             {MAIN_MENU.map((menu_item, i) => (

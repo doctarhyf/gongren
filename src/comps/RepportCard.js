@@ -107,7 +107,8 @@ Superviseur班长: @${nom} ${zh} 
   return (
     <div
       ref={headerRef}
-      className={`${CLASS_REPPORT_CARD} ${isSticky ? "fixed top-0" : ""} `}
+      className={`${CLASS_REPPORT_CARD} `}
+      /* ${isSticky ? "fixed top-0" : ""} `} */
       style={{ left: isSticky ? headerOffset + "px" : "auto" }}
     >
       <div className=" text-sky-500">
