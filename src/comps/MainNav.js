@@ -18,7 +18,7 @@ function MainNav({ user, onMenuClick, curPage, onLogout }) {
 
       <div
         className={`${
-          hidden ? "max-h-0" : "max-h-fit "
+          hidden ? "max-h-0" : "max-h-[700px] "
         } md:block   overflow-hidden transition-all duration-[250ms] ease-in-out`}
       >
         <div className={`md:flex  items-center justify-between `}>
