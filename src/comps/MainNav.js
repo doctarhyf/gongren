@@ -32,7 +32,8 @@ function MainNav({ user, onMenuClick, curPage, onLogout }) {
                       onMenuClick(menu_item);
                       sethidden(true);
                     }}
-                    className={` p-2
+                    className={
+                      ` p-2
                 ${curPage === menu_item.path ? "text-sky-500 bg-white" : ""}
 
                dark:text-white
@@ -40,7 +41,10 @@ function MainNav({ user, onMenuClick, curPage, onLogout }) {
                  hover:text-sky-500 
                  hover:bg-white dark:hover:text-black
                  w-full 
-                 rounded-md px-1 `}
+                 rounded-md px-1 `
+
+                      //cool
+                    }
                   >
                     {menu_item.name}
                   </button>
