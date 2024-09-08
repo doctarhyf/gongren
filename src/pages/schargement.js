@@ -360,20 +360,20 @@ export default function SuiviChargement() {
     setadding(false);
   }
 
-  function onPrintDailyRepport(load_data, idx) {
-    const loads = loadsf.filter((it) =>
-      it.code.includes(load_data.code.split("M_")[1])
-    );
+  function onPrintDailyRepport(loads_array, cur_load, idx) {
+    const filter = cur_load.code.split("M_")[1];
+
+    const filteredloads = loads_array.filter((it) => it.code.includes(filter));
 
     let datestr = AddOneMonth(
-      loads[0].code.split("M_")[1].replaceAll("_", "/")
+      filteredloads[0].code.split("M_")[1].replaceAll("_", "/")
     );
 
     const date = new Date(datestr);
     const frenchdate = formatFrenchDate(date);
     const filename = `PRIME_DU_${frenchdate}.pdf`;
 
-    printDailyRepport(loads, date, filename);
+    printDailyRepport(filteredloads, date, filename);
   }
 
   async function onDeleteShiftRepport(ld) {
@@ -584,7 +584,7 @@ export default function SuiviChargement() {
                               icon={pdf}
                               onClick={(e) => {
                                 e.stopPropagation();
-                                onPrintDailyRepport(ld, i);
+                                onPrintDailyRepport(loads, ld, i);
                               }}
                             />
                           )}
