@@ -5,7 +5,7 @@ import DateSelector from "../comps/DateSelector";
 import Loading from "../comps/Loading";
 
 import Boazhuang2 from "../comps/sacs/Baozhuang2";
-import { LOG_OPERATION, SHIFT_HOURS_ZH } from "../helpers/flow";
+import { ACCESS_CODES, LOG_OPERATION, SHIFT_HOURS_ZH } from "../helpers/flow";
 import {
   AddLeadingZero,
   customSortShifts,
@@ -13,6 +13,7 @@ import {
   GetDateParts,
   ParseBaozhuang,
   UpdateOperationsLogs,
+  UserHasAccessCode,
 } from "../helpers/func";
 import { printDailyRepport, printTable } from "../helpers/print";
 import * as SB from "../helpers/sb";
@@ -376,7 +377,7 @@ export default function SuiviChargement() {
     printDailyRepport(filteredloads, date, filename);
   }
 
-  async function onDeleteShiftRepport(ld) {
+  async function onDeleteLoad(ld) {
     if (window.confirm(`Are you sure you wanna delete " ${ld.code} "`)) {
       const error = await SB.DeleteItem(TABLES_NAMES.LOADS, ld);
 
@@ -422,7 +423,7 @@ export default function SuiviChargement() {
             </div>
           </div>
           <div className=" flex justify-between  sm:justify-center  gap-2 my-2   ">
-            {!adding && (
+            {!adding && UserHasAccessCode(user, ACCESS_CODES.ADD_NEW_LOAD) && (
               <ActionButton
                 icon={adding ? save : plus}
                 title={adding ? "Save" : "Nouveau Rapport"}
@@ -437,16 +438,6 @@ export default function SuiviChargement() {
                 onClick={(e) => loadData()}
               />
             )}
-
-            {/*  {adding ? (
-              <ActionButton
-                icon={multiply}
-                title={"Cancel"}
-                onClick={(e) => setadding(false)}
-              />
-            ) : (
-              
-            )} */}
           </div>
         </>
       )}
@@ -579,22 +570,32 @@ export default function SuiviChargement() {
                           )}
                         </td>
                         <td className="  border border-slate-500 p-1 text-end ">
-                          {i % 3 === 0 && (
+                          {i % 3 === 0 &&
+                            UserHasAccessCode(
+                              user,
+                              ACCESS_CODES.PRINT_DAILY_REPPORT
+                            )(
+                              <ActionButton
+                                icon={pdf}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  onPrintDailyRepport(loads, ld, i);
+                                }}
+                              />
+                            )}
+
+                          {UserHasAccessCode(
+                            user,
+                            ACCESS_CODES.DELETE_LOAD
+                          ) && (
                             <ActionButton
-                              icon={pdf}
+                              icon={del}
                               onClick={(e) => {
                                 e.stopPropagation();
-                                onPrintDailyRepport(loads, ld, i);
+                                onDeleteLoad(ld);
                               }}
                             />
                           )}
-                          <ActionButton
-                            icon={del}
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              onDeleteShiftRepport(ld);
-                            }}
-                          />
                         </td>
                       </tr>
                     ))}{" "}

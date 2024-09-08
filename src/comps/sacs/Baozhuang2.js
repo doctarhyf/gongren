@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { SHIFT_HOURS_ZH, SUPERVISORS } from "../../helpers/flow";
 import { AddLeadingZero, GetDateParts } from "../../helpers/func";
 import * as SB from "../../helpers/sb";
@@ -11,6 +11,7 @@ import wechat from "../../img/wechat.png";
 import cancel from "../../img/shield.png";
 import ActionButton from "../ActionButton";
 import Loading from "../Loading";
+import { UserContext } from "../../App";
 
 export default function Boazhuang2({
   repportdata,
@@ -22,6 +23,7 @@ export default function Boazhuang2({
   const [editing, setediting] = useState(false);
   const [loading, setloading] = useState(false);
   const [newrep, setnewrep] = useState(false);
+  const [, , user, setuser] = useContext(UserContext);
 
   useEffect(() => {
     setnewrep(false);
@@ -47,30 +49,10 @@ export default function Boazhuang2({
       console.log("will save first");
       setloading(true);
 
-      //console.log(data);
-
-      /*
-{
-    "team": "D",
-    "y": 2024,
-    "m": 9,
-    "d": 1,
-    "sup": "AMEDEE KATANGA - 噶当噶",
-    "shift": "MATIN - 白班 - 07h00 - 15h00",
-    "s": "M",
-    "camions": 18,
-    "sacs": 9550,
-    "t": 477.5,
-    "dechires": 20
-}
-      */
-
       const { team, y, m, d, sup, shift, s, camions, sacs, t, dechires } = data;
       const code = `${team}_${s}_${y}_${m - 1}_${parseInt(d)}`;
 
       const load_data = {
-        //id: 94,
-        // created_at: "2024-01-26T11:49:16.169349+00:00",
         sacs: sacs,
         retours: 0,
         ajouts: 0,
@@ -84,18 +66,6 @@ export default function Boazhuang2({
       };
 
       console.log(load_data);
-
-      /*
-{
-    "retours": 0,
-    "ajouts": 0,
-    "code": "A_undefined_2024_8_7",
-    "prob_machine": null,
-    "prob_courant": null,
-    "autre": null,
-    "sacs_adj": 0
-}
-      */
 
       const camions_isu = undefined === camions;
       const dechires_isu = undefined === dechires;
