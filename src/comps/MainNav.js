@@ -38,7 +38,7 @@ function MainNav({ user, onMenuClick, curPage, onLogout }) {
                dark:text-white
                 text-center cursor-pointer
                  hover:text-sky-500 
-                 hover:bg-white 
+                 hover:bg-white dark:hover:text-black
                  w-full 
                  rounded-md px-1 `}
                   >
