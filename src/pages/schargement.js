@@ -574,7 +574,7 @@ export default function SuiviChargement() {
                             UserHasAccessCode(
                               user,
                               ACCESS_CODES.PRINT_DAILY_REPPORT
-                            )(
+                            ) && (
                               <ActionButton
                                 icon={pdf}
                                 onClick={(e) => {
