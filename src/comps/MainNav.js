@@ -34,7 +34,7 @@ function MainNav({ user, onMenuClick, curPage, onLogout }) {
                     }}
                     className={
                       ` p-2
-                ${curPage === menu_item.path ? "text-sky-500 bg-white" : ""}
+                ${curPage === menu_item.path ? "       dark:text-black text-sky-500 bg-white" : ""}
 
                dark:text-white
                 text-center cursor-pointer
