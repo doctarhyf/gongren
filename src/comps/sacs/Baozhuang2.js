@@ -28,6 +28,8 @@ export default function Boazhuang2({
   useEffect(() => {
     setnewrep(false);
     let defaultdata = { team: "A", s: "M" };
+
+    if (user.poste === "SUP") defaultdata.team = user.equipe;
     if (!repportdata) {
       const dateparts = GetDateParts("all");
       defaultdata = {
@@ -166,19 +168,23 @@ Superviseur班长: @${sup} 
       <div>
         •Équipe班:
         {editing ? (
-          <select
-            className="p-1 dark:bg-slate-700 dark:text-white rounded-md outline-none border-2 mx-1  border-purple-500"
-            value={data.team}
-            onChange={(e) =>
-              setdata((prev) => ({ ...prev, team: e.target.value }))
-            }
-          >
-            {["A", "B", "C", "D"].map((team, i) => (
-              <option key={i} selected={team === data.team} value={team}>
-                {team}
-              </option>
-            ))}
-          </select>
+          user.poste === "SUP" ? (
+            <span className=" font-bold underline ">{data.team}</span>
+          ) : (
+            <select
+              className="p-1 dark:bg-slate-700 dark:text-white rounded-md outline-none border-2 mx-1  border-purple-500"
+              value={data.team}
+              onChange={(e) =>
+                setdata((prev) => ({ ...prev, team: e.target.value }))
+              }
+            >
+              {["A", "B", "C", "D"].map((team, i) => (
+                <option key={i} selected={team === data.team} value={team}>
+                  {team}
+                </option>
+              ))}
+            </select>
+          )
         ) : (
           <span className=" font-bold underline ">{data.team}</span>
         )}

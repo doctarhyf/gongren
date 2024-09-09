@@ -199,7 +199,7 @@ export default function SuiviChargement() {
 
     //df = df.sort(customSortShifts);
 
-    filteredloads = filteredloads.map((filterloaditem) => {
+    filteredloads = filteredloads.map((filterloaditem, i) => {
       const [t, s, y, m, d] = filterloaditem.code.split("_");
       //console.log("dfi", dfi);
       filterloaditem.meta = {
