@@ -533,8 +533,8 @@ export default function SuiviChargement() {
                     </tr>
                     {loadsf.map((ld, i) => (
                       <tr
-                        className={` hover:bg-slate-400 cursor-pointer  ${
-                          i % 3 === 0 && " bg-slate-100  "
+                        className={` hover:bg-slate-400 dark:hover:bg-black/50 cursor-pointer  ${
+                          i % 3 === 0 && " bg-slate-100 dark:bg-slate-700  "
                         }  `}
                         onClick={(e) => onClickLoad(ld)}
                       >
