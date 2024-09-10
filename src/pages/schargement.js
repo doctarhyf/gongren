@@ -5,7 +5,12 @@ import DateSelector from "../comps/DateSelector";
 import Loading from "../comps/Loading";
 
 import Boazhuang2 from "../comps/sacs/Baozhuang2";
-import { ACCESS_CODES, LOG_OPERATION, SHIFT_HOURS_ZH } from "../helpers/flow";
+import {
+  ACCESS_CODES,
+  CLASS_SELECT,
+  LOG_OPERATION,
+  SHIFT_HOURS_ZH,
+} from "../helpers/flow";
 import {
   AddLeadingZero,
   customSortShifts,
@@ -69,7 +74,7 @@ function FormAddLoad({ onDataUpdate }) {
       sacs_adj: 0,
     };
 
-    console.log("load", load);
+    //console.log("load", load);
     onDataUpdate(load);
   }
 
@@ -155,15 +160,15 @@ export default function SuiviChargement() {
   useEffect(() => {
     loadData();
     const parts = GetDateParts("all");
-    console.log("parts", parts);
+    //console.log("parts", parts);
     const curmcode = `${parts.year}_${parts.month}`;
-    console.log(curmcode);
+    //console.log(curmcode);
     setmcode(curmcode);
   }, []);
 
   useEffect(() => {
     setloadsf(filterLoads(loads, mcode, team));
-    console.log(user);
+    //console.log(user);
   }, [loads, mcode, team]);
 
   async function loadData() {
@@ -171,10 +176,10 @@ export default function SuiviChargement() {
     setloads([]);
     setloadsf([]);
     const data = await SB.LoadAllItems(TABLES_NAMES.LOADS, "created_at", true);
-    console.log(data[0]);
+    //console.log(data[0]);
     setloads(data);
     setloadsf(filterLoads(data, mcode, team));
-    console.log(data);
+    //console.log(data);
     setloading(false);
   }
 
@@ -201,7 +206,7 @@ export default function SuiviChargement() {
 
     filteredloads = filteredloads.map((filterloaditem, i) => {
       const [t, s, y, m, d] = filterloaditem.code.split("_");
-      //console.log("dfi", dfi);
+      ////console.log("dfi", dfi);
       filterloaditem.meta = {
         date: `${AddLeadingZero(d)}/${AddLeadingZero(m)}/${y}`,
         shift: `${s} : ${SHIFT_HOURS_ZH[s][2]}`,
@@ -228,13 +233,13 @@ export default function SuiviChargement() {
     ).map((dayd) => dayd.sort(customSortShifts));
 
     const fin = finalfilteredloadsgroupnyday.flat();
-
+    console.log("fin", fin);
     setbonustot(tot);
     return fin;
   }
 
   function onDateSelected(date) {
-    console.log(date);
+    //console.log(date);
     const { d, m, y } = date;
     const code = `${y}_${m}`;
     setmcode(code);
@@ -243,7 +248,7 @@ export default function SuiviChargement() {
   async function saveLoad(load) {
     setloading(true);
     const r = await SB.InsertItem(TABLES_NAMES.LOADS, load);
-    console.log(r);
+    //console.log(r);
     if (r === null) {
       alert("Donnee ajoutees avec success");
       loadData();
@@ -253,7 +258,7 @@ export default function SuiviChargement() {
         LOG_OPERATION.LOGIN,
         JSON.stringify(load)
       );
-      // console.log(l);
+      // //console.log(l);
       setadding(false);
     } else {
       alert("Erreur ajout donnees\n" + JSON.stringify(r));
@@ -267,11 +272,11 @@ export default function SuiviChargement() {
     //setviewload(false);
 
     if (adding) {
-      console.log("will save data ...", newdata);
+      //console.log("will save data ...", newdata);
 
       saveLoad(newdata);
     } else {
-      console.log("will toggle adding to yes");
+      //console.log("will toggle adding to yes");
 
       setadding(true);
     }
@@ -281,17 +286,17 @@ export default function SuiviChargement() {
   function onDataUpdate(nd) {
     const rep = ParseBaozhuang(nd);
 
-    console.log(rep);
+    //console.log(rep);
     setrepportdata(rep);
     setnewdata(nd);
   }
 
   const [baozhuangrep, setbaozhuangrep] = useState();
   function onClickLoad(load) {
-    console.log(load);
+    //console.log(load);
     const bz = ParseBaozhuang(load);
     setbaozhuangrep(bz);
-    console.log(bz);
+    //console.log(bz);
     //setviewload(true);
   }
 
@@ -329,7 +334,7 @@ export default function SuiviChargement() {
         finaldate = `${y}.${month}.${d}`;
 
         const finalitem = [finaldate, team, shift, sacs, t, bonus];
-        //console.log("finalitem => ", finalitem);
+        ////console.log("finalitem => ", finalitem);
         return finalitem; //[date, team, shift, sacs, t, bonus];
       });
 
@@ -391,7 +396,7 @@ export default function SuiviChargement() {
   }
 
   function AddOneMonth(date) {
-    console.log("AddOneMonth ", date);
+    //console.log("AddOneMonth ", date);
     if (!date) return;
     const date_fix = date.split("/");
     date_fix[1] = AddLeadingZero(parseInt(date_fix[1]) + 1);
@@ -409,11 +414,14 @@ export default function SuiviChargement() {
 
       {!baozhuangrep && (
         <>
-          <div className="  flex items-center gap-2 align-middle ">
+          <div className=" md:flex items-center md:justify-center  ">
             <DateSelector onDateSelected={onDateSelected} />
-            <div className="flex gap-2 align-middle items-center">
-              <div className=" font-bold">EQUIPE</div>
-              <select onChange={(e) => setteam(e.target.value)}>
+            <div className="flex md:-mt-3 items-center gap-2  w-fit ml-11 ">
+              <div className=" text-sm font-bold">Equipe : </div>
+              <select
+                className={CLASS_SELECT}
+                onChange={(e) => setteam(e.target.value)}
+              >
                 {["A", "B", "C", "D", "ALL"].map((op) => (
                   <option selected={op === team} value={op}>
                     {op}
@@ -425,8 +433,8 @@ export default function SuiviChargement() {
           <div className=" flex justify-between  sm:justify-center  gap-2 my-2   ">
             {!adding && UserHasAccessCode(user, ACCESS_CODES.ADD_NEW_LOAD) && (
               <ActionButton
-                icon={adding ? save : plus}
-                title={adding ? "Save" : "Nouveau Rapport"}
+                icon={plus}
+                title={"Nouveau Rapport"}
                 onClick={onAddNewLoad}
               />
             )}
@@ -539,13 +547,23 @@ export default function SuiviChargement() {
                         onClick={(e) => onClickLoad(ld)}
                       >
                         <td className="  border border-slate-500 p-1 text-end ">
-                          {AddOneMonth(ld.meta?.date)}
+                          <span className=" md:hidden  ">
+                            {AddOneMonth(ld.meta?.date.split("/202")[0])}
+                          </span>
+                          <span className=" hidden md:block ">
+                            {AddOneMonth(ld.meta?.date)}
+                          </span>
                         </td>
                         <td className="  border border-slate-500 p-1 text-end ">
                           {ld.meta?.team}
                         </td>
                         <td className="  border border-slate-500 p-1 text-end ">
-                          {ld.meta?.shift}
+                          <span className=" md:hidden ">
+                            {ld.meta?.shift.split(" - ")[0].split(" : ")[1]}
+                          </span>
+                          <span className=" hidden md:block  ">
+                            {ld.meta?.shift}
+                          </span>
                         </td>
                         <td className="  border border-slate-500 p-1 text-end ">
                           {ld.sacs}
