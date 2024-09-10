@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { MAIN_MENU, USER_LEVEL } from "../helpers/flow";
 import gck from "../img/gck.png";
-import menu from "../img/menu.svg";
+import logout from "../img/logout.svg";
 import { UserHasAccessCode } from "../helpers/func";
 
 function MenuIcon({ sethidden, hidden }) {
@@ -71,11 +71,12 @@ function MainNav({ user, onMenuClick, curPage, onLogout }) {
                 )}
               </li>
             ))}
-            <li className="flex justify-center items-center mb-2">
+            <li className="  ">
               <button
                 onClick={onLogout}
-                className=" w-fit text-xs p-1  rounded-md mx-auto bg-red-500 text-white hover:bg-red-700 "
+                className=" flex gap-2 w-fit text-xs p-2  rounded-md mx-auto border-white border text-white hover:bg-red-700 "
               >
+                <img src={logout} className=" w-4 h-4 " />
                 LOGOUT
               </button>
             </li>
