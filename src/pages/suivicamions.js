@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import Loading from "../comps/Loading";
 import plus from "../img/plus.png";
 import check from "../img/check.svg";
+import delivery from "../img/delivery.png";
 import del from "../img/delete.png";
 import ActionButton from "../comps/ActionButton";
 import Boazhuang2 from "../comps/sacs/Baozhuang2";
@@ -136,8 +137,10 @@ export default function SuiviCamions() {
 
   function onAddCamion() {
     const trucks = [...camions];
-    const newtruck = { ...DEF_TRUCK, id: trucks.length };
+    const newtruck = { ...DEF_TRUCK, id: new Date().getTime() };
     setcamions((prev) => [...prev, newtruck]);
+
+    console.log(newtruck);
   }
 
   function onUpdateCamion(camion, prop, val) {
@@ -183,16 +186,24 @@ export default function SuiviCamions() {
             <input
               type="checkbox"
               className="toggle toggle-primary"
-              defaultChecked
-              value={showrepport}
+              value={!showrepport}
               onChange={(e) => setshowrepport(!showrepport)}
             />
           </label>
         </div>
       </div>
       <div className="">
-        {!showrepport ? (
-          <Boazhuang2 repportdata={repportdata} editmode={true} />
+        {showrepport ? (
+          <div className=" flex justify-center items-center flex-col  ">
+            <Boazhuang2 repportdata={repportdata} editmode={true} />
+            <div className=" my-2  ">
+              <ActionButton
+                icon={delivery}
+                title={"LSITE CAMIONS"}
+                onClick={(e) => setshowrepport(false)}
+              />
+            </div>
+          </div>
         ) : (
           <div className=" flex justify-center flex-col items-center gap-4 ">
             <ActionButton
