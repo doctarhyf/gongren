@@ -247,8 +247,8 @@ export default function SuiviCamions() {
             <div>
               <span>Tot. Camions Charges:</span>
               <span className="  font-bold ">
-                {repportdata.camions} / {repportdata.sacs} sacs /{" "}
-                {repportdata.t} T
+                {repportdata?.camions} / {repportdata?.sacs} sacs /{" "}
+                {repportdata?.t} T
               </span>
             </div>
           </div>
