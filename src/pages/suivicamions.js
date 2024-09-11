@@ -14,7 +14,7 @@ const DEF_TRUCK = {
   dejacharge: false,
 };
 
-function CamionItem({ data, onUpdateCamion, onDeleteCamion }) {
+function CamionItem({ data, onUpdateCamion, onDeleteCamion, num }) {
   const [camion, setcamion] = useState(DEF_TRUCK);
 
   useEffect(() => {
@@ -23,7 +23,7 @@ function CamionItem({ data, onUpdateCamion, onDeleteCamion }) {
 
   return (
     <tr className={`${camion.dejacharge && "bg-green-300 "}  `}>
-      <td className=" border border-slate-600 p-1 ">{camion.id}</td>
+      <td className=" border border-slate-600 p-1 ">{num}</td>
       <td className=" border border-slate-600 p-1 ">
         <input
           type="text"
@@ -76,7 +76,10 @@ export default function SuiviCamions() {
   }, [camions]);
 
   function calcRepport() {
-    const totsacs = camions.reduce((acc, cv) => cv.sacs + acc, 0);
+    const totsacs = camions.reduce(
+      (acc, cv) => (cv.dejacharge ? cv.sacs + acc : acc),
+      0
+    );
 
     /*
 {
@@ -121,7 +124,7 @@ export default function SuiviCamions() {
       prob_machine: null,
       prob_courant: null,
       autre: null,
-      camions: camions.length,
+      camions: camions.filter((c) => c.dejacharge).length,
       dechires: 0,
       sacs_adj: 0,
     };
@@ -210,6 +213,7 @@ export default function SuiviCamions() {
               <tbody>
                 {camions.map((data, i) => (
                   <CamionItem
+                    num={i + 1}
                     key={data.plaque}
                     data={data}
                     onUpdateCamion={onUpdateCamion}
