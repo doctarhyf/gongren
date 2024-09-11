@@ -30,6 +30,8 @@ export default function Boazhuang2({
   const [, , user, setuser] = useContext(UserContext);
 
   useEffect(() => {
+    console.log("new rep dt ", repportdata);
+
     setnewrep(false);
     let defaultdata = { team: "A", s: "M" };
 
@@ -49,6 +51,29 @@ export default function Boazhuang2({
     setnewrep(undefined === repportdata);
     console.log("rd => ", repportdata);
   }, []);
+
+  useEffect(() => {
+    console.log("new rep dt ", repportdata);
+
+    setnewrep(false);
+    let defaultdata = { team: "A", s: "M" };
+
+    if (user.poste === "SUP") defaultdata.team = user.equipe;
+    if (!repportdata) {
+      const dateparts = GetDateParts("all");
+      defaultdata = {
+        ...defaultdata,
+        y: dateparts.year,
+        m: dateparts.month + 1,
+        d: dateparts.day,
+      };
+    }
+
+    setdata(repportdata || defaultdata);
+    setediting(editmode);
+    setnewrep(undefined === repportdata);
+    console.log("rd => ", repportdata);
+  }, [repportdata]);
 
   async function onSaveData(e) {
     if (editing) {
@@ -106,7 +131,6 @@ export default function Boazhuang2({
     const s = shiftcode;
     const shiftdata = SHIFT_HOURS_ZH[s];
     const shiftstring = `${shiftdata[0]} - ${shiftdata[1]} - ${shiftdata[2]}`;
-    console.log("shift s => ", shiftstring);
     return shiftstring;
   }
 

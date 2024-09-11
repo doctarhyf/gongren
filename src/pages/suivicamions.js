@@ -1,13 +1,20 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import Loading from "../comps/Loading";
 import plus from "../img/plus.png";
 import check from "../img/check.svg";
 import delivery from "../img/delivery.png";
+import unloading from "../img/unloading.png";
 import del from "../img/delete.png";
 import ActionButton from "../comps/ActionButton";
 import Boazhuang2 from "../comps/sacs/Baozhuang2";
-import { ParseBaozhuang } from "../helpers/func";
+import { GetDateParts, ParseBaozhuang } from "../helpers/func";
 import { UserContext } from "../App";
+import {
+  CLASS_INPUT_TEXT,
+  CLASS_SELECT_TITLE,
+  EQUIPES_CHARGEMENT,
+  SHIFT_HOURS_ZH,
+} from "../helpers/flow";
 
 const DEF_TRUCK = {
   sacs: 800,
@@ -48,7 +55,13 @@ function CamionItem({ data, onUpdateCamion, onDeleteCamion, num }) {
         />
       </td>
       <td className=" border border-slate-600 p-1 ">
-        {!camion.dejacharge && (
+        {camion.dejacharge ? (
+          <ActionButton
+            icon={unloading}
+            title={"ANNULER"}
+            onClick={(e) => onUpdateCamion(camion, "dejacharge", false)}
+          />
+        ) : (
           <ActionButton
             icon={check}
             title={"OK"}
@@ -71,10 +84,12 @@ export default function SuiviCamions() {
   const [showrepport, setshowrepport] = useState(false);
   const [repportdata, setrepportdata] = useState();
   const [, , user, setuser] = useContext(UserContext);
+  const [team, setteam] = useState("A");
+  const [shift, setshift] = useState("M");
 
   useEffect(() => {
     calcRepport();
-  }, [camions]);
+  }, [camions, showrepport, team, shift]);
 
   function calcRepport() {
     const totsacs = camions.reduce(
@@ -113,7 +128,8 @@ export default function SuiviCamions() {
 
     //console.log("user", user);
 
-    const code = "A_M_2024_0_1";
+    const { year: y, month: m, day: d } = GetDateParts();
+    const code = `${team}_${shift}_${y}_${m}_${d}`;
 
     const load = {
       //id: 94,
@@ -131,6 +147,8 @@ export default function SuiviCamions() {
     };
 
     const bz = ParseBaozhuang(load);
+
+    console.log("calcRepport() => ", bz);
 
     setrepportdata(bz);
   }
@@ -186,55 +204,94 @@ export default function SuiviCamions() {
             <input
               type="checkbox"
               className="toggle toggle-primary"
-              value={!showrepport}
+              value={showrepport}
               onChange={(e) => setshowrepport(!showrepport)}
             />
           </label>
         </div>
       </div>
       <div className="">
-        {showrepport ? (
-          <div className=" flex justify-center items-center flex-col  ">
-            <Boazhuang2 repportdata={repportdata} editmode={true} />
-            <div className=" my-2  ">
-              <ActionButton
-                icon={delivery}
-                title={"LSITE CAMIONS"}
-                onClick={(e) => setshowrepport(false)}
-              />
+        <div
+          className={`   ${
+            showrepport ? "block" : "hidden"
+          } flex justify-center items-center flex-col  `}
+        >
+          <Boazhuang2
+            repportdata={repportdata}
+            editmode={true}
+            onBaozhuangCancel={(e) => setshowrepport(false)}
+          />
+          <div className=" my-2  ">
+            <ActionButton
+              icon={delivery}
+              title={"LSITE CAMIONS"}
+              onClick={(e) => setshowrepport(false)}
+            />
+          </div>
+        </div>
+
+        <div
+          className={` flex justify-center flex-col items-center gap-4  ${
+            showrepport ? "hidden" : "block"
+          }   `}
+        >
+          <ActionButton
+            icon={plus}
+            title={"NOUVEAU CAMION"}
+            onClick={onAddCamion}
+          />
+
+          <div>
+            <div>
+              Equipe:
+              <select
+                value={team}
+                onChange={(e) => setteam(e.target.value)}
+                className={CLASS_INPUT_TEXT}
+              >
+                {EQUIPES_CHARGEMENT.map((eq, i) => (
+                  <option key={i} value={eq}>
+                    {eq}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              Shift:
+              <select
+                value={shift}
+                onChange={(e) => setshift(e.target.value)}
+                className={CLASS_INPUT_TEXT}
+              >
+                {Object.entries(SHIFT_HOURS_ZH).map((sh, i) => (
+                  <option value={sh[0]}>{sh[1].join(" - ")}</option>
+                ))}
+              </select>
             </div>
           </div>
-        ) : (
-          <div className=" flex justify-center flex-col items-center gap-4 ">
-            <ActionButton
-              icon={plus}
-              title={"NOUVEAU CAMION"}
-              onClick={onAddCamion}
-            />
 
-            <table class="table-auto mx-auto  ">
-              <thead>
-                <tr>
-                  <th className=" border border-slate-600 p-1 ">No</th>
-                  <th className=" border border-slate-600 p-1 ">Plaque</th>
-                  <th className=" border border-slate-600 p-1 ">Nb. Sacs</th>
-                  <th className=" border border-slate-600 p-1 ">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {camions.map((data, i) => (
-                  <CamionItem
-                    num={i + 1}
-                    key={data.plaque}
-                    data={data}
-                    onUpdateCamion={onUpdateCamion}
-                    onDeleteCamion={onDeleteCamion}
-                  />
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
+          <table class="table-auto mx-auto  ">
+            <thead>
+              <tr>
+                <th className=" border border-slate-600 p-1 ">No</th>
+                <th className=" border border-slate-600 p-1 ">Plaque</th>
+                <th className=" border border-slate-600 p-1 ">Nb. Sacs</th>
+                <th className=" border border-slate-600 p-1 ">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {camions.map((data, i) => (
+                <CamionItem
+                  num={i + 1}
+                  key={data.id}
+                  data={data}
+                  onUpdateCamion={onUpdateCamion}
+                  onDeleteCamion={onDeleteCamion}
+                />
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

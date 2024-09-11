@@ -214,6 +214,8 @@ export const EQUIPES = [
   "BIGBAG",
 ];
 
+export const EQUIPES_CHARGEMENT = ["A", "B", "C", "D"];
+
 export const EQUIPES_NAMES = {
   JR: "DU JOUR",
   MEC: "MECANICIENS",
