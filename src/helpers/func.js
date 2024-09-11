@@ -74,6 +74,27 @@ export function GetDateParts(part = "all", date = new Date()) {
     : parts[part];
 }
 
+// Utility function to write data to localStorage
+export const saveToLocalStorage = (key, data) => {
+  try {
+    const jsonData = JSON.stringify(data); // Convert the array of objects to a JSON string
+    localStorage.setItem(key, jsonData); // Save it under the provided key
+  } catch (error) {
+    console.error("Error saving to localStorage", error);
+  }
+};
+
+// Utility function to read data from localStorage
+export const readFromLocalStorage = (key) => {
+  try {
+    const jsonData = localStorage.getItem(key); // Retrieve the JSON string by key
+    return jsonData ? JSON.parse(jsonData) : null; // Parse it back to an object if exists, otherwise return null
+  } catch (error) {
+    console.error("Error reading from localStorage", error);
+    return null; // In case of error, return null
+  }
+};
+
 export function FrenchDate(date) {
   // Format date and time in French
   let formattedDateTime = date.toLocaleString("fr-FR", {

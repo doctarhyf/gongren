@@ -8,7 +8,12 @@ import unloading from "../img/unloading.png";
 import del from "../img/delete.png";
 import ActionButton from "../comps/ActionButton";
 import Boazhuang2 from "../comps/sacs/Baozhuang2";
-import { GetDateParts, ParseBaozhuang } from "../helpers/func";
+import {
+  GetDateParts,
+  ParseBaozhuang,
+  readFromLocalStorage,
+  saveToLocalStorage,
+} from "../helpers/func";
 import { UserContext } from "../App";
 import {
   CLASS_INPUT_TEXT,
@@ -27,6 +32,7 @@ const CAMIONS = {
   TOTAL: "total",
   CHARGES: "charges",
   NON_CHARGES: "noncharges",
+  LOCAL_STORAGE_KEY: "camions",
 };
 
 function CamionItem({ data, onUpdateCamion, onDeleteCamion, num }) {
@@ -90,6 +96,7 @@ function CamionItem({ data, onUpdateCamion, onDeleteCamion, num }) {
 }
 
 export default function SuiviCamions() {
+  const [firstload, setfirstload] = useState(true);
   const [camions, setcamions] = useState([]);
   const [loading, setloading] = useState(false);
   const [showrepport, setshowrepport] = useState(false);
@@ -100,7 +107,12 @@ export default function SuiviCamions() {
 
   useEffect(() => {
     calcRepport();
+    saveToLocalStorage(CAMIONS.LOCAL_STORAGE_KEY, camions);
   }, [camions, showrepport, team, shift]);
+
+  useEffect(() => {
+    setcamions(readFromLocalStorage(CAMIONS.LOCAL_STORAGE_KEY));
+  }, []);
 
   function calcRepport() {
     const totsacs = camions.reduce(
