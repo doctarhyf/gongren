@@ -1,6 +1,7 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import Loading from "../comps/Loading";
 import plus from "../img/plus.png";
+import books from "../img/books.png";
 import check from "../img/check.svg";
 import delivery from "../img/delivery.png";
 import unloading from "../img/unloading.png";
@@ -197,19 +198,7 @@ export default function SuiviCamions() {
         </span>
       </div>
 
-      <div className=" flex justify-center items-center  ">
-        <div className="form-control w-52">
-          <label className="label cursor-pointer">
-            <span className="label-text">VOIR RAPPORT</span>
-            <input
-              type="checkbox"
-              className="toggle toggle-primary"
-              value={showrepport}
-              onChange={(e) => setshowrepport(!showrepport)}
-            />
-          </label>
-        </div>
-      </div>
+      <div className=" flex justify-center items-center  "></div>
       <div className="">
         <div
           className={`   ${
@@ -217,6 +206,7 @@ export default function SuiviCamions() {
           } flex justify-center items-center flex-col  `}
         >
           <Boazhuang2
+            hideCancel
             repportdata={repportdata}
             editmode={true}
             onBaozhuangCancel={(e) => setshowrepport(false)}
@@ -235,11 +225,19 @@ export default function SuiviCamions() {
             showrepport ? "hidden" : "block"
           }   `}
         >
-          <ActionButton
-            icon={plus}
-            title={"NOUVEAU CAMION"}
-            onClick={onAddCamion}
-          />
+          <div className=" md:flex gap-2  ">
+            <ActionButton
+              icon={plus}
+              title={"NOUVEAU CAMION"}
+              onClick={onAddCamion}
+            />
+
+            <ActionButton
+              icon={books}
+              title={"ENVOYER RAPPORT"}
+              onClick={(e) => setshowrepport(true)}
+            />
+          </div>
 
           <div>
             <div>

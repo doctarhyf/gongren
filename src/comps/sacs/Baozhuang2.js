@@ -22,6 +22,7 @@ export default function Boazhuang2({
   onBaozhuangSave,
   editmode,
   onBaozhuangCancel,
+  hideCancel,
 }) {
   const [data, setdata] = useState({});
   const [editing, setediting] = useState(false);
@@ -335,7 +336,7 @@ Superviseur班长: @${sup} 
             title={"Copy for Wechat"}
           />
         )}
-        {editing && !loading && (
+        {editing && !loading && hideCancel && (
           <ActionButton
             icon={cancel}
             onClick={(e) => {
