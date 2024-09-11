@@ -1,20 +1,49 @@
 import React, { useState } from "react";
 import { MAIN_MENU, USER_LEVEL } from "../helpers/flow";
 import gck from "../img/gck.png";
-import menu from "../img/menu.svg";
+import logout from "../img/logout.svg";
 import { UserHasAccessCode } from "../helpers/func";
+
+function MenuIcon({ sethidden, hidden }) {
+  return (
+    <div
+      className={`  cursor-pointer ${hidden ? "my-auto  " : "  "}   `}
+      onClick={(e) => sethidden(!hidden)}
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="feather feather-menu text-black dark:text-white  "
+      >
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+    </div>
+  );
+}
 
 function MainNav({ user, onMenuClick, curPage, onLogout }) {
   // console.log(user);
   const [hidden, sethidden] = useState(true);
 
   return (
-    <section className=" p-1  relative flex items-start  bg-sky-500 h-min md:h-fit w-full  md:flex justify-between">
+    <section className=" p-1  relative  items-start  bg-sky-500 h-min md:h-fit w-full  md:flex justify-between">
       <div
         onClick={(e) => sethidden(!hidden)}
-        className="p-1 cursor-pointer  w-fit max-w-[120pt] flex justify-center items-center "
+        className="    p-1 cursor-pointer h-[30pt]   md:w-fit md:max-w-[120pt] flex justify-between md:justify-center items-center "
       >
-        <img src={gck} height={10} />
+        <img src={gck} height={"10pt"} className=" h-[20pt] md:h-fit  " />
+        <div className=" w-fit md:hidden   ml-auto  mb-2 ">
+          <MenuIcon sethidden={sethidden} hidden={hidden} />
+        </div>
       </div>
 
       <div
@@ -42,11 +71,12 @@ function MainNav({ user, onMenuClick, curPage, onLogout }) {
                 )}
               </li>
             ))}
-            <li className="flex justify-center items-center mb-2">
+            <li className="  ">
               <button
                 onClick={onLogout}
-                className=" w-fit text-xs p-1  rounded-md mx-auto bg-red-500 text-white hover:bg-red-700 "
+                className=" flex gap-2 w-fit text-xs p-2  rounded-md mx-auto border-white border text-white hover:bg-red-700 "
               >
+                <img src={logout} className=" w-4 h-4 " />
                 LOGOUT
               </button>
             </li>
@@ -54,26 +84,8 @@ function MainNav({ user, onMenuClick, curPage, onLogout }) {
         </div>
       </div>
 
-      <div
-        className={` cursor-pointer ${hidden ? "my-auto  " : "  "}   `}
-        onClick={(e) => sethidden(!hidden)}
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          class="feather feather-menu text-black dark:text-white  "
-        >
-          <line x1="3" y1="12" x2="21" y2="12"></line>
-          <line x1="3" y1="6" x2="21" y2="6"></line>
-          <line x1="3" y1="18" x2="21" y2="18"></line>
-        </svg>
+      <div className="  hidden md:block ">
+        <MenuIcon sethidden={sethidden} hidden={hidden} />
       </div>
     </section>
   );

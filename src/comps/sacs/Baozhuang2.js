@@ -1,6 +1,10 @@
 import { useContext, useEffect, useState } from "react";
-import { SHIFT_HOURS_ZH, SUPERVISORS } from "../../helpers/flow";
-import { AddLeadingZero, GetDateParts } from "../../helpers/func";
+import { ACCESS_CODES, SHIFT_HOURS_ZH, SUPERVISORS } from "../../helpers/flow";
+import {
+  AddLeadingZero,
+  GetDateParts,
+  UserHasAccessCode,
+} from "../../helpers/func";
 import * as SB from "../../helpers/sb";
 import { TABLES_NAMES } from "../../helpers/sb.config";
 import gck from "../../img/gck.png";
@@ -284,16 +288,19 @@ Superviseur班长: @${sup} 
         个/Sacs déchirés`;
       </div>
       <div className=" my-4 justify-between m-1 flex ">
-        <ActionButton
-          disabled={loading}
-          icon={editing ? save : pen}
-          onClick={onSaveData}
-          title={editing ? "SAVE" : "EDIT"}
-        />
+        {(UserHasAccessCode(user, ACCESS_CODES.UPDATE_LOAD) ||
+          (user.poste === "SUP" && data.team === user.equipe)) && (
+          <ActionButton
+            disabled={loading}
+            icon={editing ? save : pen}
+            onClick={onSaveData}
+            title={editing ? "SAVE" : "EDIT"}
+          />
+        )}
+
         {!editing && !loading && (
           <ActionButton icon={pdf} onClick={onPrint} title={"Print"} />
         )}
-
         {!editing && !loading && (
           <ActionButton
             icon={wechat}
