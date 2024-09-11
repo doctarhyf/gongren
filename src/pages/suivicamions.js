@@ -47,18 +47,22 @@ function CamionItem({ data, onUpdateCamion, onDeleteCamion, num }) {
           className="p-1 border border-slate-800 rounded-md outline-none "
           value={camion.plaque}
           onChange={(e) => onUpdateCamion(camion, "plaque", e.target.value)}
+          onFocus={(e) => e.target.select()}
+          onBlur={(e) => e.target.setSelectionRange(0, 0)}
         />
       </td>
       <td className=" border border-slate-600 p-1 ">
         <input
-          type="number"
+          type="text"
           maxLength={4}
           size={4}
-          className="p-1 w-16 border border-slate-800 rounded-md outline-none "
+          className="sacs p-1 w-16 border border-slate-800 rounded-md outline-none "
           value={camion.sacs}
           onChange={(e) =>
-            onUpdateCamion(camion, "sacs", parseInt(e.target.value))
+            onUpdateCamion(camion, "sacs", parseInt(e.target.value) || 0)
           }
+          onFocus={(e) => e.target.select()}
+          onBlur={(e) => e.target.setSelectionRange(0, 0)}
         />
       </td>
       <td className=" border border-slate-600 p-1 ">
@@ -173,7 +177,16 @@ export default function SuiviCamions() {
     const idx = camions.findIndex((it) => it.id === camion.id);
     const item = { ...camions[idx] };
 
-    item[prop] = val;
+    if (prop === "sacs") {
+      const regex = /^[0-9]*\.?[0-9]*$/;
+      if (regex.test(val)) {
+        item[prop] = parseInt(val); // Update the state if it's valid
+      } else {
+        item[prop] = 0;
+      }
+    } else {
+      item[prop] = val;
+    }
 
     const trucks = [...camions];
     trucks[idx] = item;
