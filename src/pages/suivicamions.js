@@ -23,6 +23,12 @@ const DEF_TRUCK = {
   dejacharge: false,
 };
 
+const CAMIONS = {
+  TOTAL: "total",
+  CHARGES: "charges",
+  NON_CHARGES: "noncharges",
+};
+
 function CamionItem({ data, onUpdateCamion, onDeleteCamion, num }) {
   const [camion, setcamion] = useState(DEF_TRUCK);
 
@@ -189,6 +195,32 @@ export default function SuiviCamions() {
     }
   }
 
+  function CalculateCamionDetails(camions, type) {
+    {
+      /*  {repportdata?.camions} / {repportdata?.sacs} sacs /{" "}
+                {repportdata?.t} T */
+    }
+
+    let nbcamions = 0;
+    let sacs = 0;
+    let t = 0;
+    let selcamions = camions;
+
+    if (CAMIONS.TOTAL === type) selcamions = camions;
+
+    if (CAMIONS.CHARGES === type)
+      selcamions = camions.filter((c) => c.dejacharge);
+
+    if (CAMIONS.NON_CHARGES === type)
+      selcamions = camions.filter((c) => !c.dejacharge);
+
+    nbcamions = selcamions.length;
+    sacs = selcamions.reduce((acc, cv) => cv.sacs + acc, 0);
+    t = parseFloat(sacs / 20).toFixed(2);
+
+    return `${nbcamions} 辆车 | ${sacs} Sacs | ${t} T.`;
+  }
+
   return (
     <div className=" container  ">
       <div>
@@ -240,15 +272,32 @@ export default function SuiviCamions() {
           </div>
 
           <div className=" rounded-md border-purple-500 border p-4 shadow-md shadow-black/50  ">
-            <div>
-              <span>Tot. Camions:</span>
-              <span className="  font-bold ">{camions.length}</span>
+            <div className=" text-center font-bold font-serif text-lg  ">
+              CAMIONS / 车辆
             </div>
             <div>
-              <span>Tot. Camions Charges:</span>
+              <span className=" bg-yellow-500 w-2 mr-2 h-2 inline-block rounded-full  "></span>{" "}
+              <span> Total :</span>
               <span className="  font-bold ">
-                {repportdata?.camions} / {repportdata?.sacs} sacs /{" "}
-                {repportdata?.t} T
+                {CalculateCamionDetails(camions, CAMIONS.TOTAL)}
+              </span>
+            </div>
+            <div>
+              <span className=" bg-green-500 w-2 mr-2 h-2 inline-block rounded-full  "></span>
+              <span>Charges :</span>
+              <span className="  font-bold ">
+                {/* {repportdata?.camions} / {repportdata?.sacs} sacs /{" "}
+                {repportdata?.t} T */}
+                {CalculateCamionDetails(camions, CAMIONS.CHARGES)}
+              </span>
+            </div>
+            <div>
+              <span className=" bg-blue-500 w-2 mr-2 h-2 inline-block rounded-full  "></span>
+              <span>Non Charges :</span>
+              <span className="  font-bold ">
+                {/*  {repportdata?.camions} / {repportdata?.sacs} sacs /{" "}
+                {repportdata?.t} T */}
+                {CalculateCamionDetails(camions, CAMIONS.NON_CHARGES)}
               </span>
             </div>
           </div>
@@ -276,7 +325,9 @@ export default function SuiviCamions() {
                 className={CLASS_INPUT_TEXT}
               >
                 {Object.entries(SHIFT_HOURS_ZH).map((sh, i) => (
-                  <option value={sh[0]}>{sh[1].join(" - ")}</option>
+                  <option key={i} value={sh[0]}>
+                    {sh[1].join(" - ")}
+                  </option>
                 ))}
               </select>
             </div>
@@ -303,6 +354,20 @@ export default function SuiviCamions() {
               ))}
             </tbody>
           </table>
+
+          <div className=" flex flex-col md:flex-row gap-2 pb-4   ">
+            <ActionButton
+              icon={plus}
+              title={"NOUVEAU CAMION"}
+              onClick={onAddCamion}
+            />
+
+            <ActionButton
+              icon={books}
+              title={"ENVOYER RAPPORT"}
+              onClick={(e) => setshowrepport(true)}
+            />
+          </div>
         </div>
       </div>
     </div>
