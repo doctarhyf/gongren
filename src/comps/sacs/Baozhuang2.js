@@ -51,6 +51,8 @@ export default function Boazhuang2({
       console.log("will save first");
       setloading(true);
 
+      //console.log(data);
+
       const { team, y, m, d, sup, shift, s, camions, sacs, t, dechires } = data;
       const code = `${team}_${s}_${y}_${m - 1}_${parseInt(d)}`;
 

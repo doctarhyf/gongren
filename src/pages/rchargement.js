@@ -141,7 +141,7 @@ function FormAddLoad({ onDataUpdate }) {
   );
 }
 
-export default function SuiviChargement() {
+export default function RapportChargement() {
   const [mcode, setmcode] = useState();
   const [loading, setloading] = useState(false);
   const [loads, setloads] = useState([]);

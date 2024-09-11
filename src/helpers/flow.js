@@ -5,12 +5,13 @@ import Equipes from "../pages/equipes";
 import Sections from "../pages/sections";
 import Listes from "../pages/listes";
 import Chargement from "../pages/chargement";
-import SuiviChargement from "../pages/schargement";
+import RapportChargement from "../pages/rchargement";
 import Magasin from "../pages/magasin";
 import Dico from "../pages/dico";
 import Sacs from "../pages/sacs";
 import JinChu from "../pages/jinchu";
 import { Bigbag } from "../pages/bigbag";
+import SuiviCamions from "../pages/suivicamions";
 
 export const LANG_COOKIE_KEY = "gongren_lang";
 
@@ -102,6 +103,8 @@ export const ACCESS_CODES = {
   PAGE_AGENTS: "AGT",
   PAGE_CHARGEMENT: "LDS",
   PAGE_SUIVI_CHARGEMENT: "SLDS",
+  PAGE_RAPPORT_CHARGEMENT: "RLDS",
+  PAGE_SUIVI_CAMIONS: "SVCM",
   PAGE_BIGBAG: "BB",
   PAGE_JINCHU: "JC",
   PAGE_ROULEMENT: "RL",
@@ -242,10 +245,16 @@ export const MAIN_MENU = [
     access_code: ACCESS_CODES.PAGE_CHARGEMENT,
   },
   {
-    name: "Suivi Chargement",
-    path: "/schargement",
-    el: SuiviChargement,
-    access_code: ACCESS_CODES.PAGE_SUIVI_CHARGEMENT,
+    name: "Rapport Chargement",
+    path: "/rchargement",
+    el: RapportChargement,
+    access_code: ACCESS_CODES.PAGE_RAPPORT_CHARGEMENT,
+  },
+  {
+    name: "Suivi Camions",
+    path: "/suivicamions",
+    el: SuiviCamions,
+    access_code: ACCESS_CODES.PAGE_SUIVI_CAMIONS,
   },
   {
     name: "BIGBAG",
