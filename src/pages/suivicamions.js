@@ -221,11 +221,11 @@ export default function SuiviCamions() {
         </div>
 
         <div
-          className={` flex justify-center flex-col items-center gap-4  ${
+          className={` flex justify-center flex-col  items-center gap-4  ${
             showrepport ? "hidden" : "block"
           }   `}
         >
-          <div className=" md:flex gap-2  ">
+          <div className=" flex flex-col md:flex-row gap-2 pb-4   ">
             <ActionButton
               icon={plus}
               title={"NOUVEAU CAMION"}
@@ -237,6 +237,20 @@ export default function SuiviCamions() {
               title={"ENVOYER RAPPORT"}
               onClick={(e) => setshowrepport(true)}
             />
+          </div>
+
+          <div className=" rounded-md border-purple-500 border p-4 shadow-md shadow-black/50  ">
+            <div>
+              <span>Tot. Camions:</span>
+              <span className="  font-bold ">{camions.length}</span>
+            </div>
+            <div>
+              <span>Tot. Camions Charges:</span>
+              <span className="  font-bold ">
+                {repportdata.camions} / {repportdata.sacs} sacs /{" "}
+                {repportdata.t} T
+              </span>
+            </div>
           </div>
 
           <div>

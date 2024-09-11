@@ -31,29 +31,10 @@ export default function Boazhuang2({
   const [, , user, setuser] = useContext(UserContext);
 
   useEffect(() => {
-    console.log("new rep dt ", repportdata);
-
-    setnewrep(false);
-    let defaultdata = { team: "A", s: "M" };
-
-    if (user.poste === "SUP") defaultdata.team = user.equipe;
-    if (!repportdata) {
-      const dateparts = GetDateParts("all");
-      defaultdata = {
-        ...defaultdata,
-        y: dateparts.year,
-        m: dateparts.month + 1,
-        d: dateparts.day,
-      };
-    }
-
-    setdata(repportdata || defaultdata);
-    setediting(editmode);
-    setnewrep(undefined === repportdata);
-    console.log("rd => ", repportdata);
+    makeCalculation();
   }, []);
 
-  useEffect(() => {
+  function makeCalculation() {
     console.log("new rep dt ", repportdata);
 
     setnewrep(false);
@@ -74,6 +55,10 @@ export default function Boazhuang2({
     setediting(editmode);
     setnewrep(undefined === repportdata);
     console.log("rd => ", repportdata);
+  }
+
+  useEffect(() => {
+    makeCalculation();
   }, [repportdata]);
 
   async function onSaveData(e) {
@@ -336,7 +321,7 @@ Superviseur班长: @${sup} 
             title={"Copy for Wechat"}
           />
         )}
-        {editing && !loading && hideCancel && (
+        {editing && !loading && !hideCancel && (
           <ActionButton
             icon={cancel}
             onClick={(e) => {
