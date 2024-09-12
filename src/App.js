@@ -38,9 +38,10 @@ function App() {
       .eq("pin", pin);
 
     if (!data) {
-      alert(JSON.stringify(error));
+      seterror(JSON.stringify(error));
+      document.getElementById("my_modal_1").showModal();
       console.error(error);
-      alert(JSON.stringify(data));
+      //alert(JSON.stringify(data));
       return;
     }
 
@@ -55,8 +56,9 @@ function App() {
     } else {
       if (error === null) {
         err = `User matricule: "${matricule}", pin : "${pin}" cant be found`;
+        document.getElementById("my_modal_1").showModal();
         seterror(err);
-        alert(err);
+        // alert(err);
         console.log(err);
       } else {
         err = "Error loging in\n" + JSON.stringify(error);
@@ -135,7 +137,7 @@ function App() {
     <>
       <FormLogin onLogin={onLogin} />
 
-      <dialog id="my_modal_1" className="modal">
+      <dialog id="my_modal_1" className="modal modal-bottom sm:modal-middle">
         <div className="modal-box">
           <h3 className="font-bold text-lg">Login error!</h3>
           <p className="py-4">{error}</p>

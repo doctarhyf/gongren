@@ -1,13 +1,7 @@
-import logo from "./logo.svg";
+import { useState } from "react";
 import "./App.css";
-import { CLASS_BTN, LOGO, MAIN_MENU } from "./helpers/flow";
-import { useRef, useState } from "react";
 import MainNav from "./comps/MainNav";
-import Loading from "./comps/Loading";
-import * as SB from "./helpers/sb";
-import { _ } from "./helpers/func";
-import { TABLES_NAMES } from "./helpers/sb.config";
-import FormLogin from "./comps/FormLogin";
+import { MAIN_MENU } from "./helpers/flow";
 
 export default function GongRen({ user, onLogout }) {
   const [curPage, setCurPage] = useState(MAIN_MENU[0].path);
