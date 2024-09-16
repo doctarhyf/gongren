@@ -96,11 +96,7 @@ export default function Notifications() {
               <h5>{selectednot.title}</h5>
               <div>{selectednot.desc}</div>
               <div className=" w-56 h-56 overflow-hidden rounded-md ">
-                <img
-                  src={truck}
-                  onClick={(e) => show(truck)}
-                  className=" hover:cursor-pointer  "
-                />
+                <img src={truck} className=" hover:cursor-pointer  " />
               </div>
               <ActionButton
                 title={"OK"}
