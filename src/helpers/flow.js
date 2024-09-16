@@ -12,6 +12,7 @@ import Sacs from "../pages/sacs";
 import JinChu from "../pages/jinchu";
 import { Bigbag } from "../pages/bigbag";
 import SuiviCamions from "../pages/suivicamions";
+import Notifications from "../pages/notifications";
 
 export const LANG_COOKIE_KEY = "gongren_lang";
 
@@ -92,6 +93,8 @@ export const USER_LEVEL = {
 };
 
 export const ACCESS_CODES = {
+  ALL: "ALL",
+  CAN_POST_NOTIFICATIONS: "CPNFCT",
   ROOT: "ROOT",
   ADD_NEW_LOAD: "ANL",
   ADD_NEW_AGENT: "ANA",
@@ -100,6 +103,7 @@ export const ACCESS_CODES = {
   UPDATE_LOAD: "UPDL",
   DELETE_LOAD: "DELL",
   PAGE_HOME: "HME",
+  PAGE_NOTIFICATIONS: "",
   PAGE_AGENTS: "AGT",
   PAGE_CHARGEMENT: "LDS",
   PAGE_SUIVI_CHARGEMENT: "SLDS",
@@ -232,6 +236,12 @@ export const MAIN_MENU = [
     name: "Home",
     path: "/home",
     el: Home,
+    access_code: ACCESS_CODES.PAGE_HOME,
+  },
+  {
+    name: "Notifications",
+    path: "/notifications",
+    el: Notifications,
     access_code: ACCESS_CODES.PAGE_HOME,
   },
   {
