@@ -59,8 +59,9 @@ const NOTS = [
 export default function Notifications() {
   const [loading, setloading] = useState(false);
   const [notifications, setnotifications] = useState(NOTS);
-  const [, , user, setuser] = useContext(UserContext);
+  const [show, , user, setuser] = useContext(UserContext);
   const [selectednot, setselectednot] = useState(undefined);
+  const [adding, setadding] = useState(false);
 
   return (
     <div className=" container  ">
@@ -75,55 +76,80 @@ export default function Notifications() {
       </div>
 
       {UserHasAccessCode(user, ACCESS_CODES.CAN_POST_NOTIFICATIONS) ||
-        (true && <ActionButton title={"Nouvelle Notification"} icon={plus} />)}
-
-      {selectednot ? (
-        <div>
-          <h5>{selectednot.title}</h5>
-          <div>{selectednot.desc}</div>
-          <div className=" w-56 h-56 overflow-hidden rounded-md ">
-            <img src={truck} />
-          </div>
+        (true && (
           <ActionButton
-            title={"OK"}
-            icon={check}
-            onClick={(e) => setselectednot(undefined)}
+            title={"Nouvelle Notification"}
+            icon={plus}
+            onClick={(e) => setadding(true)}
           />
+        ))}
+
+      {adding ? (
+        <div>
+          Adding
+          <ActionButton title={"ok"} onClick={(e) => setadding(false)} />
         </div>
       ) : (
-        <div>
-          <table class="table-fixed">
-            <thead>
-              <tr>
-                <th className=" p-1 border-slate-500 border ">ID</th>
-                <th className=" p-1 border-slate-500 border ">Date</th>
-                <th className=" p-1 border-slate-500 border ">Plaque</th>
-                <th className=" p-1 border-slate-500 border ">Problem</th>
-                <th className=" p-1 border-slate-500 border ">Audio</th>
-                <th className=" p-1 border-slate-500 border ">Photo</th>
-              </tr>
-            </thead>
-            <tbody>
-              {NOTS.map((not, i) => (
-                <tr
-                  onClick={(e) => setselectednot(not)}
-                  className="  hover:bg-slate-500 hover:text-white hover:cursor-pointer  "
-                >
-                  <td className=" p-1 border-slate-500 border ">{i + 1}</td>
-                  <td className=" p-1 border-slate-500 border ">{not.date}</td>
-                  <td className=" p-1 border-slate-500 border ">
-                    {not.plaque}
-                  </td>
-                  <td className=" p-1 border-slate-500 border ">{not.title}</td>
-                  <td className=" p-1 border-slate-500 border ">{not.audio}</td>
-                  <td className=" p-1 border-slate-500 border ">
-                    {not.images[0]}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <>
+          {selectednot ? (
+            <div>
+              <h5>{selectednot.title}</h5>
+              <div>{selectednot.desc}</div>
+              <div className=" w-56 h-56 overflow-hidden rounded-md ">
+                <img
+                  src={truck}
+                  onClick={(e) => show(truck)}
+                  className=" hover:cursor-pointer  "
+                />
+              </div>
+              <ActionButton
+                title={"OK"}
+                icon={check}
+                onClick={(e) => setselectednot(undefined)}
+              />
+            </div>
+          ) : (
+            <div>
+              <table class="table-fixed">
+                <thead>
+                  <tr>
+                    <th className=" p-1 border-slate-500 border ">ID</th>
+                    <th className=" p-1 border-slate-500 border ">Date</th>
+                    <th className=" p-1 border-slate-500 border ">Plaque</th>
+                    <th className=" p-1 border-slate-500 border ">Problem</th>
+                    <th className=" p-1 border-slate-500 border ">Audio</th>
+                    <th className=" p-1 border-slate-500 border ">Photo</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {NOTS.map((not, i) => (
+                    <tr
+                      onClick={(e) => setselectednot(not)}
+                      className="  hover:bg-slate-500 hover:text-white hover:cursor-pointer  "
+                    >
+                      <td className=" p-1 border-slate-500 border ">{i + 1}</td>
+                      <td className=" p-1 border-slate-500 border ">
+                        {not.date}
+                      </td>
+                      <td className=" p-1 border-slate-500 border ">
+                        {not.plaque}
+                      </td>
+                      <td className=" p-1 border-slate-500 border ">
+                        {not.title}
+                      </td>
+                      <td className=" p-1 border-slate-500 border ">
+                        {not.audio}
+                      </td>
+                      <td className=" p-1 border-slate-500 border ">
+                        {not.images[0]}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </>
       )}
     </div>
   );
