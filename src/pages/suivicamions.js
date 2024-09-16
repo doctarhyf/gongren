@@ -23,9 +23,9 @@ import {
 } from "../helpers/flow";
 
 const DEF_TRUCK = {
-  sacs: 800,
-  plaque: "4270AR05",
-  dejacharge: false,
+  sacs: 0,
+  plaque: "plaque",
+  dejacharge: true,
 };
 
 const CAMIONS = {

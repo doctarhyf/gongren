@@ -184,7 +184,7 @@ Superviseur班长: @${sup} 
       <div>
         •Équipe班:
         {editing ? (
-          user.poste === "SUP" ? (
+          user.poste === "SUP" && !data.team === "B" ? (
             <span className=" font-bold underline ">{data.team}</span>
           ) : (
             <select
