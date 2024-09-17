@@ -184,7 +184,9 @@ export default function Roulements() {
 
       {/* <ItemNotSelected show={!curAgent} /> */}
 
-      <TableRoulement agentData={curAgent} />
+      <div id="sc" className=" bg-black/50 p-4 overflow-scroll  ">
+        <TableRoulement agentData={curAgent} />
+      </div>
     </div>
   );
 }
