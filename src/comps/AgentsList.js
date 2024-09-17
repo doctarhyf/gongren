@@ -15,7 +15,7 @@ export default function AgentsList({
   onTeamClick,
   showToggleTableMode,
   showToggleTeamsView,
-  onlyActive,
+  onlyActive = true,
   perPage = 10,
 }) {
   const [q, setq] = useState("");
@@ -59,9 +59,9 @@ export default function AgentsList({
     setteams([]);
     let items_raw = await SB.LoadAllItems(TABLES_NAMES.AGENTS);
 
-    const showActive = showOnlyActive ? "OUI" : "NON";
+    // const showActive = showOnlyActive ? "OUI" : "NON";
 
-    if (onlyActive) {
+    if (showOnlyActive) {
       items_raw = items_raw.filter((it, i) => it.active === "OUI");
     }
 
