@@ -1,80 +1,15 @@
+import { useQuery } from "@tanstack/react-query";
 import React, { useContext, useState } from "react";
-import Loading from "../comps/Loading";
-import ActionButton from "../comps/ActionButton";
-import plus from "../img/plus.png";
-import check from "../img/check.svg";
-import truck from "../img/truck.jpg";
-import { UserHasAccessCode } from "../helpers/func";
-import { ACCESS_CODES } from "../helpers/flow";
+import { fetchAllItemFromTable } from "../api/queries";
 import { UserContext } from "../App";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import * as SB from "../helpers/sb";
-import { supabase } from "../helpers/sb.config";
+import ActionButton from "../comps/ActionButton";
+import Loading from "../comps/Loading";
+import { ACCESS_CODES } from "../helpers/flow";
+import { UserHasAccessCode } from "../helpers/func";
+import check from "../img/check.svg";
+import plus from "../img/plus.png";
+import truck from "../img/truck.jpg";
 import { TABLES_NAMES } from "../helpers/sb.config";
-import axios from "axios";
-const NOTS = [
-  {
-    id: 1,
-    title: "Problème moteur",
-    desc: "Le camion 001 a un problème moteur.",
-    images: ["img1.jpg", "img2.jpg"],
-    audio: "audio1.mp3",
-    plaque: "ABC-1234",
-    date: "2024-09-12",
-  },
-  {
-    id: 2,
-    title: "Freins défectueux",
-    desc: "Le camion 002 a des freins défectueux.",
-    images: ["img3.jpg"],
-    audio: "audio2.mp3",
-    plaque: "DEF-5678",
-    date: "2024-08-30",
-  },
-  {
-    id: 3,
-    title: "Surchauffe moteur",
-    desc: "Le camion 003 surchauffe souvent.",
-    images: ["img4.jpg", "img5.jpg"],
-    audio: "audio3.mp3",
-    plaque: "GHI-9101",
-    date: "2024-07-22",
-  },
-  {
-    id: 4,
-    title: "Fuite d'huile",
-    desc: "Le camion 004 a une fuite d'huile.",
-    images: ["img6.jpg"],
-    audio: "audio4.mp3",
-    plaque: "JKL-1121",
-    date: "2024-08-15",
-  },
-  {
-    id: 5,
-    title: "Pneus usés",
-    desc: "Le camion 005 a des pneus usés.",
-    images: ["img7.jpg"],
-    audio: "audio5.mp3",
-    plaque: "MNO-3141",
-    date: "2024-09-05",
-  },
-];
-
-/* const fetchPosts = async () => {
-  const { data } = await axios.get(
-    "https://jsonplaceholder.typicode.com/posts"
-  );
-  return data;
-}; */
-
-const fetchNotifications = async () => {
-  const { data, error } = await supabase
-    .from(TABLES_NAMES.NOTIFICATIONS)
-    .select("*");
-
-  if (data) return data;
-  throw new Error(JSON.stringify(error));
-};
 
 export default function Notifications() {
   const [show, , user, setuser] = useContext(UserContext);
@@ -82,13 +17,10 @@ export default function Notifications() {
   const [adding, setadding] = useState(false);
 
   const { data, error, isLoading, isError } = useQuery({
-    queryKey: ["posts"],
-    queryFn: fetchNotifications,
+    queryKey: [TABLES_NAMES.NOTIFICATIONS],
+    queryFn: fetchAllItemFromTable,
   });
 
-  console.log(fetchNotifications);
-
-  // if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error: {error.message}</div>;
 
   return (
