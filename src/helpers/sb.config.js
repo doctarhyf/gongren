@@ -19,4 +19,5 @@ export const TABLES_NAMES = {
   SACS_STOCK_PRODUCTION: "sacs_stock_prod",
   OPERATIONS_LOGS: "ops_logs",
   BIGBAG: "bigbag",
+  NOTIFICATIONS: "notifications'",
 };

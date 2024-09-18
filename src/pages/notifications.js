@@ -7,7 +7,11 @@ import truck from "../img/truck.jpg";
 import { UserHasAccessCode } from "../helpers/func";
 import { ACCESS_CODES } from "../helpers/flow";
 import { UserContext } from "../App";
-
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import * as SB from "../helpers/sb";
+import { supabase } from "../helpers/sb.config";
+import { TABLES_NAMES } from "../helpers/sb.config";
+import axios from "axios";
 const NOTS = [
   {
     id: 1,
@@ -56,15 +60,67 @@ const NOTS = [
   },
 ];
 
+const fetchPosts = async () => {
+  const { data } = await axios.get(
+    "https://jsonplaceholder.typicode.com/posts"
+  );
+  return data;
+};
+
+const fetchnot = async () => {
+  const { data, error } = await supabase
+    .from(TABLES_NAMES.NOTIFICATIONS)
+    .select("*");
+
+  if (data) return data;
+  throw new Error(JSON.stringify(error));
+};
+
 export default function Notifications() {
+  const { data, error, isLoading, isError } = useQuery({
+    queryKey: ["posts"],
+    queryFn: fetchnot,
+  });
+
+  if (isLoading) return <div>Loading...</div>;
+  if (isError) return <div>This is a fucking error Error: {error.message}</div>;
+
+  return (
+    <div>
+      <h2>Posts List</h2>
+      <ul>
+        {data.map((post) => (
+          <li key={post.id}>
+            {/* <strong>{post.title}</strong>
+            <p>{post.body}</p> */}
+            {Object.keys(post)}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+/* export default function Notifications() {
   const [loading, setloading] = useState(false);
-  const [notifications, setnotifications] = useState(NOTS);
+  const [notifications, setnotifications] = useState([]);
   const [show, , user, setuser] = useContext(UserContext);
   const [selectednot, setselectednot] = useState(undefined);
   const [adding, setadding] = useState(false);
 
+  const queryClient = useQueryClient();
+
+  const query = useQuery({
+    queryKey: ["notifications"],
+    queryFn: SB.LoadAllItems(TABLES_NAMES.NOTIFICATIONS),
+  });
+
+  if (query.isError) return <div>{JSON.stringify(query.error)}</div>;
+  if (query.isLoading) return <Loading isLoading={true} />;
+
   return (
     <div className=" container  ">
+      cool {JSON.stringify(queryClient)}
       <div>
         NOTIFICATIONS{" "}
         <span className=" bg-red-600 text-white text-sm rounded-full font-bold px-2 p-1  ">
@@ -74,7 +130,6 @@ export default function Notifications() {
           <Loading isLoading={loading} />
         </span>
       </div>
-
       {UserHasAccessCode(user, ACCESS_CODES.CAN_POST_NOTIFICATIONS) ||
         (true && (
           <ActionButton
@@ -83,7 +138,6 @@ export default function Notifications() {
             onClick={(e) => setadding(true)}
           />
         ))}
-
       {adding ? (
         <div>
           Adding
@@ -118,7 +172,7 @@ export default function Notifications() {
                   </tr>
                 </thead>
                 <tbody>
-                  {NOTS.map((not, i) => (
+                  {query.data?.map((not, i) => (
                     <tr
                       onClick={(e) => setselectednot(not)}
                       className="  hover:bg-slate-500 hover:text-white hover:cursor-pointer  "
@@ -149,4 +203,4 @@ export default function Notifications() {
       )}
     </div>
   );
-}
+} */

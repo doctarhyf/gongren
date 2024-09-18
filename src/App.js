@@ -1,18 +1,17 @@
-import logo from "./logo.svg";
-import "./App.css";
-import { CLASS_BTN, LOG_OPERATION, LOGO, MAIN_MENU } from "./helpers/flow";
-import { useEffect, useRef, useState } from "react";
-import MainNav from "./comps/MainNav";
-import Loading from "./comps/Loading";
-import * as SB from "./helpers/sb";
-import { _, UpdateOperationsLogs } from "./helpers/func";
-import { TABLES_NAMES, supabase } from "./helpers/sb.config";
-import FormLogin from "./comps/FormLogin";
-import GongRen from "./GongRen";
+import { createContext, useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
-import { createContext } from "react";
+import "./App.css";
+import FormLogin from "./comps/FormLogin";
+import Loading from "./comps/Loading";
+import GongRen from "./GongRen";
+import { CLASS_BTN, LOG_OPERATION } from "./helpers/flow";
+import { UpdateOperationsLogs } from "./helpers/func";
+import * as SB from "./helpers/sb";
+import { supabase, TABLES_NAMES } from "./helpers/sb.config";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 export const UserContext = createContext();
+const queryClient = new QueryClient();
 
 function App() {
   const [user, setuser] = useState();
@@ -107,32 +106,37 @@ function App() {
   }, []);
 
   return user ? (
-    <UserContext.Provider value={[showImage, showData, user, setuser]}>
-      <div>
-        <div
-          className={`  flex flex-col justify-center items-center bg-black/60 backdrop-blur-md text-white  absolute h-lvh w-lvw ${
-            showModal ? "absolute" : "hidden"
-          } `}
-        >
-          <div className="   ">
-            {modalType === "img" && <img src={modalData} alt={modalData} />}
-            {modalType === "data" &&
-              Object.entries(modalData).map(([k, v], i) => (
-                <div key={i}>
-                  <span className="text-sky-500">{k}: </span>
-                  <span>{v}</span>
-                </div>
-              ))}
+    <QueryClientProvider client={queryClient}>
+      <UserContext.Provider value={[showImage, showData, user, setuser]}>
+        <div>
+          <div
+            className={`  flex flex-col justify-center items-center bg-black/60 backdrop-blur-md text-white  absolute h-lvh w-lvw ${
+              showModal ? "absolute" : "hidden"
+            } `}
+          >
+            <div className="   ">
+              {modalType === "img" && <img src={modalData} alt={modalData} />}
+              {modalType === "data" &&
+                Object.entries(modalData).map(([k, v], i) => (
+                  <div key={i}>
+                    <span className="text-sky-500">{k}: </span>
+                    <span>{v}</span>
+                  </div>
+                ))}
+            </div>
+            <div>
+              <button
+                onClick={(e) => setShowModal(false)}
+                className={CLASS_BTN}
+              >
+                OK
+              </button>
+            </div>
           </div>
-          <div>
-            <button onClick={(e) => setShowModal(false)} className={CLASS_BTN}>
-              OK
-            </button>
-          </div>
+          <GongRen user={user} onLogout={onLogout} />
         </div>
-        <GongRen user={user} onLogout={onLogout} />
-      </div>
-    </UserContext.Provider>
+      </UserContext.Provider>
+    </QueryClientProvider>
   ) : (
     <>
       <FormLogin onLogin={onLogin} />

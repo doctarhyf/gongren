@@ -53,8 +53,6 @@ function CamionItem({ data, onUpdateCamion, onDeleteCamion, num }) {
           className="p-1 border border-slate-800 rounded-md outline-none "
           value={camion.plaque}
           onChange={(e) => onUpdateCamion(camion, "plaque", e.target.value)}
-          /*  onFocus={(e) => e.target.select()}
-          onBlur={(e) => e.target.setSelectionRange(0, 0)} */
         />
       </td>
       <td className=" border border-slate-600 p-1 ">
@@ -67,8 +65,6 @@ function CamionItem({ data, onUpdateCamion, onDeleteCamion, num }) {
           onChange={(e) =>
             onUpdateCamion(camion, "sacs", parseInt(e.target.value) || 0)
           }
-          /*  onFocus={(e) => e.target.select()}
-          onBlur={(e) => e.target.setSelectionRange(0, 0)} */
         />
       </td>
       <td className=" border border-slate-600 p-1 ">
