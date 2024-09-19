@@ -252,6 +252,7 @@ export default function RapportChargement() {
 
   async function saveLoad(load) {
     setloading(true);
+
     const r = await SB.InsertItem(TABLES_NAMES.LOADS, load);
     //console.log(r);
     if (r === null) {
