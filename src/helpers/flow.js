@@ -177,6 +177,7 @@ export const SECTIONS = [
 export const POSTE = [
   "NET",
   "EXP",
+  "EXPD",
   "OPE",
   "CHARG",
   "MEC",
@@ -200,6 +201,7 @@ export const POSTES = {
   CHARG: { zh: "装车工", fr: "CHARGEUR" },
   NET: { zh: "扫地人", fr: "NETTOYEUR" },
   EXP: { zh: "岗位工", fr: "EXPLOITANT" },
+  EXPD: { zh: "发货员", fr: "EXPEDITEUR" },
   OPE: { zh: "插袋工", fr: "OPERATEUR" },
   AIDOP: { zh: "副插袋", fr: "AIDE OPERATEUR" },
 };

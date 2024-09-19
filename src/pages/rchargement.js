@@ -9,6 +9,7 @@ import {
   ACCESS_CODES,
   CLASS_SELECT,
   LOG_OPERATION,
+  POSTE,
   SHIFT_HOURS_ZH,
 } from "../helpers/flow";
 import {
@@ -169,6 +170,10 @@ export default function RapportChargement() {
   useEffect(() => {
     setloadsf(filterLoads(loads, mcode, team));
     //console.log(user);
+
+    if (user.poste === "EXPD") {
+      setteam(user.equipe);
+    }
   }, [loads, mcode, team]);
 
   async function loadData() {
@@ -418,16 +423,21 @@ export default function RapportChargement() {
             <DateSelector onDateSelected={onDateSelected} />
             <div className="flex md:-mt-3 items-center gap-2  w-fit ml-11 ">
               <div className=" text-sm font-bold">Equipe : </div>
-              <select
-                className={CLASS_SELECT}
-                onChange={(e) => setteam(e.target.value)}
-              >
-                {["A", "B", "C", "D", "ALL"].map((op) => (
-                  <option selected={op === team} value={op}>
-                    {op}
-                  </option>
-                ))}
-              </select>
+
+              {user.poste === "EXPD" ? (
+                <span> {user.equipe} </span>
+              ) : (
+                <select
+                  className={CLASS_SELECT}
+                  onChange={(e) => setteam(e.target.value)}
+                >
+                  {["A", "B", "C", "D", "ALL"].map((op) => (
+                    <option selected={op === team} value={op}>
+                      {op}
+                    </option>
+                  ))}
+                </select>
+              )}
             </div>
           </div>
           <div className=" flex justify-between  sm:justify-center  gap-2 my-2   ">
