@@ -24,6 +24,14 @@ export const AGENT_CARD_EVENT = {
   ERROR: "ag_err",
 };
 
+const COLUMNS_TO_HIDE = [
+  "photo",
+  "list_priority",
+  "page",
+  "access_codes",
+  //"is_exp",
+];
+
 export default function AgentCard({
   agent,
   onShowRoulement,
@@ -199,12 +207,7 @@ export default function AgentCard({
                       </td>
                     </tr>
                     {Object.entries(agent).map((agent_data, i) =>
-                      [
-                        "photo",
-                        "list_priority",
-                        "page",
-                        "access_codes",
-                      ].includes(agent_data[0]) ? null : (
+                      COLUMNS_TO_HIDE.includes(agent_data[0]) ? null : (
                         <tr key={i}>
                           <td
                             align="right"

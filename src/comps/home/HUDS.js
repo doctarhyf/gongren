@@ -376,7 +376,7 @@ export function HUDMyTeam({ user }) {
                       CHEF D'EQ.
                     </span>
                   )}
-                  {ag.poste === "EXPD" && (
+                  {ag.is_exp === "OUI" && (
                     <span className=" font-bold inline-block  bg-red-500 text-white p-1 text-xs rounded-md ">
                       EXPEDITEUR
                     </span>

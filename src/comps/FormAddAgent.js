@@ -43,6 +43,7 @@ export default function FormAddAgent({
     page: 2,
     active: "NON",
     photo: "",
+    is_exp: "NON",
   };
 
   const ref_id = useRef();
@@ -63,6 +64,7 @@ export default function FormAddAgent({
   const ref_list_priority = useRef();
   const ref_tenue = useRef();
   const ref_active = useRef();
+  const ref_is_exp = useRef();
   const ref_page = useRef();
   //const ref_photo = useRef();
   const [photo, setphoto] = useState();
@@ -91,6 +93,7 @@ export default function FormAddAgent({
       list_priority: _(ref_list_priority),
       tenue: _(ref_tenue),
       active: _(ref_active),
+      is_exp: _(ref_is_exp),
       photo: photo,
       //page: _(ref_page),
     };
@@ -249,6 +252,7 @@ export default function FormAddAgent({
         [ref_list_priority, "liste priority", agent.list_priority],
         [ref_tenue, "tenue(tenue,couleur,botte)", agent.tenue],
         [ref_active, "Actif", agent.active, ["OUI", "NON"]],
+        [ref_is_exp, "Expediteur", agent.is_exp, ["NON", "OUI"]],
       ].map((agent_data, i) => (
         <tr key={i}>
           <td align="right" className="text-neutral-400 text-sm">

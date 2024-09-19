@@ -171,7 +171,7 @@ export default function RapportChargement() {
     setloadsf(filterLoads(loads, mcode, team));
     //console.log(user);
 
-    if (user.poste === "EXPD") {
+    if (user.is_exp === "OUI") {
       setteam(user.equipe);
     }
   }, [loads, mcode, team]);
@@ -424,7 +424,7 @@ export default function RapportChargement() {
             <div className="flex md:-mt-3 items-center gap-2  w-fit ml-11 ">
               <div className=" text-sm font-bold">Equipe : </div>
 
-              {user.poste === "EXPD" ? (
+              {user.is_exp === "OUI" ? (
                 <span> {user.equipe} </span>
               ) : (
                 <select
