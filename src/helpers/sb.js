@@ -224,7 +224,7 @@ export async function UpdateItem(table_name, upd_data, onSuccess, onError) {
     .eq("id", upd_data.id)
     .select();
 
-  console.log("UpdateItem", data, error);
+  //console.log("UpdateItem", data, error);
 
   if (data && data.length === 1 && error === null) {
     onSuccess && onSuccess(data);

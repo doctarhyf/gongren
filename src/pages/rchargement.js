@@ -238,7 +238,7 @@ export default function RapportChargement() {
     ).map((dayd) => dayd.sort(customSortShifts));
 
     const fin = finalfilteredloadsgroupnyday.flat();
-    console.log("fin", fin);
+    ///console.log("fin", fin);
     setbonustot(tot);
     return fin;
   }

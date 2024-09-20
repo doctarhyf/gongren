@@ -61,6 +61,26 @@ export default function Boazhuang2({
     makeCalculation();
   }, [repportdata]);
 
+  function RepportData2LoadData(rpdata) {
+    const { team, y, m, d, sup, shift, s, camions, sacs, t, dechires } = rpdata;
+    const code = `${team}_${s}_${y}_${m - 1}_${parseInt(d)}`;
+
+    const load_data = {
+      sacs: sacs,
+      retours: 0,
+      ajouts: 0,
+      code: code,
+      prob_machine: null,
+      prob_courant: null,
+      autre: null,
+      camions: camions,
+      dechires: dechires,
+      sacs_adj: 0,
+    };
+
+    return load_data;
+  }
+
   async function onSaveData(e) {
     if (editing) {
       console.log("will save first");
@@ -68,19 +88,6 @@ export default function Boazhuang2({
 
       const { team, y, m, d, sup, shift, s, camions, sacs, t, dechires } = data;
       const code = `${team}_${s}_${y}_${m - 1}_${parseInt(d)}`;
-
-      const load_data = {
-        sacs: sacs,
-        retours: 0,
-        ajouts: 0,
-        code: code,
-        prob_machine: null,
-        prob_courant: null,
-        autre: null,
-        camions: camions,
-        dechires: dechires,
-        sacs_adj: 0,
-      };
 
       const camions_isu = undefined === camions;
       const dechires_isu = undefined === dechires;
@@ -93,11 +100,37 @@ export default function Boazhuang2({
         return;
       }
 
-      const res = await SB.UpsertItem(TABLES_NAMES.LOADS, load_data, "code");
+      let res = undefined;
+      const new_load_data = RepportData2LoadData(data);
 
-      if (res && res.id) {
+      if (undefined !== repportdata) {
+        const old_load_data = RepportData2LoadData(repportdata);
+
+        console.log("old load data => ", old_load_data);
+        console.log("new load data => ", new_load_data);
+
+        const item2update = await SB.LoadItemWithColNameEqColVal(
+          TABLES_NAMES.LOADS,
+          "code",
+          old_load_data.code
+        );
+
+        console.log("item2update => ", item2update);
+
+        if (!!item2update) {
+          res = await SB.DeleteItem(TABLES_NAMES.LOADS, item2update);
+          console.log("del old load data res => ", res);
+        }
+      }
+
+      res = await SB.InsertItem(TABLES_NAMES.LOADS, new_load_data);
+      console.log("res insert ", res);
+
+      if (null === res) {
         const text = newrep ? "saved" : "updated";
-        alert(`Item with code " ${load_data.code} " was ${text} successfully`);
+        alert(
+          `Item with code " ${new_load_data.code} " was ${text} successfully`
+        );
         setediting(false);
 
         onBaozhuangSave && onBaozhuangSave(res);
