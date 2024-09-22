@@ -6,6 +6,7 @@ import { CLASS_INPUT_TEXT, POSTE, POSTES } from "../helpers/flow";
 function FlatList({ items, itemSelected }) {
   const [data, setdata] = useState([]);
   const [selected, setselected] = useState();
+  const [curp, setcurp] = useState(0);
 
   useEffect(() => {
     setdata(items);
