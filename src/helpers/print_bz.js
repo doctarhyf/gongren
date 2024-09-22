@@ -147,8 +147,8 @@ export default function printBaozhuang(data) {
     const PHM = pageHeight - 2 * margin;
     vline(doc, pageWidth / 2, margin, PHM);
     hline(doc, margin, pageHeight / 3, PWM);
-    hline(doc, margin, (pageHeight / 3) * 2, PWM);
-    doc.rect(margin, margin, PWM, PHM);
+    //hline(doc, margin, (pageHeight / 3) * 2, PWM);
+    //doc.rect(margin, margin, PWM, PHM);
   }
 
   function drawDate(doc, MARG, PW, PH, box) {

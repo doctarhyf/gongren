@@ -33,6 +33,10 @@ export default function Boazhuang2({
 
   useEffect(() => {
     makeCalculation();
+
+    const el = document.querySelector(".bzbox");
+
+    console.log(el);
   }, []);
 
   function makeCalculation() {
@@ -152,7 +156,7 @@ export default function Boazhuang2({
 
   function onPrint(data) {
     printBaozhuang(data);
-    console.log(data);
+    //console.log(data);
   }
 
   async function onCopy(data) {
@@ -182,7 +186,7 @@ Superviseur班长: @${sup} 
   }
 
   return (
-    <div className="  border dark:bg-white dark:text-black border-slate-600 shadow-lg dark:shadow-white/20 shadow-slate-400 mx-auto  sm:max-w-[26rem] p-4 ">
+    <div className=" bzbox  border dark:bg-white dark:text-black border-slate-600 shadow-lg dark:shadow-white/20 shadow-slate-400 mx-auto  sm:max-w-[26rem] p-4 ">
       <div className="  text-end ">
         {editing ? (
           <input
@@ -328,6 +332,7 @@ Superviseur班长: @${sup} 
         )}
         个/Sacs déchirés`;
       </div>
+
       <div className=" my-4 justify-between m-1 flex ">
         {(UserHasAccessCode(user, ACCESS_CODES.UPDATE_LOAD) ||
           (user.poste === "SUP" && data.team === user.equipe)) && (
