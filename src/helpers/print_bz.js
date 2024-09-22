@@ -267,6 +267,12 @@ export default function printBaozhuang(data) {
     FONT_SIZE,
     tokens_title
   );
+  hline(
+    doc,
+    cursor_box.x,
+    cursor_box.y + SPACE / 4,
+    getTextTokensDimensions(doc, FONT_SIZE, tokens_title).w
+  );
 
   // equipe
   cursor_box = drawChineseEnglishTextLine(
