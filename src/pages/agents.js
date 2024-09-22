@@ -132,13 +132,13 @@ export default function Agents() {
 
         {!showFormAddNewAgent && (
           <div className="flex  ">
-            <AgentList2 key={updateKey} onAgentClick={onAgentClick} />
-            {/* <AgentsList
+            {/*  <AgentList2 key={updateKey} onAgentClick={onAgentClick} /> */}
+            <AgentsList
               showToggleTableMode
               key={updateKey}
               curAgent={curAgent}
               onAgentClick={(agent_data) => onAgentClick(agent_data)}
-            /> */}
+            />
             {showAgentDetails && (
               <AgentCard
                 agentCardEditMode={agentCardEditMode}
