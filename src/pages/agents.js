@@ -9,6 +9,7 @@ import { ACCESS_CODES, USER_LEVEL } from "../helpers/flow";
 import { UserContext } from "../App";
 import { useContext } from "react";
 import { UserHasAccessCode } from "../helpers/func";
+import AgentList2 from "../comps/AgentList2";
 
 export default function Agents() {
   const [curAgent, setCurAgent] = useState(null);
@@ -131,12 +132,13 @@ export default function Agents() {
 
         {!showFormAddNewAgent && (
           <div className="flex  ">
-            <AgentsList
+            <AgentList2 key={updateKey} onAgentClick={onAgentClick} />
+            {/* <AgentsList
               showToggleTableMode
               key={updateKey}
               curAgent={curAgent}
               onAgentClick={(agent_data) => onAgentClick(agent_data)}
-            />
+            /> */}
             {showAgentDetails && (
               <AgentCard
                 agentCardEditMode={agentCardEditMode}
