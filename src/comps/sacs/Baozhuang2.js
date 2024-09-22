@@ -16,6 +16,7 @@ import cancel from "../../img/shield.png";
 import ActionButton from "../ActionButton";
 import Loading from "../Loading";
 import { UserContext } from "../../App";
+import printBaozhuang from "../../helpers/print_bz";
 
 export default function Boazhuang2({
   repportdata,
@@ -149,8 +150,9 @@ export default function Boazhuang2({
     return shiftstring;
   }
 
-  function onPrint() {
-    alert("Printing bon ...");
+  function onPrint(data) {
+    printBaozhuang(data);
+    console.log(data);
   }
 
   async function onCopy(data) {
@@ -338,7 +340,11 @@ Superviseur班长: @${sup} 
         )}
 
         {!editing && !loading && (
-          <ActionButton icon={pdf} onClick={onPrint} title={"Print"} />
+          <ActionButton
+            icon={pdf}
+            onClick={(e) => onPrint(repportdata)}
+            title={"Print"}
+          />
         )}
         {!editing && !loading && (
           <ActionButton
