@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { fetchAllItemFromTable } from "../api/queries";
 import { CLASS_INPUT_TEXT, POSTES } from "../helpers/flow";
+import Loading from "./Loading";
 
 function FlatList({ items, renderItem, perpage, q }) {
   //
@@ -42,19 +43,25 @@ function FlatList({ items, renderItem, perpage, q }) {
 
   useEffect(() => {
     if (q.trim() === "") {
-      initSlice();
+      initSlice(activeOnly);
       return;
     }
 
-    const af = data.filter((it) => {
-      const cnom = it.nom.toLowerCase().includes(q.toLowerCase());
-      const cpostnom = it.postnom.toLowerCase().includes(q.toLowerCase());
-      const cprenom = it.prenom.toLowerCase().includes(q.toLowerCase());
+    let af = data.filter((it) => {
+      const cnom = it.nom.toLowerCase().includes(q.toLowerCase().trim());
+      const cpostnom = it.postnom
+        .toLowerCase()
+        .includes(q.toLowerCase().trim());
+      const cprenom = it.prenom.toLowerCase().includes(q.toLowerCase().trim());
 
       return cnom || cpostnom || cprenom;
     });
 
-    setdataf([...af]);
+    let aff = [...af];
+
+    if (activeOnly) aff = aff.filter((it) => it.active === "OUI");
+
+    setdataf([...aff]);
   }, [q]);
 
   return (
@@ -97,7 +104,12 @@ export default function AgentList2({ onAgentClick }) {
 
   const { data, isLoading, isError, error } = queryAgents;
 
-  if (isLoading) return <div>Loading ...</div>;
+  if (isLoading)
+    return (
+      <div>
+        <Loading isLoading={true} />
+      </div>
+    );
   if (isError) return <div>Error {JSON.stringify(error)}</div>;
 
   function onSearch(q) {
