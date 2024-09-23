@@ -10,7 +10,11 @@ export const fetchAllItemFromTable = async (args) => {
 
   const { data, error } = await supabase.from(tableName).select("*");
 
-  if (data) return data;
+  if (data) {
+    const a = data.map((it, i) => ({ idx: i + 1, ...it }));
+    console.log(a);
+    return a;
+  }
   throw new Error(JSON.stringify(error));
 };
 

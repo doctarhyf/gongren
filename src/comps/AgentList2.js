@@ -1,38 +1,41 @@
 import { useQuery } from "@tanstack/react-query";
-import { fetchAllItemFromTable } from "../api/queries";
 import { useEffect, useState } from "react";
-import { CLASS_INPUT_TEXT, POSTE, POSTES } from "../helpers/flow";
+import { fetchAllItemFromTable } from "../api/queries";
+import { CLASS_INPUT_TEXT, POSTES } from "../helpers/flow";
 
-function FlatList({ items, renderItem, perpage }) {
-  const aidx = items.map((it, i) => ({ idx: i + 1, ...it }));
+function FlatList({ items, renderItem, perpage, q }) {
+  //
   const [data, setdata] = useState([]);
   const [dataf, setdataf] = useState([]);
   const [curpage, setcurpage] = useState(0);
   const [numpages, setnumpages] = useState(1);
 
   useEffect(() => {
-    setdata(aidx);
-    console.log(aidx);
-    setdataf([...aidx].splice(0, 10));
+    setdata(items);
+
+    setdataf([...items].slice(0, 10));
   }, [items]);
 
   useEffect(() => {
-    const a = [...aidx];
+    const a = [...data];
     const start = curpage * perpage;
     const end = curpage * perpage + perpage;
     const af = a.slice(start, end);
-    console.log(
-      "af.len ",
-      af.length,
-      " | a.len ",
-      a.length,
-      "| start ",
-      start,
-      "| end ",
-      end
-    );
+
     setdataf([...af]);
-  }, [curpage]);
+  }, [curpage, data]);
+
+  useEffect(() => {
+    const af = data.filter((it) => {
+      const cnom = it.nom.toLowerCase().includes(q.toLowerCase());
+      const cpostnom = it.postnom.toLowerCase().includes(q.toLowerCase());
+      const cprenom = it.prenom.toLowerCase().includes(q.toLowerCase());
+
+      return cnom || cpostnom || cprenom;
+    });
+
+    setdataf([...af]);
+  }, [q]);
 
   return (
     <div className="  ">
@@ -102,6 +105,7 @@ export default function AgentList2({ onAgentClick }) {
         onChange={(e) => onSearch(e.target.value)}
       />
       <FlatList
+        q={q}
         perpage={10}
         items={data}
         onItemSelected={(it) => onAgentClick(it)}
