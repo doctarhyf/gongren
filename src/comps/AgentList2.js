@@ -4,41 +4,46 @@ import { useEffect, useState } from "react";
 import { CLASS_INPUT_TEXT, POSTE, POSTES } from "../helpers/flow";
 
 function FlatList({ items, renderItem, perpage }) {
+  const aidx = items.map((it, i) => ({ idx: i + 1, ...it }));
   const [data, setdata] = useState([]);
   const [dataf, setdataf] = useState([]);
   const [curpage, setcurpage] = useState(0);
   const [numpages, setnumpages] = useState(1);
 
   useEffect(() => {
-    const numpages = data.length / perpage;
-    console.log("numpages => ", numpages);
-    setnumpages(numpages);
-  }, [data]);
+    setdata(aidx);
+    console.log(aidx);
+    setdataf([...aidx].splice(0, 10));
+  }, [items]);
 
   useEffect(() => {
-    setdata(items);
-
-    //console.log(curpage);
-
-    const filtered = items.splice(
-      curpage * perpage,
-      perpage + perpage * curpage
+    const a = [...aidx];
+    const start = curpage * perpage;
+    const end = curpage * perpage + perpage;
+    const af = a.slice(start, end);
+    console.log(
+      "af.len ",
+      af.length,
+      " | a.len ",
+      a.length,
+      "| start ",
+      start,
+      "| end ",
+      end
     );
-
-    setdataf(filtered);
-    console.log("filtered => ", filtered);
-  }, [perpage, items, curpage]);
+    setdataf([...af]);
+  }, [curpage]);
 
   return (
     <div className="  ">
       <select value={curpage} onChange={(e) => setcurpage(e.target.value)}>
-        {[...Array(dataf.length).fill(0)].map((it, i) => (
+        {[...Array(Math.ceil(items.length / perpage)).fill(0)].map((it, i) => (
           <option key={i} value={i}>
             Page {i + 1}
           </option>
         ))}
       </select>
-      <div>{dataf.map((item, i) => renderItem({ idx: i, ...item }))}</div>
+      <div>{dataf.map((item, i) => renderItem(item))}</div>
     </div>
   );
 }
@@ -75,7 +80,7 @@ export default function AgentList2({ onAgentClick }) {
         } group p-1 border-b  hover:bg-sky-500 hover:text-white cursor-pointer `}
       >
         <div>
-          {item.id}. {item.nom} {item.postnom}, {item.prenom}
+          {item.idx}. {item.nom} {item.postnom}, {item.prenom}
         </div>
         <div
           className={` ${
