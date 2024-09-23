@@ -11,7 +11,6 @@ function FlatList({ items, renderItem, perpage, q }) {
   const [curpage, setcurpage] = useState(0);
   const [numpages, setnumpages] = useState(1);
   const [activeOnly, setActiveOnly] = useState(false);
-  const [teamMode, setTeamMode] = useState(false);
 
   useEffect(() => {
     setdata(items);
@@ -92,8 +91,27 @@ function FlatList({ items, renderItem, perpage, q }) {
   );
 }
 
+function Agents2teams(agents = []) {
+  let teams = {};
+
+  agents.forEach((it) => {
+    const { section, equipe } = it;
+
+    const path = `${section} ${equipe}`;
+
+    if (!!teams[path]) {
+      teams[path].push(it);
+    } else {
+      teams[path] = [it];
+    }
+  });
+
+  return teams;
+}
+
 export default function AgentList2({ onAgentClick }) {
   const [selected, setselected] = useState();
+  const [teamMode, setTeamMode] = useState(false);
 
   const [q, setq] = useState("");
 
@@ -102,7 +120,10 @@ export default function AgentList2({ onAgentClick }) {
     queryFn: fetchAllItemFromTable,
   });
 
-  const { data, isLoading, isError, error } = queryAgents;
+  const { data: agents, isLoading, isError, error } = queryAgents;
+  const teams = Agents2teams(agents);
+
+  console.log(teams);
 
   if (isLoading)
     return (
@@ -142,19 +163,35 @@ export default function AgentList2({ onAgentClick }) {
     );
   }
 
+  function onItemSelected(it) {
+    console.log(it);
+    //(it) => onAgentClick(it);
+  }
+
   return (
     <div className="  w-full md:w-64 ">
+      <div>
+        <input
+          className={CLASS_INPUT_TEXT}
+          type="checkbox"
+          value={teamMode}
+          onChange={(e) => setTeamMode(e.target.checked)}
+        />
+        TEAM MODE
+      </div>
+
       <input
         className={`  ${CLASS_INPUT_TEXT} w-full `}
         type="text"
         value={q}
         onChange={(e) => onSearch(e.target.value)}
       />
+
       <FlatList
         q={q}
         perpage={10}
-        items={data}
-        onItemSelected={(it) => onAgentClick(it)}
+        items={agents}
+        onItemSelected={onItemSelected}
         renderItem={renderItem}
       />
     </div>
