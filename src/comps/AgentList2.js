@@ -10,7 +10,7 @@ function FlatList({ items, renderItem, perpage, q }) {
   const [dataf, setdataf] = useState([]);
   const [curpage, setcurpage] = useState(0);
   const [numpages, setnumpages] = useState(1);
-  const [activeOnly, setActiveOnly] = useState(false);
+  const [activeOnly, setActiveOnly] = useState(true);
 
   useEffect(() => {
     setdata(items);
@@ -78,6 +78,7 @@ function FlatList({ items, renderItem, perpage, q }) {
       </select>
       <div>
         <input
+          defaultChecked
           type="checkbox"
           value={activeOnly}
           onChange={(e) => setActiveOnly(e.target.checked)}
@@ -170,7 +171,7 @@ export default function AgentList2({ onAgentClick }) {
 
   return (
     <div className="  w-full md:w-64 ">
-      <div>
+      {/* <div>
         <input
           className={CLASS_INPUT_TEXT}
           type="checkbox"
@@ -178,7 +179,7 @@ export default function AgentList2({ onAgentClick }) {
           onChange={(e) => setTeamMode(e.target.checked)}
         />
         TEAM MODE
-      </div>
+      </div> */}
 
       <input
         className={`  ${CLASS_INPUT_TEXT} w-full `}
