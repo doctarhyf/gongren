@@ -10,6 +10,7 @@ function FlatList({ items, renderItem, perpage, q }) {
   const [curpage, setcurpage] = useState(0);
   const [numpages, setnumpages] = useState(1);
   const [activeOnly, setActiveOnly] = useState(false);
+  const [teamMode, setTeamMode] = useState(false);
 
   useEffect(() => {
     setdata(items);
