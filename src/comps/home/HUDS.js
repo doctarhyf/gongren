@@ -33,6 +33,7 @@ import AgentsList from "../AgentsList";
 import SacsCalc from "../SacsCalc";
 import CountdownTimer from "../CountdownTimer";
 import LoadsCalculator from "../LoadCalculator";
+import nophoto from "../../img/user.png";
 
 function AgentStats({ agentsGrouped }) {
   return (
@@ -269,7 +270,12 @@ export function HUDGreetings({ user }) {
     <div className=" md:text-center w-auto my-4 p-2 bg-gray-800 text-white shadow-lg shadow-black/25 rounded-md">
       <div> Bienvenu au portal de la cimenterie</div>
 
-      <AgentCardMini agent={user} />
+      <div className="  flex flex-col md:flex-row md:justify-center md:my-0 my-2 gap-4 ">
+        <div className=" w-32 h-32 bg-slate-700 rounded-full overflow-hidden ">
+          <img src={user.photo || nophoto} />
+        </div>
+        <AgentCardMini agent={user} />
+      </div>
     </div>
   );
 }
