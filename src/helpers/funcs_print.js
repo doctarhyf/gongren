@@ -191,7 +191,10 @@ function draw_en_tete(
 
   let month2print = parseInt(agent_data.month) + 2;
 
-  if (month2print > 12) month2print = 1;
+  if (month2print > 12) {
+    month2print = 1;
+    cury++;
+  }
 
   const text_roulement_month = [
     { lat: `${curmn} - ${nextmn} (${curm + 2 > 12 ? cury + 1 : cury}` },
@@ -725,7 +728,10 @@ function print_agents_rl(agents_list, print_empty, team_name) {
 
   let month2print = parseInt(m) + 2;
 
-  if (month2print > 12) month2print = 1;
+  if (month2print > 12) {
+    month2print = 1;
+    y++;
+  }
 
   const month_names_tokens = [
     {
