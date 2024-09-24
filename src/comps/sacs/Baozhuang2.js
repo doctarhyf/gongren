@@ -165,13 +165,13 @@ export default function Boazhuang2({
     const text = `${y}年${Number(m)}月${d}日
     
     •EMBALLAGE CIMENT水泥包装
-Équipe班：${team}
-Superviseur班长: @${sup} 
+•Équipe班：${team}
+•Superviseur班长: @${sup} 
      •${shift}
-装车${camions}辆/Camions Chargés 
-袋子用${sacs}个/Sacs Utilisés 
-共计${t.toFixed(2)}吨/Tonne 
-撕裂的袋子${dechires}个/Sacs déchirés`;
+•装车${camions}辆/Camions Chargés 
+•袋子用${sacs}个/Sacs Utilisés 
+•共计${t.toFixed(2)}吨/Tonne 
+•撕裂的袋子${dechires}个/Sacs déchirés`;
 
     await navigator.clipboard
       .writeText(text)
