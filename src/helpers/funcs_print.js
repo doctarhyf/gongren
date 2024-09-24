@@ -1,6 +1,6 @@
 import { jsPDF } from "jspdf";
 
-import { getDaysInMonth, formatFrenchDate } from "./func";
+import { getDaysInMonth, formatFrenchDate, AddLeadingZero } from "./func";
 import { MONTHS, POSTE, POSTES, SUPERVISORS } from "./flow";
 const orientation = "landscape";
 const doc = new jsPDF({ orientation: orientation });
@@ -189,10 +189,14 @@ function draw_en_tete(
   let curmn = getFrenchMonthName(curm + 1).toUpperCase();
   let nextmn = getFrenchMonthName(nextm + 1).toUpperCase();
 
+  let month2print = parseInt(agent_data.month) + 2;
+
+  if (month2print > 12) month2print = 1;
+
   const text_roulement_month = [
     { lat: `${curmn} - ${nextmn} (${curm + 2 > 12 ? cury + 1 : cury}` },
     { zh: "年" },
-    { lat: curm + 2 + "" },
+    { lat: month2print + "" },
     { zh: "月" },
     { lat: ")" },
   ];
@@ -322,15 +326,32 @@ function getDayName(dateString, oneLetter) {
     "Samedi",
   ];
 
+  //13/1/2024
+  let [m, d, y] = dateString.split("/");
+  m = parseInt(m);
+  d = parseInt(d);
+  y = parseInt(y);
+
+  if (m > 12) {
+    console.error('Invalid date string =>> " ', dateString, ' "');
+    m = 1;
+    y++;
+    dateString = `${AddLeadingZero(m)}/${AddLeadingZero(d)}/${y}`;
+    console.warn("fixed dateString ==> ", dateString);
+  }
+
   const date = new Date(dateString);
 
-  ////console.log(` date => ${date}, dateString => ${dateString}`);
+  console.log(`dbg date => ${date}, dateString => ${dateString}`);
   const dayOfWeekIndex = date.getDay();
 
   // Get the day name from the array
   const dayName = daysOfWeekFr[dayOfWeekIndex];
 
-  return oneLetter ? dayName[0] : dayName;
+  let val2ret = dayName;
+  let val2ret1let = dayName ? dayName[0] : "*";
+
+  return oneLetter ? val2ret1let : val2ret;
 }
 
 function print_agent_roulement(doc, agent_data, print_empty) {
@@ -702,6 +723,10 @@ function print_agents_rl(agents_list, print_empty, team_name) {
 
   //console.log("m", m, "next_m", next_m);
 
+  let month2print = parseInt(m) + 2;
+
+  if (month2print > 12) month2print = 1;
+
   const month_names_tokens = [
     {
       lat: `${getFrenchMonthName(m).toUpperCase()} - ${getFrenchMonthName(
@@ -710,7 +735,7 @@ function print_agents_rl(agents_list, print_empty, team_name) {
     },
     { lat: "" + y },
     { zh: "年" },
-    { lat: "" + (Number(m) + 1) },
+    { lat: "" + month2print },
     { zh: "月" },
   ];
   text_dims = getTextTokensDimensions(doc, fsize, month_names_tokens);

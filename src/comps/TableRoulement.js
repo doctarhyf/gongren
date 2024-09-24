@@ -205,8 +205,8 @@ export default function TableRoulement({ agentData }) {
     const print_data = {
       nom: { fr: `${nom} ${postnom} ${prenom}`, zh: `${mingzi}` },
       rld: curAgentRld.join(""),
-      month: Number(month),
-      year: Number(year),
+      month: parseInt(month),
+      year: parseInt(year),
       poste: poste,
       matricule,
     };
