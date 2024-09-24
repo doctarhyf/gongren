@@ -162,8 +162,9 @@ export default function Boazhuang2({
   async function onCopy(data) {
     const { team, y, m, d, sup, shift, s, camions, sacs, t, dechires } = data;
 
-    const text = `•EMBALLAGE CIMENT水泥包装
-${y}年${Number(m)}月${d}日
+    const text = `${y}年${Number(m)}月${d}日
+    
+    •EMBALLAGE CIMENT水泥包装
 Équipe班：${team}
 Superviseur班长: @${sup} 
      •${shift}
