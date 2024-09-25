@@ -110,7 +110,11 @@ function Agents2teams(agents = []) {
   return teams;
 }
 
-export default function AgentList2({ onAgentClick, selectedAgents = [] }) {
+export default function AgentList2({
+  onAgentClick,
+  selectedAgents = [],
+  showToggleTeamsView,
+}) {
   const [selected, setselected] = useState();
   const [teamMode, setTeamMode] = useState(false);
 

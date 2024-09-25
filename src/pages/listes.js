@@ -30,8 +30,23 @@ export default function Listes() {
     }
   }
 
-  function removeAgent(agent) {
-    setagents(agents.filter((it) => it.id !== agent.id));
+  function removeAgent(agentdata, fromprintitem = false) {
+    if (fromprintitem) {
+      const searchProps = {};
+      propsToPrint.forEach(
+        (it, i) => (searchProps[it] = agentdata.slice(1, agentdata.length)[i])
+      );
+
+      const foundObject = agents.find((item) => {
+        return Object.keys(searchProps).every(
+          (key) => item[key] === searchProps[key]
+        );
+      });
+
+      agentdata = foundObject;
+    }
+
+    setagents(agents.filter((it) => it.id !== agentdata.id));
   }
 
   const reftitle = useRef();
@@ -132,7 +147,13 @@ export default function Listes() {
         />
 
         <div className=" flex ">
-          {/* <AgentList2 onAgentClick={onAgentClick} selectedAgents={agents} /> */}
+          {/*  {
+            <AgentList2
+              onAgentClick={onAgentClick}
+              selectedAgents={agents}
+              showToggleTeamsView
+            />
+          } */}
           <AgentsList
             onAgentClick={onAgentClick}
             showToggleTeamsView
@@ -169,7 +190,10 @@ export default function Listes() {
 
               <tbody>
                 {parseAgentsToPrintList(agents, propsToPrint).map((ag) => (
-                  <tr>
+                  <tr
+                    className=" hover:bg-sky-500 p-2 hover:text-white cursor-pointer "
+                    onClick={(e) => removeAgent(ag, true)}
+                  >
                     {ag.map((it) => (
                       <td>{it}</td>
                     ))}
