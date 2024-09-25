@@ -37,8 +37,8 @@ export default function Listes() {
   const reftitle = useRef();
 
   function parseAgentsToPrintList(agents, selprops) {
-    return agents.map((item) => {
-      let el = [];
+    return agents.map((item, idx) => {
+      let el = [idx + 1];
       selprops.map((prop) => {
         if (Object.keys(item).includes(prop)) el.push(item[prop]);
       });
@@ -48,8 +48,8 @@ export default function Listes() {
   }
 
   function printList(agents, selprops) {
-    const headers = [selprops];
-    const title = listtitle;
+    const headers = [["No", ...selprops]];
+    const title = `${listtitle} (${agents.length} Agent(s))`;
     const data = parseAgentsToPrintList(agents, selprops);
 
     console.log(data);
