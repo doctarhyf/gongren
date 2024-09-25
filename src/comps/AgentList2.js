@@ -110,7 +110,7 @@ function Agents2teams(agents = []) {
   return teams;
 }
 
-export default function AgentList2({ onAgentClick }) {
+export default function AgentList2({ onAgentClick, selectedAgents = [] }) {
   const [selected, setselected] = useState();
   const [teamMode, setTeamMode] = useState(false);
 
@@ -122,9 +122,16 @@ export default function AgentList2({ onAgentClick }) {
   });
 
   const { data: agents, isLoading, isError, error } = queryAgents;
-  const teams = Agents2teams(agents);
+  /*  const teams = Agents2teams(agents);
 
-  console.log(teams);
+  console.log(teams); */
+
+  useEffect(() => {
+    console.log(
+      "selagz",
+      selectedAgents.map((it) => it.id)
+    );
+  }, [selectedAgents]);
 
   if (isLoading)
     return (
@@ -146,9 +153,23 @@ export default function AgentList2({ onAgentClick }) {
           onAgentClick(item);
         }}
         key={item?.id}
-        className={` ${
-          selected?.id === item.id && "bg-sky-500 text-white"
-        } group p-1 border-b  hover:bg-sky-500 hover:text-white cursor-pointer `}
+        className={`
+          
+          ${
+            selectedAgents.map((it) => it.id).includes(item.id) &&
+            " bg-sky-900/20 border border-sky-700   "
+          }
+          
+
+          ${
+            selected?.id === item.id &&
+            !selectedAgents.map((it) => it.id).includes(item.id) &&
+            "text-white"
+          }
+
+          ${
+            selected?.id === item.id && "bg-sky-500 "
+          } group p-1 border-b  hover:bg-sky-500 hover:text-white cursor-pointer `}
       >
         <div>
           {idx}. {item.nom} {item.postnom}, {item.prenom}
@@ -171,16 +192,6 @@ export default function AgentList2({ onAgentClick }) {
 
   return (
     <div className="  w-full md:w-64 ">
-      {/* <div>
-        <input
-          className={CLASS_INPUT_TEXT}
-          type="checkbox"
-          value={teamMode}
-          onChange={(e) => setTeamMode(e.target.checked)}
-        />
-        TEAM MODE
-      </div> */}
-
       <input
         className={`  ${CLASS_INPUT_TEXT} w-full `}
         type="text"

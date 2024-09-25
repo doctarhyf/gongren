@@ -1,159 +1,185 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import AgentList2 from "../comps/AgentList2";
+import ActionButton from "../comps/ActionButton";
+import print from "../img/pdf.png";
+import del from "../img/delete.png";
+import { printTable } from "../helpers/print";
+import { CLASS_INPUT_TEXT } from "../helpers/flow";
 import AgentsList from "../comps/AgentsList";
-import { GeneratePDF } from "../helpers/func";
-import { CLASS_BTN, CLASS_TD } from "../helpers/flow";
-import pdf from "../img/pdf.png";
 
 export default function Listes() {
   const [agents, setagents] = useState([]);
-  const ref_title = useRef();
-  const [msg, setmsg] = useState();
+  const [selagent, setselagent] = useState(undefined);
+  const [propsToPrint, setPropsToPrint] = useState([
+    "nom",
+    "postnom",
+    "prenom",
+    "section",
+    "equipe",
+  ]);
 
-  function onAgentClick(ag) {
-    console.log(ag);
-    setagents((old) => {
-      let i = old.findIndex((it, i) => it.id === ag.id);
-      if (i === -1) return [...old, ag];
-      setmsg(`Agent "${ag.nom} ${ag.postnom}" already added!`);
-      document.getElementById("my_modal_1").showModal();
+  function onAgentClick(agent, showModal = true) {
+    setselagent(agent);
+    const idx = agents.findIndex((it) => agent.id === it.id);
 
-      return old;
-    });
-  }
-
-  function printPDF(agents) {
-    if (agents.length === 0) {
-      const msg = "Agents list cant be empty!";
-      setmsg(msg);
-      document.getElementById("my_modal_1").showModal();
-      //throw new Error(msg);
-      return;
+    if (-1 === idx) {
+      const new_agents = [...agents, agent];
+      setagents(new_agents);
+    } else {
+      showModal && document.getElementById("my_modal_5").showModal();
     }
-
-    const names_list = agents.map((el, i) => {
-      let name = `${el.nom} ${el.postnom}`;
-      return name;
-    });
-
-    const list_title = ref_title.current.value;
-    GeneratePDF(names_list, list_title);
   }
 
-  function onDelAgent(ag) {
-    const yes = window.confirm(
-      `Remove " ${ag.nom} ${ag.postnom} ${ag.prenom} " ?`
-    );
-    let newd = [];
-    if (yes) {
-      agents.forEach((it, i) => {
-        if (it.id !== ag.id) {
-          newd.push(it);
-        }
+  function removeAgent(agent) {
+    setagents(agents.filter((it) => it.id !== agent.id));
+  }
+
+  const reftitle = useRef();
+
+  function parseAgentsToPrintList(agents, selprops) {
+    return agents.map((item) => {
+      let el = [];
+      selprops.map((prop) => {
+        if (Object.keys(item).includes(prop)) el.push(item[prop]);
       });
-      setagents(newd);
-    }
+
+      return el;
+    });
+  }
+
+  function printList(agents, selprops) {
+    const headers = [selprops];
+    const title = listtitle;
+    const data = parseAgentsToPrintList(agents, selprops);
+
+    console.log(data);
+
+    printTable(data, title, headers);
   }
 
   function onTeamClick(team) {
-    console.log(team);
+    let new_agents = [...agents];
 
-    team.forEach((ag, i) => {
-      setagents((old) => {
-        let i = old.findIndex((it, i) => it.id === ag.id);
-        if (i === -1) return [...old, ag];
-        console.log(`Agent "${ag.nom} ${ag.postnom}" already added!`);
-        return old;
-      });
+    team.forEach((agent, i) => {
+      const idx = agents.findIndex((it) => agent.id === it.id);
+
+      if (-1 === idx) {
+        new_agents.push(agent);
+      }
     });
+
+    setagents(new_agents);
   }
 
-  function onClearAllData() {
-    document.getElementById("my_modal_2").showModal();
-  }
+  const [listtitle, setlisttitle] = useState("LISTE AGENT CIMENTERIE");
 
   return (
-    <>
-      <dialog id="my_modal_2" className="modal">
+    <div className=" container  ">
+      <dialog id="my_modal_5" className="modal modal-bottom sm:modal-middle">
         <div className="modal-box">
-          <h3 className="font-bold text-lg">Login error!</h3>
-          <p className="py-4">Clear all data?</p>
+          <h3 className="font-bold text-lg">Hello!</h3>
+          <p className="py-4">
+            The agent {selagent?.nom} {selagent?.postnom} {selagent?.prenom}, is
+            already in the list!
+          </p>
+          <p>Do you want to remove him?</p>
           <div className="modal-action">
             <form method="dialog">
-              <button className="btn">NO</button>
-              <button className="btn" onClick={(e) => setagents([])}>
-                CLEAR
+              <button className="btn">Close</button>
+              <button className="btn" onClick={(e) => removeAgent(selagent)}>
+                Remove{" "}
               </button>
             </form>
           </div>
         </div>
       </dialog>
 
-      <dialog id="my_modal_1" className="modal">
-        <div className="modal-box">
-          <h3 className="font-bold text-lg">Login error!</h3>
-          <p className="py-4">{msg}</p>
-          <div className="modal-action">
-            <form method="dialog">
-              {/* if there is a button in form, it will close the modal */}
-              <button className="btn">Close</button>
-            </form>
-          </div>
-        </div>
-      </dialog>
+      <div>
+        <div className="my-2 flex flex-wrap">
+          {agents[0] &&
+            Object.keys(agents[0]).map((prop, i) => (
+              <span
+                onClick={(e) => {
+                  const idx = propsToPrint.findIndex((item) => item === prop);
 
-      <div className="flex">
-        <div>
-          <div className="text-green-500">Click on name to add it</div>
+                  if (-1 === idx) {
+                    const nprops = [...propsToPrint, prop];
+                    setPropsToPrint(nprops);
+                  } else {
+                    setPropsToPrint(propsToPrint.filter((it) => it !== prop));
+                  }
+                }}
+                key={i}
+                className={`
+
+                ${propsToPrint.includes(prop) && "bg-sky-500 text-white"}
+
+                  hover:bg-sky-500 hover:text-white  
+                
+                mb-1 cursor-pointer  p-1 border rounded-md mx-1  `}
+              >
+                <span>{prop}</span>
+                <input type="checkbox" hidden />
+              </span>
+            ))}
+        </div>
+        <input
+          type="text"
+          placeholder="LISTE AGENTS CIMENTERIE"
+          className={CLASS_INPUT_TEXT}
+          value={listtitle}
+          onChange={(e) => setlisttitle(e.target.value)}
+        />
+
+        <div className=" flex ">
+          {/* <AgentList2 onAgentClick={onAgentClick} selectedAgents={agents} /> */}
           <AgentsList
-            onTeamClick={onTeamClick}
             onAgentClick={onAgentClick}
             showToggleTeamsView
+            onTeamClick={onTeamClick}
           />
-        </div>
-        <div>
-          <div className="font-bold">Count : {agents.length}</div>
-          <div>
-            <div>Liste title:</div>
-            <div>
-              <input
-                placeholder="Nom de l'equipe"
-                className={CLASS_TD}
-                type="text"
-                ref={ref_title}
-              />
+
+          <div className=" bg-slate-700 text-white p-2 ">
+            <ActionButton
+              icon={print}
+              onClick={(e) => printList(agents, propsToPrint)}
+              title={"PRINT"}
+            />
+            <ActionButton
+              icon={del}
+              onClick={(e) => {
+                if (window.confirm("Delete all agents")) {
+                  setagents([]);
+                }
+              }}
+              title={"CLEAR LIST"}
+            />
+            <div className=" font-bold text-xl underline  ">
+              {listtitle} ({agents.length})
             </div>
-          </div>
-          <div className="flex">
-            <button
-              onClick={(e) => printPDF(agents)}
-              className={`${CLASS_BTN} flex text-sm my-2`}
-            >
-              <img src={pdf} width={20} height={30} /> IMPRIMER PDF
-            </button>
-            <button
-              onClick={(e) => onClearAllData()}
-              className={`${CLASS_BTN} flex text-sm my-2`}
-            >
-              <img src={pdf} width={20} height={30} /> CLEAR
-            </button>
-          </div>
-          <div className="text-red-500">Click on name to remove it</div>
-          <div>
-            {agents.map((it, i) => (
-              <div
-                onClick={(e) => onDelAgent(it)}
-                className="px-2 py-1 border-2
-             hover:border-red-600
-             rounded-full
-             border-transparent
-             hover:bg-red-200 hover:text-red-500 cursor-pointer"
-              >
-                {`${it.nom} ${it.postnom} ${it.mingzi}`}
-              </div>
-            ))}
+
+            <table class="table-fixed">
+              <thead>
+                <tr>
+                  {propsToPrint.map((prop) => (
+                    <th>{prop}</th>
+                  ))}
+                </tr>
+              </thead>
+
+              <tbody>
+                {parseAgentsToPrintList(agents, propsToPrint).map((ag) => (
+                  <tr>
+                    {ag.map((it) => (
+                      <td>{it}</td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
