@@ -592,7 +592,7 @@ export default function RapportChargement() {
                         <td className="  border border-slate-500 p-1 text-end ">
                           {parseFloat(ld.sacs) / 20 > 600 ? (
                             <span className=" font-serif text-sky-700 font-bold ">
-                              {parseFloat(ld.sacs) / 20 - 600}
+                              {(parseFloat(ld.sacs) / 20 - 600).toFixed(2)}
                             </span>
                           ) : (
                             0
