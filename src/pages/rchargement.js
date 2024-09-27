@@ -389,11 +389,8 @@ export default function RapportChargement() {
     });
 
     filteredloads.sort(customSortShifts);
-    console.log(filteredloads);
-    return;
-    let datestr = AddOneMonth(
-      filteredloads[0].code.split("M_")[1].replaceAll("_", "/")
-    );
+
+    let datestr = AddOneMonth(filter.replaceAll("_", "/"));
 
     const date = new Date(datestr);
     const frenchdate = formatFrenchDate(date);
