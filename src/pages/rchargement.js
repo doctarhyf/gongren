@@ -373,10 +373,24 @@ export default function RapportChargement() {
   }
 
   function onPrintDailyRepport(loads_array, cur_load, idx) {
-    const filter = cur_load.code.split("M_")[1];
+    const [t, s, y, m, d] = cur_load.code.split("_");
 
-    const filteredloads = loads_array.filter((it) => it.code.includes(filter));
+    const filter = `${y}_${m}_${d}`;
 
+    let filteredloads = [cur_load]; //loads_array.filter((it) => it.code.includes(filter));
+
+    ["M", "P", "N"].forEach((shift) => {
+      if (s !== shift) {
+        const pload = loads_array.find((it) =>
+          it.code.includes(`_${shift}_${filter}`)
+        );
+        if (pload) filteredloads.push(pload);
+      }
+    });
+
+    filteredloads.sort(customSortShifts);
+    console.log(filteredloads);
+    return;
     let datestr = AddOneMonth(
       filteredloads[0].code.split("M_")[1].replaceAll("_", "/")
     );
