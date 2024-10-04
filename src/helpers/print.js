@@ -85,7 +85,7 @@ function printBaozhuang(doc, data) {
 } */
 }
 
-export function printDailyRepport(data, date, filename) {
+export function printDailyRepport(data, date, filename, adj_sacs = true) {
   const PAGE_WIDTH = 210;
   const PAGE_HEIGHT = 297;
   const PAGE_MARGIN = 15;
@@ -100,8 +100,6 @@ export function printDailyRepport(data, date, filename) {
 
   const rect_logo = draw_logo(doc, GCK_LOGO, PAGE_MARGIN, 1);
 
-  //const date = parseFrenchDate(data.date.replaceAll("Du ", ""));
-
   draw_date(doc, PAGE_WIDTH, PAGE_MARGIN, FONT_SIZE, date, true);
   const rect_title = draw_daily_repport_title(
     doc,
@@ -110,6 +108,19 @@ export function printDailyRepport(data, date, filename) {
     PAGE_MARGIN,
     12
   );
+
+  if (adj_sacs) {
+    console.log("old items => ", data);
+
+    data = data.map((it) => {
+      const { sacs, sacs_adj } = it;
+
+      return { ...it, sacs: parseInt(sacs) + parseInt(sacs_adj), sacs_adj: 0 };
+    });
+
+    console.log("new items => ", data);
+  }
+  return;
 
   draw_daily_repport_table(
     doc,

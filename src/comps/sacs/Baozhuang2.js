@@ -34,9 +34,9 @@ export default function Boazhuang2({
   useEffect(() => {
     makeCalculation();
 
-    const el = document.querySelector(".bzbox");
+    //const el = document.querySelector(".bzbox");
 
-    console.log(el);
+    // console.log(el);
   }, []);
 
   function makeCalculation() {
