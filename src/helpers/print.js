@@ -120,7 +120,6 @@ export function printDailyRepport(data, date, filename, adj_sacs = true) {
 
     console.log("new items => ", data);
   }
-  return;
 
   draw_daily_repport_table(
     doc,
