@@ -155,6 +155,7 @@ export default function RapportChargement() {
   const [, , user, setuser] = useContext(UserContext);
   const [team, setteam] = useState("ALL");
   const [bonustot, setbonustot] = useState(0);
+  const [tot, settot] = useState(0);
   const [adding, setadding] = useState(false);
   const [newdata, setnewdata] = useState();
 
@@ -190,6 +191,7 @@ export default function RapportChargement() {
 
   function filterLoads(loads, mcode, team) {
     setbonustot(0);
+    let btot = 0;
     let tot = 0;
     let finalfilteredloadsgroupnyday = {};
 
@@ -223,7 +225,9 @@ export default function RapportChargement() {
             : 0,
       };
 
-      tot += filterloaditem.meta.bonus;
+      btot += filterloaditem.meta.bonus;
+      tot += filterloaditem.sacs;
+      console.log("meta => ", filterloaditem.meta);
 
       if (finalfilteredloadsgroupnyday[d] === undefined)
         finalfilteredloadsgroupnyday[d] = [];
@@ -239,7 +243,8 @@ export default function RapportChargement() {
 
     const fin = finalfilteredloadsgroupnyday.flat();
     ///console.log("fin", fin);
-    setbonustot(tot);
+    setbonustot(btot);
+    settot(tot);
     return fin;
   }
 
@@ -552,11 +557,13 @@ export default function RapportChargement() {
                       <td className="  border border-slate-500 p-1 text-end "></td>
                       <td className="  border border-slate-500 p-1 text-end "></td>
                       <td className="  border border-slate-500 p-1 text-end "></td>
-                      <td className="  border border-slate-500 p-1 text-end "></td>
+                      <td className="  border border-slate-500 p-1 text-end ">
+                        {tot}
+                      </td>
                       <td className="  border border-slate-500 p-1 text-end hidden sm:table-cell"></td>
                       <td className="  border border-slate-500 p-1 text-end hidden sm:table-cell"></td>
                       <td className="  border border-slate-500 p-1 text-end ">
-                        T. Bonus
+                        {(parseFloat(tot) / 20).toFixed(2)}
                       </td>
                       <td className="  border border-slate-500 p-1 text-end ">
                         {bonustot}
@@ -645,11 +652,13 @@ export default function RapportChargement() {
                       <td className="  border border-slate-500 p-1 text-end "></td>
                       <td className="  border border-slate-500 p-1 text-end "></td>
                       <td className="  border border-slate-500 p-1 text-end "></td>
-                      <td className="  border border-slate-500 p-1 text-end "></td>
+                      <td className="  border border-slate-500 p-1 text-end ">
+                        {tot}
+                      </td>
                       <td className="  border border-slate-500 p-1 text-end hidden sm:table-cell"></td>
                       <td className="  border border-slate-500 p-1 text-end hidden sm:table-cell"></td>
                       <td className="  border border-slate-500 p-1 text-end ">
-                        T. Bonus
+                        {(parseFloat(tot) / 20).toFixed(2)}
                       </td>
                       <td className="  border border-slate-500 p-1 text-end ">
                         {bonustot}
