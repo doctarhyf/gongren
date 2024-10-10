@@ -205,7 +205,7 @@ export default function Listes() {
               <div>
                 {parseAgentsToPrintList(agents, propsToPrint, addId).map(
                   (ag, i) => (
-                    <div>{ag}</div>
+                    <div>{Object.values(ag).map((v) => v + " ")}</div>
                   )
                 )}
               </div>
