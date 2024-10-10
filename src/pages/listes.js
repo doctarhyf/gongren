@@ -51,9 +51,9 @@ export default function Listes() {
 
   const reftitle = useRef();
 
-  function parseAgentsToPrintList(agents, selprops) {
+  function parseAgentsToPrintList(agents, selprops, addId = true) {
     return agents.map((item, idx) => {
-      let el = [idx + 1];
+      let el = addId ? [idx + 1 + ". "] : [];
       selprops.map((prop) => {
         if (Object.keys(item).includes(prop)) el.push(item[prop]);
       });
@@ -87,6 +87,8 @@ export default function Listes() {
   }
 
   const [listtitle, setlisttitle] = useState("LISTE AGENT CIMENTERIE");
+  const [showSimpleList, setShowSimpleList] = useState(false);
+  const [addId, setAddID] = useState(false);
 
   return (
     <div className=" container  ">
@@ -178,29 +180,59 @@ export default function Listes() {
             <div className=" font-bold text-xl underline  ">
               {listtitle} ({agents.length})
             </div>
+            <div>
+              <div>
+                <input
+                  defaultChecked={false}
+                  type="checkbox"
+                  value={showSimpleList}
+                  onChange={(e) => setShowSimpleList(e.target.checked)}
+                />
+                SHOW SIMPLE LIST
+              </div>
+              <div>
+                <input
+                  defaultChecked={false}
+                  type="checkbox"
+                  value={addId}
+                  onChange={(e) => setAddID(e.target.checked)}
+                />
+                ADD NUM.
+              </div>
+            </div>
 
-            <table class="table-fixed">
-              <thead>
-                <tr>
-                  {propsToPrint.map((prop) => (
-                    <th>{prop}</th>
-                  ))}
-                </tr>
-              </thead>
-
-              <tbody>
-                {parseAgentsToPrintList(agents, propsToPrint).map((ag) => (
-                  <tr
-                    className=" hover:bg-sky-500 p-2 hover:text-white cursor-pointer "
-                    onClick={(e) => removeAgent(ag, true)}
-                  >
-                    {ag.map((it) => (
-                      <td>{it}</td>
+            {showSimpleList ? (
+              <div>
+                {parseAgentsToPrintList(agents, propsToPrint, addId).map(
+                  (ag, i) => (
+                    <div>{ag}</div>
+                  )
+                )}
+              </div>
+            ) : (
+              <table class="table-fixed">
+                <thead>
+                  <tr>
+                    {propsToPrint.map((prop, i) => (
+                      <th key={i}>{prop}</th>
                     ))}
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+
+                <tbody>
+                  {parseAgentsToPrintList(agents, propsToPrint).map((ag) => (
+                    <tr
+                      className=" hover:bg-sky-500 p-2 hover:text-white cursor-pointer "
+                      onClick={(e) => removeAgent(ag, true)}
+                    >
+                      {ag.map((it) => (
+                        <td>{it}</td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
           </div>
         </div>
       </div>
