@@ -33,6 +33,8 @@ import { GetRandomArray, doc, print_agents_rl } from "../helpers/funcs_print";
 import AgentsTable from "../comps/AgentsTable";
 import AgentsList from "../comps/AgentsList";
 import TeamStats from "../comps/TeamStats";
+import ActionButton from "../comps/ActionButton";
+import * as SB from "../helpers/sb";
 
 export default function Equipes() {
   const [agents, setagents] = useState([]);
@@ -266,6 +268,23 @@ export default function Equipes() {
     }
   }
 
+  async function onClearTeam() {
+    if (window.confirm("Remove all agents in this team?")) {
+      try {
+        const promises = agentsf.map((it) =>
+          SB.UpsertItem(TABLES_NAMES.AGENTS, { id: it.id, equipe: "-" }, "id")
+        );
+
+        const res = await Promise.all(promises);
+
+        console.log(res);
+      } catch (e) {
+        alert("Error:\n" + JSON.stringify(e));
+        console.log(e);
+      }
+    }
+  }
+
   return (
     <div>
       <Loading isLoading={loading} />
@@ -381,6 +400,14 @@ export default function Equipes() {
                       </option>
                     ))}
                   </select>
+                </div>
+
+                <div>
+                  <ActionButton
+                    icon={null}
+                    title={"CLEAR"}
+                    onClick={onClearTeam}
+                  />
                 </div>
               </div>
 
