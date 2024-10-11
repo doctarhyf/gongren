@@ -1,6 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 
 import {
+  ACCESS_CODES,
   CLASS_BTN,
   CLASS_INPUT_TEXT,
   CLASS_SELECT,
@@ -27,6 +28,7 @@ import {
   getRouelemtDaysLetters,
   getRouelemtDaysLetters2,
   printPDF1,
+  UserHasAccessCode,
 } from "../helpers/func";
 import Loading from "../comps/Loading";
 import { GetRandomArray, doc, print_agents_rl } from "../helpers/funcs_print";
@@ -35,8 +37,10 @@ import AgentsList from "../comps/AgentsList";
 import TeamStats from "../comps/TeamStats";
 import ActionButton from "../comps/ActionButton";
 import * as SB from "../helpers/sb";
+import { UserContext } from "../App";
 
 export default function Equipes() {
+  const [, , user] = useContext(UserContext);
   const [agents, setagents] = useState([]);
   const [agentsf, setagentsf] = useState([]);
   const [customAgents, setCustomAgents] = useState([]);
@@ -402,13 +406,16 @@ export default function Equipes() {
                   </select>
                 </div>
 
-                <div>
-                  <ActionButton
-                    icon={null}
-                    title={"CLEAR"}
-                    onClick={onClearTeam}
-                  />
-                </div>
+                {UserHasAccessCode(user, ACCESS_CODES.ROOT) && (
+                  <div>
+                    <ActionButton
+                      icon={null}
+                      title={"CLEAR"}
+                      onClick={onClearTeam}
+                    />
+                    {JSON.stringify(user)}
+                  </div>
+                )}
               </div>
 
               <div className={` ${isCustomList ? "block" : "hidden"} `}>

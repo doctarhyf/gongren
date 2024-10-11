@@ -94,6 +94,7 @@ export const USER_LEVEL = {
 
 export const ACCESS_CODES = {
   ALL: "ALL",
+  CLEAR_TEM: "CLRT",
   CAN_POST_NOTIFICATIONS: "CPNFCT",
   ROOT: "ROOT",
   ADD_NEW_LOAD: "ANL",
