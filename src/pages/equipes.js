@@ -413,7 +413,6 @@ export default function Equipes() {
                       title={"CLEAR"}
                       onClick={onClearTeam}
                     />
-                    {JSON.stringify(user)}
                   </div>
                 )}
               </div>
