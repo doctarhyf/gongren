@@ -166,18 +166,23 @@ export default function TableLoadsTotals({
                   <div className=" flex justify-between ">
                     <div className=" font-bold  ">
                       {td[0]}
-                      {" - "}(
-                      <span className="  text-xs  rounded-full  font-bold font-mono  ">
-                        {agents_by_team[td[0]]
-                          ? agents_by_team[td[0]].congo +
-                            agents_by_team[td[0]].china
-                          : ""}
-                      </span>
-                      )
-                      <AgentsByTeam
-                        agents_by_team={agents_by_team}
-                        team={td[0]}
-                      />
+                      {td[0] !== "TOTAL" && (
+                        <>
+                          {" "}
+                          {" - "}(
+                          <span className="  text-xs  rounded-full  font-bold font-mono  ">
+                            {agents_by_team[td[0]]
+                              ? agents_by_team[td[0]].congo +
+                                agents_by_team[td[0]].china
+                              : ""}
+                          </span>
+                          )
+                          <AgentsByTeam
+                            agents_by_team={agents_by_team}
+                            team={td[0]}
+                          />{" "}
+                        </>
+                      )}
                     </div>
                     <div className=" text-end   ">
                       <div className=" text-[12pt]  text-xs p-1 rounded-md   ">
