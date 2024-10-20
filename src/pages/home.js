@@ -47,6 +47,7 @@ export default function Home() {
   ]);
   const [trads, settrads] = useState({});
   const [lang, setlang] = useState(LANGS[1]);
+  const [agents_by_team, set_agents_by_team] = useState(undefined);
 
   useEffect(() => {
     // loadData();
@@ -57,6 +58,54 @@ export default function Home() {
     loadData();
   }, []);
 
+  function groupAgentsByTeam(agents) {
+    let equipes = { A: 0, B: 0, C: 0, D: 0 };
+
+    agents.forEach((cur_agent) => {
+      const { equipe, active, section } = cur_agent;
+
+      Object.keys(equipes).forEach((cur_equipe) => {
+        if (
+          equipe === cur_equipe &&
+          active === "OUI" &&
+          section === "ENSACHAGE"
+        )
+          equipes[cur_equipe]++;
+      });
+    });
+
+    console.log("Equipes => ", equipes);
+
+    return equipes;
+  }
+
+  function groupCurMonthLoadsByTeam(loads) {
+    const date = new Date();
+    const y = date.getFullYear();
+    const m = date.getMonth();
+    const filter = `${y}_${m}`;
+    const floads = loads.filter((it) => it.code.includes(filter));
+
+    const totals_by_team = { A: 0, B: 0, C: 0, D: 0 };
+
+    floads.forEach((it) => {
+      const { code, sacs } = it;
+      const team = code[0];
+      totals_by_team[team] += sacs;
+    });
+
+    const values = Object.values(totals_by_team);
+    const keys = Object.keys(totals_by_team);
+    const max = Math.max(...values);
+    const max_idx = values.findIndex((it) => it === max);
+    const max_team = keys[max_idx];
+
+    totals_by_team.MAX = { team: max_team, sacs: max };
+
+    console.log(totals_by_team);
+    return totals_by_team;
+  }
+
   async function loadData() {
     setloading(true);
     const ldz = await SB.LoadAllItems(TABLES_NAMES.LOADS);
@@ -64,6 +113,22 @@ export default function Home() {
     setloads(ldz);
     setagents(agz);
     setloading(false);
+
+    const agents_by_team = groupAgentsByTeam(agents);
+    const month_loads_by_team = groupCurMonthLoadsByTeam(loads);
+
+    let acbt = {};
+    Object.entries(agents_by_team).forEach((team) => {
+      const [equipe, count] = team;
+      const china = equipe === month_loads_by_team.MAX.team ? 2 : 1;
+
+      console.log("equipe ", equipe, " congo ", count, " china ", china);
+      const data = { team: equipe, congo: count, china: china };
+
+      acbt[equipe] = data;
+    });
+
+    set_agents_by_team(acbt);
   }
 
   function onDateSelected(d) {
@@ -99,7 +164,12 @@ export default function Home() {
           user.poste === "SUP" ||
           user.poste === "DEQ" ||
           user.poste === "INT") && (
-          <HUDBonus loads={loads} agents={agents} date={date} />
+          <HUDBonus
+            loads={loads}
+            agents={agents}
+            date={date}
+            agents_by_team={agents_by_team}
+          />
         )}
         <HUDMonthProgress loads={loads} date={date} />
         <HUDMyTeam user={user} />

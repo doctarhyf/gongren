@@ -526,7 +526,7 @@ export function HUDMonthProgress({ loads, date }) {
   );
 }
 
-export function HUDBonus({ loads, agents, date }) {
+export function HUDBonus({ loads, agents, date, agents_by_team }) {
   const [, , user, setuser] = useContext(UserContext);
   const [loads_by_items, set_loads_by_items] = useState([]);
   const [totalData, setTotalData] = useState([]);
@@ -591,6 +591,7 @@ export function HUDBonus({ loads, agents, date }) {
           columnsToHide={[COLUMNS_TO_HIDE.SACS, COLUMNS_TO_HIDE.CDF]}
           lastUpdateDate={new Date(lastUpdateDate)}
           tableMode={false}
+          agents_by_team={agents_by_team}
         />
       )}
     </Card>
