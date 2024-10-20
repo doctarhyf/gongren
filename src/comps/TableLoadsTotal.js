@@ -23,11 +23,12 @@ function AgentsByTeam({ agents_by_team, team }) {
   if (data === undefined) return null;
 
   delete data.team;
+  const tot = data.congo + data.china;
   console.log("agents_by_team", agents_by_team, "team", team, " data ", data);
 
   return (
-    <div className=" flex text-sm font-mono gap-1  ">
-      [{" "}
+    <div className=" flex text-xs font-mono gap-1  ">
+      {" "}
       {Object.entries(data).map((it, i) => (
         <span className=" flex gap-1 items-center  ">
           {it[1]}
@@ -35,8 +36,7 @@ function AgentsByTeam({ agents_by_team, team }) {
             <img src={i === 0 ? congo : china} />
           </span>
         </span>
-      ))}{" "}
-      ]
+      ))}
     </div>
   );
 }
@@ -165,7 +165,15 @@ export default function TableLoadsTotals({
                 <div className=" border-b border-white/15 ">
                   <div className=" flex justify-between ">
                     <div className=" font-bold  ">
-                      {td[0]}{" "}
+                      {td[0]}
+                      {" - "}(
+                      <span className="  text-xs  rounded-full  font-bold font-mono  ">
+                        {agents_by_team[td[0]]
+                          ? agents_by_team[td[0]].congo +
+                            agents_by_team[td[0]].china
+                          : ""}
+                      </span>
+                      )
                       <AgentsByTeam
                         agents_by_team={agents_by_team}
                         team={td[0]}
