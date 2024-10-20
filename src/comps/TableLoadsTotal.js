@@ -225,7 +225,13 @@ export default function TableLoadsTotals({
       ) : (
         <div>
           {dt.map((td, i) => (
-            <div className="  py-1 ">
+            <div
+              className={`  ${
+                Math.max(
+                  ...dt.map((it) => it[1].sacs).filter((it, i) => i < 4)
+                ) === td[1].sacs && " bg-black/30"
+              }  py-1 `}
+            >
               {(td[0] === user.equipe ||
                 UserHasAccessCode(user, ACCESS_CODES.ROOT) ||
                 UserHasAccessCode(user, ACCESS_CODES.CAN_SEE_ALL_BONUS) ||
