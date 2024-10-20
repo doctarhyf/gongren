@@ -108,10 +108,10 @@ export default function Home() {
 
   async function loadData() {
     setloading(true);
-    const ldz = await SB.LoadAllItems(TABLES_NAMES.LOADS);
-    let agz = await SB.LoadAllItems(TABLES_NAMES.AGENTS);
-    setloads(ldz);
-    setagents(agz);
+    const loads = await SB.LoadAllItems(TABLES_NAMES.LOADS);
+    let agents = await SB.LoadAllItems(TABLES_NAMES.AGENTS);
+    setloads(loads);
+    setagents(agents);
     setloading(false);
 
     const agents_by_team = groupAgentsByTeam(agents);
