@@ -619,7 +619,7 @@ export default function RapportChargement() {
                           )}
                         </td>
                         <td className="  border border-slate-500 p-1 text-end ">
-                          {i % 3 === 0 &&
+                          {ld.code[2] === "M" &&
                             UserHasAccessCode(
                               user,
                               ACCESS_CODES.PRINT_DAILY_REPPORT
