@@ -584,7 +584,7 @@ export function HUDBonus({ loads, agents, date, agents_by_team }) {
     >
       {loading ? (
         <Loading isLoading={true} />
-      ) : (
+      ) : agents_by_team ? (
         <TableLoadsTotals
           totalData={totalData}
           date={date}
@@ -593,7 +593,7 @@ export function HUDBonus({ loads, agents, date, agents_by_team }) {
           tableMode={false}
           agents_by_team={agents_by_team}
         />
-      )}
+      ) : null}
     </Card>
   );
 }
