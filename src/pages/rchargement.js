@@ -430,7 +430,7 @@ export default function RapportChargement() {
   return (
     <div className=" container  ">
       <div>
-        SUIVI CHARGEMENT{" "}
+        SUIVI CHARGEMENT
         <span>
           <Loading isLoading={loading} />
         </span>
@@ -573,7 +573,8 @@ export default function RapportChargement() {
                     {loadsf.map((ld, i) => (
                       <tr
                         className={` hover:bg-slate-400 dark:hover:bg-black/50 cursor-pointer  ${
-                          i % 3 === 0 && " bg-slate-100 dark:bg-slate-700  "
+                          ld.code[2] === "M" &&
+                          " bg-slate-100 dark:bg-slate-700  "
                         }  `}
                         onClick={(e) => onClickLoad(ld)}
                       >
