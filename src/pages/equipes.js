@@ -517,16 +517,9 @@ export default function Equipes() {
             Team Filters
           </div>
 
-          <div
-            className={`p-2 border w-auto ${
-              showFilters
-                ? "block  border border-slate-200  bg-slate-100/50 p-2   "
-                : "hidden"
-            }`}
-          >
-            {FILTERS.map((f, i) => (
+          {/*  {FILTERS.map((f, i) => (
               <div
-                className={`  ${
+                className={` w-fit  ${
                   selectedFilter &&
                   f.name === selectedFilter.name &&
                   " bg-slate-700 text-white "
@@ -541,13 +534,36 @@ export default function Equipes() {
                     value={f.name.replaceAll(" ", "_")}
                   />
                   {f.name}{" "}
-                  <span className=" text-xs bg-black text-white rounded-md p-1  ">
+                  <span className=" inline-block text-xs bg-black text-white rounded-md p-1  ">
                     {f.zh}
                   </span>
                 </label>
               </div>
+            ))} */}
+
+          <select
+            className={` ${CLASS_SELECT}  ${
+              showFilters
+                ? "block  border border-slate-200  bg-slate-100/50 p-2   "
+                : "hidden"
+            }    `}
+            onChange={(e) =>
+              onSetFilter(FILTERS.filter((it) => it.name === e.target.value)[0])
+            }
+          >
+            {FILTERS.map((f, i) => (
+              <option
+                value={f.name}
+                selected={selectedFilter && f.name === selectedFilter.name}
+                key={i}
+              >
+                {f.name} -{" "}
+                <span className=" inline-block text-xs bg-black text-white rounded-md p-1  ">
+                  {f.zh}
+                </span>
+              </option>
             ))}
-          </div>
+          </select>
         </div>
       </div>
 
