@@ -525,7 +525,13 @@ export default function Equipes() {
             }`}
           >
             {FILTERS.map((f, i) => (
-              <div className=" mt-1 cursor-pointer  ">
+              <div
+                className={`  ${
+                  selectedFilter &&
+                  f.name === selectedFilter.name &&
+                  " bg-slate-700 text-white "
+                } w-fit rounded-md mt-1 cursor-pointer hover:bg-slate-700 hover:text-white p-1  `}
+              >
                 <label>
                   <input
                     onChange={(e) => onSetFilter(f)}
