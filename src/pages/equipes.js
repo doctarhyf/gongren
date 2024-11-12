@@ -517,30 +517,6 @@ export default function Equipes() {
             Team Filters
           </div>
 
-          {/*  {FILTERS.map((f, i) => (
-              <div
-                className={` w-fit  ${
-                  selectedFilter &&
-                  f.name === selectedFilter.name &&
-                  " bg-slate-700 text-white "
-                } w-fit rounded-md mt-1 cursor-pointer hover:bg-slate-700 hover:text-white p-1  `}
-              >
-                <label>
-                  <input
-                    onChange={(e) => onSetFilter(f)}
-                    ref={f.ref}
-                    type="radio"
-                    name="filter"
-                    value={f.name.replaceAll(" ", "_")}
-                  />
-                  {f.name}{" "}
-                  <span className=" inline-block text-xs bg-black text-white rounded-md p-1  ">
-                    {f.zh}
-                  </span>
-                </label>
-              </div>
-            ))} */}
-
           <select
             className={` ${CLASS_SELECT}  ${
               showFilters
