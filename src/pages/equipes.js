@@ -8,7 +8,6 @@ import Loading from "../comps/Loading";
 import TeamStats from "../comps/TeamStats";
 import {
   ACCESS_CODES,
-  CLASS_BTN,
   CLASS_INPUT_TEXT,
   CLASS_SELECT,
   CLASS_SELECT_TITLE,
@@ -27,6 +26,10 @@ import { LoadAllItems } from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
 import eraser from "../img/eraser.png";
 
+function AgentsMap({ agentsf }) {
+  return <div className=" bg-slate-400 h-64 w-64  ">map </div>;
+}
+
 export default function Equipes() {
   const [, , user] = useContext(UserContext);
   const [agents, setagents] = useState([]);
@@ -40,11 +43,12 @@ export default function Equipes() {
   const [list_title, set_list_title] = useState();
   const [daysLetters, setDaysLetters] = useState([]);
   const [showTeamStats, setShowTeamStats] = useState(false);
+  const [showMap, setShowMap] = useState(false);
 
   const ref_equipe = useRef();
   const ref_section = useRef();
   const ref_sp_equipe = useRef();
-  const ref_sp_section = useRef();
+  //const ref_sp_section = useRef();
   const ref_sp_y = useRef();
   const ref_sp_m = useRef();
   const ref_year = useRef();
@@ -271,7 +275,7 @@ export default function Equipes() {
 
     setCustomTableName(table_name);
 
-    ref_sp_section.current.textContent = section;
+    //ref_sp_section.current.textContent = section;
     ref_sp_equipe.current.textContent = equipe;
     ref_sp_y.current.textContent = y;
     ref_sp_m.current.textContent = MONTHS[m];
@@ -544,19 +548,35 @@ export default function Equipes() {
       </div>
 
       <div>
-        <AgentsTable
-          agentsf={agentsf}
-          ref_sp_equipe={ref_sp_equipe}
-          ref_sp_section={ref_sp_section}
-          ref_sp_m={ref_sp_m}
-          ref_sp_y={ref_sp_y}
-          list_title={list_title}
-          daysLetters={daysLetters}
-          isCustomList={isCustomList}
-          customAgentsList={customAgents}
-          customAgentsTableName={customTableName}
-          onCustomAgentClick={onCustomAgentClick}
+        <input
+          type="checkbox"
+          className="toggle toggle-xs"
+          defaultChecked={showMap}
+          onChange={(e) => setShowMap(e.target.checked)}
         />
+        Show Map
+      </div>
+
+      <div>
+        {showMap ? (
+          <div>
+            <AgentsMap agentsf={agentsf} />
+          </div>
+        ) : (
+          <AgentsTable
+            agentsf={agentsf}
+            ref_sp_equipe={ref_sp_equipe}
+            // ref_sp_section={ref_sp_section}
+            ref_sp_m={ref_sp_m}
+            ref_sp_y={ref_sp_y}
+            list_title={list_title}
+            daysLetters={daysLetters}
+            isCustomList={isCustomList}
+            customAgentsList={customAgents}
+            customAgentsTableName={customTableName}
+            onCustomAgentClick={onCustomAgentClick}
+          />
+        )}
       </div>
     </div>
   );
