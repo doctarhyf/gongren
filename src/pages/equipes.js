@@ -399,7 +399,11 @@ export default function Equipes() {
                     ref={ref_month}
                   >
                     {[...Array(12)].map((it, i) => (
-                      <option key={i} value={i}>
+                      <option
+                        key={i}
+                        value={i}
+                        selected={i === new Date().getMonth() - 1}
+                      >
                         {MONTHS[i]}
                       </option>
                     ))}
