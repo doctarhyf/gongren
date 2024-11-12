@@ -26,8 +26,39 @@ import { LoadAllItems } from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
 import eraser from "../img/eraser.png";
 
+function AgentCard() {
+  return (
+    <div className=" flex gap-2 p-2 ">
+      <div className=" w-16 h-16 bg-slate-600 rounded-full  "></div>
+      <div>
+        <div>Mutunda Koji franvale</div>
+        <div>库齐</div>
+        <div className=" bg-slate-700 rounded-md text-xs  text-white inline-block p-1  ">
+          POSTE
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function AgentsMap({ agentsf }) {
-  return <div className=" bg-slate-400 h-64 w-64  "> </div>;
+  return (
+    <div className=" bg-slate-100   ">
+      <div className=" flex justify-center items-center  ">
+        <AgentCard />
+      </div>
+      <div className="flex gap-4 justify-center items-center">
+        {[...Array(3).fill(0)].map((i) => (
+          <AgentCard />
+        ))}
+      </div>
+      <div className="flex gap-4 justify-center items-center">
+        {[...Array(3).fill(0)].map((i) => (
+          <AgentCard />
+        ))}
+      </div>
+    </div>
+  );
 }
 
 export default function Equipes() {
@@ -47,8 +78,8 @@ export default function Equipes() {
 
   const ref_equipe = useRef();
   const ref_section = useRef();
-  // const ref_sp_equipe = useRef();
-  //const ref_sp_section = useRef();
+  const ref_sp_equipe = useRef();
+  const ref_sp_section = useRef();
   const ref_sp_y = useRef();
   const ref_sp_m = useRef();
   const ref_year = useRef();
@@ -275,10 +306,10 @@ export default function Equipes() {
 
     setCustomTableName(table_name);
 
-    // ref_sp_section?.current.textContent = section;
-    //ref_sp_equipe?.current.textContent = equipe;
-    ref_sp_y.current.textContent = y;
-    ref_sp_m.current.textContent = MONTHS[m];
+    if (ref_sp_section.current) ref_sp_section.current.textContent = section;
+    if (ref_sp_equipe.current) ref_sp_equipe.current.textContent = equipe;
+    if (ref_sp_y.current) ref_sp_y.current.textContent = y;
+    if (ref_sp_m.current) ref_sp_m.current.textContent = MONTHS[m];
 
     const arr_agents = FilterAgents(agents, section, equipe, selectedFilter);
     let arr_agents_with_rld = arr_agents.map((agent, index, arr) =>
@@ -565,8 +596,8 @@ export default function Equipes() {
         ) : (
           <AgentsTable
             agentsf={agentsf}
-            //ref_sp_equipe={ref_sp_equipe}
-            //ref_sp_section={ref_sp_section}
+            ref_sp_equipe={ref_sp_equipe}
+            ref_sp_section={ref_sp_section}
             ref_sp_m={ref_sp_m}
             ref_sp_y={ref_sp_y}
             list_title={list_title}
