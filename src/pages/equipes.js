@@ -293,7 +293,7 @@ export default function Equipes() {
                   defaultChecked={isCustomList}
                   onChange={(e) => setIsCustomList(e.target.checked)}
                 />
-                CUSTOMIZE LIST
+                Custom List
               </div>
 
               <div
@@ -413,11 +413,7 @@ export default function Equipes() {
       </div>
 
       <div className=" ">
-        <div
-          className={`  ${
-            showTeamStats && "  border border-slate-200  bg-slate-100/50 p-2 "
-          }   `}
-        >
+        <div>
           <div>
             <input
               type="checkbox"
@@ -425,16 +421,22 @@ export default function Equipes() {
               defaultChecked={showTeamStats}
               onChange={(e) => setShowTeamStats(e.target.checked)}
             />
-            SHOW/HIDE Team Stats
+            Team Stats
           </div>
-          {showTeamStats && <TeamStats agentsf={agentsf} />}
+          {showTeamStats && (
+            <div
+              className={` ${
+                showTeamStats &&
+                "  border border-slate-200  bg-slate-100/50 p-2 "
+              } `}
+            >
+              {" "}
+              <TeamStats agentsf={agentsf} />{" "}
+            </div>
+          )}
         </div>
 
-        <div
-          className={` ${
-            showTeamStats && " border border-slate-200  bg-slate-100/50 p-2 "
-          }  `}
-        >
+        <div className={`   `}>
           <div>
             <input
               type="checkbox"
@@ -442,11 +444,15 @@ export default function Equipes() {
               defaultChecked={showTeamStats}
               onChange={(e) => setShowFilters(e.target.checked)}
             />
-            SHOW/HIDE Team Filters
+            Team Filters
           </div>
 
           <div
-            className={`p-2 border w-auto ${showFilters ? "block" : "hidden"}`}
+            className={`p-2 border w-auto ${
+              showFilters
+                ? "block  border border-slate-200  bg-slate-100/50 p-2   "
+                : "hidden"
+            }`}
           >
             {FILTERS.map((f, i) => (
               <div>
