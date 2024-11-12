@@ -64,20 +64,88 @@ export default function Equipes() {
   const ref_int = useRef();
   const ref_agents_only_no_sup = useRef();
 
+  const FILTERS_KEYS = {
+    GCK_AGENTS: { fr: "GCK AGENTS", zh: "正式工" },
+    AGENTS_ONLY_NO_SUP: { fr: "AGENTS ONLY, NO SUP", zh: "不包括班长" },
+    MOR_AGENTS: { fr: "MOR AGENTS", zh: "临时工" },
+    FULL_TEAM: { fr: "FULL TEAM", zh: "全班" },
+    ALL_GCK_STUFF: { fr: "ALL GCK STUFF", zh: "所有正式工" },
+    ALL_MOR: { fr: "ALL MOR", zh: "所有临时工" },
+    ALL_BINIC: { fr: "ALL BINIC", zh: "所有 BINIC 临时工" },
+    ALL_KAYTRADING: { fr: "ALL KAYTRADING", zh: "所有 KAYTRADING 临时工" },
+    ALL_CD_GCK_STUFF: { fr: "ALL CD GCK STUFF", zh: "所有刚方正式工" },
+    ALL_ZH_GCK_STUFF: { fr: "ALL ZH GCK STUFF", zh: "所有中方正式工" },
+    ALL_DEQ: { fr: "ALL DEQ", zh: "所有小班长" },
+    ALL_SUPERVISORS: { fr: "ALL SUPERVISORS", zh: "所有班长" },
+    INTERPRETES: { fr: "INTERPRETES", zh: "所有翻译" },
+  };
+
   const FILTERS = [
-    { name: "GCK AGENTS", ref: ref_gck_agents },
-    { name: "AGENTS ONLY, NO SUP", ref: ref_agents_only_no_sup },
-    { name: "MOR AGENTS", ref: ref_mor_agents },
-    { name: "FULL TEAM", ref: ref_full_team },
-    { name: "ALL GCK STUFF", ref: ref_all_gck_stuff },
-    { name: "ALL MOR", ref: ref_all_mor },
-    { name: "ALL BINIC", ref: ref_all_bnc },
-    { name: "ALL KAYTRADING", ref: ref_all_kay },
-    { name: "ALL CD GCK STUFF", ref: ref_all_cd_stuff },
-    { name: "ALL ZH GCK STUFF", ref: ref_all_zh_stuff },
-    { name: "ALL DEQ", ref: ref_all_deq },
-    { name: "ALL SUPERVISORS", ref: ref_all_sup },
-    { name: "INTERPRETES", ref: ref_int },
+    {
+      name: FILTERS_KEYS.GCK_AGENTS.fr,
+      ref: ref_gck_agents,
+      zh: FILTERS_KEYS.GCK_AGENTS.zh,
+    },
+    {
+      name: FILTERS_KEYS.AGENTS_ONLY_NO_SUP.fr,
+      ref: ref_agents_only_no_sup,
+      zh: FILTERS_KEYS.AGENTS_ONLY_NO_SUP.zh,
+    },
+    {
+      name: FILTERS_KEYS.MOR_AGENTS.fr,
+      ref: ref_mor_agents,
+      zh: FILTERS_KEYS.MOR_AGENTS.zh,
+    },
+    {
+      name: FILTERS_KEYS.FULL_TEAM.fr,
+      ref: ref_full_team,
+      zh: FILTERS_KEYS.FULL_TEAM.zh,
+    },
+    {
+      name: FILTERS_KEYS.ALL_GCK_STUFF.fr,
+      ref: ref_all_gck_stuff,
+      zh: FILTERS_KEYS.ALL_GCK_STUFF.zh,
+    },
+    {
+      name: FILTERS_KEYS.ALL_MOR.fr,
+      ref: ref_all_mor,
+      zh: FILTERS_KEYS.ALL_MOR.zh,
+    },
+    {
+      name: FILTERS_KEYS.ALL_BINIC.fr,
+      ref: ref_all_bnc,
+      zh: FILTERS_KEYS.ALL_BINIC.zh,
+    },
+    {
+      name: FILTERS_KEYS.ALL_KAYTRADING.fr,
+      ref: ref_all_kay,
+      zh: FILTERS_KEYS.ALL_KAYTRADING.zh,
+    },
+    {
+      name: FILTERS_KEYS.ALL_CD_GCK_STUFF.fr,
+      ref: ref_all_cd_stuff,
+      zh: FILTERS_KEYS.ALL_CD_GCK_STUFF.zh,
+    },
+    {
+      name: FILTERS_KEYS.ALL_ZH_GCK_STUFF.fr,
+      ref: ref_all_zh_stuff,
+      zh: FILTERS_KEYS.ALL_ZH_GCK_STUFF.zh,
+    },
+    {
+      name: FILTERS_KEYS.ALL_DEQ.fr,
+      ref: ref_all_deq,
+      zh: FILTERS_KEYS.ALL_DEQ.zh,
+    },
+    {
+      name: FILTERS_KEYS.ALL_SUPERVISORS.fr,
+      ref: ref_all_sup,
+      zh: FILTERS_KEYS.ALL_SUPERVISORS.zh,
+    },
+    {
+      name: FILTERS_KEYS.INTERPRETES.fr,
+      ref: ref_int,
+      zh: FILTERS_KEYS.INTERPRETES.zh,
+    },
   ];
 
   useEffect(() => {
@@ -130,23 +198,25 @@ export default function Equipes() {
       const all_deq = ag.chef_deq === "OUI";
 
       if (filter) {
-        if ("GCK AGENTS" === filter.name) {
+        if (FILTERS_KEYS.GCK_AGENTS.fr === filter.name) {
           set_list_title("AGENTS GCK");
           return eq_sec_gck;
         }
-        if ("MOR AGENTS" === filter.name) return eq_sec_mor;
-        if ("FULL TEAM" === filter.name) return equipe_section;
-        if ("ALL CHINESE STUFF" === filter.name) return all_zh;
-        if ("ALL GCK STUFF" === filter.name) return all_gck;
-        if ("ALL MOR" === filter.name) return all_mor;
-        if ("ALL BINIC" === filter.name) return all_bnc;
-        if ("ALL KAYTRADING" === filter.name) return all_kay;
-        if ("ALL CD GCK STUFF" === filter.name) return all_cd;
-        if ("ALL ZH GCK STUFF" === filter.name) return all_zh;
-        if ("ALL SUPERVISORS" === filter.name) return all_sup;
-        if ("ALL DEQ" === filter.name) return all_deq;
-        if ("AGENTS ONLY, NO SUP" === filter.name) return agents_only_no_sup;
-        if ("INTERPRETES" === filter.name) return interpretes_only;
+        if (FILTERS_KEYS.MOR_AGENTS.fr === filter.name) return eq_sec_mor;
+        if (FILTERS_KEYS.FULL_TEAM.fr === filter.name) return equipe_section;
+        if (FILTERS_KEYS.ALL_ZH_GCK_STUFF.fr === filter.name) return all_zh;
+        if (FILTERS_KEYS.ALL_GCK_STUFF.fr === filter.name) return all_gck;
+        if (FILTERS_KEYS.ALL_MOR.fr === filter.name) return all_mor;
+        if (FILTERS_KEYS.ALL_BINIC.fr === filter.name) return all_bnc;
+        if (FILTERS_KEYS.ALL_KAYTRADING.fr === filter.name) return all_kay;
+        if (FILTERS_KEYS.ALL_CD_GCK_STUFF.fr === filter.name) return all_cd;
+        if (FILTERS_KEYS.ALL_ZH_GCK_STUFF.fr === filter.name) return all_zh;
+        if (FILTERS_KEYS.ALL_SUPERVISORS.fr === filter.name) return all_sup;
+        if (FILTERS_KEYS.ALL_DEQ.fr === filter.name) return all_deq;
+        if (FILTERS_KEYS.AGENTS_ONLY_NO_SUP.fr === filter.name)
+          return agents_only_no_sup;
+        if (FILTERS_KEYS.INTERPRETES.fr === filter.name)
+          return interpretes_only;
       }
 
       return equipe_section;
@@ -455,7 +525,7 @@ export default function Equipes() {
             }`}
           >
             {FILTERS.map((f, i) => (
-              <div>
+              <div className=" mt-1 cursor-pointer  ">
                 <label>
                   <input
                     onChange={(e) => onSetFilter(f)}
@@ -464,7 +534,10 @@ export default function Equipes() {
                     name="filter"
                     value={f.name.replaceAll(" ", "_")}
                   />
-                  {f.name}
+                  {f.name}{" "}
+                  <span className=" text-xs bg-black text-white rounded-md p-1  ">
+                    {f.zh}
+                  </span>
                 </label>
               </div>
             ))}
