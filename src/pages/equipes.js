@@ -1,43 +1,31 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 
+import { UserContext } from "../App";
+import ActionButton from "../comps/ActionButton";
+import AgentsList from "../comps/AgentsList";
+import AgentsTable from "../comps/AgentsTable";
+import Loading from "../comps/Loading";
+import TeamStats from "../comps/TeamStats";
 import {
   ACCESS_CODES,
   CLASS_BTN,
   CLASS_INPUT_TEXT,
   CLASS_SELECT,
   CLASS_SELECT_TITLE,
-  CLASS_TD,
   EQUIPES,
   EQUIPES_NAMES,
-  K_POSTE_AIDE_OPERATEUR,
-  K_POSTE_CHARGEUR,
-  K_POSTE_NETTOYEUR,
-  K_POSTE_OPERATEUR,
   MONTHS,
   SECTIONS,
 } from "../helpers/flow";
-import { LoadAllItems } from "../helpers/sb";
-import { TABLES_NAMES } from "../helpers/sb.config";
-import shield from "../img/shield.png";
-import sup from "../img/sup.png";
-import pdf from "../img/pdf.png";
 import {
-  CountAgentsByPostType,
   CustomSortByListPriority,
-  getDaysInMonth,
-  getRouelemtDaysLetters,
   getRouelemtDaysLetters2,
-  printPDF1,
   UserHasAccessCode,
 } from "../helpers/func";
-import Loading from "../comps/Loading";
-import { GetRandomArray, doc, print_agents_rl } from "../helpers/funcs_print";
-import AgentsTable from "../comps/AgentsTable";
-import AgentsList from "../comps/AgentsList";
-import TeamStats from "../comps/TeamStats";
-import ActionButton from "../comps/ActionButton";
 import * as SB from "../helpers/sb";
-import { UserContext } from "../App";
+import { LoadAllItems } from "../helpers/sb";
+import { TABLES_NAMES } from "../helpers/sb.config";
+import eraser from "../img/eraser.png";
 
 export default function Equipes() {
   const [, , user] = useContext(UserContext);
@@ -51,6 +39,7 @@ export default function Equipes() {
   const [selectedFilter, setSelectedFilter] = useState();
   const [list_title, set_list_title] = useState();
   const [daysLetters, setDaysLetters] = useState([]);
+  const [showTeamStats, setShowTeamStats] = useState(false);
 
   const ref_equipe = useRef();
   const ref_section = useRef();
@@ -298,52 +287,44 @@ export default function Equipes() {
           <>
             <div>
               <div>
-                <div>
-                  {" "}
-                  <input
-                    type="checkbox"
-                    onChange={(e) => {
-                      const isCustom = e.target.checked;
-                      setIsCustomList(isCustom);
-                      if (isCustom) {
-                        // setCustomAgents((old) => [...old, ...agentsf]);
-                      }
-                    }}
-                  />
-                  Custom List{" "}
-                </div>
+                <input
+                  type="checkbox"
+                  className="toggle toggle-xs"
+                  defaultChecked={isCustomList}
+                  onChange={(e) => setIsCustomList(e.target.checked)}
+                />
+                CUSTOMIZE LIST
+              </div>
 
+              <div
+                className={` border border-slate-200  bg-slate-100/50 p-2 rounded-md  outline-none w-fit mb-1 ${
+                  isCustomList ? "block" : "hidden"
+                } `}
+              >
+                <input
+                  className={` ${CLASS_INPUT_TEXT} `}
+                  type="text"
+                  value={customTableName}
+                  onChange={(e) =>
+                    setCustomTableName(e.target.value.toUpperCase())
+                  }
+                  placeholder="LIST TITLE"
+                />
                 <div>
-                  <button
-                    className={CLASS_BTN}
+                  <ActionButton
+                    icon={eraser}
+                    title={"Clear Custom List"}
                     onClick={(e) => {
                       if (window.confirm("Clear custom list?")) {
                         setCustomAgents([]);
                         alert("Custom list cleared");
                       }
                     }}
-                  >
-                    CLEAR CUSTOM LIST
-                  </button>
+                  />
                 </div>
               </div>
 
-              <div
-                className={` ${CLASS_INPUT_TEXT} outline-none w-fit mb-1 ${
-                  isCustomList ? "block" : "hidden"
-                } `}
-              >
-                <input
-                  type="text"
-                  value={customTableName}
-                  onChange={(e) =>
-                    setCustomTableName(e.target.value.toUpperCase())
-                  }
-                  placeholder="list name"
-                />
-              </div>
-
-              <div className={` ${isCustomList ? "hidden" : "block"} `}>
+              <div>
                 <div>
                   <span className={CLASS_SELECT_TITLE}>SECTION</span>
 
@@ -412,11 +393,13 @@ export default function Equipes() {
 
                 {UserHasAccessCode(user, ACCESS_CODES.ROOT) && (
                   <div>
-                    <ActionButton
-                      icon={null}
-                      title={"CLEAR"}
-                      onClick={onClearTeam}
-                    />
+                    {!isCustomList && (
+                      <ActionButton
+                        icon={null}
+                        title={"CLEAR CURRENT TEAM"}
+                        onClick={onClearTeam}
+                      />
+                    )}
                   </div>
                 )}
               </div>
@@ -427,36 +410,59 @@ export default function Equipes() {
             </div>
           </>
         )}
-
-        <TeamStats agentsf={agentsf} />
       </div>
 
-      <div>
-        <button
-          className={CLASS_BTN}
-          onClick={(e) => setShowFilters(!showFilters)}
+      <div className=" ">
+        <div
+          className={`  ${
+            showTeamStats && "  border border-slate-200  bg-slate-100/50 p-2 "
+          }   `}
         >
-          {" "}
-          SHOW/HIDE FILTERS{" "}
-        </button>
+          <div>
+            <input
+              type="checkbox"
+              className="toggle toggle-xs"
+              defaultChecked={showTeamStats}
+              onChange={(e) => setShowTeamStats(e.target.checked)}
+            />
+            SHOW/HIDE Team Stats
+          </div>
+          {showTeamStats && <TeamStats agentsf={agentsf} />}
+        </div>
 
         <div
-          className={`p-2 border w-auto ${showFilters ? "block" : "hidden"}`}
+          className={` ${
+            showTeamStats && " border border-slate-200  bg-slate-100/50 p-2 "
+          }  `}
         >
-          {FILTERS.map((f, i) => (
-            <div>
-              <label>
-                <input
-                  onChange={(e) => onSetFilter(f)}
-                  ref={f.ref}
-                  type="radio"
-                  name="filter"
-                  value={f.name.replaceAll(" ", "_")}
-                />
-                {f.name}
-              </label>
-            </div>
-          ))}
+          <div>
+            <input
+              type="checkbox"
+              className="toggle toggle-xs"
+              defaultChecked={showTeamStats}
+              onChange={(e) => setShowFilters(e.target.checked)}
+            />
+            SHOW/HIDE Team Filters
+          </div>
+
+          <div
+            className={`p-2 border w-auto ${showFilters ? "block" : "hidden"}`}
+          >
+            {FILTERS.map((f, i) => (
+              <div>
+                <label>
+                  <input
+                    onChange={(e) => onSetFilter(f)}
+                    ref={f.ref}
+                    type="radio"
+                    name="filter"
+                    value={f.name.replaceAll(" ", "_")}
+                  />
+                  {f.name}
+                </label>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
