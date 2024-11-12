@@ -47,13 +47,16 @@ function FlatList({ items, renderItem, perpage, q }) {
     }
 
     let af = data.filter((it) => {
-      const cnom = it.nom.toLowerCase().includes(q.toLowerCase().trim());
-      const cpostnom = it.postnom
-        .toLowerCase()
-        .includes(q.toLowerCase().trim());
-      const cprenom = it.prenom.toLowerCase().includes(q.toLowerCase().trim());
+      const qlc = q.toLowerCase().trim();
+      const nom = it.nom.toLowerCase();
+      const postnom = it.postnom.toLowerCase();
+      const prenom = it.prenom.toLowerCase();
 
-      return cnom || cpostnom || cprenom;
+      const fullname = `${nom} ${postnom} ${prenom}`;
+      const cfullname = fullname.includes(qlc);
+      const cmat = it.matricule.toLowerCase().includes(qlc);
+
+      return cfullname || cmat;
     });
 
     let aff = [...af];
