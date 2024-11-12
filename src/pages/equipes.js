@@ -27,7 +27,7 @@ import { TABLES_NAMES } from "../helpers/sb.config";
 import eraser from "../img/eraser.png";
 
 function AgentsMap({ agentsf }) {
-  return <div className=" bg-slate-400 h-64 w-64  ">map </div>;
+  return <div className=" bg-slate-400 h-64 w-64  "> </div>;
 }
 
 export default function Equipes() {
@@ -47,7 +47,7 @@ export default function Equipes() {
 
   const ref_equipe = useRef();
   const ref_section = useRef();
-  const ref_sp_equipe = useRef();
+  // const ref_sp_equipe = useRef();
   //const ref_sp_section = useRef();
   const ref_sp_y = useRef();
   const ref_sp_m = useRef();
@@ -275,8 +275,8 @@ export default function Equipes() {
 
     setCustomTableName(table_name);
 
-    //ref_sp_section.current.textContent = section;
-    ref_sp_equipe.current.textContent = equipe;
+    // ref_sp_section?.current.textContent = section;
+    //ref_sp_equipe?.current.textContent = equipe;
     ref_sp_y.current.textContent = y;
     ref_sp_m.current.textContent = MONTHS[m];
 
@@ -565,8 +565,8 @@ export default function Equipes() {
         ) : (
           <AgentsTable
             agentsf={agentsf}
-            ref_sp_equipe={ref_sp_equipe}
-            // ref_sp_section={ref_sp_section}
+            //ref_sp_equipe={ref_sp_equipe}
+            //ref_sp_section={ref_sp_section}
             ref_sp_m={ref_sp_m}
             ref_sp_y={ref_sp_y}
             list_title={list_title}
