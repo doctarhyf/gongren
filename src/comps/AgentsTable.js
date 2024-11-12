@@ -222,11 +222,6 @@ export default function AgentsTable({
               <td className={CLASS_TD}>
                 <b>Poste</b>
               </td>
-              {/*  {[...Array(daysCount)].map((d, i) => (
-                <td key={i} className={CLASS_TD}>
-                  {21 + i > daysCount ? (daysCount - i - 20 - 1) * -1 : 21 + i}
-                </td>
-              ))} */}
 
               {cal &&
                 cal.dates.map((d, i) => (
