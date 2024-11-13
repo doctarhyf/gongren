@@ -112,6 +112,7 @@ export default function Equipes() {
   const [agentsf, setagentsf] = useState([]);
   const [customAgents, setCustomAgents] = useState([]);
   const [isCustomList, setIsCustomList] = useState(false);
+  const [showTeamSelector, setShowTeamSelector] = useState(false);
 
   const [rld, setrld] = useState([]);
   const [loading, setloading] = useState(false);
@@ -476,186 +477,197 @@ export default function Equipes() {
 
               <div>
                 <div>
-                  <span className={CLASS_SELECT_TITLE}>SECTION</span>
-
-                  <select
-                    className={CLASS_SELECT}
-                    name="section"
-                    ref={ref_section}
-                    defaultValue={SECTIONS[0]}
-                    onChange={onFilterAgents}
-                  >
-                    {SECTIONS.map((it, i) => (
-                      <option key={i}>{it}</option>
-                    ))}
-                  </select>
+                  <input
+                    type="checkbox"
+                    className="toggle toggle-xs"
+                    defaultChecked={showTeamSelector}
+                    onChange={(e) => setShowTeamSelector(e.target.checked)}
+                  />
+                  Show Team Selector
                 </div>
-
-                <div>
-                  <span className={CLASS_SELECT_TITLE}>EQUIPE</span>
-
-                  <select
-                    className={CLASS_SELECT}
-                    name="equipe"
-                    defaultValue={EQUIPES[0]}
-                    ref={ref_equipe}
-                    onChange={onFilterAgents}
-                  >
-                    {EQUIPES.map((it, i) => (
-                      <option key={i}>{it}</option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-
-              <div>
-                <div>
-                  <span className={CLASS_SELECT_TITLE}>YEAR:</span>
-                  <select
-                    onChange={onFilterAgents}
-                    ref={ref_year}
-                    className={CLASS_SELECT}
-                  >
-                    {[...Array(10)].map((it, i) => (
-                      <option key={i}>{new Date().getFullYear() + i}</option>
-                    ))}
-                  </select>
-                </div>
-
-                <div>
-                  <span className={CLASS_SELECT_TITLE}>MONTH:</span>
-                  <select
-                    className={CLASS_SELECT}
-                    onChange={onFilterAgents}
-                    ref={ref_month}
-                  >
-                    {[...Array(12)].map((it, i) => (
-                      <option
-                        key={i}
-                        value={i}
-                        selected={i === new Date().getMonth() - 1}
-                      >
-                        {MONTHS[i]}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                {UserHasAccessCode(user, ACCESS_CODES.ROOT) && (
+                <div className={`  ${showTeamSelector ? "block" : "hidden"}  `}>
                   <div>
-                    {!isCustomList && (
-                      <ActionButton
-                        icon={null}
-                        title={"CLEAR CURRENT TEAM"}
-                        onClick={onClearTeam}
-                      />
+                    <span className={CLASS_SELECT_TITLE}>SECTION</span>
+
+                    <select
+                      className={CLASS_SELECT}
+                      name="section"
+                      ref={ref_section}
+                      defaultValue={SECTIONS[0]}
+                      onChange={onFilterAgents}
+                    >
+                      {SECTIONS.map((it, i) => (
+                        <option key={i}>{it}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div>
+                    <span className={CLASS_SELECT_TITLE}>EQUIPE</span>
+
+                    <select
+                      className={CLASS_SELECT}
+                      name="equipe"
+                      defaultValue={EQUIPES[0]}
+                      ref={ref_equipe}
+                      onChange={onFilterAgents}
+                    >
+                      {EQUIPES.map((it, i) => (
+                        <option key={i}>{it}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div>
+                    <span className={CLASS_SELECT_TITLE}>YEAR:</span>
+                    <select
+                      onChange={onFilterAgents}
+                      ref={ref_year}
+                      className={CLASS_SELECT}
+                    >
+                      {[...Array(10)].map((it, i) => (
+                        <option key={i}>{new Date().getFullYear() + i}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div>
+                    <span className={CLASS_SELECT_TITLE}>MONTH:</span>
+                    <select
+                      className={CLASS_SELECT}
+                      onChange={onFilterAgents}
+                      ref={ref_month}
+                    >
+                      {[...Array(12)].map((it, i) => (
+                        <option
+                          key={i}
+                          value={i}
+                          selected={i === new Date().getMonth() - 1}
+                        >
+                          {MONTHS[i]}
+                        </option>
+                      ))}
+                    </select>
+
+                    {UserHasAccessCode(user, ACCESS_CODES.ROOT) && (
+                      <div>
+                        {!isCustomList && (
+                          <ActionButton
+                            icon={null}
+                            title={"CLEAR CURRENT TEAM"}
+                            onClick={onClearTeam}
+                          />
+                        )}
+                      </div>
                     )}
                   </div>
-                )}
+                </div>
               </div>
 
               <div className={` ${isCustomList ? "block" : "hidden"} `}>
                 <AgentsList onAgentClick={onAgentClick} />
               </div>
             </div>
-          </>
-        )}
-      </div>
+            <div>
+              <div>
+                <div>
+                  <input
+                    type="checkbox"
+                    className="toggle toggle-xs"
+                    defaultChecked={showTeamStats}
+                    onChange={(e) => setShowTeamStats(e.target.checked)}
+                  />
+                  Team Stats
+                </div>
+                {showTeamStats && (
+                  <div
+                    className={` ${
+                      showTeamStats &&
+                      "  border border-slate-200  bg-slate-100/50 p-2 "
+                    } `}
+                  >
+                    {" "}
+                    <TeamStats agentsf={agentsf} />{" "}
+                  </div>
+                )}
+              </div>
 
-      <div className=" ">
-        <div>
-          <div>
-            <input
-              type="checkbox"
-              className="toggle toggle-xs"
-              defaultChecked={showTeamStats}
-              onChange={(e) => setShowTeamStats(e.target.checked)}
-            />
-            Team Stats
-          </div>
-          {showTeamStats && (
-            <div
-              className={` ${
-                showTeamStats &&
-                "  border border-slate-200  bg-slate-100/50 p-2 "
-              } `}
-            >
-              {" "}
-              <TeamStats agentsf={agentsf} />{" "}
+              <div className={`   `}>
+                <div>
+                  <input
+                    type="checkbox"
+                    className="toggle toggle-xs"
+                    defaultChecked={showTeamStats}
+                    onChange={(e) => setShowFilters(e.target.checked)}
+                  />
+                  Team Filters
+                </div>
+
+                <select
+                  className={` ${CLASS_SELECT}  ${
+                    showFilters
+                      ? "block  border border-slate-200  bg-slate-100/50 p-2   "
+                      : "hidden"
+                  }    `}
+                  onChange={(e) =>
+                    onSetFilter(
+                      FILTERS.filter((it) => it.name === e.target.value)[0]
+                    )
+                  }
+                >
+                  {FILTERS.map((f, i) => (
+                    <option
+                      value={f.name}
+                      selected={
+                        selectedFilter && f.name === selectedFilter.name
+                      }
+                      key={i}
+                    >
+                      {f.name} -{" "}
+                      <span className=" inline-block text-xs bg-black text-white rounded-md p-1  ">
+                        {f.zh}
+                      </span>
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
-          )}
-        </div>
 
-        <div className={`   `}>
-          <div>
-            <input
-              type="checkbox"
-              className="toggle toggle-xs"
-              defaultChecked={showTeamStats}
-              onChange={(e) => setShowFilters(e.target.checked)}
-            />
-            Team Filters
-          </div>
-
-          <select
-            className={` ${CLASS_SELECT}  ${
-              showFilters
-                ? "block  border border-slate-200  bg-slate-100/50 p-2   "
-                : "hidden"
-            }    `}
-            onChange={(e) =>
-              onSetFilter(FILTERS.filter((it) => it.name === e.target.value)[0])
-            }
-          >
-            {FILTERS.map((f, i) => (
-              <option
-                value={f.name}
-                selected={selectedFilter && f.name === selectedFilter.name}
-                key={i}
-              >
-                {f.name} -{" "}
-                <span className=" inline-block text-xs bg-black text-white rounded-md p-1  ">
-                  {f.zh}
-                </span>
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
-
-      <div>
-        <input
-          type="checkbox"
-          className="toggle toggle-xs"
-          defaultChecked={showMap}
-          onChange={(e) => setShowMap(e.target.checked)}
-        />
-        Show Map
-      </div>
-
-      <div>
-        {showMap ? (
-          <div>
-            <AgentsMap
-              agentsf={agentsf}
-              section={ref_section}
-              equipe={ref_equipe}
-            />
-          </div>
-        ) : (
-          <AgentsTable
-            agentsf={agentsf}
-            ref_sp_equipe={ref_sp_equipe}
-            ref_sp_section={ref_sp_section}
-            ref_sp_m={ref_sp_m}
-            ref_sp_y={ref_sp_y}
-            list_title={list_title}
-            daysLetters={daysLetters}
-            isCustomList={isCustomList}
-            customAgentsList={customAgents}
-            customAgentsTableName={customTableName}
-            onCustomAgentClick={onCustomAgentClick}
-          />
+            <div>
+              <input
+                type="checkbox"
+                className="toggle toggle-xs"
+                defaultChecked={showMap}
+                onChange={(e) => setShowMap(e.target.checked)}
+              />
+              Show Map
+            </div>
+            <div>
+              {showMap ? (
+                <div>
+                  <AgentsMap
+                    agentsf={agentsf}
+                    section={ref_section}
+                    equipe={ref_equipe}
+                  />
+                </div>
+              ) : (
+                <AgentsTable
+                  agentsf={agentsf}
+                  ref_sp_equipe={ref_sp_equipe}
+                  ref_sp_section={ref_sp_section}
+                  ref_sp_m={ref_sp_m}
+                  ref_sp_y={ref_sp_y}
+                  list_title={list_title}
+                  daysLetters={daysLetters}
+                  isCustomList={isCustomList}
+                  customAgentsList={customAgents}
+                  customAgentsTableName={customTableName}
+                  onCustomAgentClick={onCustomAgentClick}
+                />
+              )}
+            </div>
+          </>
         )}
       </div>
     </div>
