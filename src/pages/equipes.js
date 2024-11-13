@@ -652,19 +652,21 @@ export default function Equipes() {
                   />
                 </div>
               ) : (
-                <AgentsTable
-                  agentsf={agentsf}
-                  ref_sp_equipe={ref_sp_equipe}
-                  ref_sp_section={ref_sp_section}
-                  ref_sp_m={ref_sp_m}
-                  ref_sp_y={ref_sp_y}
-                  list_title={list_title}
-                  daysLetters={daysLetters}
-                  isCustomList={isCustomList}
-                  customAgentsList={customAgents}
-                  customAgentsTableName={customTableName}
-                  onCustomAgentClick={onCustomAgentClick}
-                />
+                <div className=" overflow-auto  bg-slate-100  ">
+                  <AgentsTable
+                    agentsf={agentsf}
+                    ref_sp_equipe={ref_sp_equipe}
+                    ref_sp_section={ref_sp_section}
+                    ref_sp_m={ref_sp_m}
+                    ref_sp_y={ref_sp_y}
+                    list_title={list_title}
+                    daysLetters={daysLetters}
+                    isCustomList={isCustomList}
+                    customAgentsList={customAgents}
+                    customAgentsTableName={customTableName}
+                    onCustomAgentClick={onCustomAgentClick}
+                  />
+                </div>
               )}
             </div>
           </>

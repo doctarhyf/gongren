@@ -1,13 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
-import * as SB from "../helpers/sb";
+import { doc, print_agent_roulement } from "../helpers/funcs_print";
 import GetRoulemenDaysData from "../helpers/GetRoulemenDaysData.mjs";
+import * as SB from "../helpers/sb";
 import { TABLES_NAMES, supabase } from "../helpers/sb.config";
+import ActionButton from "./ActionButton";
+import AgentRoulementTable from "./AgentRoulementTable";
 import DateSelector from "./DateSelector";
 import Loading from "./Loading";
-import { CLASS_TD } from "../helpers/flow";
-import AgentRoulementTable from "./AgentRoulementTable";
-import ButtonPrint from "./ButtonPrint";
-import { agents_rl, doc, print_agent_roulement } from "../helpers/funcs_print";
+import printer from "../img/printer.png";
 
 const ERRORS = {
   AGENT_DATA_UNDEFINED: { code: "no_ag_data", msg: "agentData is undefined!" },
@@ -229,7 +229,9 @@ export default function TableRoulement({ agentData }) {
           onDateSelected={onDateSelected}
         />
         <div className="md:flex gap-2">
-          <ButtonPrint
+          <ActionButton
+            icon={printer}
+            title={"PRINT"}
             onClick={(e) =>
               printPDF(
                 selectedMonthCode,

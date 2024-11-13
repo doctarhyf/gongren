@@ -10,6 +10,9 @@ import Loading from "./Loading";
 import { GFMN } from "../helpers/GetRoulemenDaysData.mjs";
 import { UserContext } from "../App";
 import { AddOneToRoulementCurMonth, UserHasAccessCode } from "../helpers/func";
+import sync from "../img/sync.png";
+import chart from "../img/chart.png";
+import ActionButton from "./ActionButton";
 
 const POINTAGES_HOURS_LEN = {
   J: 10,
@@ -113,14 +116,13 @@ export default function AgentRoulementTable({
                   {((UserHasAccessCode(user, ACCESS_CODES.UPDATE_ROULEMENT) &&
                     user.id === agentData.id) ||
                     UserHasAccessCode(user, ACCESS_CODES.ROOT)) && (
-                    <button
-                      className={`${CLASS_BTN} ${
-                        !editRoulement ? "block" : "hidden"
-                      } `}
-                      onClick={(e) => setEditRoulement(true)}
-                    >
-                      UPDATE
-                    </button>
+                    <div className={` ${!editRoulement ? "block" : "hidden"} `}>
+                      <ActionButton
+                        icon={sync}
+                        title={"UPDATE"}
+                        onClick={(e) => setEditRoulement(true)}
+                      />
+                    </div>
                   )}
                   <button
                     className={`${CLASS_BTN} ${
@@ -246,14 +248,11 @@ export default function AgentRoulementTable({
         </tr>
       </table>
 
-      <div>
-        <button
-          className={CLASS_BTN}
-          onClick={(e) => setShowHideStats(!showStats)}
-        >
-          SHOW/HIDE STATS
-        </button>
-      </div>
+      <ActionButton
+        icon={chart}
+        title={"SHOW/HIDE STATS"}
+        onClick={(e) => setShowHideStats(!showStats)}
+      />
 
       {showStats && (
         <div>
