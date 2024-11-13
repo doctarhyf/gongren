@@ -60,7 +60,7 @@ function AgentsMap({ agentsf }) {
 
   const sup = findAgentsByPoste(agentsf, "SUP");
   const deq = [agentsf.find((it) => it.chef_deq === "OUI")];
-  // agentsf = agentsf.filter((it) => it.chef_deq === "NON");
+  agentsf = agentsf.filter((it) => it.chef_deq === "NON" && it.poste !== "SUP");
   const ops = findAgentsByPoste(agentsf, "OPE");
   const aidops = findAgentsByPoste(agentsf, "AIDOP");
   const chargs = findAgentsByPoste(agentsf, "CHARG");
