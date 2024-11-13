@@ -26,37 +26,63 @@ import { LoadAllItems } from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
 import eraser from "../img/eraser.png";
 
-function AgentCard() {
+function AgentCard({ agent }) {
   return (
-    <div className=" flex gap-2 p-2 ">
-      <div className=" w-16 h-16 bg-slate-600 rounded-full  "></div>
-      <div>
-        <div>Mutunda Koji franvale</div>
-        <div>库齐</div>
-        <div className=" bg-slate-700 rounded-md text-xs  text-white inline-block p-1  ">
-          POSTE
+    agent && (
+      <div className=" flex flex-col justify-center items-center gap-2 p-2 ">
+        <div className=" w-8 h-8 md:w-10 md:h-10 bg-slate-600 rounded-full  "></div>
+        <div>
+          <div>{`${agent.nom} ${agent.postnom} ${agent.prenom}`}</div>
+          <div>
+            {agent.mingzi} - {agent.matricule}
+          </div>
+          <div className=" bg-slate-700 rounded-md text-xs  text-white inline-block p-1  ">
+            {agent.poste}
+            {agent.chef_deq === "OUI" && " - DEQ"}
+          </div>
         </div>
       </div>
-    </div>
+    )
   );
 }
 
 function AgentsMap({ agentsf }) {
+  function findAgentsByPoste(agents, poste, unique = false) {
+    let foundAgents = agents.filter((it) => it.poste === poste);
+
+    if (foundAgents.length === 0) foundAgents = undefined;
+
+    if (unique && Array.isArray(foundAgents) && foundAgents.length > 0)
+      return foundAgents[0];
+
+    return foundAgents;
+  }
+
+  const sup = findAgentsByPoste(agentsf, "SUP");
+  const deq = [agentsf.find((it) => it.chef_deq === "OUI")];
+  // agentsf = agentsf.filter((it) => it.chef_deq === "NON");
+  const ops = findAgentsByPoste(agentsf, "OPE");
+  const aidops = findAgentsByPoste(agentsf, "AIDOP");
+  const chargs = findAgentsByPoste(agentsf, "CHARG");
+  const nets = findAgentsByPoste(agentsf, "NET");
+
+  let chart = [sup, deq, ops, aidops, chargs, nets];
+
+  console.log("b4 fil chart => ", chart);
+  chart = chart.filter((it) => it !== undefined);
+
+  console.log("afta fil chart => ", chart);
+
   return (
     <div className=" bg-slate-100   ">
-      <div className=" flex justify-center items-center  ">
-        <AgentCard />
-      </div>
-      <div className="flex gap-4 justify-center items-center">
-        {[...Array(3).fill(0)].map((i) => (
-          <AgentCard />
+      {chart &&
+        chart.map((lev) => (
+          <div className=" p-1 flex-wrap border-t border-t-slate-400 flex gap-4 justify-center items-center  ">
+            {lev.map((agent) => (
+              <AgentCard agent={agent} />
+            ))}
+          </div>
         ))}
-      </div>
-      <div className="flex gap-4 justify-center items-center">
-        {[...Array(3).fill(0)].map((i) => (
-          <AgentCard />
-        ))}
-      </div>
     </div>
   );
 }
