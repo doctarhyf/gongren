@@ -30,15 +30,21 @@ function AgentCard({ agent }) {
   return (
     agent && (
       <div className=" flex flex-col justify-center items-center gap-2 p-2 ">
-        <div className=" w-8 h-8 md:w-10 md:h-10 bg-slate-600 rounded-full  "></div>
+        <div className=" w-8 h-8 md:w-10 overflow-hidden md:h-10 bg-slate-600 rounded-full  ">
+          {agent.photo && <img src={agent.photo} />}
+        </div>
         <div>
           <div>{`${agent.nom} ${agent.postnom} ${agent.prenom}`}</div>
-          <div>
-            {agent.mingzi} - {agent.matricule}
-          </div>
-          <div className=" bg-slate-700 rounded-md text-xs  text-white inline-block p-1  ">
-            {agent.poste}
-            {agent.chef_deq === "OUI" && " - DEQ"}
+
+          <div className="flex text-xs gap-1 text-center justify-center items-center">
+            <div className=" inline-block  ">
+              {agent.mingzi && <span>{agent.mingzi}</span>}
+              {agent.matricule && <span> - {agent.matricule}</span>}
+            </div>
+            <div className="  inline-block bg-slate-700 rounded-md text-xs  text-white  p-1  ">
+              {agent.poste}
+              {agent.chef_deq === "OUI" && " - DEQ"}
+            </div>
           </div>
         </div>
       </div>
@@ -46,7 +52,7 @@ function AgentCard({ agent }) {
   );
 }
 
-function AgentsMap({ agentsf }) {
+function AgentsMap({ agentsf, section, equipe }) {
   function findAgentsByPoste(agents, poste, unique = false) {
     let foundAgents = agents.filter((it) => it.poste === poste);
 
@@ -58,26 +64,39 @@ function AgentsMap({ agentsf }) {
     return foundAgents;
   }
 
-  const sup = findAgentsByPoste(agentsf, "SUP");
-  const deq = [agentsf.find((it) => it.chef_deq === "OUI")];
-  agentsf = agentsf.filter((it) => it.chef_deq === "NON" && it.poste !== "SUP");
-  const ops = findAgentsByPoste(agentsf, "OPE");
-  const aidops = findAgentsByPoste(agentsf, "AIDOP");
-  const chargs = findAgentsByPoste(agentsf, "CHARG");
-  const nets = findAgentsByPoste(agentsf, "NET");
+  let sec;
+  let eq;
+
+  if (section && equipe) {
+    sec = section.current?.value;
+    eq = equipe.current?.value;
+  }
+
+  let agz = [...agentsf];
+
+  const sup = findAgentsByPoste(agz, "SUP");
+  const deq = [agz.find((it) => it.chef_deq === "OUI")];
+  agz = agz.filter((it) => it.chef_deq === "NON" && it.poste !== "SUP");
+  const ops = findAgentsByPoste(agz, "OPE");
+  const aidops = findAgentsByPoste(agz, "AIDOP");
+  const chargs = findAgentsByPoste(agz, "CHARG");
+  const nets = findAgentsByPoste(agz, "NET");
 
   let chart = [sup, deq, ops, aidops, chargs, nets];
 
-  console.log("b4 fil chart => ", chart);
   chart = chart.filter((it) => it !== undefined);
 
-  console.log("afta fil chart => ", chart);
+  console.log("sec => ", sec, " eq => ", eq);
+
+  if (sec === SECTIONS[3] && eq === "INT") {
+    chart = [agentsf];
+  }
 
   return (
     <div className=" bg-slate-100   ">
       {chart &&
         chart.map((lev) => (
-          <div className=" p-1 flex-wrap border-t border-t-slate-400 flex gap-4 justify-center items-center  ">
+          <div className=" p-1  flex-wrap border-t border-t-slate-400 md:flex gap-4 justify-center items-center  ">
             {lev.map((agent) => (
               <AgentCard agent={agent} />
             ))}
@@ -617,7 +636,11 @@ export default function Equipes() {
       <div>
         {showMap ? (
           <div>
-            <AgentsMap agentsf={agentsf} />
+            <AgentsMap
+              agentsf={agentsf}
+              section={ref_section}
+              equipe={ref_equipe}
+            />
           </div>
         ) : (
           <AgentsTable
