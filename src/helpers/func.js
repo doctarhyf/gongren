@@ -355,6 +355,8 @@ export function printPDF1(agents, customTitle) {
 }
 
 export async function UpdateOperationsLogs(SB, user, LOG_OPERATION, desc) {
+  console.warn("UpdateOperationsLogs", arguments);
+  // return;
   const userAgent = navigator.userAgent;
   const browser = navigator.appName;
   const browserVersion = navigator.appVersion;

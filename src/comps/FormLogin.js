@@ -1,32 +1,14 @@
 import { useRef, useState } from "react";
+import { CLASS_BTN, CLASS_INPUT_TEXT, LOGO } from "../helpers/flow";
 import {
-  CLASS_BTN,
-  CLASS_INPUT_TEXT,
-  CLASS_TD,
-  LANG_COOKIE_KEY,
-  LOGO,
-  MAIN_MENU,
-} from "../helpers/flow";
-import LanguageChooser from "./LanguageChooser";
-import GET_TRAD, {
+  GetLangCodeByIndex,
+  LANG_TOKENS,
   LANGS,
-  STRINGS,
-  GET_STRINGS_KEYS,
-  GEN_TRANSLATIONS,
-  PACK_TRANSLATIONS_STRINGS,
 } from "../helpers/lang_strings";
-import { useCookies } from "react-cookie";
+import LanguageChooser from "./LanguageChooser";
 
 export default function FormLogin({ onLogin }) {
-  const TRANSLATIONS = PACK_TRANSLATIONS_STRINGS([
-    STRINGS.Matricule,
-    STRINGS.PIN,
-    STRINGS.Signin,
-    STRINGS["Code and Design by"],
-  ]);
-  const [lang, setlang] = useState(LANGS[1]);
-  const [cookies, setCookie, removeCookie] = useCookies([LANG_COOKIE_KEY]);
-  const [trads, settrads] = useState({});
+  const [langIdx, setLangIdx] = useState(0);
   const ref_mat = useRef();
   const ref_pin = useRef();
 
@@ -39,29 +21,29 @@ export default function FormLogin({ onLogin }) {
       return;
     }
 
-    onLogin(mat, pin);
+    const langCode = GetLangCodeByIndex(langIdx);
+    console.log("lang code ", langCode);
+
+    onLogin(mat, pin, langCode);
   }
 
-  function onLanguageChanged(newLangIdx) {
-    const newLang = LANGS[newLangIdx];
-    settrads(GEN_TRANSLATIONS(TRANSLATIONS, newLang));
-    setlang(newLang);
+  function onLanguageChanged(idx) {
+    setLangIdx(idx);
+    console.log(idx);
   }
 
   return (
     <div className=" flex flex-col mt-4 mx-2 p-2 ">
-      <div className="mx-auto flex flex-col space-y-4 ">
+      <div className="mx-auto  flex flex-col space-y-4    md:card md:bg-base-100 md:w-96 md:p-2 md:shadow-xl ">
         <img src={LOGO} width={200} />
-        <div>{trads[GET_STRINGS_KEYS(STRINGS.Matricule.default)]}</div>
+        <div>{LANG_TOKENS.EMPLOYE_ID[langIdx]}</div>
         <input
           ref={ref_mat}
           type="text"
-          placeholder={`${
-            trads[GET_STRINGS_KEYS(STRINGS.Matricule.default)]
-          }, ex: L0501`} // coool
+          placeholder={`ex: L0501`} // coool
           className={CLASS_INPUT_TEXT}
         />
-        <div>{trads[GET_STRINGS_KEYS(STRINGS.PIN.default)]}</div>
+        <div>{LANG_TOKENS.PIN[langIdx]}</div>
         <input
           ref={ref_pin}
           type="password"
@@ -77,7 +59,7 @@ export default function FormLogin({ onLogin }) {
             onClick={(e) => onBtnLogin()}
             className={` ${CLASS_BTN} mx-auto w-full`}
           >
-            {trads[GET_STRINGS_KEYS(STRINGS.Signin.default)]}
+            {LANG_TOKENS.LOGIN[langIdx]}
           </button>
         </div>
 
@@ -87,14 +69,7 @@ export default function FormLogin({ onLogin }) {
             <p className="py-4">{`Matricule and password cant be empty!`}</p>
             <div className="modal-action">
               <form method="dialog">
-                {/* if there is a button in form, it will close the modal */}
                 <button className="btn">Close</button>
-                {/*  <button
-                  className="btn btn-primary "
-                  onClick={(e) => onDeleteCamion(camion)}
-                >
-                  Delete
-                </button> */}
               </form>
             </div>
           </div>
@@ -103,7 +78,7 @@ export default function FormLogin({ onLogin }) {
         <LanguageChooser onLanguageChanged={onLanguageChanged} />
 
         <div className="text-sm">
-          {trads[GET_STRINGS_KEYS(STRINGS["Code and Design by"].default)]}
+          {LANG_TOKENS.CODE_AND_DESIGN[langIdx]}
           <a
             className="text-sky-500  italic"
             href="https://github.com/doctarhyf"

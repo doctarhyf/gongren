@@ -2,89 +2,41 @@ import france from "../img/france.png";
 import usa from "../img/usa.png";
 import china from "../img/china.png";
 
-export const STRINGS = {
-  Matricule: {
-    default: "Matricule",
-    "en-US": "Agent Number",
-    "fr-FR": "Numero Matricule",
-    "zh-CN": "工号",
-  },
-  PIN: {
-    default: "PIN",
-    "en-US": "PIN",
-    "fr-FR": "Code PIN",
-    "zh-CN": "密码",
-  },
-  Signin: {
-    default: "Signin",
-    "en-US": "Signin",
-    "fr-FR": "Se connecter",
-    "zh-CN": "登录",
-  },
-
-  "Code and Design by": {
-    default: "Code and Design by",
-    "en-US": "Code and Design by",
-    "fr-FR": "Code et conception par",
-    "zh-CN": "代码和设计由",
-  },
-  "Agents count": {
-    default: "Agents count",
-    "en-US": "Agents count",
-    "fr-FR": "Nombre d'agents",
-    "zh-CN": "工人数量",
-  },
-  Team: {
-    default: "Team",
-    "en-US": "Team",
-    "fr-FR": "Equipe",
-    "zh-CN": "班组",
-  },
+export const LANG_TOKENS = {
+  EMPLOYE_ID: ["Employe ID", "工号"],
+  PIN: ["PIN", "密码"],
+  LOGIN: ["Login", "登录"],
+  CODE_AND_DESIGN: ["Code and design by ", "代码与设计："],
+  CHOOSE_LANG: ["Choose language", "选择语言"],
+  HOME: ["HOME", "主页"],
+  SUIVI_CHARGEMENT: ["SUIVI CHARGEMENT", "卡车装载监控"],
+  TEAM: ["TEAM", "班组"],
+  NEW: ["NEW", "加薪"],
+  REFRESH: ["REFRESH", "帅新"],
+  PRINT_REPPORT: ["PRINT REPPORT", "打印报告"],
+  CEMENT_LOADING: ["CEMENT LOADING", "水泥包装"],
+  TRUCK: ["TRUCK", "车辆"],
+  TORN_BAGS: ["TORN BAGS", "破袋"],
+  T: ["T", "吨"],
+  DATE: ["Date", "日期"],
+  EQ: ["EQ.", "班"],
+  SHIFT: ["Shift", "班次"],
+  BAGS: ["Bags", "袋子"],
+  MSG_INSERT_NEW_DATA: [
+    "Please insert all the data without any errors, please! Your bonus depends on it!",
+    "请毫无错误地插入所有数据，拜托！您的奖金取决于此！",
+  ],
 };
-
-function GenStringKeys(strings) {
-  let strz = {};
-
-  Object.keys(strings).forEach((it, i) => {
-    strz[it] = it;
-  });
-
-  return strz;
-}
-
-function GET_TRAD(stringKey, langCode) {
-  const STRINGS_KEYS = GenStringKeys(STRINGS);
-
-  const strings = STRINGS[stringKey];
-  console.log("string key => ", stringKey);
-
-  if (!strings) {
-    return STRINGS_KEYS[stringKey];
-  }
-
-  const trad = strings[langCode];
-
-  if (!trad) {
-    return STRINGS_KEYS[stringKey];
-  }
-
-  return trad;
-}
-
 export const LANGS = [
   {
-    code: "fr-FR",
-    icon: france,
-    name: "Francais",
-    active: false,
-  },
-  {
+    id: 0,
     code: "en-US",
     icon: usa,
     name: "English",
     active: true,
   },
   {
+    id: 1,
     code: "zh-CN",
     icon: china,
     name: "Zhongwen",
@@ -92,22 +44,41 @@ export const LANGS = [
   },
 ];
 
-export const GET_STRINGS_KEYS = (key) => {
-  const stk = GenStringKeys(STRINGS);
+export function GetLangCodeByIndex(langID) {
+  const lang = LANGS.find((it) => it.id === langID);
 
-  return stk[key];
-};
+  if (lang) {
+    return lang.code;
+  }
 
-export const GEN_TRANSLATIONS = (translations, newLang) => {
-  let newtrads = {};
-  translations.forEach((it, i) => {
-    newtrads = { ...newtrads, [it]: GET_TRAD(it, newLang.code) };
-  });
+  return "en-US";
+}
 
-  return newtrads;
-};
+export function GetLangIndexByLangCode(langCode) {
+  const lang = LANGS.find((it) => it.code === langCode);
 
-export const PACK_TRANSLATIONS_STRINGS = (trans) =>
-  trans.map((t, i) => GET_STRINGS_KEYS(t.default));
+  if (lang) {
+    return lang.id;
+  }
 
-export default GET_TRAD;
+  return 0;
+}
+
+export function GetTransForToken(token, user) {
+  const keys = Object.keys(LANG_TOKENS);
+  console.log("Keys :", keys);
+  const vals = Object.values(LANG_TOKENS);
+  console.log("vals: ", vals);
+  console.log("token: ", token);
+  const idx = vals.findIndex(
+    (arr) => arr[0] === token[0] && arr[1] === token[1]
+  );
+  console.log("idx: ", idx);
+  const key = keys[idx];
+  console.log("key: ", key);
+
+  //return LANG_TOKENS[key][user.lang];
+  const trad = LANG_TOKENS[key][GetLangIndexByLangCode(user.lang)];
+  console.log("trad: ", trad);
+  return trad;
+}

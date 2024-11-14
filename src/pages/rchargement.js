@@ -9,7 +9,6 @@ import {
   ACCESS_CODES,
   CLASS_SELECT,
   LOG_OPERATION,
-  POSTE,
   SHIFT_HOURS_ZH,
 } from "../helpers/flow";
 import {
@@ -25,12 +24,16 @@ import { printDailyRepport, printTable } from "../helpers/print";
 import * as SB from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
 import check from "../img/check.svg";
-import multiply from "../img/multiply.png";
+import del from "../img/delete.png";
 import pdf from "../img/pdf.png";
 import plus from "../img/plus.png";
 import reload from "../img/reload.png";
-import save from "../img/save.png";
-import del from "../img/delete.png";
+import {
+  GetLangCodeByIndex,
+  GetLangIndexByLangCode,
+  GetTransForToken,
+  LANG_TOKENS,
+} from "../helpers/lang_strings";
 
 const TEAMS = ["A", "B", "C", "D"];
 
@@ -430,7 +433,7 @@ export default function RapportChargement() {
   return (
     <div className=" container  ">
       <div>
-        SUIVI CHARGEMENT
+        {LANG_TOKENS.SUIVI_CHARGEMENT[GetLangIndexByLangCode(user.lang)]}
         <span>
           <Loading isLoading={loading} />
         </span>
@@ -441,7 +444,10 @@ export default function RapportChargement() {
           <div className=" md:flex items-center md:justify-center  ">
             <DateSelector onDateSelected={onDateSelected} />
             <div className="flex md:-mt-3 items-center gap-2  w-fit ml-11 ">
-              <div className=" text-sm font-bold">Equipe : </div>
+              <div className=" text-sm font-bold">
+                {" "}
+                {LANG_TOKENS.TEAM[GetLangIndexByLangCode(user.lang)]} :{" "}
+              </div>
 
               {user.is_exp === "OUI" ? (
                 <span> {user.equipe} </span>
@@ -463,7 +469,7 @@ export default function RapportChargement() {
             {!adding && UserHasAccessCode(user, ACCESS_CODES.ADD_NEW_LOAD) && (
               <ActionButton
                 icon={plus}
-                title={"Nouveau Rapport"}
+                title={LANG_TOKENS.NEW[GetLangIndexByLangCode(user.lang)]}
                 onClick={onAddNewLoad}
               />
             )}
@@ -471,7 +477,7 @@ export default function RapportChargement() {
             {!adding && (
               <ActionButton
                 icon={reload}
-                title={"Refresh"}
+                title={LANG_TOKENS.REFRESH[GetLangIndexByLangCode(user.lang)]}
                 onClick={(e) => loadData()}
               />
             )}
@@ -496,8 +502,7 @@ export default function RapportChargement() {
               />
             </svg>
             <span>
-              Veuillez insert toutes donnees sans aucune erreur svp! votre prime
-              en depend!
+              {GetTransForToken(LANG_TOKENS.MSG_INSERT_NEW_DATA, user)}
             </span>
           </div>
         )}
@@ -529,24 +534,38 @@ export default function RapportChargement() {
                 <div className=" flex justify-center py-2  ">
                   <ActionButton
                     icon={pdf}
-                    title={"Print Repport"}
+                    title={
+                      LANG_TOKENS.PRINT_REPPORT[
+                        GetLangIndexByLangCode(user.lang)
+                      ]
+                    }
                     onClick={(e) => onPrint(loadsf)}
                   />
                 </div>
                 <table class="table-auto mx-auto">
                   <thead>
                     <tr>
-                      <th className="border border-slate-500 p-1">Date</th>
-                      <th className="border border-slate-500 p-1">EQ.</th>
-                      <th className="border border-slate-500 p-1">Shift</th>
-                      <th className="border border-slate-500 p-1">Sacs</th>
-                      <th className="border border-slate-500 p-1 hidden sm:table-cell">
-                        Camions
+                      <th className="border border-slate-500 p-1">
+                        {GetTransForToken(LANG_TOKENS.DATE, user)}
+                      </th>
+                      <th className="border border-slate-500 p-1">
+                        {GetTransForToken(LANG_TOKENS.EQ, user)}
+                      </th>
+                      <th className="border border-slate-500 p-1">
+                        {GetTransForToken(LANG_TOKENS.SHIFT, user)}
+                      </th>
+                      <th className="border border-slate-500 p-1">
+                        {GetTransForToken(LANG_TOKENS.BAGS, user)}
                       </th>
                       <th className="border border-slate-500 p-1 hidden sm:table-cell">
-                        Dechires
+                        {LANG_TOKENS.TRUCK[GetLangIndexByLangCode(user.lang)]}
                       </th>
-                      <th className="border border-slate-500 p-1">T</th>
+                      <th className="border border-slate-500 p-1 hidden sm:table-cell">
+                        {GetTransForToken(LANG_TOKENS.TORN_BAGS, user)}
+                      </th>
+                      <th className="border border-slate-500 p-1">
+                        {GetTransForToken(LANG_TOKENS.T, user)}
+                      </th>
                       <th className="border border-slate-500 p-1">BNS</th>
                       <th className="border border-slate-500 p-1">ACT</th>
                     </tr>

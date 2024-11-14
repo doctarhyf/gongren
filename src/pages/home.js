@@ -1,31 +1,28 @@
-import React, { Children, useContext, useEffect, useState } from "react";
-import * as SB from "../helpers/sb";
-import Loading from "../comps/Loading";
-import { UserHasAccessCode } from "../helpers/func";
-import { ACCESS_CODES, LANG_COOKIE_KEY, POSTE, POSTES } from "../helpers/flow";
+import React, { useContext, useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
+import { UserContext } from "../App";
+import DateSelector from "../comps/DateSelector";
+import Loading from "../comps/Loading";
 import {
+  HUDAgents,
+  HUDBonus,
+  HUDCalculsBons,
+  HUDGestionSacs,
+  HUDGreetings,
+  HUDMonthProgress,
+  HUDMyTeam,
+  HUDOpsLogs,
+  HUDSacsCalc,
+} from "../comps/home/HUDS";
+import { ACCESS_CODES, LANG_COOKIE_KEY } from "../helpers/flow";
+import { UserHasAccessCode } from "../helpers/func";
+/* import {
   GEN_TRANSLATIONS,
-  GET_STRINGS_KEYS,
   LANGS,
   PACK_TRANSLATIONS_STRINGS,
   STRINGS,
-} from "../helpers/lang_strings";
-import { UserContext } from "../App";
-import TableLoadsTotals from "../comps/TableLoadsTotal";
-import SacsCalc from "../comps/SacsCalc";
-import {
-  HUDAgents,
-  HUDGestionSacs,
-  HUDGreetings,
-  HUDBonus,
-  HUDMonthProgress,
-  HUDSacsCalc,
-  HUDMyTeam,
-  HUDOpsLogs,
-  HUDCalculsBons,
-} from "../comps/home/HUDS";
-import DateSelector from "../comps/DateSelector";
+} from "../helpers/lang_strings"; */
+import * as SB from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
 
 export default function Home() {
@@ -39,22 +36,9 @@ export default function Home() {
   const d = today.getDay();
   const [date, setdate] = useState({ y: y, m: m });
 
-  const [cookies, setCookie, removeCookie] = useCookies([LANG_COOKIE_KEY]);
-
-  const TRANSLATIONS = PACK_TRANSLATIONS_STRINGS([
-    STRINGS["Agents count"],
-    STRINGS.Team,
-  ]);
-  const [trads, settrads] = useState({});
-  const [lang, setlang] = useState(LANGS[1]);
   const [agents_by_team, set_agents_by_team] = useState(undefined);
 
   useEffect(() => {
-    // loadData();
-    const sellang = LANGS[cookies[LANG_COOKIE_KEY]] || LANGS[1];
-    setlang(sellang);
-    settrads(GEN_TRANSLATIONS(TRANSLATIONS, sellang));
-
     loadData();
   }, []);
 

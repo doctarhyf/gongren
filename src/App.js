@@ -22,7 +22,7 @@ function App() {
   const [modalData, setModalData] = useState("");
   const [modalType, setModalType] = useState("img");
 
-  async function onLogin(matricule, pin) {
+  async function onLogin(matricule, pin, lang) {
     let err;
     seterror(undefined);
     setloading(true);
@@ -45,11 +45,22 @@ function App() {
     }
 
     if (data.length === 1) {
-      setuser(data[0]);
+      const nuser = { ...data[0] };
+      nuser.lang = lang;
+      setuser(nuser);
 
-      const l = await UpdateOperationsLogs(SB, data[0], LOG_OPERATION.LOGIN);
+      const l = await UpdateOperationsLogs(SB, nuser, LOG_OPERATION.LOGIN);
+      const u = await SB.UpdateItem(
+        TABLES_NAMES.AGENTS,
+        {
+          id: nuser.id,
+          lang: lang,
+        },
+        (s) => console.log("updated lang ", lang),
+        (e) => console.error("Error updating lang", e)
+      );
       console.log("res log login ", l);
-      setCookie("u", data[0], {
+      setCookie("u", nuser, {
         expires: new Date(new Date().getTime() + 3600 * 10 * 10), //Expires after 10 minuties of inactivity
       });
     } else {
