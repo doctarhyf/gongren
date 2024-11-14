@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { doc, print_agent_roulement } from "../helpers/funcs_print";
 import GetRoulemenDaysData from "../helpers/GetRoulemenDaysData.mjs";
 import * as SB from "../helpers/sb";
@@ -8,6 +8,8 @@ import AgentRoulementTable from "./AgentRoulementTable";
 import DateSelector from "./DateSelector";
 import Loading from "./Loading";
 import printer from "../img/printer.png";
+import { UserContext } from "../App";
+import { GetTransForToken, LANG_TOKENS } from "../helpers/lang_strings";
 
 const ERRORS = {
   AGENT_DATA_UNDEFINED: { code: "no_ag_data", msg: "agentData is undefined!" },
@@ -24,6 +26,7 @@ export default function TableRoulement({ agentData }) {
   const [selectedMonthCode, setSelectedMonthCode] = useState();
   const [agentRoulementData, setAgentRoulementData] = useState([]);
   const [errors, seterror] = useState([]);
+  const [, , user] = useContext(UserContext);
 
   useEffect(() => {
     let errors = [];
@@ -231,7 +234,7 @@ export default function TableRoulement({ agentData }) {
         <div className="md:flex gap-2">
           <ActionButton
             icon={printer}
-            title={"PRINT"}
+            title={GetTransForToken(LANG_TOKENS.PRINT, user.lang)}
             onClick={(e) =>
               printPDF(
                 selectedMonthCode,

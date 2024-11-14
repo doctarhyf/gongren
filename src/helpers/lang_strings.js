@@ -58,6 +58,11 @@ export const LANG_TOKENS = {
   Section: ["Section", "车间"],
   Poste: ["Poste", "岗位"],
   Phone: ["Phone", "电话"],
+  PRINT: ["PRINT", "打印"],
+  UPDATE: ["UPDATE", "更新"],
+  SAVE: ["SAVE", "保存"],
+  SAVE_WHOLE_TEAM: ["SAVE (WHOLE TEAM)", "保存 （全班）"],
+  CANCEL: ["CANCEL", "取消"],
 };
 export const LANGS = [
   {
@@ -132,3 +137,5 @@ export function GetTransForToken(token, langCode, holderData) {
   const deftrad = LANG_TOKENS[key][GetLangIndexByLangCode("en-US")];
   return trad ? trad : deftrad;
 }
+
+export const GTFT = GetTransForToken;

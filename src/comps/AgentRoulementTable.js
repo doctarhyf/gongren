@@ -1,18 +1,19 @@
 import React, { useContext, useState } from "react";
+import { UserContext } from "../App";
 import {
   ACCESS_CODES,
   CLASS_BTN,
   CLASS_TD,
   CLASS_TODAY,
-  USER_LEVEL,
 } from "../helpers/flow";
-import Loading from "./Loading";
-import { GFMN } from "../helpers/GetRoulemenDaysData.mjs";
-import { UserContext } from "../App";
 import { AddOneToRoulementCurMonth, UserHasAccessCode } from "../helpers/func";
-import sync from "../img/sync.png";
+import { GFMN } from "../helpers/GetRoulemenDaysData.mjs";
+import { GetTransForToken, GTFT, LANG_TOKENS } from "../helpers/lang_strings";
 import chart from "../img/chart.png";
+import sync from "../img/sync.png";
 import ActionButton from "./ActionButton";
+import Loading from "./Loading";
+import save from "../img/save.png";
 
 const POINTAGES_HOURS_LEN = {
   J: 10,
@@ -119,24 +120,46 @@ export default function AgentRoulementTable({
                     <div className={` ${!editRoulement ? "block" : "hidden"} `}>
                       <ActionButton
                         icon={sync}
-                        title={"UPDATE"}
+                        title={GetTransForToken(LANG_TOKENS.UPDATE, user.lang)}
                         onClick={(e) => setEditRoulement(true)}
                       />
                     </div>
                   )}
-                  <button
+
+                  <div
                     className={`${CLASS_BTN} ${
                       editRoulement ? "block" : "hidden"
                     } `}
-                    onClick={(e) => {
-                      setEditRoulement(false);
-                      onSaveRoulement();
-                    }}
                   >
-                    SAVE
-                  </button>
+                    <ActionButton
+                      icon={save}
+                      title={GetTransForToken(LANG_TOKENS.SAVE, user.lang)}
+                      onClick={(e) => {
+                        setEditRoulement(false);
+                        onSaveRoulement();
+                      }}
+                    />
+                  </div>
 
-                  <button
+                  <div
+                    className={`${CLASS_BTN} ${
+                      editRoulement ? "block" : "hidden"
+                    } `}
+                  >
+                    <ActionButton
+                      icon={save}
+                      title={GetTransForToken(
+                        LANG_TOKENS.SAVE_WHOLE_TEAM,
+                        user.lang
+                      )}
+                      onClick={(e) => {
+                        setEditRoulement(false);
+                        onSaveRoulementAndApplyToWholeTeam();
+                      }}
+                    />
+                  </div>
+
+                  {/*  <button
                     className={`${CLASS_BTN} ${
                       editRoulement ? "block" : "hidden"
                     } `}
@@ -145,8 +168,8 @@ export default function AgentRoulementTable({
                       onSaveRoulementAndApplyToWholeTeam();
                     }}
                   >
-                    SAVE (WHOLE TEAM)
-                  </button>
+                    {GetTransForToken(LANG_TOKENS.SAVE_WHOLE_TEAM, user.lang)}
+                  </button> */}
 
                   <button
                     className={`${CLASS_BTN} ${
@@ -154,7 +177,7 @@ export default function AgentRoulementTable({
                     } `}
                     onClick={(e) => setEditRoulement(false)}
                   >
-                    CANCEL
+                    {GTFT(LANG_TOKENS.CANCEL, user.lang)}
                   </button>
                 </div>
               </td>
