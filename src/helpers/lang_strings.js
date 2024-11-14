@@ -14,7 +14,7 @@ export const LANG_TOKENS = {
   NEW: ["NEW", "加薪"],
   REFRESH: ["REFRESH", "帅新"],
   PRINT_REPPORT: ["PRINT REPPORT", "打印报告"],
-  CEMENT_LOADING: ["CEMENT LOADING", "水泥包装"],
+  CEMENT_LOADING: ["Cement Loading", "水泥包装"],
   TRUCK: ["TRUCK", "车辆"],
   TRUCKS_LOADING_TRACKING: ["Truck Loading Tracking", "卡车装载跟踪"],
   TORN_BAGS: ["TORN BAGS", "破袋"],
@@ -87,7 +87,7 @@ export function GetLangIndexByLangCode(langCode) {
   return 0;
 }
 
-export function GetTransForToken(token, langCode) {
+export function GetTransForToken(token, langCode, ...args) {
   const keys = Object.keys(LANG_TOKENS);
   console.log("Keys :", keys);
   const vals = Object.values(LANG_TOKENS);
@@ -102,5 +102,6 @@ export function GetTransForToken(token, langCode) {
 
   const trad = LANG_TOKENS[key][GetLangIndexByLangCode(langCode)];
   console.log("trad: ", trad);
+  console.log("...args len: ", args.length);
   return trad;
 }
