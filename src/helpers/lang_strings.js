@@ -53,6 +53,11 @@ export const LANG_TOKENS = {
   MSG_SHOW_MONTH_DATA: ["Show data for the month of", "显示选的月份的数据"],
   YEAR: ["YEAR", "年"],
   MONTH: ["MONTH", "月"],
+  SUP: ["SUP", "班长"],
+  DEQ: ["CHEF D'EQ.", "小班长"],
+  Section: ["Section", "车间"],
+  Poste: ["Poste", "岗位"],
+  Phone: ["Phone", "电话"],
 };
 export const LANGS = [
   {

@@ -98,12 +98,12 @@ function AgentCardMini({ agent, moreInfo, showUpdatePoste, onAgentUpdate }) {
         )}
         {agent.poste === "SUP" && (
           <div className=" font-bold inline-block  bg-red-500 p-1 text-xs rounded-md ">
-            SUP
+            {GetTransForToken(LANG_TOKENS.SUP, user.lang)}
           </div>
         )}
         {agent.chef_deq === "OUI" && (
           <div className=" font-bold inline-block  bg-lime-600 p-1 text-xs rounded-md ">
-            CHEF D'EQ.
+            {GetTransForToken(LANG_TOKENS.DEQ, user.lang)}
           </div>
         )}
       </div>
@@ -124,19 +124,29 @@ function AgentCardMini({ agent, moreInfo, showUpdatePoste, onAgentUpdate }) {
 
         <div>
           <div>
-            <span className=" text-white/50  ">Section:</span> {agent.section}
+            <span className=" text-white/50  ">
+              {GetTransForToken(LANG_TOKENS.Section, user.lang)}:
+            </span>{" "}
+            {agent.section}
           </div>{" "}
           <div>
-            <span className=" text-white/50  ">Poste:</span>{" "}
+            <span className=" text-white/50  ">
+              {GetTransForToken(LANG_TOKENS.Poste, user.lang)}:
+            </span>{" "}
             {(POSTES[agent.poste] && POSTES[agent.poste].fr) || POSTE[3]}
           </div>
           <div>
-            <span className=" text-white/50  ">Equipe:</span>{" "}
+            <span className=" text-white/50  ">
+              {GetTransForToken(LANG_TOKENS.TEAM, user.lang)}:
+            </span>{" "}
             {EQUIPES_NAMES[agent.equipe] || agent.equipe}
           </div>
           {agent.phone && (
             <div>
-              <span className=" text-white/50  ">Phone:</span> {agent.phone}
+              <span className=" text-white/50  ">
+                {GetTransForToken(LANG_TOKENS.Phone, user.lang)}:
+              </span>{" "}
+              {agent.phone}
             </div>
           )}
           {moreInfo &&
