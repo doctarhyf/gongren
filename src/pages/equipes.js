@@ -25,6 +25,7 @@ import * as SB from "../helpers/sb";
 import { LoadAllItems } from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
 import eraser from "../img/eraser.png";
+import { GetTransForToken, LANG_TOKENS } from "../helpers/lang_strings";
 
 function AgentCard({ agent }) {
   return (
@@ -443,7 +444,7 @@ export default function Equipes() {
                 defaultChecked={isCustomList}
                 onChange={(e) => setIsCustomList(e.target.checked)}
               />
-              Custom List
+              {GetTransForToken(LANG_TOKENS.CUSTOM_LIST, user.lang)}
             </div>
 
             <div
@@ -487,7 +488,7 @@ export default function Equipes() {
                     defaultChecked={showTeamStats}
                     onChange={(e) => setShowTeamStats(e.target.checked)}
                   />
-                  Team Stats
+                  {GetTransForToken(LANG_TOKENS.TEAM_STATS, user.lang)}
                 </div>
                 {showTeamStats && (
                   <div
@@ -510,7 +511,7 @@ export default function Equipes() {
                     defaultChecked={showTeamStats}
                     onChange={(e) => setShowFilters(e.target.checked)}
                   />
-                  Team Filters
+                  {GetTransForToken(LANG_TOKENS.TEAM_FILTER, user.lang)}
                 </div>
 
                 <select
@@ -550,7 +551,7 @@ export default function Equipes() {
                 defaultChecked={showMap}
                 onChange={(e) => setShowMap(e.target.checked)}
               />
-              Show Map
+              {GetTransForToken(LANG_TOKENS.SHOW_MAP, user.lang)}
             </div>
 
             <div>
@@ -561,7 +562,7 @@ export default function Equipes() {
                   defaultChecked={showTeamSelector}
                   onChange={(e) => setShowTeamSelector(e.target.checked)}
                 />
-                Show Team Selector
+                {GetTransForToken(LANG_TOKENS.SHOW_TEAM_SELECTOR, user.lang)}
               </div>
               <div className={`  ${showTeamSelector ? "block" : "hidden"}  `}>
                 <div>

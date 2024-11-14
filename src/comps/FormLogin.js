@@ -1,7 +1,8 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CLASS_BTN, CLASS_INPUT_TEXT, LOGO } from "../helpers/flow";
 import {
   GetLangCodeByIndex,
+  GetLangIndexByLangCode,
   LANG_TOKENS,
   LANGS,
 } from "../helpers/lang_strings";
@@ -11,6 +12,24 @@ export default function FormLogin({ onLogin }) {
   const [langIdx, setLangIdx] = useState(0);
   const ref_mat = useRef();
   const ref_pin = useRef();
+
+  const [lang, setLang] = useState(LANGS[0].code); // Default language
+
+  useEffect(() => {
+    // Load language from localStorage when the component mounts
+    const savedLang = localStorage.getItem("lang");
+    if (savedLang) {
+      setLang(savedLang);
+      setLangIdx(GetLangIndexByLangCode(savedLang));
+    }
+  }, []);
+
+  useEffect(() => {
+    // Store the language in localStorage whenever it changes
+    localStorage.setItem("lang", lang);
+    const idx = GetLangIndexByLangCode(lang);
+    setLangIdx(idx);
+  }, [lang]);
 
   function onBtnLogin() {
     const mat = ref_mat.current.value;
@@ -29,7 +48,7 @@ export default function FormLogin({ onLogin }) {
 
   function onLanguageChanged(idx) {
     setLangIdx(idx);
-    console.log(idx);
+    setLang(LANGS[idx].code);
   }
 
   return (

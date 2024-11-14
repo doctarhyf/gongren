@@ -477,7 +477,7 @@ export default function RapportChargement() {
             {!adding && (
               <ActionButton
                 icon={reload}
-                title={LANG_TOKENS.REFRESH[GetLangIndexByLangCode(user.lang)]}
+                title={GetTransForToken(LANG_TOKENS.REFRESH, user.lang)} //{LANG_TOKENS.REFRESH[GetLangIndexByLangCode(user.lang)]}
                 onClick={(e) => loadData()}
               />
             )}
@@ -502,7 +502,7 @@ export default function RapportChargement() {
               />
             </svg>
             <span>
-              {GetTransForToken(LANG_TOKENS.MSG_INSERT_NEW_DATA, user)}
+              {GetTransForToken(LANG_TOKENS.MSG_INSERT_NEW_DATA, user.lang)}
             </span>
           </div>
         )}
@@ -546,25 +546,25 @@ export default function RapportChargement() {
                   <thead>
                     <tr>
                       <th className="border border-slate-500 p-1">
-                        {GetTransForToken(LANG_TOKENS.DATE, user)}
+                        {GetTransForToken(LANG_TOKENS.DATE, user.lang)}
                       </th>
                       <th className="border border-slate-500 p-1">
-                        {GetTransForToken(LANG_TOKENS.EQ, user)}
+                        {GetTransForToken(LANG_TOKENS.EQ, user.lang)}
                       </th>
                       <th className="border border-slate-500 p-1">
-                        {GetTransForToken(LANG_TOKENS.SHIFT, user)}
+                        {GetTransForToken(LANG_TOKENS.SHIFT, user.lang)}
                       </th>
                       <th className="border border-slate-500 p-1">
-                        {GetTransForToken(LANG_TOKENS.BAGS, user)}
+                        {GetTransForToken(LANG_TOKENS.BAGS, user.lang)}
                       </th>
                       <th className="border border-slate-500 p-1 hidden sm:table-cell">
                         {LANG_TOKENS.TRUCK[GetLangIndexByLangCode(user.lang)]}
                       </th>
                       <th className="border border-slate-500 p-1 hidden sm:table-cell">
-                        {GetTransForToken(LANG_TOKENS.TORN_BAGS, user)}
+                        {GetTransForToken(LANG_TOKENS.TORN_BAGS, user.lang)}
                       </th>
                       <th className="border border-slate-500 p-1">
-                        {GetTransForToken(LANG_TOKENS.T, user)}
+                        {GetTransForToken(LANG_TOKENS.T, user.lang)}
                       </th>
                       <th className="border border-slate-500 p-1">BNS</th>
                       <th className="border border-slate-500 p-1">ACT</th>

@@ -26,6 +26,11 @@ export const LANG_TOKENS = {
     "Please insert all the data without any errors, please! Your bonus depends on it!",
     "请毫无错误地插入所有数据，拜托！您的奖金取决于此！",
   ],
+  CUSTOM_LIST: ["CUSTOM LIST", "自定义名单"],
+  TEAM_STATS: ["TEAM STATS", "班组统计"],
+  TEAM_FILTER: ["TEAM FILTERS", "班组筛选器"],
+  SHOW_MAP: ["SHOW MAP", "显示地图"],
+  SHOW_TEAM_SELECTOR: ["SHOW TEAM SELECTOR", "显示班组选择器"],
 };
 export const LANGS = [
   {
@@ -64,7 +69,7 @@ export function GetLangIndexByLangCode(langCode) {
   return 0;
 }
 
-export function GetTransForToken(token, user) {
+export function GetTransForToken(token, langCode) {
   const keys = Object.keys(LANG_TOKENS);
   console.log("Keys :", keys);
   const vals = Object.values(LANG_TOKENS);
@@ -77,8 +82,7 @@ export function GetTransForToken(token, user) {
   const key = keys[idx];
   console.log("key: ", key);
 
-  //return LANG_TOKENS[key][user.lang];
-  const trad = LANG_TOKENS[key][GetLangIndexByLangCode(user.lang)];
+  const trad = LANG_TOKENS[key][GetLangIndexByLangCode(langCode)];
   console.log("trad: ", trad);
   return trad;
 }
