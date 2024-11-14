@@ -10,26 +10,25 @@ import LanguageChooser from "./LanguageChooser";
 
 export default function FormLogin({ onLogin }) {
   const [langIdx, setLangIdx] = useState(0);
+  const [lang, setLang] = useState(LANGS[0].code); // Default language
+
   const ref_mat = useRef();
   const ref_pin = useRef();
-
-  const [lang, setLang] = useState(LANGS[0].code); // Default language
 
   useEffect(() => {
     // Load language from localStorage when the component mounts
     const savedLang = localStorage.getItem("lang");
+
+    console.log("loaded lang: ", savedLang);
     if (savedLang) {
       setLang(savedLang);
-      setLangIdx(GetLangIndexByLangCode(savedLang));
+      const idx = GetLangIndexByLangCode(savedLang);
+      setLangIdx(idx);
+
+      console.log("saveLang: ", savedLang);
+      console.log("idx: ", idx);
     }
   }, []);
-
-  useEffect(() => {
-    // Store the language in localStorage whenever it changes
-    localStorage.setItem("lang", lang);
-    const idx = GetLangIndexByLangCode(lang);
-    setLangIdx(idx);
-  }, [lang]);
 
   function onBtnLogin() {
     const mat = ref_mat.current.value;
@@ -49,6 +48,7 @@ export default function FormLogin({ onLogin }) {
   function onLanguageChanged(idx) {
     setLangIdx(idx);
     setLang(LANGS[idx].code);
+    localStorage.setItem("lang", LANGS[idx].code);
   }
 
   return (

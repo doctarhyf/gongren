@@ -1,6 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { CLASS_SELECT, CLASS_SELECT_TITLE, MONTHS } from "../helpers/flow";
 import { getDaysInMonth, ParseDate } from "../helpers/func";
+import { UserContext } from "../App";
+import { GetTransForToken, LANG_TOKENS } from "../helpers/lang_strings";
 
 export default function DateSelector({
   onDateSelected,
@@ -17,6 +19,7 @@ export default function DateSelector({
   const DATE_TYPE = { Y: "Year", M: "Month", D: "Day" };
 
   const [dateType, setDateType] = useState(defaultDateType || "D");
+  const [, , user, setuser] = useContext(UserContext);
 
   const ref_year = useRef();
   const ref_month = useRef();
@@ -30,13 +33,7 @@ export default function DateSelector({
 
     const daysInMonth = getDaysInMonth(y, m);
 
-    // ref_day.current.
-
-    const newOptions = []; /* [
-      { value: "option1", label: "Option 1" },
-      { value: "option2", label: "Option 2" },
-      { value: "option3", label: "Option 3" },
-    ]; */
+    const newOptions = [];
 
     for (let x = 0; x < daysInMonth; x++) {
       newOptions.push({ value: x + 1, label: x + 1 });
@@ -91,7 +88,9 @@ export default function DateSelector({
 
       <div className="w-fit md:flex">
         <div>
-          <span className={CLASS_SELECT_TITLE}>Year: </span>
+          <span className={CLASS_SELECT_TITLE}>
+            {GetTransForToken(LANG_TOKENS.YEAR, user.lang)}:
+          </span>
           <select
             className={CLASS_SELECT}
             ref={ref_year}
@@ -110,7 +109,9 @@ export default function DateSelector({
         </div>
 
         <div className={`${dateType !== "Y" ? "block" : "hidden"}`}>
-          <span className={CLASS_SELECT_TITLE}> Month: </span>
+          <span className={CLASS_SELECT_TITLE}>
+            {GetTransForToken(LANG_TOKENS.MONTH, user.lang)}:
+          </span>
           <select
             className={CLASS_SELECT}
             ref={ref_month}

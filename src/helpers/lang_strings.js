@@ -16,6 +16,7 @@ export const LANG_TOKENS = {
   PRINT_REPPORT: ["PRINT REPPORT", "打印报告"],
   CEMENT_LOADING: ["CEMENT LOADING", "水泥包装"],
   TRUCK: ["TRUCK", "车辆"],
+  TRUCKS_LOADING_TRACKING: ["Truck Loading Tracking", "卡车装载跟踪"],
   TORN_BAGS: ["TORN BAGS", "破袋"],
   T: ["T", "吨"],
   DATE: ["Date", "日期"],
@@ -41,6 +42,13 @@ export const LANG_TOKENS = {
   DICO: ["Dictionnary", "词典"],
   NAME_LISTS: ["Name Lists", "名单"],
   MSG_WELCOME: ["Welcome to the cement plant portal", "欢迎来到水泥厂门户"],
+  MSG_SECTION: [
+    "Click on a section to see more details.",
+    " 点击一个栏目查看更多详情。",
+  ],
+  MSG_SHOW_MONTH_DATA: ["Show data for the month of", "显示选的月份的数据"],
+  YEAR: ["YEAR", "年"],
+  MONTH: ["MONTH", "月"],
 };
 export const LANGS = [
   {

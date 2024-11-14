@@ -276,6 +276,7 @@ export const MAIN_MENU = [
     path: "/suivicamions",
     el: SuiviCamions,
     access_code: ACCESS_CODES.PAGE_SUIVI_CAMIONS,
+    trad: LANG_TOKENS.TRUCKS_LOADING_TRACKING,
   },
   {
     name: "BIGBAG",
