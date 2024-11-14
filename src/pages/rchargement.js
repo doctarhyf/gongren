@@ -433,7 +433,7 @@ export default function RapportChargement() {
   return (
     <div className=" container  ">
       <div>
-        {LANG_TOKENS.SUIVI_CHARGEMENT[GetLangIndexByLangCode(user.lang)]}
+        {LANG_TOKENS.LOADING_TRACKING[GetLangIndexByLangCode(user.lang)]}
         <span>
           <Loading isLoading={loading} />
         </span>

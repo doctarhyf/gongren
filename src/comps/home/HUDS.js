@@ -410,6 +410,7 @@ export function HUDMyTeam({ user }) {
 
 export function HUDMonthProgress({ loads, date }) {
   const [loading, setloading] = useState(false);
+  const [, , user, setuser] = useContext(UserContext);
 
   const [data, setdata] = useState({
     camions: 100,
@@ -466,10 +467,12 @@ export function HUDMonthProgress({ loads, date }) {
     <Card
       id={0}
       bgColor={CARDS_BG_COLORS[2]}
-      title={`SUVI CHARGEMENT/月份装量计算 - ${AddLeadingZero(date.m + 1)}/${
-        date.y
-      }`}
-      desc="Evolution chargement mois actuel"
+      title={GetTransForToken(
+        LANG_TOKENS.HUD_TITLE_LOADING_TRACKING,
+        user.lang,
+        { y: date.y, m: AddLeadingZero(date.m + 1) }
+      )}
+      desc={GetTransForToken(LANG_TOKENS.HUD_DESC_LOADING, user.lang)}
     >
       {loading ? (
         <Loading isLoading={true} />
@@ -580,8 +583,11 @@ export function HUDBonus({ loads, agents, date, agents_by_team }) {
   return (
     <Card
       id={1}
-      title={`SUIVI BONUS/奖金计算 - ${date.y}年${date.m + 1}月`}
-      desc={"Suivi bonus du mois actuel"}
+      title={GetTransForToken(LANG_TOKENS.HUD_TITLE_BONUS_TRACKING, user.lang, {
+        y: date.y,
+        m: AddLeadingZero(date.m + 1),
+      })}
+      desc={GetTransForToken(LANG_TOKENS.HUD_DESC_BONUS, user.lang)}
     >
       {loading ? (
         <Loading isLoading={true} />

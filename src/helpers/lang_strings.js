@@ -9,7 +9,11 @@ export const LANG_TOKENS = {
   CODE_AND_DESIGN: ["Code and design by ", "代码与设计："],
   CHOOSE_LANG: ["Choose language", "选择语言"],
   HOME: ["HOME", "主页"],
-  SUIVI_CHARGEMENT: ["SUIVI CHARGEMENT", "卡车装载监控"],
+  LOADING_TRACKING: ["Load Tracking", "卡车装载监控"],
+  HUD_TITLE_LOADING_TRACKING: ["LOADING TRACKING %y/%m", "装载跟踪 - %y年%m月"],
+  HUD_TITLE_BONUS_TRACKING: ["BONUS TRACKING %y/%m", "奖金跟踪 - %y年%m月"],
+  HUD_DESC_BONUS: ["Bonus Tracking for the Current Month", "本月奖金跟踪"],
+  HUD_DESC_LOADING: ["*Loading Progress for the Current Month", "本月装载进度"],
   TEAM: ["TEAM", "班组"],
   NEW: ["NEW", "加薪"],
   REFRESH: ["REFRESH", "帅新"],
@@ -65,6 +69,13 @@ export const LANGS = [
     name: "Zhongwen",
     active: true,
   },
+  /* {
+    id: 2,
+    code: "fr-FR",
+    icon: france,
+    name: "Francais",
+    active: true,
+  }, */
 ];
 
 export function GetLangCodeByIndex(langID) {
@@ -87,7 +98,7 @@ export function GetLangIndexByLangCode(langCode) {
   return 0;
 }
 
-export function GetTransForToken(token, langCode, ...args) {
+export function GetTransForToken(token, langCode, holderData) {
   const keys = Object.keys(LANG_TOKENS);
   console.log("Keys :", keys);
   const vals = Object.values(LANG_TOKENS);
@@ -97,11 +108,22 @@ export function GetTransForToken(token, langCode, ...args) {
     (arr) => arr[0] === token[0] && arr[1] === token[1]
   );
   console.log("idx: ", idx);
-  const key = keys[idx];
+  let key = keys[idx];
   console.log("key: ", key);
 
-  const trad = LANG_TOKENS[key][GetLangIndexByLangCode(langCode)];
+  if (key === -1) key = 0;
+  let trad = LANG_TOKENS[key][GetLangIndexByLangCode(langCode)];
   console.log("trad: ", trad);
-  console.log("...args len: ", args.length);
-  return trad;
+  if (holderData) {
+    Object.entries(holderData).forEach((it) => {
+      const k = it[0];
+      const v = it[1];
+
+      trad = trad.replaceAll("%" + k, v);
+    });
+  }
+  console.log("fin trad: ", trad);
+  console.log("holderData: ", holderData);
+  const deftrad = LANG_TOKENS[key][GetLangIndexByLangCode("en-US")];
+  return trad ? trad : deftrad;
 }
