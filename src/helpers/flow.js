@@ -13,6 +13,7 @@ import JinChu from "../pages/jinchu";
 import { Bigbag } from "../pages/bigbag";
 import SuiviCamions from "../pages/suivicamions";
 import Notifications from "../pages/notifications";
+import { LANG_TOKENS } from "./lang_strings";
 
 export const LANG_COOKIE_KEY = "gongren_lang";
 
@@ -240,30 +241,35 @@ export const MAIN_MENU = [
     path: "/home",
     el: Home,
     access_code: ACCESS_CODES.PAGE_HOME,
+    trad: LANG_TOKENS.HOME,
   },
   {
     name: "Notifications",
     path: "/notifications",
     el: Notifications,
     access_code: ACCESS_CODES.PAGE_HOME,
+    trad: LANG_TOKENS.NOTIFICATIONS,
   },
   {
     name: "Agents",
     path: "/agents",
     el: Agents,
     access_code: ACCESS_CODES.PAGE_AGENTS,
+    trad: LANG_TOKENS.AGENTS,
   },
   {
     name: "Chargement",
     path: "/chargement",
     el: Chargement,
     access_code: ACCESS_CODES.PAGE_CHARGEMENT,
+    trad: LANG_TOKENS.CEMENT_LOADING,
   },
   {
     name: "Rapport Chargement",
     path: "/rchargement",
     el: RapportChargement,
     access_code: ACCESS_CODES.PAGE_RAPPORT_CHARGEMENT,
+    trad: LANG_TOKENS.LOADING_REPPORT,
   },
   {
     name: "Suivi Camions",
@@ -276,6 +282,7 @@ export const MAIN_MENU = [
     path: "/bigbag",
     el: Bigbag,
     access_code: ACCESS_CODES.PAGE_CHARGEMENT,
+    trad: LANG_TOKENS.BIGBAG,
   },
   {
     name: "JinChu",
@@ -288,12 +295,14 @@ export const MAIN_MENU = [
     path: "/roulements",
     el: Roulements,
     access_code: ACCESS_CODES.PAGE_ROULEMENT,
+    trad: LANG_TOKENS.ATTENDANCE,
   },
   {
     name: "Equipes",
     path: "/equipes",
     el: Equipes,
     access_code: ACCESS_CODES.PAGE_EQUIPE,
+    trad: LANG_TOKENS.TEAM,
   },
 
   {
@@ -301,18 +310,21 @@ export const MAIN_MENU = [
     path: "/magasin",
     el: Magasin,
     access_code: ACCESS_CODES.PAGE_MAGASIN,
+    trad: LANG_TOKENS.WAREHOUSE,
   },
   {
     name: "Dico",
     path: "/dico",
     el: Dico,
     access_code: ACCESS_CODES.PAGE_DICO,
+    trad: LANG_TOKENS.DICO,
   },
   {
     name: "Sacs",
     path: "/sacs",
     el: Sacs,
     access_code: ACCESS_CODES.PAGE_SACS,
+    trad: LANG_TOKENS.BAGS,
   },
 
   {
@@ -320,8 +332,8 @@ export const MAIN_MENU = [
     path: "/listes",
     el: Listes,
     access_code: ACCESS_CODES.PAGE_LISTS,
+    trad: LANG_TOKENS.NAME_LISTS,
   },
-  /*{ name: "Sections", path: "/sections", el: Sections }, */
 ];
 
 export const MONTHS = [

@@ -31,6 +31,16 @@ export const LANG_TOKENS = {
   TEAM_FILTER: ["TEAM FILTERS", "班组筛选器"],
   SHOW_MAP: ["SHOW MAP", "显示地图"],
   SHOW_TEAM_SELECTOR: ["SHOW TEAM SELECTOR", "显示班组选择器"],
+  LOGOUT: ["LOGOUT", "退出登录"],
+  NOTIFICATIONS: ["Notifications", "通知"],
+  AGENTS: ["Agents", "工人"],
+  LOADING_REPPORT: ["Loading Repport", "包装报告"],
+  BIGBAG: ["BigBag", "吨包包装"],
+  ATTENDANCE: ["ATTENDANCE", "考勤"],
+  WAREHOUSE: ["Warehouse", "库房"],
+  DICO: ["Dictionnary", "词典"],
+  NAME_LISTS: ["Name Lists", "名单"],
+  MSG_WELCOME: ["Welcome to the cement plant portal", "欢迎来到水泥厂门户"],
 };
 export const LANGS = [
   {

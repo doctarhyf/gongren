@@ -34,6 +34,7 @@ import SacsCalc from "../SacsCalc";
 import CountdownTimer from "../CountdownTimer";
 import LoadsCalculator from "../LoadCalculator";
 import nophoto from "../../img/user.png";
+import { GetTransForToken, LANG_TOKENS } from "../../helpers/lang_strings";
 
 function AgentStats({ agentsGrouped }) {
   return (
@@ -268,7 +269,7 @@ export function HUDProduction() {
 export function HUDGreetings({ user }) {
   return (
     <div className=" md:text-center w-auto my-4 p-2 bg-gray-800 text-white shadow-lg shadow-black/25 rounded-md">
-      <div> Bienvenu au portal de la cimenterie</div>
+      <div> {GetTransForToken(LANG_TOKENS.MSG_WELCOME, user.lang)}</div>
 
       <div className="  flex flex-col md:flex-row md:justify-center md:my-0 my-2 gap-4 ">
         <div className=" w-32 h-32 bg-slate-700 rounded-full overflow-hidden ">
