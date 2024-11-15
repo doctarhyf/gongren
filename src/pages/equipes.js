@@ -25,7 +25,11 @@ import * as SB from "../helpers/sb";
 import { LoadAllItems } from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
 import eraser from "../img/eraser.png";
-import { GetTransForTokensArray, LANG_TOKENS } from "../helpers/lang_strings";
+import {
+  GetTransForTokenName,
+  GetTransForTokensArray,
+  LANG_TOKENS,
+} from "../helpers/lang_strings";
 
 function AgentCard({ agent }) {
   const [, , user] = useContext(UserContext);
@@ -512,7 +516,10 @@ export default function Equipes() {
                 <div>
                   <ActionButton
                     icon={eraser}
-                    title={"Clear Custom List"}
+                    title={GetTransForTokensArray(
+                      LANG_TOKENS.CLEAR_CUSTOM_LIST,
+                      user.lang
+                    )}
                     onClick={(e) => {
                       if (window.confirm("Clear custom list?")) {
                         setCustomAgents([]);
@@ -527,6 +534,7 @@ export default function Equipes() {
                 <AgentsList onAgentClick={onAgentClick} />
               </div>
 
+              {/* TEAM STATS */}
               <div>
                 <div>
                   <div>
@@ -592,7 +600,8 @@ export default function Equipes() {
                 </div>
               </div>
 
-              <div>
+              {/* CUSTOM LIST TITLE */}
+              <div className={`  ${isCustomList ? "hidden" : "block"}  `}>
                 <input
                   type="checkbox"
                   className="toggle toggle-xs"
@@ -602,6 +611,7 @@ export default function Equipes() {
                 {GetTransForTokensArray(LANG_TOKENS.SHOW_MAP, user.lang)}
               </div>
 
+              {/* TEAM SELECTOR */}
               <div>
                 <div>
                   <input
@@ -650,7 +660,7 @@ export default function Equipes() {
                     >
                       {EQUIPES.map((it, i) => (
                         <option key={i} value={it}>
-                          {it}
+                          {GetTransForTokenName(it, user.lang)}
                         </option>
                       ))}
                     </select>
@@ -710,6 +720,7 @@ export default function Equipes() {
               </div>
             </div>
 
+            {/* map and table */}
             <div>
               {showMap ? (
                 <div>

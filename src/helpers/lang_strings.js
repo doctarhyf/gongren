@@ -10,6 +10,11 @@ export const LANG_TOKENS = {
     "清除当前团队",
     "Effacer l'équipe actuelle",
   ],
+  CLEAR_CUSTOM_LIST: [
+    "CLEAR CURRENT TEAM",
+    "清除自定义列表  ",
+    "Effacer la liste personnalisée",
+  ],
   CONTRACT: ["Contract", "工作合同", "Contrat"],
   EMPLOYE_ID: ["Employe ID", "工号", "ID d'employé"],
   PIN: ["PIN", "密码", "Code PIN"],
@@ -162,6 +167,8 @@ export const LANG_TOKENS = {
   active: ["ACTIVE", "活跃", "ACTIF"],
   is_exp: ["IS EXPEDITOR", "发货员", "EXPEDITEUR"],
   lang: ["LANGUAGE", "语言", "LANGUE"],
+  CHIN: ["CHINESE AGENTS", "中方员工", "AGENTS CHINOIS"],
+  JR: ["DAILY TEAM", "全白班", "EQUIPE DU JOUR"],
 };
 
 //Each entry now includes a French translation as the third element in the array. Let me know if there are any terms that might need adjustment or further customization!
