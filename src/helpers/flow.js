@@ -220,6 +220,7 @@ export const EQUIPES = [
   "CHIN",
   "N/A",
   "BIGBAG",
+  "-",
 ];
 
 export const EQUIPES_CHARGEMENT = ["A", "B", "C", "D"];
