@@ -30,6 +30,18 @@ import { GetTransForToken, LANG_TOKENS } from "../helpers/lang_strings";
 function AgentCard({ agent }) {
   const [, , user] = useContext(UserContext);
 
+  let bg = "bg-slate-500";
+
+  if (agent) {
+    if (agent.poste === "SUP") bg = "bg-red-500";
+    if (agent.chef_deq === "OUI") bg = "bg-pink-500";
+    if (agent.poste === "OPE" && agent.chef_deq !== "OUI") bg = "bg-sky-500";
+    if (agent.poste === "CHARG" && agent.chef_deq !== "OUI") bg = "bg-lime-500";
+    if (agent.poste === "AIDOP" && agent.chef_deq !== "OUI")
+      bg = "bg-yellow-700";
+    if (agent.is_exp === "OUI") bg = "bg-emerald-500";
+  }
+
   return (
     agent && (
       <div className=" flex flex-col justify-center items-center gap-2 p-2 ">
@@ -39,15 +51,19 @@ function AgentCard({ agent }) {
         <div>
           <div>{`${agent.nom} ${agent.postnom} ${agent.prenom}`}</div>
 
-          <div className="flex text-xs gap-1 text-center justify-center items-center">
+          <div className="flex text-xs gap- bg text-center justify-center items-center">
             <div className=" inline-block  ">
               {agent.mingzi && <span>{agent.mingzi}</span>}
               {agent.matricule && <span> - {agent.matricule}</span>}
             </div>
-            <div className="  inline-block bg-slate-700 rounded-md text-xs  text-white  p-1  ">
+            <div
+              className={` inline-block  rounded-md text-xs  text-white  p-1  ${bg} `}
+            >
               {GetTransForToken(LANG_TOKENS[agent.poste], user.lang)}
               {agent.chef_deq === "OUI" &&
                 " - " + GetTransForToken(LANG_TOKENS.DEQ, user.lang)}
+              {agent.is_exp === "OUI" &&
+                " - " + GetTransForToken(LANG_TOKENS.EXP, user.lang)}
             </div>
           </div>
         </div>
@@ -97,24 +113,35 @@ function AgentsMap({ agentsf, section, equipe }) {
     chart = [agentsf];
   }
 
+  function levelIsNull(lev) {
+    return lev.length === 1 && lev[0] === null;
+  }
+
   return (
     <div className=" bg-slate-100   ">
       {chart &&
-        chart.map((lev) => (
-          <div className=" p-1  flex-wrap border-t border-t-slate-400 md:flex gap-4 justify-center items-center  ">
-            <div className=" flex items-center justify-center text-4xl bg-sky-700 text-black rounded-[2.25rem] w-[3rem] h-[3rem] font-black p-2  ">
-              <div className=" border border-white  "> {lev.length}</div>
-              <dic className=" text-xs  ">
-                {lev[0] &&
-                  GetTransForToken(LANG_TOKENS[lev[0].poste], user.lang)}
-              </dic>
-            </div>
+        chart.map((lev, i) =>
+          !levelIsNull(lev) ? (
+            <div className=" p-1  flex-wrap border-t border-t-slate-400 md:flex gap-4 justify-center items-center  ">
+              {!!lev[0] && (
+                <div
+                  className={`  flex items-center justify-center text-4xl bg-gray-400 text-black rounded-[2.25rem] w-[3rem] h-[3rem] font-black p-2  `}
+                >
+                  <div className="  self-center  ">{lev.length}</div>
+                  <dic className=" text-xs  ">
+                    {lev[0].chef_deq === "OUI"
+                      ? GetTransForToken(LANG_TOKENS.DEQ, user.lang)
+                      : GetTransForToken(LANG_TOKENS[lev[0].poste], user.lang)}
+                  </dic>
+                </div>
+              )}
 
-            {lev.map((agent) => (
-              <AgentCard agent={agent} />
-            ))}
-          </div>
-        ))}
+              {lev.map((agent) => (
+                <AgentCard agent={agent} />
+              ))}
+            </div>
+          ) : null
+        )}
     </div>
   );
 }
