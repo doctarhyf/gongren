@@ -601,7 +601,7 @@ export default function Equipes() {
               </div>
 
               {/* CUSTOM LIST TITLE */}
-              <div className={`  ${isCustomList ? "hidden" : "block"}  `}>
+              <div className={`   `}>
                 <input
                   type="checkbox"
                   className="toggle toggle-xs"
@@ -725,7 +725,7 @@ export default function Equipes() {
               {showMap ? (
                 <div>
                   <AgentsMap
-                    agentsf={agentsf}
+                    agentsf={isCustomList ? customAgents : agentsf}
                     section={ref_section}
                     equipe={ref_equipe}
                   />
