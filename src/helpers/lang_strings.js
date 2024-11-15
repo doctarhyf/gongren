@@ -210,21 +210,21 @@ export function GetLangIndexByLangCode(langCode) {
 }
 
 export function GetTransForTokenName(tokenName, langCode, holderData) {
-  const token = LANG_TOKENS[tokenName];
+  const tokensArray = LANG_TOKENS[tokenName];
 
-  if (token === undefined) return tokenName;
+  if (tokensArray === undefined) return tokenName;
 
-  return GetTransForTokensArray(token, langCode, holderData);
+  return GetTransForTokensArray(tokensArray, langCode, holderData);
 }
 
-export function GetTransForTokensArray(token, langCode, holderData) {
+export function GetTransForTokensArray(tokensArray, langCode, holderData) {
   const keys = Object.keys(LANG_TOKENS);
   console.log("Keys :", keys);
   const vals = Object.values(LANG_TOKENS);
   console.log("vals: ", vals);
-  console.log("token: ", token);
+  console.log("token: ", tokensArray);
   const idx = vals.findIndex((arr) => {
-    return arr[0] === token[0] && arr[1] === token[1];
+    return arr[0] === tokensArray[0] && arr[1] === tokensArray[1];
   });
 
   //return "test";
