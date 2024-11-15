@@ -96,7 +96,7 @@ export const LANG_TOKENS = {
   YEAR: ["YEAR", "年", "ANNÉE"],
   MONTH: ["MONTH", "月", "MOIS"],
   SUP: ["SUP", "班长", "SUP"],
-  DEQ: ["CHEF D'EQ.", "小班长", "CHEF D'ÉQUIPE"],
+  DEQ: ["SQUAD LEADER", "小班长", "CHEF D'ÉQUIPE"],
   Workshop: ["Workshop", "车间", "Section"],
   Position: ["Position", "岗位", "Poste"],
   Phone: ["Phone", "电话", "Téléphone"],
