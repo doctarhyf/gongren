@@ -5,6 +5,11 @@ import china from "../img/china.png";
 //Here’s the updated code with French translations added as the third element in each array:
 
 export const LANG_TOKENS = {
+  CLEAR_CURRENT_TEAM: [
+    "CLEAR CURRENT TEAM",
+    "清除当前团队",
+    "Effacer l'équipe actuelle",
+  ],
   CONTRACT: ["Contract", "工作合同", "Contrat"],
   EMPLOYE_ID: ["Employe ID", "工号", "ID d'employé"],
   PIN: ["PIN", "密码", "Code PIN"],
@@ -133,6 +138,11 @@ export const LANG_TOKENS = {
   INT: ["TRANSLATOR", "翻译", "INT"],
   SUP: ["SUPERVISOR", "班长", "SUPERVISEUR"],
   AIDOP: ["ASSISTANT OP.", "助插袋工", "AIDOP"],
+  BROYAGE: ["CEMENT GRINDER", "水泥磨", "BROYAGE"],
+  ENSACHAGE: ["CEMENT PACKAGING", "水泥包装", "ENSACHAGE"],
+  NETTOYAGE: ["CLEANING", "打扫卫生", "NETTOYAGE"],
+  CIMENTERIE: ["CIMENT WORKSHOP", "水泥车间", "CIMENTERIE"],
+  "N/A": ["N/A", "无", "N/A"],
 };
 
 //Each entry now includes a French translation as the third element in the array. Let me know if there are any terms that might need adjustment or further customization!

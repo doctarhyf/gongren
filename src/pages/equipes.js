@@ -49,11 +49,11 @@ function AgentCard({ agent }) {
           {agent.photo && <img src={agent.photo} />}
         </div>
         <div>
-          <div>{`${agent.nom} ${agent.postnom} ${agent.prenom}`}</div>
-
-          <div className="flex text-xs gap- bg text-center justify-center items-center">
+          <div className="flex text-xs gap- bg text-center justify-center items-start ">
             <div className=" inline-block  ">
-              {agent.mingzi && <span>{agent.mingzi}</span>}
+              {agent.mingzi && (
+                <span className=" font-bold mx-1  ">{agent.mingzi}</span>
+              )}
               {agent.matricule && <span> - {agent.matricule}</span>}
             </div>
             <div
@@ -65,6 +65,11 @@ function AgentCard({ agent }) {
               {agent.is_exp === "OUI" &&
                 " - " + GetTransForToken(LANG_TOKENS.EXP, user.lang)}
             </div>
+          </div>
+          <div>
+            <span>{agent.nom}</span>
+            <span className=" hidden md:block ">{agent.postnom}</span>
+            <span>{agent.prenom}</span>
           </div>
         </div>
       </div>
@@ -122,13 +127,13 @@ function AgentsMap({ agentsf, section, equipe }) {
       {chart &&
         chart.map((lev, i) =>
           !levelIsNull(lev) ? (
-            <div className=" p-1  flex-wrap border-t border-t-slate-400 md:flex gap-4 justify-center items-center  ">
+            <div className=" p-1  flex-wrap border-t border-t-slate-400 md:flex gap-4 justify-center items-start  ">
               {!!lev[0] && (
                 <div
-                  className={`  flex items-center justify-center text-4xl bg-gray-400 text-black rounded-[2.25rem] w-[3rem] h-[3rem] font-black p-2  `}
+                  className={`   items-center  flex  justify-center text-4xl bg-gray-400/50 text-black rounded-[2.25rem] w-[3rem] h-[3rem] font-black p-2  `}
                 >
                   <div className="  self-center  ">{lev.length}</div>
-                  <dic className=" text-xs  ">
+                  <dic className=" text-xs font-bold  ">
                     {lev[0].chef_deq === "OUI"
                       ? GetTransForToken(LANG_TOKENS.DEQ, user.lang)
                       : GetTransForToken(LANG_TOKENS[lev[0].poste], user.lang)}
@@ -477,207 +482,224 @@ export default function Equipes() {
         {!loading && (
           <>
             <div>
-              <input
-                type="checkbox"
-                className="toggle toggle-xs"
-                defaultChecked={isCustomList}
-                onChange={(e) => setIsCustomList(e.target.checked)}
-              />
-              {GetTransForToken(LANG_TOKENS.CUSTOM_LIST, user.lang)}
-            </div>
-
-            <div
-              className={` border border-slate-200  bg-slate-100/50 p-2 rounded-md  outline-none w-fit mb-1 ${
-                isCustomList ? "block" : "hidden"
-              } `}
-            >
-              <input
-                className={` ${CLASS_INPUT_TEXT} `}
-                type="text"
-                value={customTableName}
-                onChange={(e) =>
-                  setCustomTableName(e.target.value.toUpperCase())
-                }
-                placeholder="LIST TITLE"
-              />
-              <div>
-                <ActionButton
-                  icon={eraser}
-                  title={"Clear Custom List"}
-                  onClick={(e) => {
-                    if (window.confirm("Clear custom list?")) {
-                      setCustomAgents([]);
-                      alert("Custom list cleared");
-                    }
-                  }}
-                />
-              </div>
-            </div>
-
-            <div className={` ${isCustomList ? "block" : "hidden"} `}>
-              <AgentsList onAgentClick={onAgentClick} />
-            </div>
-
-            <div>
-              <div>
-                <div>
-                  <input
-                    type="checkbox"
-                    className="toggle toggle-xs"
-                    defaultChecked={showTeamStats}
-                    onChange={(e) => setShowTeamStats(e.target.checked)}
-                  />
-                  {GetTransForToken(LANG_TOKENS.TEAM_STATS, user.lang)}
-                </div>
-                {showTeamStats && (
-                  <div
-                    className={` ${
-                      showTeamStats &&
-                      "  border border-slate-200  bg-slate-100/50 p-2 "
-                    } `}
-                  >
-                    {" "}
-                    <TeamStats agentsf={agentsf} />{" "}
-                  </div>
-                )}
-              </div>
-
-              <div className={`   `}>
-                <div>
-                  <input
-                    type="checkbox"
-                    className="toggle toggle-xs"
-                    defaultChecked={showTeamStats}
-                    onChange={(e) => setShowFilters(e.target.checked)}
-                  />
-                  {GetTransForToken(LANG_TOKENS.TEAM_FILTER, user.lang)}
-                </div>
-
-                <select
-                  className={` ${CLASS_SELECT}  ${
-                    showFilters
-                      ? "block  border border-slate-200  bg-slate-100/50 p-2   "
-                      : "hidden"
-                  }    `}
-                  onChange={(e) =>
-                    onSetFilter(
-                      FILTERS.filter((it) => it.name === e.target.value)[0]
-                    )
-                  }
-                >
-                  {FILTERS.map((f, i) => (
-                    <option
-                      value={f.name}
-                      selected={
-                        selectedFilter && f.name === selectedFilter.name
-                      }
-                      key={i}
-                    >
-                      {f.name} -{" "}
-                      <span className=" inline-block text-xs bg-black text-white rounded-md p-1  ">
-                        {f.zh}
-                      </span>
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-
-            <div>
-              <input
-                type="checkbox"
-                className="toggle toggle-xs"
-                defaultChecked={showMap}
-                onChange={(e) => setShowMap(e.target.checked)}
-              />
-              {GetTransForToken(LANG_TOKENS.SHOW_MAP, user.lang)}
-            </div>
-
-            <div>
               <div>
                 <input
                   type="checkbox"
                   className="toggle toggle-xs"
-                  defaultChecked={showTeamSelector}
-                  onChange={(e) => setShowTeamSelector(e.target.checked)}
+                  defaultChecked={isCustomList}
+                  onChange={(e) => setIsCustomList(e.target.checked)}
                 />
-                {GetTransForToken(LANG_TOKENS.SHOW_TEAM_SELECTOR, user.lang)}
+                {GetTransForToken(LANG_TOKENS.CUSTOM_LIST, user.lang)}
               </div>
-              <div className={`  ${showTeamSelector ? "block" : "hidden"}  `}>
-                <div>
-                  <span className={CLASS_SELECT_TITLE}>SECTION</span>
 
-                  <select
-                    className={CLASS_SELECT}
-                    name="section"
-                    ref={ref_section}
-                    defaultValue={SECTIONS[0]}
-                    onChange={onFilterAgents}
-                  >
-                    {SECTIONS.map((it, i) => (
-                      <option key={i}>{it}</option>
-                    ))}
-                  </select>
+              <div
+                className={` border border-slate-200  bg-slate-100/50 p-2 rounded-md  outline-none w-fit mb-1 ${
+                  isCustomList ? "block" : "hidden"
+                } `}
+              >
+                <input
+                  className={` ${CLASS_INPUT_TEXT} `}
+                  type="text"
+                  value={customTableName}
+                  onChange={(e) =>
+                    setCustomTableName(e.target.value.toUpperCase())
+                  }
+                  placeholder="LIST TITLE"
+                />
+                <div>
+                  <ActionButton
+                    icon={eraser}
+                    title={"Clear Custom List"}
+                    onClick={(e) => {
+                      if (window.confirm("Clear custom list?")) {
+                        setCustomAgents([]);
+                        alert("Custom list cleared");
+                      }
+                    }}
+                  />
+                </div>
+              </div>
+
+              <div className={` ${isCustomList ? "block" : "hidden"} `}>
+                <AgentsList onAgentClick={onAgentClick} />
+              </div>
+
+              <div>
+                <div>
+                  <div>
+                    <input
+                      type="checkbox"
+                      className="toggle toggle-xs"
+                      defaultChecked={showTeamStats}
+                      onChange={(e) => setShowTeamStats(e.target.checked)}
+                    />
+                    {GetTransForToken(LANG_TOKENS.TEAM_STATS, user.lang)}
+                  </div>
+                  {showTeamStats && (
+                    <div
+                      className={` ${
+                        showTeamStats &&
+                        "  border border-slate-200  bg-slate-100/50 p-2 "
+                      } `}
+                    >
+                      {" "}
+                      <TeamStats agentsf={agentsf} />{" "}
+                    </div>
+                  )}
                 </div>
 
-                <div>
-                  <span className={CLASS_SELECT_TITLE}>EQUIPE</span>
+                <div className={`   `}>
+                  <div>
+                    <input
+                      type="checkbox"
+                      className="toggle toggle-xs"
+                      defaultChecked={showTeamStats}
+                      onChange={(e) => setShowFilters(e.target.checked)}
+                    />
+                    {GetTransForToken(LANG_TOKENS.TEAM_FILTER, user.lang)}
+                  </div>
 
                   <select
-                    className={CLASS_SELECT}
-                    name="equipe"
-                    defaultValue={EQUIPES[0]}
-                    ref={ref_equipe}
-                    onChange={onFilterAgents}
+                    className={` ${CLASS_SELECT}  ${
+                      showFilters
+                        ? "block  border border-slate-200  bg-slate-100/50 p-2   "
+                        : "hidden"
+                    }    `}
+                    onChange={(e) =>
+                      onSetFilter(
+                        FILTERS.filter((it) => it.name === e.target.value)[0]
+                      )
+                    }
                   >
-                    {EQUIPES.map((it, i) => (
-                      <option key={i}>{it}</option>
-                    ))}
-                  </select>
-                </div>
-
-                <div>
-                  <span className={CLASS_SELECT_TITLE}>YEAR:</span>
-                  <select
-                    onChange={onFilterAgents}
-                    ref={ref_year}
-                    className={CLASS_SELECT}
-                  >
-                    {[...Array(10)].map((it, i) => (
-                      <option key={i}>{new Date().getFullYear() + i}</option>
-                    ))}
-                  </select>
-                </div>
-
-                <div>
-                  <span className={CLASS_SELECT_TITLE}>MONTH:</span>
-                  <select
-                    className={CLASS_SELECT}
-                    onChange={onFilterAgents}
-                    ref={ref_month}
-                  >
-                    {[...Array(12)].map((it, i) => (
+                    {FILTERS.map((f, i) => (
                       <option
+                        value={f.name}
+                        selected={
+                          selectedFilter && f.name === selectedFilter.name
+                        }
                         key={i}
-                        value={i}
-                        selected={i === new Date().getMonth() - 1}
                       >
-                        {MONTHS[i]}
+                        {f.name} -{" "}
+                        <span className=" inline-block text-xs bg-black text-white rounded-md p-1  ">
+                          {f.zh}
+                        </span>
                       </option>
                     ))}
                   </select>
+                </div>
+              </div>
 
-                  {UserHasAccessCode(user, ACCESS_CODES.ROOT) && (
-                    <div>
-                      {!isCustomList && (
-                        <ActionButton
-                          icon={null}
-                          title={"CLEAR CURRENT TEAM"}
-                          onClick={onClearTeam}
-                        />
-                      )}
-                    </div>
-                  )}
+              <div>
+                <input
+                  type="checkbox"
+                  className="toggle toggle-xs"
+                  defaultChecked={showMap}
+                  onChange={(e) => setShowMap(e.target.checked)}
+                />
+                {GetTransForToken(LANG_TOKENS.SHOW_MAP, user.lang)}
+              </div>
+
+              <div>
+                <div>
+                  <input
+                    type="checkbox"
+                    className="toggle toggle-xs"
+                    defaultChecked={showTeamSelector}
+                    onChange={(e) => setShowTeamSelector(e.target.checked)}
+                  />
+                  {GetTransForToken(LANG_TOKENS.SHOW_TEAM_SELECTOR, user.lang)}
+                </div>
+                <div className={`  ${showTeamSelector ? "block" : "hidden"}  `}>
+                  <div>
+                    <span className={CLASS_SELECT_TITLE}>
+                      {GetTransForToken(LANG_TOKENS.Workshop, user.lang)}
+                    </span>
+
+                    <select
+                      className={CLASS_SELECT}
+                      name="section"
+                      ref={ref_section}
+                      defaultValue={SECTIONS[0]}
+                      onChange={onFilterAgents}
+                    >
+                      {SECTIONS.map((it, i) => (
+                        <option key={i} value={it}>
+                          {GetTransForToken(LANG_TOKENS[it], user.lang)}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div>
+                    <span className={CLASS_SELECT_TITLE}>
+                      {GetTransForToken(LANG_TOKENS.TEAM, user.lang)}
+                    </span>
+
+                    <select
+                      className={CLASS_SELECT}
+                      name="equipe"
+                      defaultValue={EQUIPES[0]}
+                      ref={ref_equipe}
+                      onChange={onFilterAgents}
+                    >
+                      {EQUIPES.map((it, i) => (
+                        <option key={i} value={it}>
+                          {it}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div>
+                    <span className={CLASS_SELECT_TITLE}>
+                      {GetTransForToken(LANG_TOKENS.YEAR, user.lang)}:
+                    </span>
+                    <select
+                      onChange={onFilterAgents}
+                      ref={ref_year}
+                      className={CLASS_SELECT}
+                    >
+                      {[...Array(10)].map((it, i) => (
+                        <option key={i}>{new Date().getFullYear() + i}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div>
+                    <span className={CLASS_SELECT_TITLE}>
+                      {GetTransForToken(LANG_TOKENS.MONTH, user.lang)}:
+                    </span>
+                    <select
+                      className={CLASS_SELECT}
+                      onChange={onFilterAgents}
+                      ref={ref_month}
+                    >
+                      {[...Array(12)].map((it, i) => (
+                        <option
+                          key={i}
+                          value={i}
+                          selected={i === new Date().getMonth() - 1}
+                        >
+                          {MONTHS[i]}
+                        </option>
+                      ))}
+                    </select>
+
+                    {UserHasAccessCode(user, ACCESS_CODES.ROOT) && (
+                      <div>
+                        {!isCustomList && (
+                          <ActionButton
+                            icon={null}
+                            title={GetTransForToken(
+                              LANG_TOKENS.CLEAR_CURRENT_TEAM,
+                              user.lang
+                            )}
+                            onClick={onClearTeam}
+                          />
+                        )}
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
