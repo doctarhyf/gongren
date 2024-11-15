@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Loading from "./Loading";
 import * as SB from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
@@ -8,6 +8,8 @@ import {
   CustomSortByListPriority,
   GroupBySectionAndEquipe,
 } from "../helpers/func";
+import { GetTransForToken, LANG_TOKENS } from "../helpers/lang_strings";
+import { UserContext } from "../App";
 
 export default function AgentsList({
   onAgentClick,
@@ -20,6 +22,7 @@ export default function AgentsList({
 }) {
   const [q, setq] = useState("");
 
+  const [, , user] = useContext(UserContext);
   const [agents, setagents] = useState([]);
   const [agentsf, setagentf] = useState([]);
   const [curPage, setCurPage] = useState(1);
@@ -125,7 +128,7 @@ export default function AgentsList({
         />
       </div>
       <div>
-        SHOW ONLY ACTIVE
+        {GetTransForToken(LANG_TOKENS.SHOW_ONLY_ACTIVE, user.lang)}
         <input
           type="checkbox"
           className="toggle toggle-xs"

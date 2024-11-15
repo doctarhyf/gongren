@@ -125,13 +125,13 @@ function AgentCardMini({ agent, moreInfo, showUpdatePoste, onAgentUpdate }) {
         <div>
           <div>
             <span className=" text-white/50  ">
-              {GetTransForToken(LANG_TOKENS.Section, user.lang)}:
+              {GetTransForToken(LANG_TOKENS.Workshop, user.lang)}:
             </span>{" "}
             {agent.section}
           </div>{" "}
           <div>
             <span className=" text-white/50  ">
-              {GetTransForToken(LANG_TOKENS.Poste, user.lang)}:
+              {GetTransForToken(LANG_TOKENS.Position, user.lang)}:
             </span>{" "}
             {(POSTES[agent.poste] && POSTES[agent.poste].fr) || POSTE[3]}
           </div>

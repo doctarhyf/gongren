@@ -12,6 +12,7 @@ import { UserContext } from "../App";
 import ico_user from "../img/user.png";
 import { supabase } from "../helpers/sb.config";
 import imageCompression from "browser-image-compression";
+import { GetTransForToken, LANG_TOKENS } from "../helpers/lang_strings";
 
 const DATA_TYPE_TEXT_INPUT = 2;
 const DATA_TYPE_SELECT = 3;
@@ -232,23 +233,51 @@ export default function FormAddAgent({
         [ref_id, `id`, agent.id, , ,],
         [ref_created_at, `created_at`, agent.created_at, , ,],
 
-        [ref_nom, "nom", agent.nom],
+        [ref_nom, GetTransForToken(LANG_TOKENS.Nom, user.lang), agent.nom],
         [ref_postnom, "postnom", agent.postnom],
         [ref_prenom, "prenom", agent.prenom],
         [ref_mingzi, "mingzi", agent.mingzi],
 
-        [ref_section, "section", agent.section, SECTIONS],
-        [ref_equipe, "equipe", agent.equipe, EQUIPES],
-        [ref_poste, "poste", agent.poste, POSTE],
+        [
+          ref_section,
+          GetTransForToken(LANG_TOKENS.Workshop, user.lang),
+          agent.section,
+          SECTIONS,
+        ],
+        [
+          ref_equipe,
+          GetTransForToken(LANG_TOKENS.TEAM, user.lang),
+          agent.equipe,
+          EQUIPES,
+        ],
+        [
+          ref_poste,
+          GetTransForToken(LANG_TOKENS.Position, user.lang),
+          agent.poste,
+          POSTE,
+        ],
 
-        [ref_chef_deq, `Chef d'quipe`, agent.chef_deq, ["NON", "OUI"]],
+        [
+          ref_chef_deq,
+          GetTransForToken(LANG_TOKENS.DEQ, user.lang),
+          agent.chef_deq,
+          ["NON", "OUI"],
+        ],
 
         [ref_contrat, "contrat", agent.contrat, CONTRATS],
 
-        [ref_matricule, "matricule", agent.matricule],
+        [
+          ref_matricule,
+          GetTransForToken(LANG_TOKENS.EMPLOYE_ID, user.lang),
+          agent.matricule,
+        ],
         [ref_pin, "pin", agent.pin],
         [ref_nationalite, "nationalite", agent.nationalite, NATIONALITIES],
-        [ref_phone, "phone", agent.phone],
+        [
+          ref_phone,
+          GetTransForToken(LANG_TOKENS.Phone, user.lang),
+          agent.phone,
+        ],
         [ref_list_priority, "liste priority", agent.list_priority],
         [ref_tenue, "tenue(tenue,couleur,botte)", agent.tenue],
         [ref_active, "Actif", agent.active, ["OUI", "NON"]],
@@ -294,14 +323,14 @@ export default function FormAddAgent({
         onClick={onFormCancel}
         className="p-1 rounded-md border my-1 border-green-500 text-green-500 hover:bg-green-500 hover:text-white"
       >
-        ANNULER
+        {GetTransForToken(LANG_TOKENS.CANCEL, user.lang)}
       </button>
       {isNewAgent && (
         <button
           onClick={saveAgentData}
           className="p-1 rounded-md border my-1 border-green-500 text-green-500 hover:bg-green-500 hover:text-white"
         >
-          SAVE
+          {GetTransForToken(LANG_TOKENS.SAVE, user.lang)}
         </button>
       )}
       {!isNewAgent && (
@@ -311,7 +340,9 @@ export default function FormAddAgent({
               onClick={saveAgentData}
               className="p-1 disabled:bg-gray-400 rounded-md border my-1 border-green-500 text-green-500 hover:bg-green-500 hover:text-white"
             >
-              {uploading ? "Uploading photo ..." : "UPDATE"}
+              {uploading
+                ? "Uploading photo ..."
+                : GetTransForToken(LANG_TOKENS.UPDATE, user.lang)}
             </button>
           )}
         </>

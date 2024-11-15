@@ -5,6 +5,7 @@ import china from "../img/china.png";
 //Here’s the updated code with French translations added as the third element in each array:
 
 export const LANG_TOKENS = {
+  CONTRACT: ["Contract", "工作合同", "Contrat"],
   EMPLOYE_ID: ["Employe ID", "工号", "ID d'employé"],
   PIN: ["PIN", "密码", "Code PIN"],
   LOGIN: ["Login", "登录", "Connexion"],
@@ -96,11 +97,17 @@ export const LANG_TOKENS = {
   MONTH: ["MONTH", "月", "MOIS"],
   SUP: ["SUP", "班长", "SUP"],
   DEQ: ["CHEF D'EQ.", "小班长", "CHEF D'ÉQUIPE"],
-  Section: ["Section", "车间", "Section"],
-  Poste: ["Poste", "岗位", "Poste"],
+  Workshop: ["Workshop", "车间", "Section"],
+  Position: ["Position", "岗位", "Poste"],
   Phone: ["Phone", "电话", "Téléphone"],
   PRINT: ["PRINT", "打印", "IMPRIMER"],
   UPDATE: ["UPDATE", "更新", "MISE À JOUR"],
+  DELETE: ["DELETE", "删除", "SUPPRIMER"],
+  UPDATE_ACCESS_CODES: [
+    "UPDATE ACCESS CODES",
+    "更新访问代码",
+    "METTRE A JOUR CODES D'ACCES",
+  ],
   SAVE: ["SAVE", "保存", "ENREGISTRER"],
   SAVE_WHOLE_TEAM: [
     "SAVE (WHOLE TEAM)",
@@ -108,6 +115,13 @@ export const LANG_TOKENS = {
     "ENREGISTRER (ÉQUIPE ENTIÈRE)",
   ],
   CANCEL: ["CANCEL", "取消", "ANNULER"],
+  SHOW_ONLY_ACTIVE: [
+    "SHOW ONLY ACTIVE",
+    "仅显示活跃用户",
+    "AFFICHER UNIQ. ACTIFS",
+  ],
+  Page: ["Page %p", "%p 页", "Page %p"],
+  Nom: ["Name", "姓名", "Nom"],
 };
 
 //Each entry now includes a French translation as the third element in the array. Let me know if there are any terms that might need adjustment or further customization!

@@ -1,8 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { fetchAllItemFromTable } from "../api/queries";
 import { CLASS_INPUT_TEXT, POSTES } from "../helpers/flow";
 import Loading from "./Loading";
+import { UserContext } from "../App";
+import { GetTransForToken, LANG_TOKENS } from "../helpers/lang_strings";
 
 function FlatList({ items, renderItem, perpage, q }) {
   //
@@ -11,6 +13,7 @@ function FlatList({ items, renderItem, perpage, q }) {
   const [curpage, setcurpage] = useState(0);
   const [numpages, setnumpages] = useState(1);
   const [activeOnly, setActiveOnly] = useState(true);
+  const [, , user] = useContext(UserContext);
 
   useEffect(() => {
     setdata(items);
@@ -75,7 +78,7 @@ function FlatList({ items, renderItem, perpage, q }) {
       >
         {[...Array(numpages).fill(0)].map((it, i) => (
           <option key={i} value={i}>
-            Page {i + 1}
+            {GetTransForToken(LANG_TOKENS.Page, user.lang, { p: i + 1 })}
           </option>
         ))}
       </select>
@@ -86,7 +89,7 @@ function FlatList({ items, renderItem, perpage, q }) {
           value={activeOnly}
           onChange={(e) => setActiveOnly(e.target.checked)}
         />{" "}
-        Active Only{" "}
+        {GetTransForToken(LANG_TOKENS.SHOW_ONLY_ACTIVE, user.lang)}
       </div>
       <div>
         {dataf.map((item, i) => renderItem(item, i + curpage * perpage + 1))}
@@ -120,7 +123,7 @@ export default function AgentList2({
 }) {
   const [selected, setselected] = useState();
   const [teamMode, setTeamMode] = useState(false);
-
+  const [, , user] = useContext(UserContext);
   const [q, setq] = useState("");
 
   const queryAgents = useQuery({

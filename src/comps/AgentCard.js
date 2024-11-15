@@ -17,6 +17,7 @@ import shield from "../img/shield.png";
 import ico_user from "../img/user.png";
 import ItemNotSelected from "./ItemNotSelected";
 import { UserContext } from "../App";
+import { GetTransForToken, LANG_TOKENS } from "../helpers/lang_strings";
 
 export const AGENT_CARD_EVENT = {
   DELETED: "ag_del",
@@ -267,7 +268,7 @@ export default function AgentCard({
                   }}
                   className={CLASS_BTN}
                 >
-                  UPDATE ACCESS CODES
+                  {GetTransForToken(LANG_TOKENS.UPDATE_ACCESS_CODES, user.lang)}
                 </button>
                 <button
                   onClick={(e) => {
@@ -287,7 +288,7 @@ export default function AgentCard({
                   onClick={(e) => setShowAccessCode(false)}
                   className={CLASS_BTN}
                 >
-                  ANNULER
+                  {GetTransForToken(LANG_TOKENS.CANCEL, user.lang)}
                 </button>
               </div>
             )}
@@ -296,13 +297,6 @@ export default function AgentCard({
               <>
                 {user.user_level >= USER_LEVEL.ADMIN && (
                   <>
-                    {/* <button
-                      onClick={(e) => onShowRoulement(agent)}
-                      className={CLASS_BTN}
-                    >
-                      VOIR ROULEMENT
-                    </button> */}
-
                     {UserHasAccessCode(user, ACCESS_CODES.UPDATE_AGENT) && (
                       <button
                         onClick={(e) =>
@@ -310,7 +304,7 @@ export default function AgentCard({
                         }
                         className={CLASS_BTN}
                       >
-                        UPDATE
+                        {GetTransForToken(LANG_TOKENS.UPDATE, user.lang)}
                       </button>
                     )}
 
@@ -319,7 +313,7 @@ export default function AgentCard({
                         onClick={(e) => deleteAgent(agent)}
                         className={CLASS_BTN}
                       >
-                        DELETE
+                        {GetTransForToken(LANG_TOKENS.DELETE, user.lang)}
                       </button>
                     )}
                   </>
@@ -333,13 +327,13 @@ export default function AgentCard({
                   onClick={(e) => setAgentCardEditMode(!agentCardEditMode)}
                   className={CLASS_BTN}
                 >
-                  ANNULER
+                  {GetTransForToken(LANG_TOKENS.CANCEL, user.lang)}
                 </button>
                 <button
                   onClick={(e) => setAgentCardEditMode(!agentCardEditMode)}
                   className={CLASS_BTN}
                 >
-                  ENREGISTER
+                  {GetTransForToken(LANG_TOKENS.SAVE, user.lang)}
                 </button>
               </>
             )}
