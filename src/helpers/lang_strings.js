@@ -108,6 +108,8 @@ export const LANG_TOKENS = {
     "更新访问代码",
     "METTRE A JOUR CODES D'ACCES",
   ],
+  OUI: ["YES", "是", "OUI"],
+  NON: ["NO", "否", "NON"],
   SAVE: ["SAVE", "保存", "ENREGISTRER"],
   SAVE_WHOLE_TEAM: [
     "SAVE (WHOLE TEAM)",
