@@ -12,6 +12,11 @@ import { UserContext } from "../App";
 import ico_user from "../img/user.png";
 import { supabase } from "../helpers/sb.config";
 import imageCompression from "browser-image-compression";
+import {
+  GetTransForTokenName,
+  GetTransForTokensArray,
+  LANG_TOKENS,
+} from "../helpers/lang_strings";
 
 const DATA_TYPE_TEXT_INPUT = 2;
 const DATA_TYPE_SELECT = 3;
@@ -241,7 +246,7 @@ export default function FormAddAgent({
         [ref_equipe, "equipe", agent.equipe, EQUIPES],
         [ref_poste, "poste", agent.poste, POSTE],
 
-        [ref_chef_deq, `Chef d'quipe`, agent.chef_deq, ["NON", "OUI"]],
+        [ref_chef_deq, `chef_deq`, agent.chef_deq, ["NON", "OUI"]],
 
         [ref_contrat, "contrat", agent.contrat, CONTRATS],
 
@@ -250,13 +255,13 @@ export default function FormAddAgent({
         [ref_nationalite, "nationalite", agent.nationalite, NATIONALITIES],
         [ref_phone, "phone", agent.phone],
         [ref_list_priority, "liste priority", agent.list_priority],
-        [ref_tenue, "tenue(tenue,couleur,botte)", agent.tenue],
-        [ref_active, "Actif", agent.active, ["OUI", "NON"]],
-        [ref_is_exp, "Expediteur", agent.is_exp, ["NON", "OUI"]],
+        [ref_tenue, "tenue", agent.tenue],
+        [ref_active, "active", agent.active, ["OUI", "NON"]],
+        [ref_is_exp, "is_exp", agent.is_exp, ["NON", "OUI"]],
       ].map((agent_data, i) => (
         <tr key={i}>
           <td align="right" className="text-neutral-400 text-sm">
-            {agent_data[1]}
+            {GetTransForTokenName(agent_data[1], user.lang)}
           </td>
           <td className=" ">
             {agent_data.length - 1 === DATA_TYPE_TEXT_INPUT && (
@@ -276,10 +281,11 @@ export default function FormAddAgent({
               >
                 {agent_data[3].map((it, i) => (
                   <option
+                    value={it}
                     key={i}
                     selected={agent_data[3].indexOf(agent[agent_data[1]]) === i}
                   >
-                    {it}
+                    {GetTransForTokenName(it, user.lang)}
                   </option>
                 ))}
               </select>
@@ -294,14 +300,14 @@ export default function FormAddAgent({
         onClick={onFormCancel}
         className="p-1 rounded-md border my-1 border-green-500 text-green-500 hover:bg-green-500 hover:text-white"
       >
-        ANNULER
+        {GetTransForTokensArray(LANG_TOKENS.CANCEL, user.lang)}
       </button>
       {isNewAgent && (
         <button
           onClick={saveAgentData}
           className="p-1 rounded-md border my-1 border-green-500 text-green-500 hover:bg-green-500 hover:text-white"
         >
-          SAVE
+          {GetTransForTokensArray(LANG_TOKENS.SAVE, user.lang)}
         </button>
       )}
       {!isNewAgent && (
@@ -309,9 +315,11 @@ export default function FormAddAgent({
           {!uploading && (
             <button
               onClick={saveAgentData}
-              className="p-1 disabled:bg-gray-400 rounded-md border my-1 border-green-500 text-green-500 hover:bg-green-500 hover:text-white"
+              className="p-1 mx-4 disabled:bg-gray-400 rounded-md border my-1 border-green-500 text-green-500 hover:bg-green-500 hover:text-white"
             >
-              {uploading ? "Uploading photo ..." : "UPDATE"}
+              {uploading
+                ? "Uploading photo ..."
+                : GetTransForTokensArray(LANG_TOKENS.UPDATE, user.lang)}
             </button>
           )}
         </>
