@@ -103,7 +103,7 @@ function AgentsMap({ agentsf, section, equipe }) {
         chart.map((lev) => (
           <div className=" p-1  flex-wrap border-t border-t-slate-400 md:flex gap-4 justify-center items-center  ">
             <div className=" flex items-center justify-center text-4xl bg-sky-700 text-black rounded-[2.25rem] w-[3rem] h-[3rem] font-black p-2  ">
-              <div> {lev.length}</div>
+              <div className=" border border-white  "> {lev.length}</div>
               <dic className=" text-xs  ">
                 {lev[0] &&
                   GetTransForToken(LANG_TOKENS[lev[0].poste], user.lang)}
