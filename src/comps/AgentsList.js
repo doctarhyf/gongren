@@ -8,7 +8,7 @@ import {
   CustomSortByListPriority,
   GroupBySectionAndEquipe,
 } from "../helpers/func";
-import { GetTransForToken, LANG_TOKENS } from "../helpers/lang_strings";
+import { GetTransForTokensArray, LANG_TOKENS } from "../helpers/lang_strings";
 import { UserContext } from "../App";
 
 export default function AgentsList({
@@ -128,7 +128,7 @@ export default function AgentsList({
         />
       </div>
       <div>
-        {GetTransForToken(LANG_TOKENS.SHOW_ONLY_ACTIVE, user.lang)}
+        {GetTransForTokensArray(LANG_TOKENS.SHOW_ONLY_ACTIVE, user.lang)}
         <input
           type="checkbox"
           className="toggle toggle-xs"

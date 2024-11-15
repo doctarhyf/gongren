@@ -31,7 +31,7 @@ import reload from "../img/reload.png";
 import {
   GetLangCodeByIndex,
   GetLangIndexByLangCode,
-  GetTransForToken,
+  GetTransForTokensArray,
   LANG_TOKENS,
 } from "../helpers/lang_strings";
 
@@ -477,7 +477,7 @@ export default function RapportChargement() {
             {!adding && (
               <ActionButton
                 icon={reload}
-                title={GetTransForToken(LANG_TOKENS.REFRESH, user.lang)} //{LANG_TOKENS.REFRESH[GetLangIndexByLangCode(user.lang)]}
+                title={GetTransForTokensArray(LANG_TOKENS.REFRESH, user.lang)} //{LANG_TOKENS.REFRESH[GetLangIndexByLangCode(user.lang)]}
                 onClick={(e) => loadData()}
               />
             )}
@@ -502,7 +502,10 @@ export default function RapportChargement() {
               />
             </svg>
             <span>
-              {GetTransForToken(LANG_TOKENS.MSG_INSERT_NEW_DATA, user.lang)}
+              {GetTransForTokensArray(
+                LANG_TOKENS.MSG_INSERT_NEW_DATA,
+                user.lang
+              )}
             </span>
           </div>
         )}
@@ -546,25 +549,28 @@ export default function RapportChargement() {
                   <thead>
                     <tr>
                       <th className="border border-slate-500 p-1">
-                        {GetTransForToken(LANG_TOKENS.DATE, user.lang)}
+                        {GetTransForTokensArray(LANG_TOKENS.DATE, user.lang)}
                       </th>
                       <th className="border border-slate-500 p-1">
-                        {GetTransForToken(LANG_TOKENS.EQ, user.lang)}
+                        {GetTransForTokensArray(LANG_TOKENS.EQ, user.lang)}
                       </th>
                       <th className="border border-slate-500 p-1">
-                        {GetTransForToken(LANG_TOKENS.SHIFT, user.lang)}
+                        {GetTransForTokensArray(LANG_TOKENS.SHIFT, user.lang)}
                       </th>
                       <th className="border border-slate-500 p-1">
-                        {GetTransForToken(LANG_TOKENS.BAGS, user.lang)}
+                        {GetTransForTokensArray(LANG_TOKENS.BAGS, user.lang)}
                       </th>
                       <th className="border border-slate-500 p-1 hidden sm:table-cell">
                         {LANG_TOKENS.TRUCK[GetLangIndexByLangCode(user.lang)]}
                       </th>
                       <th className="border border-slate-500 p-1 hidden sm:table-cell">
-                        {GetTransForToken(LANG_TOKENS.TORN_BAGS, user.lang)}
+                        {GetTransForTokensArray(
+                          LANG_TOKENS.TORN_BAGS,
+                          user.lang
+                        )}
                       </th>
                       <th className="border border-slate-500 p-1">
-                        {GetTransForToken(LANG_TOKENS.T, user.lang)}
+                        {GetTransForTokensArray(LANG_TOKENS.T, user.lang)}
                       </th>
                       <th className="border border-slate-500 p-1">BNS</th>
                       <th className="border border-slate-500 p-1">ACT</th>

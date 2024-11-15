@@ -24,7 +24,7 @@ import { UserHasAccessCode } from "../helpers/func";
 } from "../helpers/lang_strings"; */
 import * as SB from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
-import { GetTransForToken, LANG_TOKENS } from "../helpers/lang_strings";
+import { GetTransForTokensArray, LANG_TOKENS } from "../helpers/lang_strings";
 
 export default function Home() {
   const [, , user] = useContext(UserContext);
@@ -130,12 +130,12 @@ export default function Home() {
       <HUDGreetings user={user} />
 
       <div className="p-2 text-cente mx-auto text-center text-lg font-thin px-2">
-        {GetTransForToken(LANG_TOKENS.MSG_SECTION, user.lang)}
+        {GetTransForTokensArray(LANG_TOKENS.MSG_SECTION, user.lang)}
       </div>
 
       <div className=" flex flex-col md:flex-row justify-center items-center  ">
         <div className=" text-center font-bold  ">
-          {GetTransForToken(LANG_TOKENS.MSG_SHOW_MONTH_DATA, user.lang)}:
+          {GetTransForTokensArray(LANG_TOKENS.MSG_SHOW_MONTH_DATA, user.lang)}:
         </div>
         <DateSelector
           onDateSelected={onDateSelected}

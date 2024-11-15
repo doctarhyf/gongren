@@ -25,7 +25,7 @@ import * as SB from "../helpers/sb";
 import { LoadAllItems } from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
 import eraser from "../img/eraser.png";
-import { GetTransForToken, LANG_TOKENS } from "../helpers/lang_strings";
+import { GetTransForTokensArray, LANG_TOKENS } from "../helpers/lang_strings";
 
 function AgentCard({ agent }) {
   const [, , user] = useContext(UserContext);
@@ -59,11 +59,11 @@ function AgentCard({ agent }) {
             <div
               className={` inline-block  rounded-md text-xs  text-white  p-1  ${bg} `}
             >
-              {GetTransForToken(LANG_TOKENS[agent.poste], user.lang)}
+              {GetTransForTokensArray(LANG_TOKENS[agent.poste], user.lang)}
               {agent.chef_deq === "OUI" &&
-                " - " + GetTransForToken(LANG_TOKENS.DEQ, user.lang)}
+                " - " + GetTransForTokensArray(LANG_TOKENS.DEQ, user.lang)}
               {agent.is_exp === "OUI" &&
-                " - " + GetTransForToken(LANG_TOKENS.EXP, user.lang)}
+                " - " + GetTransForTokensArray(LANG_TOKENS.EXP, user.lang)}
             </div>
           </div>
           <div>
@@ -135,8 +135,11 @@ function AgentsMap({ agentsf, section, equipe }) {
                   <div className="  self-center  ">{lev.length}</div>
                   <dic className=" text-xs font-bold  ">
                     {lev[0].chef_deq === "OUI"
-                      ? GetTransForToken(LANG_TOKENS.DEQ, user.lang)
-                      : GetTransForToken(LANG_TOKENS[lev[0].poste], user.lang)}
+                      ? GetTransForTokensArray(LANG_TOKENS.DEQ, user.lang)
+                      : GetTransForTokensArray(
+                          LANG_TOKENS[lev[0].poste],
+                          user.lang
+                        )}
                   </dic>
                 </div>
               )}
@@ -489,7 +492,7 @@ export default function Equipes() {
                   defaultChecked={isCustomList}
                   onChange={(e) => setIsCustomList(e.target.checked)}
                 />
-                {GetTransForToken(LANG_TOKENS.CUSTOM_LIST, user.lang)}
+                {GetTransForTokensArray(LANG_TOKENS.CUSTOM_LIST, user.lang)}
               </div>
 
               <div
@@ -533,7 +536,7 @@ export default function Equipes() {
                       defaultChecked={showTeamStats}
                       onChange={(e) => setShowTeamStats(e.target.checked)}
                     />
-                    {GetTransForToken(LANG_TOKENS.TEAM_STATS, user.lang)}
+                    {GetTransForTokensArray(LANG_TOKENS.TEAM_STATS, user.lang)}
                   </div>
                   {showTeamStats && (
                     <div
@@ -556,7 +559,7 @@ export default function Equipes() {
                       defaultChecked={showTeamStats}
                       onChange={(e) => setShowFilters(e.target.checked)}
                     />
-                    {GetTransForToken(LANG_TOKENS.TEAM_FILTER, user.lang)}
+                    {GetTransForTokensArray(LANG_TOKENS.TEAM_FILTER, user.lang)}
                   </div>
 
                   <select
@@ -596,7 +599,7 @@ export default function Equipes() {
                   defaultChecked={showMap}
                   onChange={(e) => setShowMap(e.target.checked)}
                 />
-                {GetTransForToken(LANG_TOKENS.SHOW_MAP, user.lang)}
+                {GetTransForTokensArray(LANG_TOKENS.SHOW_MAP, user.lang)}
               </div>
 
               <div>
@@ -607,12 +610,15 @@ export default function Equipes() {
                     defaultChecked={showTeamSelector}
                     onChange={(e) => setShowTeamSelector(e.target.checked)}
                   />
-                  {GetTransForToken(LANG_TOKENS.SHOW_TEAM_SELECTOR, user.lang)}
+                  {GetTransForTokensArray(
+                    LANG_TOKENS.SHOW_TEAM_SELECTOR,
+                    user.lang
+                  )}
                 </div>
                 <div className={`  ${showTeamSelector ? "block" : "hidden"}  `}>
                   <div>
                     <span className={CLASS_SELECT_TITLE}>
-                      {GetTransForToken(LANG_TOKENS.Workshop, user.lang)}
+                      {GetTransForTokensArray(LANG_TOKENS.Workshop, user.lang)}
                     </span>
 
                     <select
@@ -624,7 +630,7 @@ export default function Equipes() {
                     >
                       {SECTIONS.map((it, i) => (
                         <option key={i} value={it}>
-                          {GetTransForToken(LANG_TOKENS[it], user.lang)}
+                          {GetTransForTokensArray(LANG_TOKENS[it], user.lang)}
                         </option>
                       ))}
                     </select>
@@ -632,7 +638,7 @@ export default function Equipes() {
 
                   <div>
                     <span className={CLASS_SELECT_TITLE}>
-                      {GetTransForToken(LANG_TOKENS.TEAM, user.lang)}
+                      {GetTransForTokensArray(LANG_TOKENS.TEAM, user.lang)}
                     </span>
 
                     <select
@@ -652,7 +658,7 @@ export default function Equipes() {
 
                   <div>
                     <span className={CLASS_SELECT_TITLE}>
-                      {GetTransForToken(LANG_TOKENS.YEAR, user.lang)}:
+                      {GetTransForTokensArray(LANG_TOKENS.YEAR, user.lang)}:
                     </span>
                     <select
                       onChange={onFilterAgents}
@@ -667,7 +673,7 @@ export default function Equipes() {
 
                   <div>
                     <span className={CLASS_SELECT_TITLE}>
-                      {GetTransForToken(LANG_TOKENS.MONTH, user.lang)}:
+                      {GetTransForTokensArray(LANG_TOKENS.MONTH, user.lang)}:
                     </span>
                     <select
                       className={CLASS_SELECT}
@@ -690,7 +696,7 @@ export default function Equipes() {
                         {!isCustomList && (
                           <ActionButton
                             icon={null}
-                            title={GetTransForToken(
+                            title={GetTransForTokensArray(
                               LANG_TOKENS.CLEAR_CURRENT_TEAM,
                               user.lang
                             )}

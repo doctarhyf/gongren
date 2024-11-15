@@ -17,7 +17,11 @@ import shield from "../img/shield.png";
 import ico_user from "../img/user.png";
 import ItemNotSelected from "./ItemNotSelected";
 import { UserContext } from "../App";
-import { GetTransForToken, LANG_TOKENS } from "../helpers/lang_strings";
+import {
+  GetTransForTokensArray,
+  GetTransForTokenName,
+  LANG_TOKENS,
+} from "../helpers/lang_strings";
 
 export const AGENT_CARD_EVENT = {
   DELETED: "ag_del",
@@ -214,7 +218,10 @@ export default function AgentCard({
                             align="right"
                             className="text-neutral-400 text-sm"
                           >
-                            {agent_data[0]}
+                            {GetTransForTokenName(
+                              agent_data[0], //cool
+                              user.lang
+                            )}
                           </td>
                           <td className="text-sky-500 p-1 font-bold ">
                             {agent_data[0] === "created_at" &&
@@ -268,7 +275,10 @@ export default function AgentCard({
                   }}
                   className={CLASS_BTN}
                 >
-                  {GetTransForToken(LANG_TOKENS.UPDATE_ACCESS_CODES, user.lang)}
+                  {GetTransForTokensArray(
+                    LANG_TOKENS.UPDATE_ACCESS_CODES,
+                    user.lang
+                  )}
                 </button>
                 <button
                   onClick={(e) => {
@@ -288,7 +298,7 @@ export default function AgentCard({
                   onClick={(e) => setShowAccessCode(false)}
                   className={CLASS_BTN}
                 >
-                  {GetTransForToken(LANG_TOKENS.CANCEL, user.lang)}
+                  {GetTransForTokensArray(LANG_TOKENS.CANCEL, user.lang)}
                 </button>
               </div>
             )}
@@ -304,7 +314,7 @@ export default function AgentCard({
                         }
                         className={CLASS_BTN}
                       >
-                        {GetTransForToken(LANG_TOKENS.UPDATE, user.lang)}
+                        {GetTransForTokensArray(LANG_TOKENS.UPDATE, user.lang)}
                       </button>
                     )}
 
@@ -313,7 +323,7 @@ export default function AgentCard({
                         onClick={(e) => deleteAgent(agent)}
                         className={CLASS_BTN}
                       >
-                        {GetTransForToken(LANG_TOKENS.DELETE, user.lang)}
+                        {GetTransForTokensArray(LANG_TOKENS.DELETE, user.lang)}
                       </button>
                     )}
                   </>
@@ -327,13 +337,13 @@ export default function AgentCard({
                   onClick={(e) => setAgentCardEditMode(!agentCardEditMode)}
                   className={CLASS_BTN}
                 >
-                  {GetTransForToken(LANG_TOKENS.CANCEL, user.lang)}
+                  {GetTransForTokensArray(LANG_TOKENS.CANCEL, user.lang)}
                 </button>
                 <button
                   onClick={(e) => setAgentCardEditMode(!agentCardEditMode)}
                   className={CLASS_BTN}
                 >
-                  {GetTransForToken(LANG_TOKENS.SAVE, user.lang)}
+                  {GetTransForTokensArray(LANG_TOKENS.SAVE, user.lang)}
                 </button>
               </>
             )}

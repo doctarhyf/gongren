@@ -3,7 +3,7 @@ import { CLASS_BTN, CLASS_INPUT_TEXT, LOGO } from "../helpers/flow";
 import {
   GetLangCodeByIndex,
   GetLangIndexByLangCode,
-  GetTransForToken,
+  GetTransForTokensArray,
   LANG_TOKENS,
   LANGS,
 } from "../helpers/lang_strings";
@@ -57,7 +57,7 @@ export default function FormLogin({ onLogin }) {
     <div className=" flex flex-col mt-4 mx-2 p-2 ">
       <div className="mx-auto  flex flex-col space-y-4    md:card md:bg-base-100 md:w-96 md:p-2 md:shadow-xl ">
         <img src={LOGO} width={200} />
-        <div>{GetTransForToken(LANG_TOKENS.EMPLOYE_ID, lang)}</div>
+        <div>{GetTransForTokensArray(LANG_TOKENS.EMPLOYE_ID, lang)}</div>
         <input
           ref={ref_mat}
           type="text"
@@ -80,7 +80,7 @@ export default function FormLogin({ onLogin }) {
             onClick={(e) => onBtnLogin()}
             className={` ${CLASS_BTN} mx-auto w-full`}
           >
-            {GetTransForToken(LANG_TOKENS.LOGIN, lang)}
+            {GetTransForTokensArray(LANG_TOKENS.LOGIN, lang)}
           </button>
         </div>
 

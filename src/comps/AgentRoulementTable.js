@@ -8,7 +8,11 @@ import {
 } from "../helpers/flow";
 import { AddOneToRoulementCurMonth, UserHasAccessCode } from "../helpers/func";
 import { GFMN } from "../helpers/GetRoulemenDaysData.mjs";
-import { GetTransForToken, GTFT, LANG_TOKENS } from "../helpers/lang_strings";
+import {
+  GetTransForTokensArray,
+  GTFT,
+  LANG_TOKENS,
+} from "../helpers/lang_strings";
 import chart from "../img/chart.png";
 import sync from "../img/sync.png";
 import ActionButton from "./ActionButton";
@@ -120,7 +124,10 @@ export default function AgentRoulementTable({
                     <div className={` ${!editRoulement ? "block" : "hidden"} `}>
                       <ActionButton
                         icon={sync}
-                        title={GetTransForToken(LANG_TOKENS.UPDATE, user.lang)}
+                        title={GetTransForTokensArray(
+                          LANG_TOKENS.UPDATE,
+                          user.lang
+                        )}
                         onClick={(e) => setEditRoulement(true)}
                       />
                     </div>
@@ -133,7 +140,10 @@ export default function AgentRoulementTable({
                   >
                     <ActionButton
                       icon={save}
-                      title={GetTransForToken(LANG_TOKENS.SAVE, user.lang)}
+                      title={GetTransForTokensArray(
+                        LANG_TOKENS.SAVE,
+                        user.lang
+                      )}
                       onClick={(e) => {
                         setEditRoulement(false);
                         onSaveRoulement();
@@ -148,7 +158,7 @@ export default function AgentRoulementTable({
                   >
                     <ActionButton
                       icon={save}
-                      title={GetTransForToken(
+                      title={GetTransForTokensArray(
                         LANG_TOKENS.SAVE_WHOLE_TEAM,
                         user.lang
                       )}

@@ -9,7 +9,7 @@ import DateSelector from "./DateSelector";
 import Loading from "./Loading";
 import printer from "../img/printer.png";
 import { UserContext } from "../App";
-import { GetTransForToken, LANG_TOKENS } from "../helpers/lang_strings";
+import { GetTransForTokensArray, LANG_TOKENS } from "../helpers/lang_strings";
 
 const ERRORS = {
   AGENT_DATA_UNDEFINED: { code: "no_ag_data", msg: "agentData is undefined!" },
@@ -234,7 +234,7 @@ export default function TableRoulement({ agentData }) {
         <div className="md:flex gap-2">
           <ActionButton
             icon={printer}
-            title={GetTransForToken(LANG_TOKENS.PRINT, user.lang)}
+            title={GetTransForTokensArray(LANG_TOKENS.PRINT, user.lang)}
             onClick={(e) =>
               printPDF(
                 selectedMonthCode,

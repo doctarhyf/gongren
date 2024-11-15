@@ -4,7 +4,7 @@ import { fetchAllItemFromTable } from "../api/queries";
 import { CLASS_INPUT_TEXT, POSTES } from "../helpers/flow";
 import Loading from "./Loading";
 import { UserContext } from "../App";
-import { GetTransForToken, LANG_TOKENS } from "../helpers/lang_strings";
+import { GetTransForTokensArray, LANG_TOKENS } from "../helpers/lang_strings";
 
 function FlatList({ items, renderItem, perpage, q }) {
   //
@@ -78,7 +78,7 @@ function FlatList({ items, renderItem, perpage, q }) {
       >
         {[...Array(numpages).fill(0)].map((it, i) => (
           <option key={i} value={i}>
-            {GetTransForToken(LANG_TOKENS.Page, user.lang, { p: i + 1 })}
+            {GetTransForTokensArray(LANG_TOKENS.Page, user.lang, { p: i + 1 })}
           </option>
         ))}
       </select>
@@ -89,7 +89,7 @@ function FlatList({ items, renderItem, perpage, q }) {
           value={activeOnly}
           onChange={(e) => setActiveOnly(e.target.checked)}
         />{" "}
-        {GetTransForToken(LANG_TOKENS.SHOW_ONLY_ACTIVE, user.lang)}
+        {GetTransForTokensArray(LANG_TOKENS.SHOW_ONLY_ACTIVE, user.lang)}
       </div>
       <div>
         {dataf.map((item, i) => renderItem(item, i + curpage * perpage + 1))}

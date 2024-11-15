@@ -3,7 +3,7 @@ import { MAIN_MENU, USER_LEVEL } from "../helpers/flow";
 import gck from "../img/gck.png";
 import logout from "../img/logout.svg";
 import { UserHasAccessCode } from "../helpers/func";
-import { GetTransForToken, LANG_TOKENS } from "../helpers/lang_strings";
+import { GetTransForTokensArray, LANG_TOKENS } from "../helpers/lang_strings";
 
 function MenuIcon({ sethidden, hidden }) {
   return (
@@ -68,7 +68,7 @@ function MainNav({ user, onMenuClick, curPage, onLogout }) {
               `}
                   >
                     {menu_item.trad
-                      ? GetTransForToken(menu_item.trad, user.lang)
+                      ? GetTransForTokensArray(menu_item.trad, user.lang)
                       : menu_item.name}
                   </button>
                 )}
@@ -80,7 +80,7 @@ function MainNav({ user, onMenuClick, curPage, onLogout }) {
                 className=" flex gap-2 w-fit text-xs p-2  rounded-md mx-auto border-white border text-white hover:bg-red-700 "
               >
                 <img src={logout} className=" w-4 h-4 " />
-                {GetTransForToken(LANG_TOKENS.LOGOUT, user.lang)}
+                {GetTransForTokensArray(LANG_TOKENS.LOGOUT, user.lang)}
               </button>
             </li>
           </ul>

@@ -34,7 +34,10 @@ import SacsCalc from "../SacsCalc";
 import CountdownTimer from "../CountdownTimer";
 import LoadsCalculator from "../LoadCalculator";
 import nophoto from "../../img/user.png";
-import { GetTransForToken, LANG_TOKENS } from "../../helpers/lang_strings";
+import {
+  GetTransForTokensArray,
+  LANG_TOKENS,
+} from "../../helpers/lang_strings";
 
 function AgentStats({ agentsGrouped }) {
   return (
@@ -98,12 +101,12 @@ function AgentCardMini({ agent, moreInfo, showUpdatePoste, onAgentUpdate }) {
         )}
         {agent.poste === "SUP" && (
           <div className=" font-bold inline-block  bg-red-500 p-1 text-xs rounded-md ">
-            {GetTransForToken(LANG_TOKENS.SUP, user.lang)}
+            {GetTransForTokensArray(LANG_TOKENS.SUP, user.lang)}
           </div>
         )}
         {agent.chef_deq === "OUI" && (
           <div className=" font-bold inline-block  bg-lime-600 p-1 text-xs rounded-md ">
-            {GetTransForToken(LANG_TOKENS.DEQ, user.lang)}
+            {GetTransForTokensArray(LANG_TOKENS.DEQ, user.lang)}
           </div>
         )}
       </div>
@@ -125,26 +128,26 @@ function AgentCardMini({ agent, moreInfo, showUpdatePoste, onAgentUpdate }) {
         <div>
           <div>
             <span className=" text-white/50  ">
-              {GetTransForToken(LANG_TOKENS.Workshop, user.lang)}:
+              {GetTransForTokensArray(LANG_TOKENS.Workshop, user.lang)}:
             </span>{" "}
             {agent.section}
           </div>{" "}
           <div>
             <span className=" text-white/50  ">
-              {GetTransForToken(LANG_TOKENS.Position, user.lang)}:
+              {GetTransForTokensArray(LANG_TOKENS.Position, user.lang)}:
             </span>{" "}
             {(POSTES[agent.poste] && POSTES[agent.poste].fr) || POSTE[3]}
           </div>
           <div>
             <span className=" text-white/50  ">
-              {GetTransForToken(LANG_TOKENS.TEAM, user.lang)}:
+              {GetTransForTokensArray(LANG_TOKENS.TEAM, user.lang)}:
             </span>{" "}
             {EQUIPES_NAMES[agent.equipe] || agent.equipe}
           </div>
           {agent.phone && (
             <div>
               <span className=" text-white/50  ">
-                {GetTransForToken(LANG_TOKENS.Phone, user.lang)}:
+                {GetTransForTokensArray(LANG_TOKENS.Phone, user.lang)}:
               </span>{" "}
               {agent.phone}
             </div>
@@ -279,7 +282,7 @@ export function HUDProduction() {
 export function HUDGreetings({ user }) {
   return (
     <div className=" md:text-center w-auto my-4 p-2 bg-gray-800 text-white shadow-lg shadow-black/25 rounded-md">
-      <div> {GetTransForToken(LANG_TOKENS.MSG_WELCOME, user.lang)}</div>
+      <div> {GetTransForTokensArray(LANG_TOKENS.MSG_WELCOME, user.lang)}</div>
 
       <div className="  flex flex-col md:flex-row md:justify-center md:my-0 my-2 gap-4 ">
         <div className=" w-32 h-32 bg-slate-700 rounded-full overflow-hidden ">
@@ -477,12 +480,12 @@ export function HUDMonthProgress({ loads, date }) {
     <Card
       id={0}
       bgColor={CARDS_BG_COLORS[2]}
-      title={GetTransForToken(
+      title={GetTransForTokensArray(
         LANG_TOKENS.HUD_TITLE_LOADING_TRACKING,
         user.lang,
         { y: date.y, m: AddLeadingZero(date.m + 1) }
       )}
-      desc={GetTransForToken(LANG_TOKENS.HUD_DESC_LOADING, user.lang)}
+      desc={GetTransForTokensArray(LANG_TOKENS.HUD_DESC_LOADING, user.lang)}
     >
       {loading ? (
         <Loading isLoading={true} />
@@ -593,11 +596,15 @@ export function HUDBonus({ loads, agents, date, agents_by_team }) {
   return (
     <Card
       id={1}
-      title={GetTransForToken(LANG_TOKENS.HUD_TITLE_BONUS_TRACKING, user.lang, {
-        y: date.y,
-        m: AddLeadingZero(date.m + 1),
-      })}
-      desc={GetTransForToken(LANG_TOKENS.HUD_DESC_BONUS, user.lang)}
+      title={GetTransForTokensArray(
+        LANG_TOKENS.HUD_TITLE_BONUS_TRACKING,
+        user.lang,
+        {
+          y: date.y,
+          m: AddLeadingZero(date.m + 1),
+        }
+      )}
+      desc={GetTransForTokensArray(LANG_TOKENS.HUD_DESC_BONUS, user.lang)}
     >
       {loading ? (
         <Loading isLoading={true} />

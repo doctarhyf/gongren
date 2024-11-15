@@ -143,6 +143,25 @@ export const LANG_TOKENS = {
   NETTOYAGE: ["CLEANING", "打扫卫生", "NETTOYAGE"],
   CIMENTERIE: ["CIMENT WORKSHOP", "水泥车间", "CIMENTERIE"],
   "N/A": ["N/A", "无", "N/A"],
+  created_at: ["CREATED AT", "创建于", "Créé le"],
+  contrat: ["CONTRACT", "工作合同", "CONTRAT"],
+  equipe: ["TEAM", "班组", "EQUIPE"],
+  mingzi: ["CHINESE NAME", "中名", "NOM"],
+  nationalite: ["NATIONALITY", "国籍", "NATIONALITE"],
+  nom: ["NAME", "姓名", "NOM"],
+  poste: ["POSITION", "岗位", "POSTE"],
+  postnom: ["SURNAME", "姓氏", "POSTNOM"],
+  prenom: ["FIRSTNAME", "名字", "PRENOM"],
+  section: ["WORKSHOP", "车间", "SECTION"],
+  phone: ["PHONE", "电话", "PHONE"],
+  matricule: ["EMPLOYE ID", "工号", "MATRICULE"],
+  chef_deq: ["SQUAD LEADER", "小班长", "CHEF D'EQUIPE"],
+  tenue: ["WORKING CLOTHES", "工作服", "TENUE"],
+  pin: ["PIN", "密码", "PIN"],
+  user_level: ["USER LEVEL", "用户级别", "Niveau d'utilisateur"],
+  active: ["ACTIVE", "活跃", "ACTIF"],
+  is_exp: ["IS EXPEDITOR", "发货员", "EXPEDITEUR"],
+  lang: ["LANGUAGE", "语言", "LANGUE"],
 };
 
 //Each entry now includes a French translation as the third element in the array. Let me know if there are any terms that might need adjustment or further customization!
@@ -190,15 +209,25 @@ export function GetLangIndexByLangCode(langCode) {
   return 0;
 }
 
-export function GetTransForToken(token, langCode, holderData) {
+export function GetTransForTokenName(tokenName, langCode, holderData) {
+  const token = LANG_TOKENS[tokenName];
+
+  if (token === undefined) return tokenName;
+
+  return GetTransForTokensArray(token, langCode, holderData);
+}
+
+export function GetTransForTokensArray(token, langCode, holderData) {
   const keys = Object.keys(LANG_TOKENS);
   console.log("Keys :", keys);
   const vals = Object.values(LANG_TOKENS);
   console.log("vals: ", vals);
   console.log("token: ", token);
-  const idx = vals.findIndex(
-    (arr) => arr[0] === token[0] && arr[1] === token[1]
-  );
+  const idx = vals.findIndex((arr) => {
+    return arr[0] === token[0] && arr[1] === token[1];
+  });
+
+  //return "test";
   console.log("idx: ", idx);
   let key = keys[idx];
   console.log("key: ", key);
@@ -220,4 +249,4 @@ export function GetTransForToken(token, langCode, holderData) {
   return trad ? trad : deftrad;
 }
 
-export const GTFT = GetTransForToken;
+export const GTFT = GetTransForTokensArray;

@@ -2,7 +2,7 @@ import { useContext, useRef, useState } from "react";
 import { CLASS_SELECT, CLASS_SELECT_TITLE, MONTHS } from "../helpers/flow";
 import { getDaysInMonth, ParseDate } from "../helpers/func";
 import { UserContext } from "../App";
-import { GetTransForToken, LANG_TOKENS } from "../helpers/lang_strings";
+import { GetTransForTokensArray, LANG_TOKENS } from "../helpers/lang_strings";
 
 export default function DateSelector({
   onDateSelected,
@@ -89,7 +89,7 @@ export default function DateSelector({
       <div className="w-fit md:flex">
         <div>
           <span className={CLASS_SELECT_TITLE}>
-            {GetTransForToken(LANG_TOKENS.YEAR, user.lang)}:
+            {GetTransForTokensArray(LANG_TOKENS.YEAR, user.lang)}:
           </span>
           <select
             className={CLASS_SELECT}
@@ -110,7 +110,7 @@ export default function DateSelector({
 
         <div className={`${dateType !== "Y" ? "block" : "hidden"}`}>
           <span className={CLASS_SELECT_TITLE}>
-            {GetTransForToken(LANG_TOKENS.MONTH, user.lang)}:
+            {GetTransForTokensArray(LANG_TOKENS.MONTH, user.lang)}:
           </span>
           <select
             className={CLASS_SELECT}
