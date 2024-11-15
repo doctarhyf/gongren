@@ -124,6 +124,15 @@ export const LANG_TOKENS = {
   ],
   Page: ["Page %p", "%p 页", "Page %p"],
   Nom: ["Name", "姓名", "Nom"],
+
+  NET: ["CLEANER", "打扫卫生", "NETTOYEUR"],
+  EXP: ["EXPEDITOR", "发货员", "EXP"],
+  OPE: ["OPERATOR", "插袋工", "OPERATEUR"],
+  CHARG: ["LOADER", "装车工", "CHARGEUR"],
+  MEC: ["MECANIC", "机修工", "MECNICIEN"],
+  INT: ["TRANSLATOR", "翻译", "INT"],
+  SUP: ["SUPERVISOR", "班长", "SUPERVISEUR"],
+  AIDOP: ["ASSISTANT OP.", "助插袋工", "AIDOP"],
 };
 
 //Each entry now includes a French translation as the third element in the array. Let me know if there are any terms that might need adjustment or further customization!
