@@ -70,9 +70,9 @@ function AgentCard({ agent }) {
                 " - " + GetTransForTokensArray(LANG_TOKENS.EXP, user.lang)}
             </div>
           </div>
-          <div>
+          <div className=" flex gap-1  ">
             <span>{agent.nom}</span>
-            <span className=" hidden md:block ">{agent.postnom}</span>
+            <span className=" md:hidden ">{agent.postnom}</span>
             <span>{agent.prenom}</span>
           </div>
         </div>
@@ -491,7 +491,7 @@ export default function Equipes() {
       <div className=" md:flex ">
         {!loading && (
           <>
-            <div>
+            <div className=" flex flex-col gap-2 ">
               <div>
                 <input
                   type="checkbox"
@@ -562,7 +562,7 @@ export default function Equipes() {
                   )}
                 </div>
 
-                <div className={`   `}>
+                <div className={` mt-2  `}>
                   <div>
                     <input
                       type="checkbox"

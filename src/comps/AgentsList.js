@@ -100,6 +100,7 @@ export default function AgentsList({
     }
 
     let agents_filtered = agents.filter((agent, i) => {
+      
       const qlc = query.toLowerCase();
       const nom = agent.nom.toLowerCase();
       const postnom = agent.postnom.toLowerCase();
