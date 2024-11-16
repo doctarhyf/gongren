@@ -83,8 +83,11 @@ function AgentCard({ agent }) {
 
 function AgentsMap({ agentsf, section, equipe }) {
   const [, , user] = useContext(UserContext);
-  function findAgentsByPoste(agents, poste, unique = false) {
+  function findAgentsByPoste(agents, poste, unique = false, excludeDeq = true) {
     let foundAgents = agents.filter((it) => it.poste === poste);
+
+    if (excludeDeq)
+      foundAgents = foundAgents.filter((it) => it.chef_deq === "NON");
 
     if (foundAgents.length === 0) foundAgents = undefined;
 
