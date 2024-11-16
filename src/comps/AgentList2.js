@@ -54,12 +54,14 @@ function FlatList({ items, renderItem, perpage, q }) {
       const nom = it.nom.toLowerCase();
       const postnom = it.postnom.toLowerCase();
       const prenom = it.prenom.toLowerCase();
+      const mingzi = it.mingzi;
 
       const fullname = `${nom} ${postnom} ${prenom}`;
       const cfullname = fullname.includes(qlc);
+      const cmingzi = mingzi.includes(qlc);
       const cmat = it.matricule.toLowerCase().includes(qlc);
 
-      return cfullname || cmat;
+      return cfullname || cmat || cmingzi;
     });
 
     let aff = [...af];
