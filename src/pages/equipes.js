@@ -133,6 +133,12 @@ function AgentsMap({ agentsf, section, equipe }) {
     chart = [agentsf];
   }
 
+  const teamIsInABCD = ["A", "B", "C", "D"].includes(eq);
+  const isSectionEnsachage = sec === SECTIONS[3];
+  const isEnsachage = teamIsInABCD && isSectionEnsachage;
+
+  //if (!isEnsachage) chart = [agentsf];
+
   function levelIsNull(lev) {
     return lev.length === 1 && lev[0] === null;
   }
