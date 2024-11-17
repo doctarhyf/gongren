@@ -31,6 +31,8 @@ import {
   LANG_TOKENS,
 } from "../helpers/lang_strings";
 
+import phone from "../img/phone.png";
+
 function AgentCard({ agent }) {
   const [, , user] = useContext(UserContext);
 
@@ -75,6 +77,12 @@ function AgentCard({ agent }) {
             <span className=" md:hidden ">{agent.postnom}</span>
             <span>{agent.prenom}</span>
           </div>
+          {agent.phone && (
+            <div className=" flex gap-1 justify-center items-center text-sky-500 underline italic font-bold  ">
+              <img src={phone} className=" w-4 h-4  " />{" "}
+              <a href={`tel:${agent.phone}`}>{agent.phone}</a>
+            </div>
+          )}
         </div>
       </div>
     )
