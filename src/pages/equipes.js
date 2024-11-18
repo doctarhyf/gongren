@@ -40,6 +40,7 @@ function AgentCard({ agent }) {
   let bg = "bg-slate-500";
 
   if (agent) {
+    if (agent.poste === "DIR") bg = "bg-red-800";
     if (agent.poste === "SUP") bg = "bg-red-500";
     if (agent.chef_deq === "OUI") bg = "bg-pink-500";
     if (agent.poste === "OPE" && agent.chef_deq !== "OUI") bg = "bg-sky-500";
@@ -47,6 +48,8 @@ function AgentCard({ agent }) {
     if (agent.poste === "AIDOP" && agent.chef_deq !== "OUI")
       bg = "bg-yellow-700";
     if (agent.is_exp === "OUI") bg = "bg-emerald-500";
+    if (agent.poste === "MEC") bg = "bg-sky-700";
+    if (agent.poste === "EXP") bg = "bg-green-800";
   }
 
   return (
@@ -116,15 +119,17 @@ function AgentsMap({ agentsf, section, equipe }) {
 
   let agz = [...agentsf];
 
+  const dirs = findAgentsByPoste(agz, "DIR");
   const sup = findAgentsByPoste(agz, "SUP");
   const deq = [agz.find((it) => it.chef_deq === "OUI")];
-  // agz = agz.filter((it) => it.chef_deq === "NON" && it.poste !== "SUP");
   const ops = findAgentsByPoste(agz, "OPE");
   const aidops = findAgentsByPoste(agz, "AIDOP");
   const chargs = findAgentsByPoste(agz, "CHARG");
   const nets = findAgentsByPoste(agz, "NET");
+  const exps = findAgentsByPoste(agz, "EXP");
+  const mecs = findAgentsByPoste(agz, "MEC");
 
-  let chart = [sup, deq, ops, aidops, chargs, nets];
+  let chart = [dirs, sup, deq, ops, aidops, chargs, nets, exps, mecs];
 
   chart = chart.filter((it) => it !== undefined);
 

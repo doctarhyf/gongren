@@ -177,6 +177,7 @@ export const SECTIONS = [
   "N/A",
 ];
 export const POSTE = [
+  "DIR",
   "NET",
   "EXP",
   //"EXPD",
