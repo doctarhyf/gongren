@@ -10,6 +10,8 @@ export const LANG_TOKENS = {
     "清除当前团队",
     "Effacer l'équipe actuelle",
   ],
+  INTERPRETES: ["INTERPRETS", "翻译", "INTERPRETES"],
+  INTERPRETE: ["INTERPRET", "翻译", "INTERPRETE"],
   CLEAR_CUSTOM_LIST: [
     "CLEAR CURRENT TEAM",
     "清除自定义列表  ",

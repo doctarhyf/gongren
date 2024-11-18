@@ -35,6 +35,7 @@ import CountdownTimer from "../CountdownTimer";
 import LoadsCalculator from "../LoadCalculator";
 import nophoto from "../../img/user.png";
 import {
+  GetTransForTokenName,
   GetTransForTokensArray,
   LANG_TOKENS,
 } from "../../helpers/lang_strings";
@@ -130,19 +131,25 @@ function AgentCardMini({ agent, moreInfo, showUpdatePoste, onAgentUpdate }) {
             <span className=" text-white/50  ">
               {GetTransForTokensArray(LANG_TOKENS.Workshop, user.lang)}:
             </span>{" "}
-            {agent.section}
+            {GetTransForTokenName(agent.section, user.lang)}
           </div>{" "}
           <div>
             <span className=" text-white/50  ">
               {GetTransForTokensArray(LANG_TOKENS.Position, user.lang)}:
             </span>{" "}
-            {(POSTES[agent.poste] && POSTES[agent.poste].fr) || POSTE[3]}
+            {GetTransForTokenName(
+              (POSTES[agent.poste] && POSTES[agent.poste].fr) || POSTE[3],
+              user.lang
+            )}
           </div>
           <div>
             <span className=" text-white/50  ">
               {GetTransForTokensArray(LANG_TOKENS.TEAM, user.lang)}:
             </span>{" "}
-            {EQUIPES_NAMES[agent.equipe] || agent.equipe}
+            {GetTransForTokenName(
+              EQUIPES_NAMES[agent.equipe] || agent.equipe,
+              user.lang
+            )}
           </div>
           {agent.phone && (
             <div>
