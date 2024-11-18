@@ -10,6 +10,23 @@ export const LANG_TOKENS = {
     "清除当前团队",
     "Effacer l'équipe actuelle",
   ],
+  TONS_ALREADY_LOADED_THIS_MONTH: [
+    "Tons Already Loaded for This Month.",
+    "本月已装载吨数",
+    "Tonnes Déjà Chargées pour Ce Mois.",
+  ],
+  DAYS_REM_IN_MONTH: [
+    "Days Remaining in the Month",
+    "本月剩余天数",
+    "Jours restants du mois",
+  ],
+  CEMENT_ALREADY_SHIPPED: [
+    "Cement Already Shipped (in USD)",
+    "已发运水泥金额 （美元）",
+    "Ciment deja expedie (USD)",
+  ],
+  AGENTS_LIST: ["Agents List", "工人名单", "Liste des agents"],
+  MY_TEAM: ["My Team", "我的班组", "Mon Equipe"],
   TOTAL: ["TOTAL", "总计", "TOTAL"],
   INTERPRETES: ["INTERPRETS", "翻译", "INTERPRETES"],
   INTERPRETE: ["INTERPRET", "翻译", "INTERPRETE"],

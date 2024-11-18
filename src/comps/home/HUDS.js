@@ -357,8 +357,16 @@ export function HUDMyTeam({ user }) {
   return (
     <Card
       id={5}
-      title={`MON EQUIPE/班组 : ${user.section}, ${user.equipe}`}
-      desc={`Liste des agents. (${agents.length} agents)`}
+      title={`${GetTransForTokensArray(
+        LANG_TOKENS.MY_TEAM,
+        user.lang
+      )} : ${GetTransForTokenName(
+        user.section,
+        user.lang
+      )}, ${GetTransForTokenName(user.equipe, user.lang)}`}
+      desc={`${GetTransForTokensArray(LANG_TOKENS.AGENTS_LIST, user.lang)}. (${
+        agents.length
+      } ${GetTransForTokensArray(LANG_TOKENS.AGENTS, user.lang)})`}
     >
       {loading ? (
         <Loading isLoading={true} />
@@ -400,17 +408,17 @@ export function HUDMyTeam({ user }) {
                   }`}</span>
                   {ag.chef_deq === "OUI" && (
                     <span className=" font-bold inline-block  bg-black p-1 text-xs rounded-md ">
-                      CHEF D'EQ.
+                      {GetTransForTokensArray(LANG_TOKENS.chef_deq, user.lang)}
                     </span>
                   )}
                   {ag.is_exp === "OUI" && (
                     <span className=" font-bold inline-block  bg-red-500 text-white p-1 text-xs rounded-md ">
-                      EXPEDITEUR
+                      {GetTransForTokensArray(LANG_TOKENS.EXP, user.lang)}
                     </span>
                   )}
                   {ag.poste === "SUP" && (
                     <span className=" font-bold inline-block  bg-black p-1 text-xs rounded-md ">
-                      SUP.
+                      {GetTransForTokensArray(LANG_TOKENS.SUP, user.lang)}
                     </span>
                   )}
                   {ag.contrat === "GCK" && (
@@ -499,7 +507,12 @@ export function HUDMonthProgress({ loads, date }) {
       ) : (
         <div>
           <div className=" border-b border-white/15 my-1 py-1 ">
-            <div>PROGR. TONNAGE MENSUEL/月度吨位</div>
+            <div>
+              {GetTransForTokensArray(
+                LANG_TOKENS.TONS_ALREADY_LOADED_THIS_MONTH,
+                user.lang
+              )}
+            </div>
 
             <progress
               className="progress  progress-success w-full "
@@ -516,7 +529,9 @@ export function HUDMonthProgress({ loads, date }) {
           </div>
 
           <div className=" border-b border-white/15 my-1 py-1 ">
-            <div>JOURS RESTANT DU MOIS / 本月剩余天数</div>
+            <div>
+              {GetTransForTokensArray(LANG_TOKENS.DAYS_REM_IN_MONTH, user.lang)}
+            </div>
 
             <progress
               className="progress progress-success w-full "
@@ -538,7 +553,12 @@ export function HUDMonthProgress({ loads, date }) {
           </div>
 
           <div className=" border-b border-white/15 my-1 py-1 ">
-            <div>CIMENT EXPEDIE EN USD / 买的水泥</div>
+            <div>
+              {GetTransForTokensArray(
+                LANG_TOKENS.CEMENT_ALREADY_SHIPPED,
+                user.lang
+              )}
+            </div>
 
             <div className="text-[22pt]">
               {formatAsMoney(parseFloat(data.tonnage) * 124, "USD")}
