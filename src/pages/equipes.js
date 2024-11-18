@@ -93,8 +93,7 @@ function AgentCard({ agent }) {
   );
 }
 
-function AgentsMap({ agentsf, section, equipe }) {
-  const [, , user] = useContext(UserContext);
+export function buildChart(agentsf, sec, eq) {
   function findAgentsByPoste(agents, poste, unique = false, excludeDeq = true) {
     let foundAgents = agents.filter((it) => it.poste === poste);
 
@@ -108,15 +107,6 @@ function AgentsMap({ agentsf, section, equipe }) {
 
     return foundAgents;
   }
-
-  let sec;
-  let eq;
-
-  if (section && equipe) {
-    sec = section.current?.value;
-    eq = equipe.current?.value;
-  }
-
   let agz = [...agentsf];
 
   const dirs = findAgentsByPoste(agz, "DIR");
@@ -133,11 +123,26 @@ function AgentsMap({ agentsf, section, equipe }) {
 
   chart = chart.filter((it) => it !== undefined);
 
-  console.log("sec => ", sec, " eq => ", eq);
-
   if (sec === SECTIONS[3] && eq === "INT") {
     chart = [agentsf];
   }
+
+  console.log("chart => ", chart);
+  return chart;
+}
+
+function AgentsMap({ agentsf, section, equipe }) {
+  const [, , user] = useContext(UserContext);
+
+  let sec;
+  let eq;
+
+  if (section && equipe) {
+    sec = section.current?.value;
+    eq = equipe.current?.value;
+  }
+
+  const chart = buildChart(agentsf, sec, eq);
 
   const teamIsInABCD = ["A", "B", "C", "D"].includes(eq);
   const isSectionEnsachage = sec === SECTIONS[3];
