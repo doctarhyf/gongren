@@ -184,11 +184,17 @@ export function getDaysInMonth(y, m, doNotAddOne) {
   return lastDayOfMonth;
 }
 
-export function CountAgentsByPostType(agentsList, k_poste) {
+export function CountAgentsByPostType(agentsList, k_poste, excludeDeq = true) {
   const propName = "poste";
   const propVal = POSTE[k_poste];
 
-  return agentsList.filter((it, i) => it[propName] === propVal).length;
+  let count = agentsList.filter((it, i) => it[propName] === propVal).length;
+  if (excludeDeq)
+    count = agentsList.filter(
+      (it, i) => it[propName] === propVal && it.chef_deq === "NON"
+    ).length;
+
+  return count;
 }
 
 export function CountAgentsByPropEqVal(agentsList, propName, propVal) {

@@ -12,6 +12,8 @@ import {
   LANG_TOKENS,
 } from "../helpers/lang_strings";
 import { UserContext } from "../App";
+import ActionButton from "./ActionButton";
+import print from "../img/printer.png";
 
 export default function TeamStats({ agentsf }) {
   const [, , user] = useContext(UserContext);
@@ -19,6 +21,7 @@ export default function TeamStats({ agentsf }) {
   const nb_charg = CountAgentsByPostType(agentsf, K_POSTE_CHARGEUR);
   const nb_net = CountAgentsByPostType(agentsf, K_POSTE_NETTOYEUR);
   const nb_aide_op = CountAgentsByPostType(agentsf, K_POSTE_AIDE_OPERATEUR);
+  const sup = agentsf.find((it) => it.poste === "SUP");
   const chef_deq = agentsf.find((it, i) => it.chef_deq === "OUI");
   const agent_zero = agentsf[0];
 
@@ -30,6 +33,10 @@ export default function TeamStats({ agentsf }) {
     const { equipe, section } = agent_zero;
     cur_equipe = equipe;
     cur_section = section;
+  }
+
+  function onPrint() {
+    alert("Print Stats");
   }
 
   return (
@@ -48,6 +55,11 @@ export default function TeamStats({ agentsf }) {
           LANG_TOKENS.AGENTS,
           user.lang
         )})`}
+      </div>
+      <div>
+        {" "}
+        {GetTransForTokensArray(LANG_TOKENS.SUP, user.lang)}:
+        <b>{sup && `${sup.nom} ${sup.postnom} ${sup.prenom} ${sup.mingzi}`}</b>
       </div>
       <div>
         {" "}
@@ -71,6 +83,16 @@ export default function TeamStats({ agentsf }) {
         {" "}
         {GetTransForTokensArray(LANG_TOKENS.NET, user.lang)}:<b>{nb_net}</b>
       </div>
+      <div>
+        {" "}
+        {GetTransForTokensArray(LANG_TOKENS.TOTAL, user.lang)}:
+        <b>{agentsf.length}</b>
+      </div>
+      <ActionButton
+        icon={print}
+        title={GetTransForTokensArray(LANG_TOKENS.PRINT, user.lang)}
+        onClick={onPrint}
+      />
     </di>
   );
 }

@@ -32,6 +32,7 @@ import {
 } from "../helpers/lang_strings";
 
 import phone from "../img/phone.png";
+import print from "../img/printer.png";
 
 function AgentCard({ agent }) {
   const [, , user] = useContext(UserContext);
@@ -143,6 +144,10 @@ function AgentsMap({ agentsf, section, equipe }) {
     return lev.length === 1 && lev[0] === null;
   }
 
+  function onPrint() {
+    alert("Print stats");
+  }
+
   return (
     <div className=" bg-slate-100   ">
       {chart &&
@@ -171,6 +176,11 @@ function AgentsMap({ agentsf, section, equipe }) {
             </div>
           ) : null
         )}
+      <ActionButton
+        icon={print}
+        title={GetTransForTokensArray(LANG_TOKENS.PRINT, user.lang)}
+        onClick={onPrint}
+      />
     </div>
   );
 }
