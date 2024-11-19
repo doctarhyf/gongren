@@ -522,11 +522,7 @@ export default function Equipes() {
   }
 
   function onPrint(agents, sec, eq) {
-    // console.log(agents);
-
     const chart = buildChart(agents, sec, eq);
-    //console.log("chart => ", chart, sec, eq);
-    //console.log("printing chart ...");
 
     printChart(chart);
   }
