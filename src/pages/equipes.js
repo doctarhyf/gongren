@@ -186,11 +186,11 @@ function AgentsMap({ agentsf, section, equipe }) {
             </div>
           ) : null
         )}
-      <ActionButton
+      {/*  <ActionButton
         icon={print}
         title={GetTransForTokensArray(LANG_TOKENS.PRINT, user.lang)}
         onClick={onPrint}
-      />
+      /> */}
     </div>
   );
 }
@@ -518,6 +518,14 @@ export default function Equipes() {
     }
   }
 
+  function onPrint(agents, sec, eq) {
+    // console.log(agents);
+
+    const chart = buildChart(agents, sec, eq);
+    console.log("chart => ", chart, sec, eq);
+    console.log("printing chart ...");
+  }
+
   return (
     <div>
       <Loading isLoading={loading} />
@@ -591,7 +599,16 @@ export default function Equipes() {
                       } `}
                     >
                       {" "}
-                      <TeamStats agentsf={agentsf} />{" "}
+                      <TeamStats
+                        agentsf={agentsf}
+                        onPrint={(e) =>
+                          onPrint(
+                            agentsf,
+                            ref_section.current.value,
+                            ref_equipe.current.value
+                          )
+                        }
+                      />{" "}
                     </div>
                   )}
                 </div>

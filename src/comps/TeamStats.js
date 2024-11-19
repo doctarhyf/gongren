@@ -15,7 +15,7 @@ import { UserContext } from "../App";
 import ActionButton from "./ActionButton";
 import print from "../img/printer.png";
 
-export default function TeamStats({ agentsf }) {
+export default function TeamStats({ agentsf, onPrint }) {
   const [, , user] = useContext(UserContext);
   const nb_op = CountAgentsByPostType(agentsf, K_POSTE_OPERATEUR);
   const nb_charg = CountAgentsByPostType(agentsf, K_POSTE_CHARGEUR);
@@ -33,10 +33,6 @@ export default function TeamStats({ agentsf }) {
     const { equipe, section } = agent_zero;
     cur_equipe = equipe;
     cur_section = section;
-  }
-
-  function onPrint() {
-    alert("Print Stats");
   }
 
   return (
