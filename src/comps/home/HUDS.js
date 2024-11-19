@@ -67,7 +67,7 @@ function AgentCardMini({ agent, moreInfo, showUpdatePoste, onAgentUpdate }) {
   const [loading, setloading] = useState(false);
 
   async function updatePoste(ag, new_poste) {
-    console.log("new_poste => ", new_poste, ag);
+    //console.log("new_poste => ", new_poste, ag);
     setloading(true);
     const upd = { id: ag.id, poste: new_poste };
     const r = await SB.UpdateItem(
@@ -75,7 +75,7 @@ function AgentCardMini({ agent, moreInfo, showUpdatePoste, onAgentUpdate }) {
       upd,
       async (s) => {
         setloading(false);
-        console.log(s);
+        //console.log(s);
         await UpdateOperationsLogs(
           SB,
           user,
@@ -84,7 +84,7 @@ function AgentCardMini({ agent, moreInfo, showUpdatePoste, onAgentUpdate }) {
         );
       },
       (e) => {
-        console.log(e);
+        //console.log(e);
         setloading(false);
       }
     );
@@ -255,7 +255,7 @@ export function HUDProduction() {
       },
       (e) => {
         setloading(false);
-        console.log(e);
+        //console.log(e);
         alert(`Error \n ${JSON.stringify(e)}`);
       }
     );
@@ -313,7 +313,7 @@ export function HUDMyTeam({ user }) {
   }, []);
 
   async function loadData() {
-    console.log("sup => ", user);
+    //console.log("sup => ", user);
 
     let a = await SB.LoadAllItems(TABLES_NAMES.AGENTS);
     a = a.filter(
@@ -327,7 +327,7 @@ export function HUDMyTeam({ user }) {
 
     setagents(a);
     setagentr(a);
-    console.log(`Agents ${user.section}, equipe ${a.equipe} => \n`, a);
+    //console.log(`Agents ${user.section}, equipe ${a.equipe} => \n`, a);
   }
 
   useEffect(() => {
@@ -396,6 +396,7 @@ export function HUDMyTeam({ user }) {
           </div>
           {agents.map((ag, i) => (
             <div
+              key={ag.id}
               onClick={(e) => setselagent(ag)}
               className=" border-b border-white/25 p-1 flex hover:cursor-pointer hover:bg-white/10 rounded-md "
             >
@@ -606,7 +607,7 @@ export function HUDBonus({ loads, agents, date, agents_by_team }) {
         it.equipe === "D" && it.active === "OUI" && it.section === SECTIONS[1]
     ).length;
 
-    console.log("new t_data", t_data);
+    //console.log("new t_data", t_data);
 
     setTotalData(t_data);
 
@@ -687,8 +688,8 @@ export function HUDGestionSacs() {
     const { stock32, stock42 } = stockContLastEl;
     const { restants32, restants42 } = stockProdLastEl;
 
-    console.log("sc", stockCont, stockCont.length);
-    console.log("sp", stockProd, stockProd.length);
+    //console.log("sc", stockCont, stockCont.length);
+    //console.log("sp", stockProd, stockProd.length);
 
     setdata({
       cont: { s32: stock32, s42: stock42 },
@@ -748,7 +749,7 @@ export function HUDAgents() {
   }, []);
 
   useEffect(() => {
-    console.log("q => ", q);
+    //console.log("q => ", q);
   }, [q]);
 
   function loadData() {
@@ -763,18 +764,18 @@ export function HUDAgents() {
         setAgentsFiltered(agentsf);
         setAgentsGrouped(agentsg);
 
-        console.log("agsf f", agentsf);
+        //console.log("agsf f", agentsf);
       },
       (e) => {
         setloading(false);
-        console.log(e);
+        //console.log(e);
         alert(`Error \n ${JSON.stringify(e)}`);
       }
     );
   }
 
   function onAgentClick(ag) {
-    console.log(ag);
+    //console.log(ag);
     setSelectedAgent(ag);
   }
 
@@ -845,7 +846,7 @@ function OpsLogs({}) {
   async function loadData() {
     const a = await SB.LoadAllItems(TABLES_NAMES.OPERATIONS_LOGS);
     setlogs(a.reverse().slice(0, 5));
-    console.log("longs \n", a);
+    //console.log("longs \n", a);
   }
 
   return loading ? (

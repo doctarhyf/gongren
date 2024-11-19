@@ -14,14 +14,14 @@ export default function LanguageChooser({ onLanguageChanged }) {
     // Load language from localStorage when the component mounts
     const savedLang = localStorage.getItem("lang");
 
-    console.log("loaded lang: ", savedLang);
+    //console.log("loaded lang: ", savedLang);
     if (savedLang) {
       setLang(savedLang);
       const idx = GetLangIndexByLangCode(savedLang);
       setLangIdx(idx);
 
-      console.log("saveLang: ", savedLang);
-      console.log("idx: ", idx);
+      //console.log("saveLang: ", savedLang);
+      //console.log("idx: ", idx);
     }
   }, []);
 

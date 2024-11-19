@@ -56,10 +56,13 @@ function App() {
           id: nuser.id,
           lang: lang,
         },
-        (s) => console.log("updated lang ", lang),
-        (e) => console.error("Error updating lang", e)
+        (
+            s //console.log("updated lang ", lang),
+          ) =>
+          (e) =>
+            console.error("Error updating lang", e)
       );
-      console.log("res log login ", l);
+      //console.log("res log login ", l);
       setCookie("u", nuser, {
         expires: new Date(new Date().getTime() + 3600 * 10 * 10), //Expires after 10 minuties of inactivity
       });
@@ -69,22 +72,22 @@ function App() {
         document.getElementById("my_modal_1").showModal();
         seterror(err);
         // alert(err);
-        console.log(err);
+        //console.log(err);
       } else {
         err = "Error loging in\n" + JSON.stringify(error);
         seterror(err);
-        console.log(err);
+        //console.log(err);
         alert(err);
       }
     }
 
-    console.log(data, error, user);
+    //console.log(data, error, user);
     setloading(false);
   }
 
   async function onLogout() {
     const l = await UpdateOperationsLogs(SB, user, LOG_OPERATION.LOGOUT);
-    console.log("res logout ", l);
+    //console.log("res logout ", l);
     removeCookie("u", { path: "/" });
     setuser(undefined);
   }
@@ -100,7 +103,7 @@ function App() {
       behavior: "smooth", // Optional: adds smooth scrolling effect
     });
 
-    console.log(window);
+    //console.log(window);
   }
 
   function showData(data) {
@@ -110,7 +113,7 @@ function App() {
   }
 
   useEffect(() => {
-    console.log("cookies ==>> \n", cookies["u"]);
+    //console.log("cookies ==>> \n", cookies["u"]);
     if (user === undefined && cookies["u"]) {
       setuser(cookies["u"]);
     }

@@ -247,22 +247,22 @@ export function GetTransForTokenName(tokenName, langCode, holderData) {
 
 export function GetTransForTokensArray(tokensArray, langCode, holderData) {
   const keys = Object.keys(LANG_TOKENS);
-  console.log("Keys :", keys);
+  //console.log("Keys :", keys);
   const vals = Object.values(LANG_TOKENS);
-  console.log("vals: ", vals);
-  console.log("token: ", tokensArray);
+  //console.log("vals: ", vals);
+  //console.log("token: ", tokensArray);
   const idx = vals.findIndex((arr) => {
     return arr[0] === tokensArray[0] && arr[1] === tokensArray[1];
   });
 
   //return "test";
-  console.log("idx: ", idx);
+  //console.log("idx: ", idx);
   let key = keys[idx];
-  console.log("key: ", key);
+  //console.log("key: ", key);
 
   if (key === -1) key = 0;
   let trad = LANG_TOKENS[key][GetLangIndexByLangCode(langCode)];
-  console.log("trad: ", trad);
+  //console.log("trad: ", trad);
   if (holderData) {
     Object.entries(holderData).forEach((it) => {
       const k = it[0];
@@ -271,8 +271,8 @@ export function GetTransForTokensArray(tokensArray, langCode, holderData) {
       trad = trad.replaceAll("%" + k, v);
     });
   }
-  console.log("fin trad: ", trad);
-  console.log("holderData: ", holderData);
+  //console.log("fin trad: ", trad);
+  //console.log("holderData: ", holderData);
   const deftrad = LANG_TOKENS[key][GetLangIndexByLangCode("en-US")];
   return trad ? trad : deftrad;
 }
