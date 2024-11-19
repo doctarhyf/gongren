@@ -156,7 +156,8 @@ export const LANG_TOKENS = {
   Nom: ["Name", "姓名", "Nom"],
 
   NET: ["CLEANER", "打扫卫生", "NETTOYEUR"],
-  EXP: ["EXPEDITOR", "发货员", "EXP"],
+  EXP: ["EXPLOITANT", "岗位工", "EXPLOITANT"],
+  EXPEDITOR: ["EXPEDITOR", "发货员", "EXP"],
   OPE: ["OPERATOR", "插袋工", "OPERATEUR"],
   CHARG: ["LOADER", "装车工", "CHARGEUR"],
   MEC: ["MECANIC", "机修工", "MECANICIEN"],

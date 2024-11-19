@@ -73,7 +73,8 @@ function AgentCard({ agent }) {
               {agent.chef_deq === "OUI" &&
                 " - " + GetTransForTokensArray(LANG_TOKENS.DEQ, user.lang)}
               {agent.is_exp === "OUI" &&
-                " - " + GetTransForTokensArray(LANG_TOKENS.EXP, user.lang)}
+                " - " +
+                  GetTransForTokensArray(LANG_TOKENS.EXPEDITOR, user.lang)}
             </div>
           </div>
           <div className=" flex gap-1  ">
