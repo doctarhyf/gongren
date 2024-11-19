@@ -10,6 +10,17 @@ export const LANG_TOKENS = {
     "清除当前团队",
     "Effacer l'équipe actuelle",
   ],
+  TONNAGE_CALCULATOR: [
+    "Tonnage Calculator",
+    "吨位计算器",
+    "Calculateur de tonnage",
+  ],
+  TONNAGE_CALCULATOR_DESC: [
+    "Calculation of Completed Tonnage from Delivery Notes",
+    "根据送货单计算完成的吨位",
+    "Calcul du tonnage effectue, apartir de bons",
+  ],
+  TARGET: ["TARGET", "目标", "CIBLE"],
   TONS_ALREADY_LOADED_THIS_MONTH: [
     "Tons Already Loaded for This Month.",
     "本月已装载吨数",
@@ -67,6 +78,7 @@ export const LANG_TOKENS = {
     "本月装载进度",
     "Progression du chargement pour le mois en cours",
   ],
+
   TEAM: ["Team", "班组", "Équipe"],
   NEW: ["NEW", "加薪", "NOUVEAU"],
   REFRESH: ["REFRESH", "帅新", "RAFRAÎCHIR"],
@@ -157,7 +169,8 @@ export const LANG_TOKENS = {
 
   NET: ["CLEANER", "打扫卫生", "NETTOYEUR"],
   EXP: ["EXPLOITANT", "岗位工", "EXPLOITANT"],
-  EXPEDITOR: ["EXPEDITOR", "发货员", "EXP"],
+  EXPEDITOR: ["EXPEDITOR", "发货员", "EXPEDITOR"],
+  EXPD: ["EXPEDITOR", "发货员", "EXPEDITEUR"],
   OPE: ["OPERATOR", "插袋工", "OPERATEUR"],
   CHARG: ["LOADER", "装车工", "CHARGEUR"],
   MEC: ["MECANIC", "机修工", "MECANICIEN"],

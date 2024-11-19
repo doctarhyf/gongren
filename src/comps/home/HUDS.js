@@ -525,7 +525,7 @@ export function HUDMonthProgress({ loads, date }) {
             </div>
 
             <div className="p-1 bg-black w-fit text-white rounded-full px-2 ">
-              TARGET: 60000T
+              {GetTransForTokensArray(LANG_TOKENS.TARGET, user.lang)}: 60000T
             </div>
           </div>
 
@@ -824,11 +824,15 @@ export function HUDAgents() {
 }
 
 export function HUDCalculsBons() {
+  const [, , user] = useContext(UserContext);
   return (
     <Card
       id={5}
-      title={"CALCULS TONNAGE EFFECTUE/本日产量"}
-      desc={"Calcul du tonnage effectue, apartir de bons"}
+      title={GetTransForTokensArray(LANG_TOKENS.TONNAGE_CALCULATOR, user.lang)}
+      desc={GetTransForTokensArray(
+        LANG_TOKENS.TONNAGE_CALCULATOR_DESC,
+        user.lang
+      )}
     >
       <LoadsCalculator show={true} showTitle={false} showSaveBtn={false} />
     </Card>

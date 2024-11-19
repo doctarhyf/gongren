@@ -1,5 +1,6 @@
 import { jsPDF } from "jspdf";
 import logo from "./logo.mjs";
+import { GetTransForTokenName } from "./lang_strings";
 
 const data = {
   team: "A",
@@ -343,7 +344,7 @@ export default function printBaozhuang(data) {
 //console.log(Object.keys(printBaozhuang);
 //printBaozhuang(data);
 
-function drawAgentStatCard(doc, i, agent, x, y) {
+function drawAgentStatCard(doc, i, agent, x, y, lang = "en-US") {
   const fontsize = 10;
   if (agent.chef_deq === "OUI") agent.poste = "DEQ";
   if (agent.is_exp === "OUI") agent.poste = "EXPD";
@@ -351,14 +352,25 @@ function drawAgentStatCard(doc, i, agent, x, y) {
   let { nom, postnom, prenom, poste, mingzi, matricule, phone, chef_deq } =
     agent;
 
+  const tk_key = lang === "zh-CN" ? "zh" : "lat";
+  const td_poste = GetTransForTokenName(poste, lang);
+  console.log(
+    "tk_key => ",
+    tk_key,
+    " poste => ",
+    poste,
+    " td_poste => ",
+    td_poste
+  );
+
   const agentdata = [
     { lat: `${i + 1}. -> ` },
-    { lat: `${poste}: ` },
+    { [tk_key]: `${td_poste}: ` },
     { zh: mingzi },
-    {
-      lat: ` - ${matricule}  ${nom} ${postnom} ${prenom} `,
-    },
+    { lat: ` - ${matricule} ${nom} ${postnom} ${prenom} ` },
   ];
+
+  console.log("agentdata => ", agentdata);
 
   // finalchart.push(agentdata);
   let {
@@ -399,9 +411,10 @@ function drawAgentStatCard(doc, i, agent, x, y) {
   return y;
 }
 
-export function printChart(chart, marg = 10, filename) {
+export function printChart(lang, chart, marg = 10, filename) {
   if (!chart) {
-    throw new Error("Cant print undefined or empty Chart");
+    alert("Cant print undefined or empty Chart");
+    return;
   }
 
   const fontsize = 10;
@@ -426,7 +439,7 @@ export function printChart(chart, marg = 10, filename) {
   doc.setTextColor("white");
 
   flatchart.map((agent, i) => {
-    y = drawAgentStatCard(doc, i, agent, marg, y);
+    y = drawAgentStatCard(doc, i, agent, marg, y, lang);
   });
 
   doc.save(filename);

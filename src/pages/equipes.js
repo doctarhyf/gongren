@@ -21,20 +21,17 @@ import {
   getRouelemtDaysLetters2,
   UserHasAccessCode,
 } from "../helpers/func";
-import * as SB from "../helpers/sb";
-import { LoadAllItems } from "../helpers/sb";
-import { TABLES_NAMES } from "../helpers/sb.config";
-import eraser from "../img/eraser.png";
 import {
   GetTransForTokenName,
   GetTransForTokensArray,
   LANG_TOKENS,
 } from "../helpers/lang_strings";
-
-import phone from "../img/phone.png";
-import print from "../img/printer.png";
+import * as SB from "../helpers/sb";
+import { LoadAllItems } from "../helpers/sb";
+import { TABLES_NAMES } from "../helpers/sb.config";
+import eraser from "../img/eraser.png";
 import { printChart } from "../helpers/print_bz";
-import { doc } from "../helpers/funcs_print";
+import phone from "../img/phone.png";
 
 function AgentCard({ agent }) {
   const [, , user] = useContext(UserContext);
@@ -151,14 +148,8 @@ function AgentsMap({ agentsf, section, equipe }) {
   const isSectionEnsachage = sec === SECTIONS[3];
   const isEnsachage = teamIsInABCD && isSectionEnsachage;
 
-  //if (!isEnsachage) chart = [agentsf];
-
   function levelIsNull(lev) {
     return lev.length === 1 && lev[0] === null;
-  }
-
-  function onPrint() {
-    alert("Print stats");
   }
 
   return (
@@ -524,7 +515,7 @@ export default function Equipes() {
   function onPrint(agents, sec, eq) {
     const chart = buildChart(agents, sec, eq);
 
-    printChart(chart);
+    printChart(user.lang, chart);
   }
 
   return (
