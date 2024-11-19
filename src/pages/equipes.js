@@ -33,6 +33,8 @@ import {
 
 import phone from "../img/phone.png";
 import print from "../img/printer.png";
+import { printChart } from "../helpers/print_bz";
+import { doc } from "../helpers/funcs_print";
 
 function AgentCard({ agent }) {
   const [, , user] = useContext(UserContext);
@@ -523,8 +525,10 @@ export default function Equipes() {
     // console.log(agents);
 
     const chart = buildChart(agents, sec, eq);
-    console.log("chart => ", chart, sec, eq);
-    console.log("printing chart ...");
+    //console.log("chart => ", chart, sec, eq);
+    //console.log("printing chart ...");
+
+    printChart(chart);
   }
 
   return (
