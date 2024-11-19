@@ -94,11 +94,20 @@ function AgentCard({ agent }) {
 }
 
 export function buildChart(agentsf, sec, eq) {
-  function findAgentsByPoste(agents, poste, unique = false, excludeDeq = true) {
+  function findAgentsByPoste(
+    agents,
+    poste,
+    unique = false,
+    excludeDeq = true,
+    excludeExpd = true
+  ) {
     let foundAgents = agents.filter((it) => it.poste === poste);
 
     if (excludeDeq)
       foundAgents = foundAgents.filter((it) => it.chef_deq === "NON");
+
+    if (excludeExpd)
+      foundAgents = foundAgents.filter((it) => it.is_exp === "NON");
 
     if (foundAgents.length === 0) foundAgents = undefined;
 
@@ -116,10 +125,11 @@ export function buildChart(agentsf, sec, eq) {
   const aidops = findAgentsByPoste(agz, "AIDOP");
   const chargs = findAgentsByPoste(agz, "CHARG");
   const nets = findAgentsByPoste(agz, "NET");
+  const expd = [agz.find((it) => it.is_exp === "OUI")];
   const exps = findAgentsByPoste(agz, "EXP");
   const mecs = findAgentsByPoste(agz, "MEC");
 
-  let chart = [dirs, sup, deq, ops, aidops, chargs, nets, exps, mecs];
+  let chart = [dirs, sup, deq, ops, aidops, chargs, nets, expd, exps, mecs];
 
   chart = chart.filter((it) => it !== undefined);
 
@@ -153,7 +163,7 @@ function AgentsMap({ agentsf, section, equipe }) {
   }
 
   return (
-    <div className=" bg-slate-100   ">
+    <div className=" bg-slate-100 print:visible   ">
       {chart &&
         chart.map((lev, i) =>
           !levelIsNull(lev) ? (
@@ -166,6 +176,8 @@ function AgentsMap({ agentsf, section, equipe }) {
                   <dic className=" text-xs font-bold  ">
                     {lev[0].chef_deq === "OUI"
                       ? GetTransForTokensArray(LANG_TOKENS.DEQ, user.lang)
+                      : lev[0].is_exp === "OUI"
+                      ? GetTransForTokensArray(LANG_TOKENS.EXPD, user.lang)
                       : GetTransForTokensArray(
                           LANG_TOKENS[lev[0].poste],
                           user.lang
