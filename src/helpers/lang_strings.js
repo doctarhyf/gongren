@@ -10,6 +10,13 @@ export const LANG_TOKENS = {
     "清除当前团队",
     "Effacer l'équipe actuelle",
   ],
+  PRINT_LIST: ["PRINT LIST", "打印名列", "IMPRIMER LA LISTE"],
+  PRINT_TABLE: ["PRINT TABLE", "打印表格", "IMPRIMER TABLEAU"],
+  PRINT_EMPTY_TABLE: [
+    "PRINT EMPTY TABLE",
+    "打印空表格",
+    "IMPRIMER TABLEAU VIDE",
+  ],
   TONNAGE_CALCULATOR: [
     "Tonnage Calculator",
     "吨位计算器",

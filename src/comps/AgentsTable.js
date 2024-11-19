@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 
 import GetRoulemenDaysData from "../helpers/GetRoulemenDaysData.mjs";
 import shield from "../img/shield.png";
@@ -25,6 +25,14 @@ import {
   CLASS_INPUT_TEXT,
 } from "../helpers/flow";
 import ItemNotSelected from "./ItemNotSelected";
+import {
+  GetTransForTokenName,
+  GetTransForTokensArray,
+  LANG_TOKENS,
+} from "../helpers/lang_strings";
+import userEvent from "@testing-library/user-event";
+import { UserContext } from "../App";
+import ActionButton from "./ActionButton";
 
 export default function AgentsTable({
   agentsf,
@@ -39,6 +47,7 @@ export default function AgentsTable({
   customAgentsTableName,
   onCustomAgentClick,
 }) {
+  const [, , user] = useContext(UserContext);
   const COL_SPAN = 4;
   let year;
   let month;
@@ -176,6 +185,53 @@ export default function AgentsTable({
   return (
     <>
       <div className={` ${agentsf.length > 0 ? "block" : "hidden"} `}>
+        <tr>
+          <td className={COL_SPAN}>
+            {agentsf.length !== 0 && (
+              <div className="flex gap-4 justify-center items-center p-4 ">
+                <ActionButton
+                  icon={pdf}
+                  title={GetTransForTokensArray(
+                    LANG_TOKENS.PRINT_LIST,
+                    user.lang
+                  )}
+                  onClick={(e) => printNameListPDF(agentsf)}
+                />
+
+                <div>
+                  <input
+                    type="text"
+                    ref={ref_custom_title}
+                    className={CLASS_INPUT_TEXT}
+                    placeholder="Custom Title"
+                  />
+                </div>
+
+                <ActionButton
+                  icon={pdf}
+                  title={GetTransForTokensArray(
+                    LANG_TOKENS.PRINT_TABLE,
+                    user.lang
+                  )}
+                  onClick={(e) =>
+                    printAgentsRoulementPDF(
+                      isCustomList ? customAgentsList : agentsf
+                    )
+                  }
+                />
+
+                <div>
+                  <input type="checkbox" ref={ref_print_empty} />
+                  {GetTransForTokensArray(
+                    LANG_TOKENS.PRINT_EMPTY_TABLE,
+                    user.lang
+                  )}
+                </div>
+              </div>
+            )}
+          </td>
+        </tr>
+
         <table>
           <thead>
             <tr>
@@ -184,7 +240,8 @@ export default function AgentsTable({
                 colSpan={agentsf[0] && cal && cal.dates.length + COL_SPAN}
               >
                 <div className="text-2xl text-center">
-                  Equipe <span ref={ref_sp_equipe}></span> -{" "}
+                  {GetTransForTokensArray(LANG_TOKENS.TEAM, userEvent.lang)}{" "}
+                  <span ref={ref_sp_equipe}></span> -{" "}
                   <span ref={ref_sp_section}></span> /{" "}
                   <span ref={ref_sp_m}></span> - <span ref={ref_sp_y}></span>
                 </div>
@@ -217,10 +274,10 @@ export default function AgentsTable({
                 <b>Nom et Postnom</b>
               </td>
               <td className={CLASS_TD}>
-                <b>Agent</b>
+                <b>{GetTransForTokenName(LANG_TOKENS.AGENTS, user.lang)}</b>
               </td>
               <td className={CLASS_TD}>
-                <b>Poste</b>
+                <b>{GetTransForTokenName("Poste", user.lang)}</b>
               </td>
 
               {cal &&
@@ -292,43 +349,6 @@ export default function AgentsTable({
             ))}
           </tbody>
         </table>
-
-        <tr>
-          <td className={COL_SPAN}>
-            {agentsf.length !== 0 && (
-              <div className="flex gap-4 justify-center items-center p-4 ">
-                <button
-                  onClick={(e) => printNameListPDF(agentsf)}
-                  className={`${CLASS_BTN} flex text-sm my-2`}
-                >
-                  <img src={pdf} alt="pdf" width={20} height={30} /> PRINT LIST
-                </button>
-                <div>
-                  <input
-                    type="text"
-                    ref={ref_custom_title}
-                    className={CLASS_INPUT_TEXT}
-                    placeholder="Custom Title"
-                  />
-                </div>
-                <button
-                  onClick={(e) =>
-                    printAgentsRoulementPDF(
-                      isCustomList ? customAgentsList : agentsf
-                    )
-                  }
-                  className={`${CLASS_BTN} flex text-sm my-2`}
-                >
-                  <img alt="pdf" src={pdf} width={20} height={30} /> PRINT TABLE
-                </button>
-                <div>
-                  <input type="checkbox" ref={ref_print_empty} />
-                  PRINT EMPTY
-                </div>
-              </div>
-            )}
-          </td>
-        </tr>
       </div>
 
       {(!agentsf || agentsf.length == 0) && (
