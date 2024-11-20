@@ -617,6 +617,7 @@ export default function Equipes() {
                   )}
                 </div>
 
+                {/* TEAM FILTER */}
                 <div className={` mt-2  `}>
                   <div>
                     <input

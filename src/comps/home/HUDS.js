@@ -1,44 +1,40 @@
-import { useEffect, useState, useContext } from "react";
-import * as SB from "../../helpers/sb";
-import { TABLES_NAMES } from "../../helpers/sb.config";
-import Card from "./Card";
-import Loading from "../Loading";
-import {
-  GroupBySectionAndEquipe,
-  formatAsMoney,
-  GetDateParts,
-  GetMonthNumDays,
-  CaclculateAllTeamsTotals,
-  SortLoadsByShiftOfDay,
-  UserHasAccessCode,
-  UserHasAnyOfAccessCodes,
-  formatFrenchDate,
-  AddLeadingZero,
-  UpdateOperationsLogs,
-  FrenchDate,
-} from "../../helpers/func";
+import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../App";
-import TableLoadsTotals from "../TableLoadsTotal";
 import {
-  COLUMNS_TO_HIDE,
   CARDS_BG_COLORS,
+  COLUMNS_TO_HIDE,
   EQUIPES_NAMES,
+  LOG_OPERATION,
+  POSTE,
   POSTES,
   SECTIONS,
-  POSTE,
-  LOG_OPERATION,
-  ACCESS_CODES,
 } from "../../helpers/flow";
-import AgentsList from "../AgentsList";
-import SacsCalc from "../SacsCalc";
-import CountdownTimer from "../CountdownTimer";
-import LoadsCalculator from "../LoadCalculator";
-import nophoto from "../../img/user.png";
+import {
+  AddLeadingZero,
+  CaclculateAllTeamsTotals,
+  FrenchDate,
+  GetDateParts,
+  GetMonthNumDays,
+  GroupBySectionAndEquipe,
+  SortLoadsByShiftOfDay,
+  UpdateOperationsLogs,
+  formatAsMoney,
+} from "../../helpers/func";
 import {
   GetTransForTokenName,
   GetTransForTokensArray,
   LANG_TOKENS,
 } from "../../helpers/lang_strings";
+import * as SB from "../../helpers/sb";
+import { TABLES_NAMES } from "../../helpers/sb.config";
+import camera from "../../img/camera.png";
+import AgentsList from "../AgentsList";
+import CountdownTimer from "../CountdownTimer";
+import LoadsCalculator from "../LoadCalculator";
+import Loading from "../Loading";
+import SacsCalc from "../SacsCalc";
+import TableLoadsTotals from "../TableLoadsTotal";
+import Card from "./Card";
 
 function AgentStats({ agentsGrouped }) {
   return (
@@ -286,14 +282,23 @@ export function HUDProduction() {
   );
 }
 
+function onUploadNewPic() {
+  console.log("on upload ...");
+}
+
 export function HUDGreetings({ user }) {
   return (
     <div className=" md:text-center w-auto my-4 p-2 bg-gray-800 text-white shadow-lg shadow-black/25 rounded-md">
       <div> {GetTransForTokensArray(LANG_TOKENS.MSG_WELCOME, user.lang)}</div>
 
-      <div className="  flex flex-col md:flex-row md:justify-center md:my-0 my-2 gap-4 ">
-        <div className=" w-32 h-32 bg-slate-700 rounded-full overflow-hidden ">
-          <img src={user.photo || nophoto} />
+      <div className="  flex justify-center items-center flex-col md:flex-row md:justify-center md:my-0 my-2 gap-4 ">
+        <div className=" flex justify-center items-center  w-32 h-32 bg-slate-700 rounded-full overflow-hidden ">
+          {/* <img src={user.photo || nophoto} /> */}
+          <div className=" w-9 h-9 overflow-hidden   ">
+            <button onClick={onUploadNewPic}>
+              <img src={camera} />
+            </button>
+          </div>
         </div>
         <AgentCardMini agent={user} />
       </div>
