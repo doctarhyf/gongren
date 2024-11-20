@@ -34,7 +34,7 @@ import { printChart } from "../helpers/print_bz";
 import phone from "../img/phone.png";
 
 function AgentCard({ agent }) {
-  const [, , user] = useContext(UserContext);
+  const [showImage, , user] = useContext(UserContext);
 
   let bg = "bg-slate-500";
 
@@ -51,11 +51,19 @@ function AgentCard({ agent }) {
     if (agent.poste === "EXP") bg = "bg-green-800";
   }
 
+  function showPic(photo) {
+    showImage(photo);
+  }
+
   return (
     agent && (
       <div className=" flex flex-col justify-center items-center gap-2 p-2 ">
-        <div className=" w-8 h-8 md:w-10 overflow-hidden md:h-10 bg-slate-600 rounded-full  ">
-          {agent.photo && <img src={agent.photo} />}
+        <div className=" w-16 h-16 md:w-14 overflow-hidden md:h-10 bg-slate-600 rounded-full  ">
+          {agent.photo && (
+            <button onClick={(e) => showPic(agent.photo)}>
+              <img src={agent.photo} />
+            </button>
+          )}
         </div>
         <div>
           <div className="flex text-xs gap- bg text-center justify-center items-start ">
