@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { UserContext } from "../../App";
 import {
   CARDS_BG_COLORS,
@@ -35,6 +35,8 @@ import Loading from "../Loading";
 import SacsCalc from "../SacsCalc";
 import TableLoadsTotals from "../TableLoadsTotal";
 import Card from "./Card";
+import { supabase } from "../../helpers/sb.config";
+import { uploadPhoto } from "../../helpers/image_upload.mjs";
 
 function AgentStats({ agentsGrouped }) {
   return (
@@ -282,24 +284,93 @@ export function HUDProduction() {
   );
 }
 
-function onUploadNewPic() {
-  console.log("on upload ...");
-}
-
 export function HUDGreetings({ user }) {
+  const ref_photo = useRef();
+  let agentDataToUpdate = { ...user };
+  const agent = { ...user };
+
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [uploading, setUploading] = useState(false);
+
+  const handleImageChange = async (event) => {
+    const file = event.target.files[0];
+    if (file && file.type.startsWith("image/")) {
+      setSelectedImage(URL.createObjectURL(file));
+
+      const file_name = `agent_${agentDataToUpdate.id}.jpg`;
+      const { photo } = agent;
+
+      const { data } = await uploadPhoto(file, file_name, setUploading);
+
+      if (photo) {
+        const splits = agent.photo.split("/");
+        const old_fname = splits[splits.length - 1];
+
+        console.log("old fname => ", old_fname);
+
+        const r = await supabase.storage
+          .from("agents_photos")
+          .remove(old_fname);
+
+        console.log("Delete ", old_fname, " ==> ", r);
+      } else {
+        console.log("no old photo");
+      }
+
+      if (data && data.publicUrl) {
+        const { publicUrl } = data;
+        //setphoto(publicUrl);
+        await SB.UpdateItem(
+          TABLES_NAMES.AGENTS,
+          { id: user.id, photo: publicUrl },
+          (s) => {
+            const { photo } = s[0];
+            setSelectedImage(photo);
+            console.log("upd s => ", photo);
+          },
+          (e) => {
+            setSelectedImage(null);
+            console.log("upd e => ", e);
+          }
+        );
+        console.log(publicUrl);
+        //alert(publicUrl);
+      } else {
+        alert(`error ...`);
+      }
+    } else {
+      setSelectedImage(null);
+    }
+  };
+
   return (
     <div className=" md:text-center w-auto my-4 p-2 bg-gray-800 text-white shadow-lg shadow-black/25 rounded-md">
       <div> {GetTransForTokensArray(LANG_TOKENS.MSG_WELCOME, user.lang)}</div>
 
       <div className="  flex justify-center items-center flex-col md:flex-row md:justify-center md:my-0 my-2 gap-4 ">
         <div className=" flex justify-center items-center  w-32 h-32 bg-slate-700 rounded-full overflow-hidden ">
-          {/* <img src={user.photo || nophoto} /> */}
-          <div className=" w-9 h-9 overflow-hidden   ">
-            <button onClick={onUploadNewPic}>
-              <img src={camera} />
+          <input
+            type="file"
+            name="photo"
+            accept="image/*"
+            ref={ref_photo}
+            hidden
+            onChange={handleImageChange}
+          />
+          {!!user.photo || selectedImage ? (
+            <button onClick={(e) => ref_photo.current.click()}>
+              <img src={selectedImage || user.photo} />
             </button>
-          </div>
+          ) : (
+            <div className=" w-9 h-9 overflow-hidden   ">
+              <button onClick={(e) => ref_photo.current.click()}>
+                <img src={camera} />
+              </button>
+            </div>
+          )}
         </div>
+
+        <Loading isLoading={uploading} />
         <AgentCardMini agent={user} />
       </div>
     </div>
