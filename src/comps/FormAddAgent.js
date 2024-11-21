@@ -28,7 +28,7 @@ export default function FormAddAgent({
   onFormCancel,
   agentDataToUpdate,
 }) {
-  const [, , user] = useContext(UserContext);
+  const [, showData, user] = useContext(UserContext);
   let isNewAgent = agentDataToUpdate === undefined;
 
   let agent = agentDataToUpdate || {
@@ -103,14 +103,47 @@ export default function FormAddAgent({
       //page: _(ref_page),
     };
 
-    /* alert(JSON.stringify(agent_data));
-    return; */
+    function agentDataIsValid(agent_data) {
+      const { contrat, nom, postnom, section, equipe } = agent_data;
+
+      const contrat_check = !!contrat;
+      const nom_check = !!nom;
+      const postnom_check = !!postnom;
+      const section_check = !!section;
+      const equipe_check = !!equipe;
+
+      const ok =
+        contrat_check &&
+        nom_check &&
+        postnom_check &&
+        section_check &&
+        equipe_check;
+      return ok
+        ? true
+        : {
+            contrat: contrat_check,
+            nom: nom_check,
+            postnom: postnom_check,
+            section: section_check,
+            equipe: equipe_check,
+          };
+    }
+
+    const check = agentDataIsValid(agent_data);
+    if (check !== true) {
+      alert("Please input all required agent data\n" + JSON.stringify(check));
+      console.log("agent data \n", agent_data);
+      console.log("check res \n", check);
+
+      return;
+    }
 
     if (!isNewAgent) {
       agent_data.id = _(ref_id);
       onFormUpdate(agent_data);
       return;
     }
+
     onFormSave(agent_data);
   }
 
@@ -130,7 +163,7 @@ export default function FormAddAgent({
         useWebWorker: true, // Use web workers for better performance
       };
       const cfile = await imageCompression(file, options);
-      console.log("cfile", cfile);
+      //console.log("cfile", cfile);
       const { type } = cfile;
       const ext = type.split("/")[1];
       file_name = new Date().getTime() + "." + ext;
@@ -158,7 +191,7 @@ export default function FormAddAgent({
         console.error("Error uploading file:", error.message);
         return error;
       } else {
-        console.log("File uploaded successfully:", data.Key);
+        //console.log("File uploaded successfully:", data.Key);
 
         const path = supabase.storage
           .from("agents_photos")
@@ -184,21 +217,21 @@ export default function FormAddAgent({
         const splits = agent.photo.split("/");
         const old_fname = splits[splits.length - 1];
 
-        console.log("old fname => ", old_fname);
+        //console.log("old fname => ", old_fname);
 
         const r = await supabase.storage
           .from("agents_photos")
           .remove(old_fname);
 
-        console.log("Delete ", old_fname, " ==> ", r);
+        //console.log("Delete ", old_fname, " ==> ", r);
       } else {
-        console.log("no old photo");
+        //console.log("no old photo");
       }
 
       if (data && data.publicUrl) {
         const { publicUrl } = data;
         setphoto(publicUrl);
-        console.log(publicUrl);
+        //console.log(publicUrl);
         //alert(publicUrl);
       } else {
         alert(`error ...`);
@@ -211,14 +244,12 @@ export default function FormAddAgent({
   return (
     <div>
       <Loading isLoading={loading} />
-
       <img src={selectedImage || ico_user} width={120} height={120} />
       {uploading && (
         <div className="text-green-500 text-xs my-2 font-bold bg-black rounded-full p-2">
           Uploading photo ...
         </div>
       )}
-
       <tr>
         <td align="right" className="text-neutral-400 text-sm">
           Photo
@@ -254,7 +285,7 @@ export default function FormAddAgent({
         [ref_pin, "pin", agent.pin],
         [ref_nationalite, "nationalite", agent.nationalite, NATIONALITIES],
         [ref_phone, "phone", agent.phone],
-        [ref_list_priority, "liste priority", agent.list_priority],
+        [ref_list_priority, "liste priority", agent.list_priority || 100],
         [ref_tenue, "tenue", agent.tenue],
         [ref_active, "active", agent.active, ["OUI", "NON"]],
         [ref_is_exp, "is_exp", agent.is_exp, ["NON", "OUI"]],

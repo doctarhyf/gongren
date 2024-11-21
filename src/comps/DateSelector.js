@@ -81,7 +81,9 @@ export default function DateSelector({
           }}
         >
           {["Y", "M", "D"].map((t, i) => (
-            <option value={t}>{DATE_TYPE[t]}</option>
+            <option key={t} value={t}>
+              {DATE_TYPE[t]}
+            </option>
           ))}
         </select>
       </div>
@@ -98,6 +100,7 @@ export default function DateSelector({
           >
             {[...Array(10)].map((it, i) => (
               <option
+                key={it}
                 selected={
                   defaultDate && defaultDate.y === new Date().getFullYear() + i
                 }
@@ -129,7 +132,9 @@ export default function DateSelector({
         </div>
 
         <div className={` ${dateType === "D" ? "block" : "hidden"} `}>
-          <span className={CLASS_SELECT_TITLE}>Date: </span>
+          <span className={CLASS_SELECT_TITLE}>
+            {GetTransForTokensArray(LANG_TOKENS.DATE, user.lang)}:{" "}
+          </span>
           <select
             className={CLASS_SELECT}
             ref={ref_day}

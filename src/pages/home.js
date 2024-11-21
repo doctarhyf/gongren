@@ -59,7 +59,7 @@ export default function Home() {
       });
     });
 
-    console.log("Equipes => ", equipes);
+    //console.log("Equipes => ", equipes);
 
     return equipes;
   }
@@ -87,7 +87,7 @@ export default function Home() {
 
     totals_by_team.MAX = { team: max_team, sacs: max };
 
-    console.log(totals_by_team);
+    //console.log(totals_by_team);
     return totals_by_team;
   }
 
@@ -107,7 +107,7 @@ export default function Home() {
       const [equipe, count] = team;
       const china = equipe === month_loads_by_team.MAX.team ? 2 : 1;
 
-      console.log("equipe ", equipe, " congo ", count, " china ", china);
+      //console.log("equipe ", equipe, " congo ", count, " china ", china);
       const data = { team: equipe, congo: count, china: china };
 
       acbt[equipe] = data;
@@ -117,7 +117,7 @@ export default function Home() {
   }
 
   function onDateSelected(d) {
-    console.log(d);
+    //console.log(d);
     const clamp = { y: 2024, m: 6 };
     if (d.m < clamp.m && d.y === clamp.y) d.m = clamp;
     setdate(d);

@@ -12,7 +12,7 @@ export const fetchAllItemFromTable = async (args) => {
 
   if (data) {
     const a = data.map((it, i) => ({ idx: i + 1, ...it }));
-    console.log(a);
+    //console.log(a);
     return a;
   }
   throw new Error(JSON.stringify(error));

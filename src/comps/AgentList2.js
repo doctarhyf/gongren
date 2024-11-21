@@ -4,7 +4,11 @@ import { fetchAllItemFromTable } from "../api/queries";
 import { CLASS_INPUT_TEXT, POSTES } from "../helpers/flow";
 import Loading from "./Loading";
 import { UserContext } from "../App";
-import { GetTransForTokensArray, LANG_TOKENS } from "../helpers/lang_strings";
+import {
+  GetTransForTokenName,
+  GetTransForTokensArray,
+  LANG_TOKENS,
+} from "../helpers/lang_strings";
 
 function FlatList({ items, renderItem, perpage, q }) {
   //
@@ -134,16 +138,6 @@ export default function AgentList2({
   });
 
   const { data: agents, isLoading, isError, error } = queryAgents;
-  /*  const teams = Agents2teams(agents);
-
-  console.log(teams); */
-
-  useEffect(() => {
-    console.log(
-      "selagz",
-      selectedAgents.map((it) => it.id)
-    );
-  }, [selectedAgents]);
 
   if (isLoading)
     return (
@@ -191,14 +185,17 @@ export default function AgentList2({
             selected?.id === item.id && "text-slate-800 font-bold"
           } group-hover:text-slate-800  group-hover:font-bold text-xs text-gray-400  `}
         >
-          {item.section} - Eq. {item.equipe}, {item.poste}
+          {GetTransForTokenName(item.section, user.lang)} -{" "}
+          {GetTransForTokensArray(LANG_TOKENS.EQ, user.lang)}.{" "}
+          {GetTransForTokenName(item.equipe, user.lang)},{" "}
+          {GetTransForTokenName(item.poste, user.lang)}
         </div>
       </div>
     );
   }
 
   function onItemSelected(it) {
-    console.log(it);
+    //console.log(it);
     //(it) => onAgentClick(it);
   }
 

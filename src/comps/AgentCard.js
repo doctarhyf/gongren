@@ -115,10 +115,6 @@ export default function AgentCard({
 
   const [showAccessCode, setShowAccessCode] = useState(false);
 
-  useEffect(() => {
-    console.log("ac => ", access_codes);
-  }, [access_codes]);
-
   function onChangeAccessCode(user, sel_access_code, activated) {
     const ac = sel_access_code[1];
     let o_access_codes = [...access_codes];

@@ -39,6 +39,7 @@ export default function Agents() {
     reloadComponents();
 
     const res = await SB.InsertItem(TABLES_NAMES.AGENTS, agent_data);
+
     if (res === null) {
       setmsg({
         title: "Data saved",
