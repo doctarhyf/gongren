@@ -170,7 +170,7 @@ function AgentCardMini({ agent, moreInfo, showUpdatePoste, onAgentUpdate }) {
           {showUpdatePoste && agent.poste !== "SUP" && user.poste === "SUP" && (
             <div>
               <div>
-                <span className=" text-white/50  ">Poste:</span>
+                <span className=" text-white/50  ">Poste -:</span>
                 <select
                   onChange={(e) => updatePoste(agent, e.target.value)}
                   className=" text-black w-auto outline-none rounded-md mx-1 text-sm dark:bg-slate-800 dark:text-white "
