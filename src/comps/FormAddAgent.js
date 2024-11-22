@@ -244,7 +244,11 @@ export default function FormAddAgent({
   return (
     <div>
       <Loading isLoading={loading} />
-      <img src={selectedImage || ico_user} width={120} height={120} />
+      <img
+        src={agent.photo || selectedImage || ico_user}
+        width={120}
+        height={120}
+      />
       {uploading && (
         <div className="text-green-500 text-xs my-2 font-bold bg-black rounded-full p-2">
           Uploading photo ...

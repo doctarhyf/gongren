@@ -125,6 +125,7 @@ export const LANG_TOKENS = {
     "AFFICHER LE SÉLECTEUR D'ÉQUIPE",
   ],
   LOGOUT: ["LOGOUT", "退出登录", "DÉCONNEXION"],
+  NEW_AGENT: ["NEW AGENT", "加薪的员工", "AJOUT NOUVEL AGENT"],
   NOTIFICATIONS: ["Notifications", "通知", "Notifications"],
   AGENTS: ["Agents", "工人", "Agents"],
   AGENTS_COUNT: ["Agents Count", "工人数量", "Nombre d'Agents"],

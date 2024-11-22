@@ -10,6 +10,7 @@ import { UserContext } from "../App";
 import { useContext } from "react";
 import { UserHasAccessCode } from "../helpers/func";
 import AgentList2 from "../comps/AgentList2";
+import { GetTransForTokensArray, LANG_TOKENS } from "../helpers/lang_strings";
 
 export default function Agents() {
   const [curAgent, setCurAgent] = useState(null);
@@ -118,7 +119,7 @@ export default function Agents() {
                 onClick={(e) => setShowFormAddNewAgent(true)}
                 className="p-1 rounded-md border my-1 border-green-500 text-green-500 hover:bg-green-500 hover:text-white"
               >
-                NEW AGENT
+                {GetTransForTokensArray(LANG_TOKENS.NEW_AGENT, user.lang)}
               </button>
             )}
             <div>
