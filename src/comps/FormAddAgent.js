@@ -242,9 +242,10 @@ export default function FormAddAgent({
   };
 
   return (
-    <div>
+    <div className=" p-2 rounded-md m-1 shadow-2xl shadow-slate-700  ">
       <Loading isLoading={loading} />
       <img
+        className="  mx-auto m-2 rounded-full overflow-hidden "
         src={agent.photo || selectedImage || ico_user}
         width={120}
         height={120}
