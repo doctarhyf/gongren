@@ -10,6 +10,12 @@ export const LANG_TOKENS = {
     "清除当前团队",
     "Effacer l'équipe actuelle",
   ],
+  AGENT_SEARCH: ["AGENT SEARCH", "工人搜索", "Recherche d'Agent"],
+  AGENTS_INFO: [
+    "Info about Agents",
+    "关于代理的信息",
+    "Information sur les agents",
+  ],
   PRINT_LIST: ["PRINT LIST", "打印名列", "IMPRIMER LA LISTE"],
   PRINT_TABLE: ["PRINT TABLE", "打印表格", "IMPRIMER TABLEAU"],
   PRINT_EMPTY_TABLE: [
@@ -121,6 +127,7 @@ export const LANG_TOKENS = {
   LOGOUT: ["LOGOUT", "退出登录", "DÉCONNEXION"],
   NOTIFICATIONS: ["Notifications", "通知", "Notifications"],
   AGENTS: ["Agents", "工人", "Agents"],
+  AGENTS_COUNT: ["Agents Count", "工人数量", "Nombre d'Agents"],
   LOADING_REPPORT: ["Loading Repport", "包装报告", "Rapport de chargement"],
   BIGBAG: ["BigBag", "吨包包装", "BigBag"],
   ATTENDANCE: ["Attendance", "考勤", "Présence"],

@@ -39,20 +39,24 @@ import { supabase } from "../../helpers/sb.config";
 import { uploadPhoto } from "../../helpers/image_upload.mjs";
 
 function AgentStats({ agentsGrouped }) {
+  const [, , user] = useContext(UserContext);
   return (
     <div>
       {Object.entries(agentsGrouped).map((sec) => (
         <div>
-          <div>{sec[0]}</div>
+          <div>{GetTransForTokenName(sec[0], user.lang)}</div>
           <div className=" justify-center gap-4 align-middle   flex ">
-            {Object.entries(sec[1]).map((it, i) => (
-              <div>
-                <div className=" text-[24pt] ">{it[1].length}</div>
-                <div className=" w-fit text-xs bg-white/25 rounded-md py-1 px-2  ">
-                  {it[0]}
-                </div>
-              </div>
-            ))}
+            {Object.entries(sec[1]).map(
+              (it, i) =>
+                it[0] !== "-" && (
+                  <div>
+                    <div className=" text-[24pt] ">{it[1].length}</div>
+                    <div className=" w-fit text-xs bg-white/25 rounded-md py-1 px-2  ">
+                      {GetTransForTokenName(it[0], user.lang)}
+                    </div>
+                  </div>
+                )
+            )}
           </div>
         </div>
       ))}
@@ -819,6 +823,7 @@ export function HUDAgents() {
   const [agentsFiltered, setAgentsFiltered] = useState([]);
   const [agentsGrouped, setAgentsGrouped] = useState([]);
   const [selectedAgent, setSelectedAgent] = useState(undefined);
+  const [, , user] = useContext(UserContext);
 
   useEffect(() => {
     loadData();
@@ -858,8 +863,10 @@ export function HUDAgents() {
   return (
     <Card
       id={4}
-      title={`AGENTS/ 员工 (${agentsFiltered.length}) Agents`}
-      desc={"Information sur les agents"}
+      title={`${GetTransForTokensArray(LANG_TOKENS.AGENTS_COUNT, user.lang)} (${
+        agentsFiltered.length
+      }) `}
+      desc={GetTransForTokensArray(LANG_TOKENS.AGENTS_INFO, user.lang)}
     >
       {loading ? (
         <Loading isLoading={true} />
@@ -877,7 +884,9 @@ export function HUDAgents() {
                 if (showingAgentsList) setSelectedAgent(undefined);
               }}
             >
-              {showingAgentsList ? "OK" : "SEARH AGENT"}
+              {showingAgentsList
+                ? "OK"
+                : GetTransForTokensArray(LANG_TOKENS.AGENT_SEARCH, user.lang)}
             </button>
           </div>
 
