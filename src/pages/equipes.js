@@ -126,9 +126,12 @@ export function buildChart(agentsf, sec, eq) {
   }
   let agz = [...agentsf];
 
+  //
   const dirs = findAgentsByPoste(agz, "DIR");
   const sup = findAgentsByPoste(agz, "SUP");
   const deq = [agz.find((it) => it.chef_deq === "OUI")];
+  if (deq[0] && deq[0].is_exp === "OUI")
+    agz = agz.filter((it) => it.is_exp === "NON");
   const ops = findAgentsByPoste(agz, "OPE");
   const aidops = findAgentsByPoste(agz, "AIDOP");
   const chargs = findAgentsByPoste(agz, "CHARG");
