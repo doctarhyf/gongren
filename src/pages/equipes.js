@@ -58,7 +58,7 @@ function AgentCard({ agent }) {
   return (
     agent && (
       <div className=" flex flex-col justify-center items-center gap-2 p-2 ">
-        <div className=" w-16 h-16 md:w-14 md:h-14 overflow-hidden md:h-10 bg-slate-600 rounded-full  ">
+        <div className=" w-16 h-16 md:w-14 md:h-14 overflow-hidden  bg-slate-600 rounded-full  ">
           {agent.photo && (
             <button onClick={(e) => showPic(agent.photo)}>
               <img src={agent.photo} />

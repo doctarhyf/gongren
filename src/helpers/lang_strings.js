@@ -218,7 +218,7 @@ export const LANG_TOKENS = {
   is_exp: ["IS EXPEDITOR", "发货员", "EXPEDITEUR"],
   lang: ["LANGUAGE", "语言", "LANGUE"],
   CHIN: ["CHINESE AGENTS", "中方员工", "AGENTS CHINOIS"],
-  JR: ["DAILY TEAM", "全白班", "EQUIPE DU JOUR"],
+  JR: ["DAILY TEAM", "常白班", "EQUIPE DU JOUR"],
 };
 
 //Each entry now includes a French translation as the third element in the array. Let me know if there are any terms that might need adjustment or further customization!
