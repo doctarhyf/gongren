@@ -55,7 +55,7 @@ export default function FormLogin({ onLogin }) {
   }
 
   return (
-    <div className=" flex flex-col mt-4 mx-2 p-2 ">
+    <div className=" flex  mt-4 mx-2 p-2 ">
       <div className="mx-auto  flex flex-col space-y-4    md:card md:bg-base-100 md:w-96 md:p-2 md:shadow-xl ">
         <img src={LOGO} width={200} />
         <div>{GetTransForTokensArray(LANG_TOKENS.EMPLOYE_ID, lang)}</div>
@@ -99,7 +99,9 @@ export default function FormLogin({ onLogin }) {
 
         <LanguageChooser onLanguageChanged={onLanguageChanged} />
 
-        <Christmas lang={lang} />
+        <div className=" md:hidden ">
+          <Christmas lang={lang} />
+        </div>
 
         <div className="text-sm">
           {LANG_TOKENS.CODE_AND_DESIGN[langIdx]}
@@ -109,6 +111,12 @@ export default function FormLogin({ onLogin }) {
           >
             Ir. Franvale Mutunda K. (库齐) / @doctarhyf
           </a>
+        </div>
+      </div>
+
+      <div className=" w-full  hidden md:block ">
+        <div className=" hidden md:block ">
+          <Christmas lang={lang} />
         </div>
       </div>
     </div>
