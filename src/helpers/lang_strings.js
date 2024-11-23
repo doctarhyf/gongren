@@ -10,6 +10,7 @@ export const LANG_TOKENS = {
     "新的一年，新的机会——让我们磨练技能，迎接挑战，共同打造一个值得骄傲的未来。今天的努力将塑造明天的成功。让我们一起把2025年成为属于我们的一年！",
     "Nouvelle année, nouvelles opportunités—affinons nos compétences, relevons les défis et construisons un avenir dont nous serons fiers. Les efforts que nous faisons aujourd'hui façonneront notre succès de demain. Faisons de 2025 notre année !",
   ],
+  LOGIN_ERROR: ["LOGIN ERROR!", "登录错误！", "ERREUR DE CONNEXION!"],
   MSG_NO_ACCESS: [
     "Sorry Mr. %a, you have no access to this platform.\n Please contact the administrator! @doctarhyf",
     " 对不起，%a先生，您没有权限访问这个平台。\n 请联系管理员！",

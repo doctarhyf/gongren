@@ -22,9 +22,11 @@ function App() {
   const [showModal, setShowModal] = useState(false);
   const [modalData, setModalData] = useState("");
   const [modalType, setModalType] = useState("img");
+  const [lang, setlang] = useState("en-US");
 
   async function onLogin(matricule, pin, lang) {
     let err;
+    setlang(lang);
     seterror(undefined);
     setloading(true);
 
@@ -172,7 +174,9 @@ function App() {
 
       <dialog id="my_modal_1" className="modal modal-bottom sm:modal-middle">
         <div className="modal-box">
-          <h3 className="font-bold text-lg">Login error!</h3>
+          <h3 className="font-bold text-lg">
+            {GetTransForTokensArray(LANG_TOKENS.LOGIN_ERROR, lang)}
+          </h3>
           <p className="py-4">{error}</p>
           <div className="modal-action">
             <form method="dialog">
