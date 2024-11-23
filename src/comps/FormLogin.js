@@ -114,7 +114,7 @@ export default function FormLogin({ onLogin }) {
         </div>
       </div>
 
-      <div className=" w-full  hidden md:block ">
+      <div className=" w-full mx-6  hidden md:block ">
         <div className=" hidden md:block ">
           <Christmas lang={lang} />
         </div>
