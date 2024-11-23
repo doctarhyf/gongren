@@ -9,6 +9,7 @@ import {
 } from "../helpers/lang_strings";
 import LanguageChooser from "./LanguageChooser";
 import userEvent from "@testing-library/user-event";
+import Christmas from "./Christmas";
 
 export default function FormLogin({ onLogin }) {
   const [langIdx, setLangIdx] = useState(0);
@@ -97,6 +98,8 @@ export default function FormLogin({ onLogin }) {
         </dialog>
 
         <LanguageChooser onLanguageChanged={onLanguageChanged} />
+
+        <Christmas lang={lang} />
 
         <div className="text-sm">
           {LANG_TOKENS.CODE_AND_DESIGN[langIdx]}

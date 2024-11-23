@@ -5,6 +5,11 @@ import china from "../img/china.png";
 //Here’s the updated code with French translations added as the third element in each array:
 
 export const LANG_TOKENS = {
+  NEW_YEAR_QUOTE: [
+    "New year, new opportunities—let's sharpen our skills, embrace challenges, and build a future we’re proud of. The effort we invest today will shape our success tomorrow. Let's make 2025 our year!",
+    "新的一年，新的机会——让我们磨练技能，迎接挑战，共同打造一个值得骄傲的未来。今天的努力将塑造明天的成功。让我们一起把2025年成为属于我们的一年！",
+    "Nouvelle année, nouvelles opportunités—affinons nos compétences, relevons les défis et construisons un avenir dont nous serons fiers. Les efforts que nous faisons aujourd'hui façonneront notre succès de demain. Faisons de 2025 notre année !",
+  ],
   CLEAR_CURRENT_TEAM: [
     "CLEAR CURRENT TEAM",
     "清除当前团队",
