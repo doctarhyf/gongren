@@ -59,7 +59,7 @@ export default function Home() {
       });
     });
 
-    //console.log("Equipes => ", equipes);
+    console.log("Equipes => ", equipes);
 
     return equipes;
   }

@@ -12,6 +12,7 @@ import * as SB from "../helpers/sb";
 import congo from "../img/congo.png";
 import china from "../img/china.png";
 import { TABLES_NAMES } from "../helpers/sb.config";
+import { GetTransForTokensArray, LANG_TOKENS } from "../helpers/lang_strings";
 
 function AgentsByTeam({ agents_by_team, team }) {
   //const [agents_by_team, set_agents_by_team] = useState(undefined);
@@ -63,16 +64,12 @@ export default function TableLoadsTotals({
 
   return (
     <table className=" w-full rounded-md   ">
-      <tr className="  font-bold">
-        <td align="center" className="  border-0 ">
-          水泥车间包装奖金 - {date.y}年{date.m + 1}月
-        </td>
-      </tr>{" "}
+      <tr className="  font-bold"></tr>{" "}
       {no_data && (
         <tr>
           <td colSpan={5} className={CLASS_TD} align="center">
             <div className="text-red-400">
-              Sorry, there's no data for the selected Month!
+              {GetTransForTokensArray(LANG_TOKENS.MSG_NO_DATA, user.lang)}
             </div>
           </td>
         </tr>
@@ -176,7 +173,20 @@ export default function TableLoadsTotals({
                                 agents_by_team[td[0]].china
                               : ""}
                           </span>
-                          )
+                          ){" "}
+                          {UserHasAccessCode(user, ACCESS_CODES.BONUS_BASE) && (
+                            <>
+                              <span className=" bg-green-950 text-green-200 p-1 rounded-md mx-[.75rem]  text-[.68rem] ">
+                                {formatAsMoney(
+                                  (
+                                    (td[1].bonus * 1000) /
+                                    (agents_by_team[td[0]].congo +
+                                      agents_by_team[td[0]].china)
+                                  ).toFixed(2)
+                                )}
+                              </span>
+                            </>
+                          )}
                           <AgentsByTeam
                             agents_by_team={agents_by_team}
                             team={td[0]}
@@ -216,7 +226,8 @@ export default function TableLoadsTotals({
             </div>
           ))}
           <div>
-            Last Update : <b>{upddate}</b>
+            {GetTransForTokensArray(LANG_TOKENS.LAST_UPDATE, user.lang)} :{" "}
+            <b>{upddate}</b>
           </div>
         </div>
       )}

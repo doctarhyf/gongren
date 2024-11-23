@@ -670,6 +670,9 @@ export function HUDBonus({ loads, agents, date, agents_by_team }) {
     const sortedByShiftOfDay = SortLoadsByShiftOfDay(loads, y, m);
 
     const t_data = CaclculateAllTeamsTotals(sortedByShiftOfDay);
+
+    // console.table(t_data);
+
     t_data.A.agents = agents.filter(
       (it) =>
         it.equipe === "A" && it.active === "OUI" && it.section === SECTIONS[1]

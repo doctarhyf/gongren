@@ -10,6 +10,12 @@ export const LANG_TOKENS = {
     "清除当前团队",
     "Effacer l'équipe actuelle",
   ],
+  LAST_UPDATE: ["LAST UPDATE", "最新更新", "Dernière mise à jour"],
+  MSG_NO_DATA: [
+    "Sorry, there's no data for the selected Month! - in french and chinese!",
+    "抱歉，没有选定月份的数据！",
+    "Désolé, il n'y a pas de données pour le mois sélectionné !",
+  ],
   AGENT_SEARCH: ["AGENT SEARCH", "工人搜索", "Recherche d'Agent"],
   AGENTS_INFO: [
     "Info about Agents",
