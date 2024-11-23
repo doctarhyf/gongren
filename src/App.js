@@ -4,11 +4,12 @@ import "./App.css";
 import FormLogin from "./comps/FormLogin";
 import Loading from "./comps/Loading";
 import GongRen from "./GongRen";
-import { CLASS_BTN, LOG_OPERATION } from "./helpers/flow";
-import { UpdateOperationsLogs } from "./helpers/func";
+import { ACCESS_CODES, CLASS_BTN, LOG_OPERATION } from "./helpers/flow";
+import { UpdateOperationsLogs, UserHasAccessCode } from "./helpers/func";
 import * as SB from "./helpers/sb";
 import { supabase, TABLES_NAMES } from "./helpers/sb.config";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { GetTransForTokensArray, LANG_TOKENS } from "./helpers/lang_strings";
 
 export const UserContext = createContext();
 const queryClient = new QueryClient();
@@ -47,6 +48,20 @@ function App() {
     if (data.length === 1) {
       const nuser = { ...data[0] };
       nuser.lang = lang;
+
+      if (!UserHasAccessCode(nuser, ACCESS_CODES.CAN_ACCESS)) {
+        const { nom, postnom, prenom, mingzi, matricule } = nuser;
+        const fname = `${nom} ${postnom} ${prenom} ${mingzi} - ${matricule}`;
+        console.error("this user cant access this platform");
+        err = GetTransForTokensArray(LANG_TOKENS.MSG_NO_ACCESS, lang, {
+          a: fname,
+        });
+        document.getElementById("my_modal_1").showModal();
+        seterror(err);
+
+        return;
+      }
+
       setuser(nuser);
 
       const l = await UpdateOperationsLogs(SB, nuser, LOG_OPERATION.LOGIN);

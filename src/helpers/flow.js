@@ -94,6 +94,7 @@ export const USER_LEVEL = {
 };
 
 export const ACCESS_CODES = {
+  CAN_ACCESS: "CNACC",
   ALL: "ALL",
   CLEAR_TEM: "CLRT",
   CAN_POST_NOTIFICATIONS: "CPNFCT",
