@@ -484,9 +484,7 @@ export function HUDMyTeam({ user }) {
               <div>
                 <div className=" font-bold  ">{`${ag.nom} ${ag.postnom} ${ag.prenom}`}</div>
                 <div className="  text-xs ">
-                  <span>{`${POSTES[ag.poste] && POSTES[ag.poste].fr}/${
-                    POSTES[ag.poste] && POSTES[ag.poste].zh
-                  }`}</span>
+                  <span>{`${GetTransForTokenName(ag.poste, user.lang)}`}</span>
                   {ag.chef_deq === "OUI" && (
                     <span className=" font-bold inline-block  bg-black p-1 text-xs rounded-md ">
                       {GetTransForTokensArray(LANG_TOKENS.chef_deq, user.lang)}
@@ -494,7 +492,7 @@ export function HUDMyTeam({ user }) {
                   )}
                   {ag.is_exp === "OUI" && (
                     <span className=" font-bold inline-block  bg-red-500 text-white p-1 text-xs rounded-md ">
-                      {GetTransForTokensArray(LANG_TOKENS.EXP, user.lang)}
+                      {GetTransForTokensArray(LANG_TOKENS.EXPD, user.lang)}
                     </span>
                   )}
                   {ag.poste === "SUP" && (

@@ -221,7 +221,7 @@ export const LANG_TOKENS = {
   INT: ["TRANSLATOR", "翻译", "INT"],
   SUP: ["SUPERVISOR", "班长", "SUPERVISEUR"],
   DIR: ["DIRECTOR", "主任", "DIRECTEUR"],
-  AIDOP: ["ASSISTANT OP.", "助插袋工", "AIDOP"],
+  AIDOP: ["ASSISTANT OP.", "助插袋工", "AIDE OPERATEUR"],
   BROYAGE: ["CEMENT GRINDER", "水泥磨", "BROYAGE"],
   ENSACHAGE: ["CEMENT PACKAGING", "水泥包装", "ENSACHAGE"],
   NETTOYAGE: ["CLEANING", "打扫卫生", "NETTOYAGE"],
