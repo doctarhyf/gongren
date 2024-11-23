@@ -572,7 +572,9 @@ export default function RapportChargement() {
                       <th className="border border-slate-500 p-1">
                         {GetTransForTokensArray(LANG_TOKENS.T, user.lang)}
                       </th>
-                      <th className="border border-slate-500 p-1">BNS</th>
+                      {UserHasAccessCode(user, ACCESS_CODES.BONUS_ROW) && (
+                        <th className="border border-slate-500 p-1">BNS</th>
+                      )}
                       <th className="border border-slate-500 p-1">ACT</th>
                     </tr>
                   </thead>
@@ -590,9 +592,11 @@ export default function RapportChargement() {
                       <td className="  border border-slate-500 p-1 text-end ">
                         {(parseFloat(tot) / 20).toFixed(2)}
                       </td>
-                      <td className="  border border-slate-500 p-1 text-end ">
-                        {bonustot}
-                      </td>
+                      {UserHasAccessCode(user, ACCESS_CODES.BONUS_ROW) && (
+                        <td className="  border border-slate-500 p-1 text-end ">
+                          {bonustot}
+                        </td>
+                      )}
                       <td className="  border border-slate-500 p-1 text-end "></td>
                     </tr>
                     {loadsf.map((ld, i) => (
@@ -635,15 +639,17 @@ export default function RapportChargement() {
                         <td className="  border border-slate-500 p-1 text-end ">
                           {parseFloat(ld.sacs) / 20}
                         </td>
-                        <td className="  border border-slate-500 p-1 text-end ">
-                          {parseFloat(ld.sacs) / 20 > 600 ? (
-                            <span className=" font-serif text-sky-700 font-bold ">
-                              {(parseFloat(ld.sacs) / 20 - 600).toFixed(2)}
-                            </span>
-                          ) : (
-                            0
-                          )}
-                        </td>
+                        {UserHasAccessCode(user, ACCESS_CODES.BONUS_ROW) && (
+                          <td className="  border border-slate-500 p-1 text-end ">
+                            {parseFloat(ld.sacs) / 20 > 600 ? (
+                              <span className=" font-serif text-sky-700 font-bold ">
+                                {(parseFloat(ld.sacs) / 20 - 600).toFixed(2)}
+                              </span>
+                            ) : (
+                              0
+                            )}
+                          </td>
+                        )}
                         <td className="  border border-slate-500 p-1 text-end ">
                           {ld.code[2] === "M" &&
                             UserHasAccessCode(
@@ -686,9 +692,11 @@ export default function RapportChargement() {
                       <td className="  border border-slate-500 p-1 text-end ">
                         {(parseFloat(tot) / 20).toFixed(2)}
                       </td>
-                      <td className="  border border-slate-500 p-1 text-end ">
-                        {bonustot}
-                      </td>
+                      {UserHasAccessCode(user, ACCESS_CODES.BONUS_ROW) && (
+                        <td className="  border border-slate-500 p-1 text-end ">
+                          {bonustot}
+                        </td>
+                      )}
                       <td className="  border border-slate-500 p-1 text-end "></td>
                     </tr>
                   </tbody>

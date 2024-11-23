@@ -2,7 +2,11 @@ import { useContext, useRef, useState } from "react";
 import { CLASS_SELECT, CLASS_SELECT_TITLE, MONTHS } from "../helpers/flow";
 import { getDaysInMonth, ParseDate } from "../helpers/func";
 import { UserContext } from "../App";
-import { GetTransForTokensArray, LANG_TOKENS } from "../helpers/lang_strings";
+import {
+  GetTransForTokenName,
+  GetTransForTokensArray,
+  LANG_TOKENS,
+} from "../helpers/lang_strings";
 
 export default function DateSelector({
   onDateSelected,
@@ -125,7 +129,7 @@ export default function DateSelector({
                 value={i}
                 selected={defaultDate && parseInt(defaultDate.m) === i}
               >
-                {MONTHS[i]}
+                {GetTransForTokenName(MONTHS[i].toLocaleLowerCase(), user.lang)}
               </option>
             ))}
           </select>

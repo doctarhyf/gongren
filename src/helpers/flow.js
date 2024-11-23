@@ -95,6 +95,7 @@ export const USER_LEVEL = {
 
 export const ACCESS_CODES = {
   CAN_ACCESS: "CNACC",
+  BONUS_ROW: "BNSRW",
   ALL: "ALL",
   CLEAR_TEM: "CLRT",
   CAN_POST_NOTIFICATIONS: "CPNFCT",
