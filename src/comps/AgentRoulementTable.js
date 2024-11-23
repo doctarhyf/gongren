@@ -9,6 +9,7 @@ import {
 import { AddOneToRoulementCurMonth, UserHasAccessCode } from "../helpers/func";
 import { GFMN } from "../helpers/GetRoulemenDaysData.mjs";
 import {
+  GetTransForTokenName,
   GetTransForTokensArray,
   GTFT,
   LANG_TOKENS,
@@ -97,7 +98,8 @@ export default function AgentRoulementTable({
                   className={CLASS_TD}
                 >
                   <b>
-                    {GFMN(daysData.firstMonth)} - {daysData.date.y}
+                    {GetTransForTokenName(GFMN(daysData.firstMonth), user.lang)}{" "}
+                    - {daysData.date.y}
                   </b>
                 </td>
                 <td
@@ -107,7 +109,11 @@ export default function AgentRoulementTable({
                 >
                   <b>
                     {" "}
-                    {GFMN(daysData.secondMonth)} - {daysData.date.y}
+                    {GetTransForTokenName(
+                      GFMN(daysData.secondMonth),
+                      user.lang
+                    )}{" "}
+                    - {daysData.date.y}
                   </b>
                 </td>
               </tr>
@@ -118,8 +124,7 @@ export default function AgentRoulementTable({
                 <div
                   className={` ${errors.length === 0 ? "block" : "hidden"} `}
                 >
-                  {((UserHasAccessCode(user, ACCESS_CODES.UPDATE_ROULEMENT) &&
-                    user.id === agentData.id) ||
+                  {(UserHasAccessCode(user, ACCESS_CODES.UPDATE_ROULEMENT) ||
                     UserHasAccessCode(user, ACCESS_CODES.ROOT)) && (
                     <div className={` ${!editRoulement ? "block" : "hidden"} `}>
                       <ActionButton
@@ -168,18 +173,6 @@ export default function AgentRoulementTable({
                       }}
                     />
                   </div>
-
-                  {/*  <button
-                    className={`${CLASS_BTN} ${
-                      editRoulement ? "block" : "hidden"
-                    } `}
-                    onClick={(e) => {
-                      setEditRoulement(false);
-                      onSaveRoulementAndApplyToWholeTeam();
-                    }}
-                  >
-                    {GetTransForToken(LANG_TOKENS.SAVE_WHOLE_TEAM, user.lang)}
-                  </button> */}
 
                   <button
                     className={`${CLASS_BTN} ${
@@ -280,13 +273,11 @@ export default function AgentRoulementTable({
           )}
         </tr>
       </table>
-
       <ActionButton
         icon={chart}
         title={"SHOW/HIDE STATS"}
         onClick={(e) => setShowHideStats(!showStats)}
       />
-
       {showStats && (
         <div>
           {stats &&
@@ -298,7 +289,6 @@ export default function AgentRoulementTable({
             ))}
         </div>
       )}
-
       <div className={`m-1 ${errors.length === 0 ? "hidden" : "block"} `}>
         <span className="p-1 m-1 rounded-full bg-red-700 border-red-400 border text-xs text-white">
           {errors.map((e, i) => (

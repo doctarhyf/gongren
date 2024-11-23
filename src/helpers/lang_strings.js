@@ -5,6 +5,18 @@ import china from "../img/china.png";
 //Here’s the updated code with French translations added as the third element in each array:
 
 export const LANG_TOKENS = {
+  janvier: ["January", "一月", "Janvier"],
+  février: ["February", "二月", "Février"],
+  mars: ["March", "三月", "Mars"],
+  avril: ["April", "四月", "Avril"],
+  mai: ["May", "五月", "Mai"],
+  juin: ["June", "六月", "Juin"],
+  juillet: ["July", "七月", "Juillet"],
+  août: ["August", "八月", "Août"],
+  septembre: ["September", "九月", "Septembre"],
+  octobre: ["October", "十月", "Octobre"],
+  novembre: ["November", "十一月", "Novembre"],
+  décembre: ["December", "十二月", "Décembre"],
   NEW_YEAR_QUOTE: [
     "New year, new opportunities—let's sharpen our skills, embrace challenges, and build a future we’re proud of. The effort we invest today will shape our success tomorrow. Let's make 2025 our year!",
     "新的一年，新的机会——让我们磨练技能，迎接挑战，共同打造一个值得骄傲的未来。今天的努力将塑造明天的成功。让我们一起把2025年成为属于我们的一年！",

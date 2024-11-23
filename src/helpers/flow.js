@@ -251,7 +251,7 @@ export const MAIN_MENU = [
     name: "Notifications",
     path: "/notifications",
     el: Notifications,
-    access_code: ACCESS_CODES.PAGE_HOME,
+    access_code: ACCESS_CODES.PAGE_NOTIFICATIONS,
     trad: LANG_TOKENS.NOTIFICATIONS,
   },
   {
