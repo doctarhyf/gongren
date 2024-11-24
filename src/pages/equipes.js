@@ -86,7 +86,7 @@ function AgentCard({ agent }) {
           </div>
           <div className=" flex gap-1  ">
             <span>{agent.nom}</span>
-            <span className=" md:hidden ">{agent.postnom}</span>
+            <span>{agent.postnom}</span>
             <span>{agent.prenom}</span>
           </div>
           {agent.phone && (
@@ -153,6 +153,7 @@ export function buildChart(agentsf, sec, eq) {
 }
 
 function AgentsMap({ agentsf, section, equipe }) {
+  const agents_count = agentsf.length;
   const [, , user] = useContext(UserContext);
 
   let sec;
@@ -173,8 +174,25 @@ function AgentsMap({ agentsf, section, equipe }) {
     return lev.length === 1 && lev[0] === null;
   }
 
+  const team_stats = `${GetTransForTokenName(
+    sec,
+    user.lang
+  )} - ${GetTransForTokenName(
+    eq,
+    user.lang
+  )} : ${agents_count} ${GetTransForTokensArray(
+    LANG_TOKENS.AGENTS,
+    user.lang
+  )}`;
+
   return (
     <div className=" bg-slate-100 print:visible   ">
+      {
+        <div className=" font-bold text-4xl text-center my-4  ">
+          {team_stats}
+        </div>
+      }
+
       {chart &&
         chart.map((lev, i) =>
           !levelIsNull(lev) ? (
