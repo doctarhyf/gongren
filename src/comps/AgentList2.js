@@ -185,7 +185,7 @@ export default function AgentList2({
             selected?.id === item.id && "text-slate-800 font-bold"
           } group-hover:text-slate-800  group-hover:font-bold text-xs text-gray-400  `}
         >
-          {GetTransForTokenName(item.section, user.lang)} -{" "}
+          {item.matricule} - {GetTransForTokenName(item.section, user.lang)} -{" "}
           {GetTransForTokensArray(LANG_TOKENS.EQ, user.lang)}.{" "}
           {GetTransForTokenName(item.equipe, user.lang)},{" "}
           {GetTransForTokenName(item.poste, user.lang)}
