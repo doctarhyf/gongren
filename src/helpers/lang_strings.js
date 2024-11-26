@@ -6,6 +6,7 @@ import china from "../img/china.png";
 
 export const LANG_TOKENS = {
   janvier: ["January", "一月", "Janvier"],
+  CUSTOM_TITLE: ["CUSTOM TITLE", "自定义标题", "TITRE PERSONALISE"],
   février: ["February", "二月", "Février"],
   mars: ["March", "三月", "Mars"],
   avril: ["April", "四月", "Avril"],

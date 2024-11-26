@@ -188,44 +188,51 @@ export default function AgentsTable({
         <tr>
           <td className={COL_SPAN}>
             {agentsf.length !== 0 && (
-              <div className="flex gap-4 justify-center items-center p-4 ">
-                <ActionButton
-                  icon={pdf}
-                  title={GetTransForTokensArray(
-                    LANG_TOKENS.PRINT_LIST,
-                    user.lang
-                  )}
-                  onClick={(e) => printNameListPDF(agentsf)}
-                />
-
-                <div>
-                  <input
-                    type="text"
-                    ref={ref_custom_title}
-                    className={CLASS_INPUT_TEXT}
-                    placeholder="Custom Title"
+              <div className="flex justify-center items-center p-4 divide-x-2 gap-4 ">
+                <div className=" ">
+                  <ActionButton
+                    icon={pdf}
+                    title={GetTransForTokensArray(
+                      LANG_TOKENS.PRINT_TABLE,
+                      user.lang
+                    )}
+                    onClick={(e) =>
+                      printAgentsRoulementPDF(
+                        isCustomList ? customAgentsList : agentsf
+                      )
+                    }
                   />
+
+                  <div>
+                    <input type="checkbox" ref={ref_print_empty} />
+                    {GetTransForTokensArray(
+                      LANG_TOKENS.PRINT_EMPTY_TABLE,
+                      user.lang
+                    )}
+                  </div>
                 </div>
 
-                <ActionButton
-                  icon={pdf}
-                  title={GetTransForTokensArray(
-                    LANG_TOKENS.PRINT_TABLE,
-                    user.lang
-                  )}
-                  onClick={(e) =>
-                    printAgentsRoulementPDF(
-                      isCustomList ? customAgentsList : agentsf
-                    )
-                  }
-                />
+                <div className=" pl-4 ">
+                  <ActionButton
+                    icon={pdf}
+                    title={GetTransForTokensArray(
+                      LANG_TOKENS.PRINT_LIST,
+                      user.lang
+                    )}
+                    onClick={(e) => printNameListPDF(agentsf)}
+                  />
 
-                <div>
-                  <input type="checkbox" ref={ref_print_empty} />
-                  {GetTransForTokensArray(
-                    LANG_TOKENS.PRINT_EMPTY_TABLE,
-                    user.lang
-                  )}
+                  <div>
+                    <input
+                      type="text"
+                      ref={ref_custom_title}
+                      className={CLASS_INPUT_TEXT}
+                      placeholder={GetTransForTokensArray(
+                        LANG_TOKENS.CUSTOM_TITLE,
+                        user.lang
+                      )}
+                    />
+                  </div>
                 </div>
               </div>
             )}
