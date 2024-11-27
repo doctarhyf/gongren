@@ -2,8 +2,6 @@ import france from "../img/france.png";
 import usa from "../img/usa.png";
 import china from "../img/china.png";
 
-//Here’s the updated code with French translations added as the third element in each array:
-
 export const LANG_TOKENS = {
   janvier: ["January", "一月", "Janvier"],
   CUSTOM_TITLE: ["CUSTOM TITLE", "自定义标题", "TITRE PERSONALISE"],

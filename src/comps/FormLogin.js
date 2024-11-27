@@ -11,6 +11,72 @@ import LanguageChooser from "./LanguageChooser";
 import userEvent from "@testing-library/user-event";
 import Christmas from "./Christmas";
 
+function MyForm({
+  lang,
+  ref_mat,
+  langIdx,
+  ref_pin,
+  onBtnLogin,
+  onLanguageChanged,
+}) {
+  return (
+    <div className="mx-auto text-white md:text-black  flex flex-col space-y-4    md:card md:bg-base-100 md:w-96 md:p-2 md:shadow-xl ">
+      <img src={LOGO} width={200} />
+      <div>{GetTransForTokensArray(LANG_TOKENS.EMPLOYE_ID, lang)}</div>
+      <input
+        ref={ref_mat}
+        type="text"
+        placeholder={`ex: L0501`} // coool
+        className={CLASS_INPUT_TEXT}
+      />
+      <div>{LANG_TOKENS.PIN[langIdx]}</div>
+      <input
+        ref={ref_pin}
+        type="password"
+        className={CLASS_INPUT_TEXT}
+        onKeyUp={(e) => {
+          if (e.key === "Enter") {
+            onBtnLogin();
+          }
+        }}
+      />
+      <div>
+        <button
+          onClick={(e) => onBtnLogin()}
+          className={` ${CLASS_BTN} mx-auto w-full`}
+        >
+          {GetTransForTokensArray(LANG_TOKENS.LOGIN, lang)}
+        </button>
+      </div>
+
+      <dialog id="my_modal_5" className="modal modal-bottom sm:modal-middle">
+        <div className="modal-box">
+          <h3 className="font-bold text-lg">Hello!</h3>
+          <p className="py-4">{`Matricule and password cant be empty!`}</p>
+          <div className="modal-action">
+            <form method="dialog">
+              <button className="btn">Close</button>
+            </form>
+          </div>
+        </div>
+      </dialog>
+
+      <LanguageChooser onLanguageChanged={onLanguageChanged} />
+
+      <div className=" md:hidden ">
+        <Christmas lang={lang} />
+      </div>
+
+      <div className="text-sm">
+        {LANG_TOKENS.CODE_AND_DESIGN[langIdx]}
+        <a className="text-sky-500  italic" href="https://github.com/doctarhyf">
+          Ir. Franvale Mutunda K. (库齐) / @doctarhyf
+        </a>
+      </div>
+    </div>
+  );
+}
+
 export default function FormLogin({ onLogin }) {
   const [langIdx, setLangIdx] = useState(0);
   const [lang, setLang] = useState(LANGS[0].code); // Default language
@@ -56,69 +122,16 @@ export default function FormLogin({ onLogin }) {
 
   return (
     <div className=" flex  mt-4 mx-2 p-2 ">
-      <div className="mx-auto  flex flex-col space-y-4    md:card md:bg-base-100 md:w-96 md:p-2 md:shadow-xl ">
-        <img src={LOGO} width={200} />
-        <div>{GetTransForTokensArray(LANG_TOKENS.EMPLOYE_ID, lang)}</div>
-        <input
-          ref={ref_mat}
-          type="text"
-          placeholder={`ex: L0501`} // coool
-          className={CLASS_INPUT_TEXT}
-        />
-        <div>{LANG_TOKENS.PIN[langIdx]}</div>
-        <input
-          ref={ref_pin}
-          type="password"
-          className={CLASS_INPUT_TEXT}
-          onKeyUp={(e) => {
-            if (e.key === "Enter") {
-              onBtnLogin();
-            }
-          }}
-        />
-        <div>
-          <button
-            onClick={(e) => onBtnLogin()}
-            className={` ${CLASS_BTN} mx-auto w-full`}
-          >
-            {GetTransForTokensArray(LANG_TOKENS.LOGIN, lang)}
-          </button>
-        </div>
+      <MyForm
+        lang={lang}
+        ref_mat={ref_mat}
+        langIdx={langIdx}
+        ref_pin={ref_pin}
+        onBtnLogin={onBtnLogin}
+        onLanguageChanged={onLanguageChanged}
+      />
 
-        <dialog id="my_modal_5" className="modal modal-bottom sm:modal-middle">
-          <div className="modal-box">
-            <h3 className="font-bold text-lg">Hello!</h3>
-            <p className="py-4">{`Matricule and password cant be empty!`}</p>
-            <div className="modal-action">
-              <form method="dialog">
-                <button className="btn">Close</button>
-              </form>
-            </div>
-          </div>
-        </dialog>
-
-        <LanguageChooser onLanguageChanged={onLanguageChanged} />
-
-        <div className=" md:hidden ">
-          <Christmas lang={lang} />
-        </div>
-
-        <div className="text-sm">
-          {LANG_TOKENS.CODE_AND_DESIGN[langIdx]}
-          <a
-            className="text-sky-500  italic"
-            href="https://github.com/doctarhyf"
-          >
-            Ir. Franvale Mutunda K. (库齐) / @doctarhyf
-          </a>
-        </div>
-      </div>
-
-      <div className=" w-full mx-6  hidden md:block ">
-        <div className=" hidden md:block ">
-          <Christmas lang={lang} />
-        </div>
-      </div>
+      <Christmas lang={lang} />
     </div>
   );
 }
