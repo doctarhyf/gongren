@@ -20,7 +20,7 @@ function MyForm({
   onLanguageChanged,
 }) {
   return (
-    <div className="mx-auto text-white md:text-black  flex flex-col space-y-4    md:card md:bg-base-100 md:w-96 md:p-2 md:shadow-xl ">
+    <div className="mx-auto   flex flex-col space-y-4    md:card md:bg-base-100 md:w-96 md:p-2 md:shadow-xl ">
       <img src={LOGO} width={200} />
       <div>{GetTransForTokensArray(LANG_TOKENS.EMPLOYE_ID, lang)}</div>
       <input
@@ -64,7 +64,7 @@ function MyForm({
       <LanguageChooser onLanguageChanged={onLanguageChanged} />
 
       <div className=" md:hidden ">
-        <Christmas lang={lang} />
+        <Christmas lang={lang} isMobile={true} />
       </div>
 
       <div className="text-sm">
