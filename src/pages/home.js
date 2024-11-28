@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useCookies } from "react-cookie";
 import { UserContext } from "../App";
 import DateSelector from "../comps/DateSelector";
 import Loading from "../comps/Loading";
@@ -14,17 +13,12 @@ import {
   HUDOpsLogs,
   HUDSacsCalc,
 } from "../comps/home/HUDS";
-import { ACCESS_CODES, LANG_COOKIE_KEY } from "../helpers/flow";
+import { ACCESS_CODES } from "../helpers/flow";
 import { UserHasAccessCode } from "../helpers/func";
-/* import {
-  GEN_TRANSLATIONS,
-  LANGS,
-  PACK_TRANSLATIONS_STRINGS,
-  STRINGS,
-} from "../helpers/lang_strings"; */
+
+import { GetTransForTokensArray, LANG_TOKENS } from "../helpers/lang_strings";
 import * as SB from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
-import { GetTransForTokensArray, LANG_TOKENS } from "../helpers/lang_strings";
 
 export default function Home() {
   const [, , user] = useContext(UserContext);

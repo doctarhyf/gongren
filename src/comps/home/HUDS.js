@@ -348,7 +348,7 @@ export function HUDGreetings({ user }) {
   };
 
   return (
-    <div className=" md:text-center w-auto my-4 p-2 bg-gray-800 text-white shadow-lg shadow-black/25 rounded-md">
+    <div className="   md:text-center w-auto my-4 p-2 bg-gradient-to-br from-slate-600  via-purple-950 to-slate-900 text-white shadow-2xl shadow-black  rounded-md">
       <div> {GetTransForTokensArray(LANG_TOKENS.MSG_WELCOME, user.lang)}</div>
 
       <div className="  flex justify-center items-center flex-col md:flex-row md:justify-center md:my-0 my-2 gap-4 ">
