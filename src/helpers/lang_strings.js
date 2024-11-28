@@ -132,6 +132,12 @@ export const LANG_TOKENS = {
     "Suivi de chargement des camions",
   ],
   TORN_BAGS: ["TORN BAGS", "破袋", "SACS DÉCHIRÉS"],
+  BAGS_CALC: ["BAGS CALCULATION", "袋子计算", "CALCUL DE SACS"],
+  BAGS_CALC_TORN_LEFT: [
+    "Left/torn bags calculation",
+    "破/剩余 袋子计算",
+    "CALCUL DE SACS DECHIRES/RESTANTS",
+  ],
   TORN_B: ["T.B.", "破袋", "DECH."],
   T: ["T", "吨", "T"],
   DATE: ["Date", "日期", "Date"],

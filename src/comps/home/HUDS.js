@@ -348,7 +348,7 @@ export function HUDGreetings({ user }) {
   };
 
   return (
-    <div className="   md:text-center w-auto my-4 p-2 bg-gradient-to-br from-slate-600  via-purple-950 to-slate-900 text-white shadow-2xl shadow-black  rounded-md">
+    <div className="   md:text-center w-auto my-4 p-2 bg-gradient-to-br from-slate-600  to-slate-900 text-white shadow-2xl shadow-black  rounded-md">
       <div> {GetTransForTokensArray(LANG_TOKENS.MSG_WELCOME, user.lang)}</div>
 
       <div className="  flex justify-center items-center flex-col md:flex-row md:justify-center md:my-0 my-2 gap-4 ">
@@ -732,11 +732,13 @@ export function HUDBonus({ loads, agents, date, agents_by_team }) {
 }
 
 export function HUDSacsCalc({}) {
+  const [, , user] = useContext(UserContext);
+
   return (
     <Card
       id={2}
-      title={"CALCUL SACS DECHIRES/破袋计算"}
-      desc={"Calcul de sacs dechires/restants"}
+      title={GetTransForTokensArray(LANG_TOKENS.BAGS_CALC, user.lang)}
+      desc={GetTransForTokensArray(LANG_TOKENS.BAGS_CALC_TORN_LEFT, user.lang)}
     >
       <SacsCalc />
     </Card>
