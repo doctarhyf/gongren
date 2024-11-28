@@ -819,7 +819,7 @@ export default function Equipes() {
                   />
                 </div>
               ) : (
-                <div className=" overflow-auto  bg-slate-100  ">
+                <div className=" overflow-auto scroll-auto  bg-slate-100  ">
                   <AgentsTable
                     agentsf={agentsf}
                     ref_sp_equipe={ref_sp_equipe}
