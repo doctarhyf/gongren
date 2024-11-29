@@ -37,7 +37,9 @@ import TableLoadsTotals from "../TableLoadsTotal";
 import Card from "./Card";
 import { supabase } from "../../helpers/sb.config";
 import { uploadPhoto } from "../../helpers/image_upload.mjs";
-
+import ActionButton from "../ActionButton";
+import print from "../../img/printer.png";
+import { printAgentInfo } from "../../helpers/print";
 function AgentStats({ agentsGrouped }) {
   const [, , user] = useContext(UserContext);
   return (
@@ -64,7 +66,13 @@ function AgentStats({ agentsGrouped }) {
   );
 }
 
-function AgentCardMini({ agent, moreInfo, showUpdatePoste, onAgentUpdate }) {
+function AgentCardMini({
+  agent,
+  moreInfo,
+  showUpdatePoste,
+  onAgentUpdate,
+  showPrintButton,
+}) {
   const [, , user, setuser] = useContext(UserContext);
   const [loading, setloading] = useState(false);
 
@@ -92,6 +100,13 @@ function AgentCardMini({ agent, moreInfo, showUpdatePoste, onAgentUpdate }) {
     );
 
     onAgentUpdate(upd);
+  }
+
+  function onPrintAgentInfo(agent, lang) {
+    //alert("Print");
+    //console.log(agent);
+    if (!printAgentInfo(agent, lang))
+      alert("Error printing ... please select an agent!");
   }
 
   return (
@@ -184,6 +199,13 @@ function AgentCardMini({ agent, moreInfo, showUpdatePoste, onAgentUpdate }) {
               </div>
               <Loading isLoading={loading} />
             </div>
+          )}
+          {showPrintButton && (
+            <ActionButton
+              title={"PRINT"}
+              icon={print}
+              onClick={(e) => onPrintAgentInfo(agent, user.lang)}
+            />
           )}
         </div>
       </div>
@@ -898,6 +920,7 @@ export function HUDAgents() {
               <AgentCardMini
                 agent={selectedAgent}
                 moreInfo={["contrat", "active"]}
+                showPrintButton={true}
               />
             ) : (
               <AgentsList perPage={5} onAgentClick={onAgentClick} />

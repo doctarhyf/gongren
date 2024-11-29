@@ -133,3 +133,70 @@ export function printDailyRepport(data, date, filename, adj_sacs = true) {
 
   doc.save(filename);
 }
+
+export function printAgentInfo(agent, lang = "en-US") {
+  if (!agent) {
+    return false;
+  }
+  const PAGE_WIDTH = 210;
+  const PAGE_HEIGHT = 297;
+  const PAGE_MARGIN = 15;
+  const FONT_SIZE = 8;
+
+  const doc = new jsPDF();
+  let fontr = doc.addFont(
+    "./fonts/DroidSansFallback.ttf",
+    "DroidSansFallback",
+    "normal"
+  );
+
+  const rect_logo = draw_logo(doc, GCK_LOGO, PAGE_MARGIN, 1);
+  const {
+    matricule,
+    chef_deq,
+    prenom,
+    nom,
+    postnom,
+    section,
+    poste,
+    equipe,
+    phone,
+    conrtrat,
+    active,
+  } = agent;
+
+  /*  L0566
+小班长
+Mr. PATRICK
+MWEZ MBAY 帕特里克
+车间: 水泥包装
+岗位: OPERATEUR
+班组: C
+电话: +243 895 879 177
+contrat: GCK
+active: OUI */
+
+  const textinfo = `${matricule} ${chef_deq ? "DEQ" : " "}
+Mr. ${prenom},
+${nom} ${postnom}
+${section}
+${poste}
+Equipe: ${equipe}
+${phone}
+Agent: ${conrtrat}`;
+
+  doc.text(textinfo, rect_logo.x, rect_logo.y + FONT_SIZE * 3);
+
+  /* draw_date(doc, PAGE_WIDTH, PAGE_MARGIN, FONT_SIZE, date, true);
+  const rect_title = draw_daily_repport_title(
+    doc,
+    rect_logo.h / 2,
+    PAGE_WIDTH,
+    PAGE_MARGIN,
+    12
+  ); */
+
+  const docName = "agent.pdf";
+  doc.save(docName);
+  return true;
+}
