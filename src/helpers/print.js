@@ -135,6 +135,7 @@ export function printDailyRepport(data, date, filename, adj_sacs = true) {
 }
 
 export function printAgentInfo(agent, lang = "en-US") {
+  console.log(agent);
   if (!agent) {
     return false;
   }
@@ -161,7 +162,7 @@ export function printAgentInfo(agent, lang = "en-US") {
     poste,
     equipe,
     phone,
-    conrtrat,
+    contrat,
     active,
   } = agent;
 
@@ -183,7 +184,7 @@ ${section}
 ${poste}
 Equipe: ${equipe}
 ${phone}
-Agent: ${conrtrat}`;
+Agent: ${contrat}`;
 
   doc.text(textinfo, rect_logo.x, rect_logo.y + FONT_SIZE * 3);
 
