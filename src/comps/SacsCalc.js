@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { UserHasAccessCode } from "../helpers/func";
 import { ACCESS_CODES } from "../helpers/flow";
 import { UserContext } from "../App";
+import Loading from "./Loading";
 
 export default function SacsCalc() {
   const [sacs_trouves, setstv] = useState(0);
@@ -114,8 +115,13 @@ export default function SacsCalc() {
           <div>
             <div className="  font-bold ">SACS DECHIRES</div>
             <div className="  text-[42pt] text-green-800 font-bold ">
-              {sacs_dechires}{" "}
+              {!!sacs_dechires ? sacs_dechires : <Loading isLoading={true} />}{" "}
             </div>
+            {!sacs_dechires && (
+              <div className=" bg-red-900 border-red-600 border-2  p-2 rounded-md text-red-500 text-center uppercase font-bold  ">
+                Calcul incorrect!
+              </div>
+            )}
           </div>
         ) : (
           <div className=" border-t py-2 border-teal-950/20 mt-2 ">
