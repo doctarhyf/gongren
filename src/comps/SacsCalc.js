@@ -63,7 +63,7 @@ export default function SacsCalc() {
 
         <div>Sacs trouves</div>
         <input
-          className="outline-none text-black border border-sky-200 hover:border-sky-500 p-1 rounded-md"
+          className="outline-none dark:text-white text-black border border-sky-200 hover:border-sky-500 p-1 rounded-md"
           type="number"
           keyboardType={"numeric"}
           value={sacs_trouves}
@@ -71,7 +71,7 @@ export default function SacsCalc() {
         />
         <div>Sacs sortis</div>
         <input
-          className="outline-none text-black border border-sky-200 hover:border-sky-500 p-1 rounded-md"
+          className="outline-none dark:text-white text-black border border-sky-200 hover:border-sky-500 p-1 rounded-md"
           type="number"
           keyboardType={"numeric"}
           value={sacs_sortis}
@@ -82,7 +82,7 @@ export default function SacsCalc() {
             <div>Sacs dechires</div>
 
             <input
-              className={` text-black   border-sky-200 hover:border-sky-500 
+              className={` text-black dark:text-white   border-sky-200 hover:border-sky-500 
          outline-none border  p-1 rounded-md`}
               type="number"
               keyboardType={"numeric"}
@@ -94,7 +94,7 @@ export default function SacsCalc() {
         )}
         <div>Sacs utilises</div>
         <input
-          className="outline-none border text-black border-sky-200 hover:border-sky-500 p-1 rounded-md"
+          className="outline-none border dark:text-white text-black border-sky-200 hover:border-sky-500 p-1 rounded-md"
           type="number"
           keyboardType={"numeric"}
           value={sacs_utilises}
@@ -103,7 +103,7 @@ export default function SacsCalc() {
 
         <div>Sacs comptes apres chargement</div>
         <input
-          className="outline-none border text-black border-sky-200 hover:border-sky-500 p-1 rounded-md"
+          className="outline-none border dark:text-white text-black border-sky-200 hover:border-sky-500 p-1 rounded-md"
           type="number"
           keyboardType={"numeric"}
           value={sacs_comptes}

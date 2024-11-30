@@ -151,7 +151,7 @@ export function printAgentInfo(agent, lang = "en-US") {
     "normal"
   );
 
-  const rect_logo = draw_logo(doc, GCK_LOGO, PAGE_MARGIN, 1);
+  const cursor_rect = draw_logo(doc, GCK_LOGO, PAGE_MARGIN, 1);
   const {
     matricule,
     chef_deq,
@@ -186,7 +186,7 @@ Equipe: ${equipe}
 ${phone}
 Agent: ${contrat}`;
 
-  doc.text(textinfo, rect_logo.x, rect_logo.y + FONT_SIZE * 3);
+  doc.text(textinfo, cursor_rect.x, cursor_rect.y + FONT_SIZE * 3);
 
   /* draw_date(doc, PAGE_WIDTH, PAGE_MARGIN, FONT_SIZE, date, true);
   const rect_title = draw_daily_repport_title(
