@@ -19,6 +19,7 @@ export default function AgentsList({
   showToggleTeamsView,
   onlyActive = true,
   perPage = 10,
+  onlyShowCurrentAgent,
 }) {
   const [q, setq] = useState("");
 
@@ -34,8 +35,8 @@ export default function AgentsList({
   const [showOnlyActive, setShowOnlyActive] = useState(onlyActive);
 
   useEffect(() => {
-    loadAgents();
-  }, [showOnlyActive]);
+    loadAgents(onlyShowCurrentAgent);
+  }, [showOnlyActive, onlyShowCurrentAgent]);
 
   function GetSplittedItemsIntoPages(items_raw, items_per_page) {
     let items = [];
@@ -55,7 +56,7 @@ export default function AgentsList({
     return items;
   }
 
-  async function loadAgents() {
+  async function loadAgents(matricule) {
     setloading(true);
     setagents([]);
     setagentf([]);
@@ -67,6 +68,12 @@ export default function AgentsList({
     if (showOnlyActive) {
       items_raw = items_raw.filter((it, i) => it.active === "OUI");
     }
+
+    if (matricule) {
+      items_raw = items_raw.filter((it, i) => it.matricule === matricule);
+      console.warn("Only showing : ", matricule);
+    }
+    console.log("Matr : ", matricule);
 
     setteams(GroupBySectionAndEquipe(items_raw));
     const items_len = items_raw.length;
@@ -100,7 +107,6 @@ export default function AgentsList({
     }
 
     let agents_filtered = agents.filter((agent, i) => {
-      
       const qlc = query.toLowerCase();
       const nom = agent.nom.toLowerCase();
       const postnom = agent.postnom.toLowerCase();

@@ -94,6 +94,7 @@ export const USER_LEVEL = {
 };
 
 export const ACCESS_CODES = {
+  CAN_EDIT_ALL_ROULEMENT: "CEARL",
   CAN_ACCESS: "CNACC",
   BONUS_ROW: "BNSRW",
   ALL: "ALL",

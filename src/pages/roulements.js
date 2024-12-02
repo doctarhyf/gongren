@@ -1,6 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import AgentsList from "../comps/AgentsList";
 import {
+  ACCESS_CODES,
   CLASS_INPUT_TEXT,
   CLASS_SELECT,
   CLASS_SELECT_TITLE,
@@ -15,11 +16,13 @@ import {
   GenCurrentMonthCode,
   getDaysInMonth,
   getRouelemtDaysLetters,
+  UserHasAccessCode,
 } from "../helpers/func";
 import ItemNotSelected from "../comps/ItemNotSelected";
 import DateSelector from "../comps/DateSelector";
 import GetRoulemenDaysData from "../helpers/GetRoulemenDaysData.mjs";
 import TableRoulement from "../comps/TableRoulement";
+import { UserContext } from "../App";
 
 export default function Roulements() {
   const [curAgent, setCurAgent] = useState();
@@ -30,14 +33,15 @@ export default function Roulements() {
   const [rdk, setrdk] = useState(Math.random());
   const [lastDayDate, setLastDayDate] = useState(31);
   const [daysLetters, setDaysLetters] = useState([]);
+  const [, , user] = useContext(UserContext);
 
   const ref_m = useRef();
   const ref_y = useRef();
 
   useEffect(() => {
     //set_roulement_data([...Array(curRld)].fill("M"));
-    loadRoulement();
-  }, []);
+    loadRoulement(user);
+  }, [user]);
 
   function onRoulementSaved(d) {
     console.log("onRoulementSaved =>", d);
@@ -46,8 +50,9 @@ export default function Roulements() {
     loadRoulement();
   }
 
-  async function loadRoulement() {
+  async function loadRoulement(user) {
     let data = await SB.LoadAllItems(TABLES_NAMES.AGENTS_RLD);
+
     setAgentsRoulementData(data);
     setrdk(Math.random());
     setCurAgentRld([]);
@@ -173,6 +178,12 @@ export default function Roulements() {
     return rl;
   }
 
+  const userIsRoot = UserHasAccessCode(user, ACCESS_CODES.ROOT);
+  const userCanEditAllRoulement = UserHasAccessCode(
+    user,
+    ACCESS_CODES.CAN_EDIT_ALL_ROULEMENT
+  );
+
   return (
     <div className="flex">
       <AgentsList
@@ -180,6 +191,9 @@ export default function Roulements() {
         onAgentClick={onAgentClick}
         onTeamClick={onTeamClick}
         curAgent={curAgent}
+        onlyShowCurrentAgent={
+          !userIsRoot || !userCanEditAllRoulement ? user.matricule : matricule
+        }
       />
 
       {/* <ItemNotSelected show={!curAgent} /> */}
