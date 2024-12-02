@@ -250,7 +250,7 @@ export default function AgentRoulementTable({
 
                 {editRoulement && (
                   <select
-                    className={`${CLASS_TD} texts-xs  ${
+                    className={`${CLASS_TD} texts-xs text-black dark:text-white   ${
                       i === daysData.dates.indexOf(new Date().getDate()) &&
                       daysData.date.m === new Date().getMonth() + 1
                         ? "text-green-500"
@@ -260,7 +260,12 @@ export default function AgentRoulementTable({
                     onChange={(e) => onChangeRoulement(i, e.target.value)}
                   >
                     {Object.keys(KAOQIN).map((d, i) => (
-                      <option selected={d === r}>{d}</option>
+                      <option
+                        selected={d === r}
+                        className=" text-black dark:text-white  "
+                      >
+                        {d}{" "}
+                      </option>
                     ))}
                   </select>
                 )}
