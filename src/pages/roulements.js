@@ -183,6 +183,9 @@ export default function Roulements() {
     user,
     ACCESS_CODES.CAN_EDIT_ALL_ROULEMENT
   );
+  let { matricule } = user;
+
+  matricule = !userIsRoot || !userCanEditAllRoulement ? matricule : undefined;
 
   return (
     <div className="flex">
@@ -191,9 +194,7 @@ export default function Roulements() {
         onAgentClick={onAgentClick}
         onTeamClick={onTeamClick}
         curAgent={curAgent}
-        onlyShowCurrentAgent={
-          !userIsRoot || !userCanEditAllRoulement ? user.matricule : matricule
-        }
+        onlyShowCurrentAgent={matricule}
       />
 
       {/* <ItemNotSelected show={!curAgent} /> */}
