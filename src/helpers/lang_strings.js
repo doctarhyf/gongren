@@ -165,7 +165,7 @@ export const LANG_TOKENS = {
   AGENTS_COUNT: ["Agents Count", "工人数量", "Nombre d'Agents"],
   LOADING_REPPORT: ["Loading Repport", "包装报告", "Rapport de chargement"],
   BIGBAG: ["BigBag", "吨包包装", "BigBag"],
-  ATTENDANCE: ["Attendance", "考勤", "Présence"],
+  ATTENDANCE: ["Attendance", "考勤", "Roulement"],
   WAREHOUSE: ["Warehouse", "库房", "Magasin"],
   DICO: ["Dictionnary", "词典", "Dictionnaire"],
   NAME_LISTS: ["Name Lists", "名单", "Listes de noms"],
