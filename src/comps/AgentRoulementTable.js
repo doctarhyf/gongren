@@ -156,23 +156,28 @@ export default function AgentRoulementTable({
                     />
                   </div>
 
-                  <div
-                    className={`${CLASS_BTN} ${
-                      editRoulement ? "block" : "hidden"
-                    } `}
-                  >
-                    <ActionButton
-                      icon={save}
-                      title={GetTransForTokensArray(
-                        LANG_TOKENS.SAVE_WHOLE_TEAM,
-                        user.lang
-                      )}
-                      onClick={(e) => {
-                        setEditRoulement(false);
-                        onSaveRoulementAndApplyToWholeTeam();
-                      }}
-                    />
-                  </div>
+                  {UserHasAccessCode(
+                    user,
+                    ACCESS_CODES.CAN_SAVE_ROULEMENT_FOR_WHOLE_TEAM
+                  ) && (
+                    <div
+                      className={`${CLASS_BTN} ${
+                        editRoulement ? "block" : "hidden"
+                      } `}
+                    >
+                      <ActionButton
+                        icon={save}
+                        title={GetTransForTokensArray(
+                          LANG_TOKENS.SAVE_WHOLE_TEAM,
+                          user.lang
+                        )}
+                        onClick={(e) => {
+                          setEditRoulement(false);
+                          onSaveRoulementAndApplyToWholeTeam();
+                        }}
+                      />
+                    </div>
+                  )}
 
                   <button
                     className={`${CLASS_BTN} ${
