@@ -102,6 +102,16 @@ export const LANG_TOKENS = {
     "密码必须包含6到8个字符，并且包括字母和数字。", // Chinese
     "Le code PIN doit comporter entre 6 et 8 caractères et inclure à la fois des lettres et des chiffres.", // French
   ],
+  LABEL_ENTER_NEw_PIN: [
+    "Please enter a new PIN.", // English
+    "请输入新PIN码。", // Chinese
+    "Veuillez saisir un nouveau PIN.", // French
+  ],
+  LABEL_RE_ENTER_NEw_PIN: [
+    "Please re-enter the PIN.", // English
+    "请输入重新输入PIN码。", // Chinese
+    "Veuillez retaper le PIN.", // French
+  ],
   MSG_PIN_SHOULD_MATCH: [
     "The two passwords are not the same; make sure the two passwords match!", // English
     "两个密码不相同，请确保两个密码匹配！", // Chinese

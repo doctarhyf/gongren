@@ -21,6 +21,9 @@ export default function FormPasswordUpdate({ onUpdatePassword, lang }) {
         </div>
         <div className=" text-3xl font-thin text-center  ">PIN UPDATE</div>
         <div>{GetTransForTokensArray(LANG_TOKENS.PIN, lang)}</div>
+        <p className=" italic text-xs  ">
+          {GetTransForTokensArray(LANG_TOKENS.LABEL_ENTER_NEw_PIN, lang)}
+        </p>
         <input
           value={newpin.pin}
           onChange={(e) =>
@@ -34,6 +37,9 @@ export default function FormPasswordUpdate({ onUpdatePassword, lang }) {
           }  `}
         />
         <div>{GetTransForTokensArray(LANG_TOKENS.RE_PIN, lang)}</div>
+        <p className=" italic text-xs ">
+          {GetTransForTokensArray(LANG_TOKENS.LABEL_RE_ENTER_NEw_PIN, lang)}
+        </p>
         <input
           value={newpin.repin}
           onChange={(e) =>
@@ -58,7 +64,7 @@ export default function FormPasswordUpdate({ onUpdatePassword, lang }) {
           </p>
         )}
 
-        <p className="p-1 rounded-md text-xs ">
+        <p className="p-1 rounded-md text-xs text-center ">
           {GetTransForTokensArray(LANG_TOKENS.MSG_PIN_REQUIREMENT, lang)}
         </p>
         <div>
