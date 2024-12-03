@@ -106,6 +106,16 @@ export default function AgentRoulementTable({
 
   return (
     <div>
+      <div className={`m-1 ${errors.length === 0 ? "hidden" : "block"} `}>
+        <span className="p-1 m-1 rounded-md bg-red-700 border-red-400 border  text-white">
+          {/*  {errors.map((e, i) => (
+            <span>
+              {i + 1}. {e.msg}
+            </span>
+          ))} */}
+          Veuillez selection le mot pour afficher le roulement!
+        </span>
+      </div>
       <table>
         {!hideHeaders && (
           <>
@@ -329,26 +339,18 @@ export default function AgentRoulementTable({
         onClick={(e) => setShowHideStats(!showStats)}
       /> */}
       {/*   {showStats && ( */}
-      <div className=" w-fit p-2 bg-white rounded-md shadow-md   ">
-        {stats &&
-          Object.entries(KAOQIN).map((it, i) => (
-            <div>
-              <span className="font-bold">{it[0]}:</span>
-              {it[1].trad[GetLangIndexByLangCode(user.lang)]}
-            </div>
-          ))}
-      </div>
+      {editRoulement && (
+        <div className=" w-fit p-2 bg-white rounded-md shadow-md   ">
+          {stats &&
+            Object.entries(KAOQIN).map((it, i) => (
+              <div>
+                <span className="font-bold">{it[0]}:</span>
+                {it[1].trad[GetLangIndexByLangCode(user.lang)]}
+              </div>
+            ))}
+        </div>
+      )}
       {/*   )} */}
-
-      <div className={`m-1 ${errors.length === 0 ? "hidden" : "block"} `}>
-        <span className="p-1 m-1 rounded-full bg-red-700 border-red-400 border text-xs text-white">
-          {errors.map((e, i) => (
-            <span>
-              {i + 1}. {e.msg}
-            </span>
-          ))}
-        </span>
-      </div>
     </div>
   );
 }
