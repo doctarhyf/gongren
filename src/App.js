@@ -10,6 +10,7 @@ import * as SB from "./helpers/sb";
 import { supabase, TABLES_NAMES } from "./helpers/sb.config";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { GetTransForTokensArray, LANG_TOKENS } from "./helpers/lang_strings";
+import FormPasswordUpdate from "./comps/FormPasswordUpdate";
 
 export const UserContext = createContext();
 const queryClient = new QueryClient();
@@ -23,9 +24,19 @@ function App() {
   const [modalData, setModalData] = useState("");
   const [modalType, setModalType] = useState("img");
   const [lang, setlang] = useState("en-US");
+  const [updatingPassword, setUpdatingPassword] = useState(false);
+
+  function showModalError(msg) {
+    console.error(msg);
+    /* err =   GetTransForTokensArray(LANG_TOKENS.MSG_NO_ACCESS, lang, {
+      a: fname,
+    }); */
+    document.getElementById("my_modal_1").showModal();
+    seterror(msg);
+  }
 
   async function onLogin(matricule, pin, lang) {
-    let err;
+    let error_message;
     setlang(lang);
     seterror(undefined);
     setloading(true);
@@ -51,15 +62,31 @@ function App() {
       const nuser = { ...data[0] };
       nuser.lang = lang;
 
+      if (nuser.pin === "0000") {
+        showModalError(
+          "Fore more security your default password of 0000 must be changed, immediatly!"
+        );
+
+        setTimeout(() => {
+          setUpdatingPassword(true);
+        }, 3000);
+
+        return;
+      }
+
       if (!UserHasAccessCode(nuser, ACCESS_CODES.CAN_ACCESS)) {
         const { nom, postnom, prenom, mingzi, matricule } = nuser;
         const fname = `${nom} ${postnom} ${prenom} ${mingzi} - ${matricule}`;
         console.error("this user cant access this platform");
-        err = GetTransForTokensArray(LANG_TOKENS.MSG_NO_ACCESS, lang, {
-          a: fname,
-        });
+        error_message = GetTransForTokensArray(
+          LANG_TOKENS.MSG_NO_ACCESS,
+          lang,
+          {
+            a: fname,
+          }
+        );
         document.getElementById("my_modal_1").showModal();
-        seterror(err);
+        seterror(error_message);
 
         return;
       }
@@ -85,16 +112,16 @@ function App() {
       });
     } else {
       if (error === null) {
-        err = `User matricule: "${matricule}", pin : "${pin}" cant be found`;
+        error_message = `User matricule: "${matricule}", pin : "${pin}" cant be found`;
         document.getElementById("my_modal_1").showModal();
-        seterror(err);
+        seterror(error_message);
         // alert(err);
         //console.log(err);
       } else {
-        err = "Error loging in\n" + JSON.stringify(error);
-        seterror(err);
+        error_message = "Error loging in\n" + JSON.stringify(error);
+        seterror(error_message);
         //console.log(err);
-        alert(err);
+        alert(error_message);
       }
     }
 
@@ -136,6 +163,11 @@ function App() {
     }
   }, []);
 
+  function onUpdatePassword() {
+    setUpdatingPassword(false);
+    setloading(false);
+  }
+
   return user ? (
     <QueryClientProvider client={queryClient}>
       <UserContext.Provider value={[showImage, showData, user, setuser]}>
@@ -168,6 +200,8 @@ function App() {
         </div>
       </UserContext.Provider>
     </QueryClientProvider>
+  ) : updatingPassword ? (
+    <FormPasswordUpdate onUpdatePassword={onUpdatePassword} />
   ) : (
     <>
       <FormLogin onLogin={onLogin} />
