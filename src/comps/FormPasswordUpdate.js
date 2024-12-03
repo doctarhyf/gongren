@@ -9,6 +9,7 @@ import Loading from "./Loading";
 
 export default function FormPasswordUpdate({
   onUpdatePassword,
+  onCancelUpdatePIN,
   uid: id,
   lang,
 }) {
@@ -99,6 +100,13 @@ export default function FormPasswordUpdate({
             className={` ${CLASS_BTN} mx-auto w-full`}
           >
             {GetTransForTokensArray(LANG_TOKENS.SAVE, lang)}
+          </button>
+
+          <button
+            onClick={(e) => onCancelUpdatePIN()}
+            className={` ${CLASS_BTN} mx-auto w-full`}
+          >
+            {GetTransForTokensArray(LANG_TOKENS.CANCEL, lang)}
           </button>
         </div>
 
