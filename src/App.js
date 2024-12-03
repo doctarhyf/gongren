@@ -26,7 +26,7 @@ function App() {
   const [lang, setlang] = useState("en-US");
   const [updatingPassword, setUpdatingPassword] = useState(false);
 
-  function showModalError(msg) {
+  function showModalErrorMessage(msg) {
     console.error(msg);
     /* err =   GetTransForTokensArray(LANG_TOKENS.MSG_NO_ACCESS, lang, {
       a: fname,
@@ -63,8 +63,8 @@ function App() {
       nuser.lang = lang;
 
       if (nuser.pin === "0000") {
-        showModalError(
-          "Fore more security your default password of 0000 must be changed, immediatly!"
+        showModalErrorMessage(
+          GetTransForTokensArray(LANG_TOKENS.MSG_CHANGE_DEFAULTT_PIN, lang)
         );
 
         setTimeout(() => {
@@ -77,7 +77,7 @@ function App() {
       if (!UserHasAccessCode(nuser, ACCESS_CODES.CAN_ACCESS)) {
         const { nom, postnom, prenom, mingzi, matricule } = nuser;
         const fname = `${nom} ${postnom} ${prenom} ${mingzi} - ${matricule}`;
-        console.error("this user cant access this platform");
+
         error_message = GetTransForTokensArray(
           LANG_TOKENS.MSG_NO_ACCESS,
           lang,
@@ -85,9 +85,10 @@ function App() {
             a: fname,
           }
         );
-        document.getElementById("my_modal_1").showModal();
+        console.error(error_message);
+        //document.getElementById("my_modal_1").showModal();
         seterror(error_message);
-
+        showModalErrorMessage(error_message);
         return;
       }
 
@@ -201,7 +202,7 @@ function App() {
       </UserContext.Provider>
     </QueryClientProvider>
   ) : updatingPassword ? (
-    <FormPasswordUpdate onUpdatePassword={onUpdatePassword} />
+    <FormPasswordUpdate onUpdatePassword={onUpdatePassword} lang={lang} />
   ) : (
     <>
       <FormLogin onLogin={onLogin} />

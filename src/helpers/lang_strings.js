@@ -90,11 +90,22 @@ export const LANG_TOKENS = {
   CONTRACT: ["Contract", "工作合同", "Contrat"],
   EMPLOYE_ID: ["Employe ID", "工号", "ID d'employé"],
   PIN: ["PIN", "密码", "Code PIN"],
+  RE_PIN: ["RE-PIN", "第二次密码", "RE-PIN"],
   LOGIN: ["Login", "登录", "Connexion"],
   CODE_AND_DESIGN: [
     "Code and design by ",
     "代码与设计：",
     "Code et design par ",
+  ],
+  MSG_PIN_REQUIREMENT: [
+    "The PIN must be between 6 and 8 characters and include both letters and numbers.", // English
+    "密码必须包含6到8个字符，并且包括字母和数字。", // Chinese
+    "Le code PIN doit comporter entre 6 et 8 caractères et inclure à la fois des lettres et des chiffres.", // French
+  ],
+  MSG_PIN_SHOULD_MATCH: [
+    "The two passwords are not the same; make sure the two passwords match!", // English
+    "两个密码不相同，请确保两个密码匹配！", // Chinese
+    "Les deux mots de passe ne sont pas les mêmes, assurez-vous que les deux mots de passe correspondent !", // French
   ],
   CHOOSE_LANG: ["Choose language", "选择语言", "Choisissez la langue"],
   HOME: ["HOME", "主页", "ACCUEIL"],
@@ -168,6 +179,11 @@ export const LANG_TOKENS = {
   ATTENDANCE: ["Attendance", "考勤", "Roulement"],
   WAREHOUSE: ["Warehouse", "库房", "Magasin"],
   DICO: ["Dictionnary", "词典", "Dictionnaire"],
+  MSG_CHANGE_DEFAULTT_PIN: [
+    "For more security, your default password of 0000 must be changed immediately!", // English
+    "为了更高的安全性，您的默认密码0000必须立即更改！", // Chinese
+    "Pour plus de sécurité, votre mot de passe par défaut de 0000 doit être changé immédiatement !", // French
+  ],
   NAME_LISTS: ["Name Lists", "名单", "Listes de noms"],
   MSG_WELCOME: [
     "Welcome to the cement plant portal",
