@@ -25,6 +25,7 @@ function App() {
   const [modalType, setModalType] = useState("img");
   const [lang, setlang] = useState("en-US");
   const [updatingPassword, setUpdatingPassword] = useState(false);
+  const [uid, setuid] = useState(-1);
 
   function showModalErrorMessage(msg) {
     console.error(msg);
@@ -61,6 +62,7 @@ function App() {
     if (data.length === 1) {
       const nuser = { ...data[0] };
       nuser.lang = lang;
+      setuid(nuser.id);
 
       if (nuser.pin === "0000") {
         showModalErrorMessage(
@@ -164,12 +166,15 @@ function App() {
     }
   }, []);
 
-  function onUpdatePassword() {
-    setUpdatingPassword(false);
+  function onUpdatePassword(success) {
+    setUpdatingPassword(!success);
     setloading(false);
+
+    const msg = success ? "PIN update success!" : "PIN Update error!";
+    alert(msg);
   }
 
-  return user ? (
+  return user && !updatingPassword ? (
     <QueryClientProvider client={queryClient}>
       <UserContext.Provider value={[showImage, showData, user, setuser]}>
         <div>
@@ -202,7 +207,11 @@ function App() {
       </UserContext.Provider>
     </QueryClientProvider>
   ) : updatingPassword ? (
-    <FormPasswordUpdate onUpdatePassword={onUpdatePassword} lang={lang} />
+    <FormPasswordUpdate
+      onUpdatePassword={onUpdatePassword}
+      uid={uid}
+      lang={lang}
+    />
   ) : (
     <>
       <FormLogin onLogin={onLogin} />

@@ -1,17 +1,31 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { CLASS_BTN, CLASS_INPUT_TEXT } from "../helpers/flow";
 import { GetTransForTokensArray, LANG_TOKENS } from "../helpers/lang_strings";
 //import LOGO from "../helpers/logo.mjs";
 import lock from "../img/lock.png";
+import * as SB from "../helpers/sb";
+import { TABLES_NAMES } from "../helpers/sb.config";
 
-export default function FormPasswordUpdate({ onUpdatePassword, lang }) {
+export default function FormPasswordUpdate({
+  onUpdatePassword,
+  uid: id,
+  lang,
+}) {
   const pinRegex = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{6,8}$/;
   const [newpin, setnewpin] = useState({ pin: "", repin: "" });
 
   /* To create a JavaScript regular expression that checks if a PIN is between 6 and 8 characters, and includes both letters and numbers, you can use the following regex pattern: */
 
-  function onUpdatePIN() {
-    // onUpdatePassword();
+  async function onUpdatePIN() {
+    const u = await SB.UpdateItem(
+      TABLES_NAMES.AGENTS,
+      {
+        id: id,
+        pin: newpin.pin,
+      },
+      (s) => onUpdatePassword(true),
+      (e) => onUpdatePassword(false)
+    );
   }
   return (
     <div className=" p-6  ">
