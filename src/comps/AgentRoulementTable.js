@@ -9,6 +9,7 @@ import {
 import { AddOneToRoulementCurMonth, UserHasAccessCode } from "../helpers/func";
 import { GFMN } from "../helpers/GetRoulemenDaysData.mjs";
 import {
+  GetLangIndexByLangCode,
   GetTransForTokenName,
   GetTransForTokensArray,
   GTFT,
@@ -27,14 +28,30 @@ const POINTAGES_HOURS_LEN = {
 };
 
 const KAOQIN = {
-  J: { desc: "Jour" },
-  P: { desc: "Apres-midi" },
-  N: { desc: "Nuit" },
-  R: { desc: "Repos" },
-  A: { desc: "Absent" },
-  M: { desc: "Malade" },
-  C: { desc: "Conge conditionel" },
-  "-": { desc: "-" },
+  J: {
+    desc: "Jour",
+    trad: ["DAY : 07 ~ 17", "白班 : 07 ~ 17", "JOUR : 07 ~ 17"],
+  },
+  P: {
+    desc: "Apres-midi",
+    trad: ["AFTERNOON : 07 ~ 15", "下午 : 07 ~ 17", "APREM : 07 ~ 17"],
+  },
+  N: {
+    desc: "Nuit",
+    trad: ["LONG NIGHT : 17 ~ 07", "长夜班 : 07 ~ 17", "LONGUE NUIT : 17 ~ 07"],
+  },
+  Z: {
+    desc: "Nuit",
+    trad: ["NIGHT : 23 ~ 07", "夜班 : 23 ~ 07", "NUIT : 23 ~ 07"],
+  },
+  R: { desc: "Repos", trad: ["LEAVE", "休息", "REPOS"] },
+  A: { desc: "Absent", trad: ["ABSENT", "旷空", "ABSENT"] },
+  M: { desc: "Malade", trad: ["SICK LEAVE", "病假", "MALADE"] },
+  C: {
+    desc: "Conge conditionel",
+    trad: ["CONDITIONAL LEAVE", "请假", "CONGE CONDITIONEL"],
+  },
+  "-": { desc: "-", trad: ["-", "-", "-"] },
 };
 
 export default function AgentRoulementTable({
@@ -259,12 +276,13 @@ export default function AgentRoulementTable({
                     defaultValue={r}
                     onChange={(e) => onChangeRoulement(i, e.target.value)}
                   >
-                    {Object.keys(KAOQIN).map((d, i) => (
+                    {Object.entries(KAOQIN).map((d, i) => (
                       <option
-                        selected={d === r}
+                        value={d[0]}
+                        selected={d[0] === r}
                         className=" text-black dark:text-white  "
                       >
-                        {d}{" "}
+                        {d[1].trad[GetLangIndexByLangCode(user.lang)]}
                       </option>
                     ))}
                   </select>
