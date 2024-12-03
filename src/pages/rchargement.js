@@ -380,19 +380,40 @@ export default function RapportChargement() {
     setadding(false);
   }
 
+  function comparLoadsByDate(cur_load, load_to_comp) {
+    let [t, s, y, m, d] = cur_load.code.split("_");
+    const curDateObj = { y: parseInt(y), m: parseInt(m), d: parseInt(d) };
+    [t, s, y, m, d] = load_to_comp.code.split("_");
+    const dateToCompObj = { y: parseInt(y), m: parseInt(m), d: parseInt(d) };
+
+    //console.log("curData : \n", curDateObj);
+    //console.log("date2Comp : \n", dateToCompObj);
+
+    return (
+      curDateObj.y === dateToCompObj.y &&
+      curDateObj.m === dateToCompObj.m &&
+      curDateObj.d === dateToCompObj.d
+    );
+  }
+
   function onPrintDailyRepport(loads_array, cur_load, idx) {
     const [t, s, y, m, d] = cur_load.code.split("_");
 
     const filter = `${y}_${m}_${d}`;
+    //const filterDateObj = { y: parseInt(y), m: parseInt(m), d: parseInt(d) };
 
     let filteredloads = [cur_load]; //loads_array.filter((it) => it.code.includes(filter));
 
     ["M", "P", "N"].forEach((shift) => {
       if (s !== shift) {
-        const pload = loads_array.find((it) =>
-          it.code.includes(`_${shift}_${filter}`)
+        const pload = loads_array.find(
+          (it) =>
+            comparLoadsByDate(cur_load, it) && it.code.split("_")[1] === shift
         );
-        if (pload) filteredloads.push(pload);
+
+        if (pload) {
+          filteredloads.push(pload);
+        }
       }
     });
 
@@ -406,6 +427,8 @@ export default function RapportChargement() {
 
     console.log("print cur_load: \n", cur_load);
 
+    console.log(filteredloads);
+    return;
     printDailyRepport(filteredloads, date, filename);
   }
 
