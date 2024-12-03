@@ -19,6 +19,7 @@ export default function FormPasswordUpdate({ onUpdatePassword, lang }) {
         <div className=" flex justify-center items-center ">
           <img src={lock} height={100} width={100} />
         </div>
+        <div className=" text-3xl font-thin text-center  ">PIN UPDATE</div>
         <div>{GetTransForTokensArray(LANG_TOKENS.PIN, lang)}</div>
         <input
           value={newpin.pin}
