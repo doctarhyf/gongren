@@ -5,6 +5,7 @@ import { GetTransForTokensArray, LANG_TOKENS } from "../helpers/lang_strings";
 import lock from "../img/lock.png";
 import * as SB from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
+import Loading from "./Loading";
 
 export default function FormPasswordUpdate({
   onUpdatePassword,
@@ -13,7 +14,7 @@ export default function FormPasswordUpdate({
 }) {
   const pinRegex = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{6,8}$/;
   const [newpin, setnewpin] = useState({ pin: "", repin: "" });
-
+  const [loading, setloading] = useState(false);
   /* To create a JavaScript regular expression that checks if a PIN is between 6 and 8 characters, and includes both letters and numbers, you can use the following regex pattern: */
 
   async function onUpdatePIN() {
@@ -28,8 +29,14 @@ export default function FormPasswordUpdate({
         id: id,
         pin: newpin.pin,
       },
-      (s) => onUpdatePassword(true),
-      (e) => onUpdatePassword(false)
+      (s) => {
+        onUpdatePassword(true);
+        setloading(false);
+      },
+      (e) => {
+        onUpdatePassword(false);
+        setloading(false);
+      }
     );
   }
   return (
@@ -94,6 +101,8 @@ export default function FormPasswordUpdate({
             {GetTransForTokensArray(LANG_TOKENS.SAVE, lang)}
           </button>
         </div>
+
+        <Loading isLoading={loading} />
 
         <dialog id="my_modal_5" className="modal modal-bottom sm:modal-middle">
           <div className="modal-box">
