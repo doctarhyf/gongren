@@ -380,14 +380,11 @@ export default function RapportChargement() {
     setadding(false);
   }
 
-  function comparLoadsByDate(cur_load, load_to_comp) {
+  function checkLoadsdatesAreTheSame(cur_load, load_to_comp) {
     let [t, s, y, m, d] = cur_load.code.split("_");
     const curDateObj = { y: parseInt(y), m: parseInt(m), d: parseInt(d) };
     [t, s, y, m, d] = load_to_comp.code.split("_");
     const dateToCompObj = { y: parseInt(y), m: parseInt(m), d: parseInt(d) };
-
-    //console.log("curData : \n", curDateObj);
-    //console.log("date2Comp : \n", dateToCompObj);
 
     return (
       curDateObj.y === dateToCompObj.y &&
@@ -408,7 +405,8 @@ export default function RapportChargement() {
       if (s !== shift) {
         const pload = loads_array.find(
           (it) =>
-            comparLoadsByDate(cur_load, it) && it.code.split("_")[1] === shift
+            checkLoadsdatesAreTheSame(cur_load, it) &&
+            it.code.split("_")[1] === shift
         );
 
         if (pload) {
