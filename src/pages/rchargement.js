@@ -428,7 +428,7 @@ export default function RapportChargement() {
     console.log("print cur_load: \n", cur_load);
 
     console.log(filteredloads);
-    return;
+    // return;
     printDailyRepport(filteredloads, date, filename);
   }
 
