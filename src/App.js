@@ -64,7 +64,7 @@ function App() {
       nuser.lang = lang;
       setuid(nuser.id);
 
-      if (nuser.pin === "0000") {
+      if (nuser.pin.trim() === "0000" || nuser.pin.trim() === "") {
         showModalErrorMessage(
           GetTransForTokensArray(LANG_TOKENS.MSG_CHANGE_DEFAULTT_PIN, lang)
         );

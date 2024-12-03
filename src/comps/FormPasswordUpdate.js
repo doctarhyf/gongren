@@ -17,6 +17,11 @@ export default function FormPasswordUpdate({
   /* To create a JavaScript regular expression that checks if a PIN is between 6 and 8 characters, and includes both letters and numbers, you can use the following regex pattern: */
 
   async function onUpdatePIN() {
+    if (!newpin.pin.trim() || !newpin.repin.trim()) {
+      alert("PIN cant be empty!");
+      return;
+    }
+
     const u = await SB.UpdateItem(
       TABLES_NAMES.AGENTS,
       {
