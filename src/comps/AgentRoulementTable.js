@@ -30,19 +30,23 @@ const POINTAGES_HOURS_LEN = {
 export const KAOQIN = {
   J: {
     desc: "Jour",
-    trad: ["DAY : 07 ~ 17", "白班 : 07 ~ 17", "JOUR : 07 ~ 17"],
+    trad: ["DAY : 07H ~ 17H", "白班 : 07H ~ 17H", "JOUR : 07H ~ 17H"],
   },
   P: {
     desc: "Apres-midi",
-    trad: ["AFTERNOON : 07 ~ 15", "下午 : 07 ~ 17", "APREM : 07 ~ 17"],
+    trad: ["AFTERNOON : 15H ~ 23H", "下午 : 15H ~ 23H", "APREM : 15H ~ 23H"],
   },
   N: {
     desc: "Nuit",
-    trad: ["LONG NIGHT : 17 ~ 07", "长夜班 : 07 ~ 17", "LONGUE NUIT : 17 ~ 07"],
+    trad: [
+      "LONG NIGHT : 17H ~ 07H",
+      "长夜班 : 17H ~ 07H",
+      "LONGUE NUIT : 17H ~ 07H",
+    ],
   },
   Z: {
     desc: "Nuit",
-    trad: ["NIGHT : 23 ~ 07", "夜班 : 23 ~ 07", "NUIT : 23 ~ 07"],
+    trad: ["NIGHT : 23H ~ 07H", "夜班 : 23H ~ 07H", "NUIT : 23H ~ 07H"],
   },
   R: { desc: "Repos", trad: ["LEAVE", "休息", "REPOS"] },
   A: { desc: "Absent", trad: ["ABSENT", "旷空", "ABSENT"] },
