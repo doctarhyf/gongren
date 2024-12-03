@@ -27,7 +27,7 @@ const POINTAGES_HOURS_LEN = {
   R: 0,
 };
 
-const KAOQIN = {
+export const KAOQIN = {
   J: {
     desc: "Jour",
     trad: ["DAY : 07 ~ 17", "白班 : 07 ~ 17", "JOUR : 07 ~ 17"],
@@ -301,6 +301,7 @@ export default function AgentRoulementTable({
           )}
         </tr>
       </table>
+
       <ActionButton
         icon={chart}
         title={"SHOW/HIDE STATS"}
@@ -317,6 +318,24 @@ export default function AgentRoulementTable({
             ))}
         </div>
       )}
+
+      {/*  <ActionButton
+        icon={chart}
+        title={"LEGEB"}
+        onClick={(e) => setShowHideStats(!showStats)}
+      /> */}
+      {/*   {showStats && ( */}
+      <div className=" w-fit p-2 bg-white rounded-md shadow-md   ">
+        {stats &&
+          Object.entries(KAOQIN).map((it, i) => (
+            <div>
+              <span className="font-bold">{it[0]}:</span>
+              {it[1].trad[GetLangIndexByLangCode(user.lang)]}
+            </div>
+          ))}
+      </div>
+      {/*   )} */}
+
       <div className={`m-1 ${errors.length === 0 ? "hidden" : "block"} `}>
         <span className="p-1 m-1 rounded-full bg-red-700 border-red-400 border text-xs text-white">
           {errors.map((e, i) => (
