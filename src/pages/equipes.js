@@ -624,6 +624,12 @@ export default function Equipes() {
     printChart(user.lang, chart);
   }
 
+  useEffect(() => {
+    if (isCustomList) {
+      setCustomAgents([...agentsf]);
+    }
+  }, [isCustomList]);
+
   return (
     <div>
       <Loading isLoading={loading} />

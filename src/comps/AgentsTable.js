@@ -227,6 +227,11 @@ export default function AgentsTable({
           </td>
         </tr>
 
+        {isCustomList && (
+          <div className=" m-2 rounded-md bg-green-900 text-green-400 border border-green-600 p-2 text-center  ">
+            {GetTransForTokensArray(LANG_TOKENS.CUSTOM_LIST, user.lang)}
+          </div>
+        )}
         <table>
           <thead>
             <tr>
