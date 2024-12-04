@@ -64,8 +64,8 @@ export default function Listes() {
 
   function printList(agents, selprops, simplelist) {
     if (simplelist) {
-      printNameListPDF(agents);
-      console.log("Printing simple list ...");
+      printNameListPDF(agents, listtitle);
+      // console.log("Printing simple list ...");
       return;
     }
 
@@ -155,13 +155,6 @@ export default function Listes() {
         />
 
         <div className=" flex ">
-          {/*  {
-            <AgentList2
-              onAgentClick={onAgentClick}
-              selectedAgents={agents}
-              showToggleTeamsView
-            />
-          } */}
           <AgentsList
             onAgentClick={onAgentClick}
             showToggleTeamsView
@@ -171,7 +164,7 @@ export default function Listes() {
           <div className=" bg-slate-700 text-white p-2 ">
             <ActionButton
               icon={print}
-              onClick={(e) => printList(agents, propsToPrint)}
+              onClick={(e) => printList(agents, propsToPrint, showSimpleList)}
               title={"PRINT"}
             />
             <ActionButton

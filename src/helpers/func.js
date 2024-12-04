@@ -293,9 +293,9 @@ function addTitle(doc, agents, customTitle) {
   let { equipe, section } = agents[0];
   let date = new Date().toLocaleDateString();
 
-  let title =
-    customTitle ||
-    `NOM DES AGENTS DE L'ATELIER CIMENT, ${section} EQUIPE ${equipe}, le ${date}`;
+  let title = !!customTitle
+    ? `${customTitle}, le ${date}`
+    : `NOM DES AGENTS DE L'ATELIER CIMENT, ${section} EQUIPE ${equipe}, le ${date}`;
   doc.setFontSize(12);
   const x = 10;
   const y = LOGOH / LOGO_RATIO + 20;

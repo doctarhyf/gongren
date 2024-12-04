@@ -71,17 +71,14 @@ people: [
 }
 
 export function printNameListPDF(agents_array, customTitle) {
-  //const customTitle = _(ref_custom_title);
-
   if (agents_array.length === 0) {
     alert("Agents list cant be empty!");
     return;
   }
 
-  printPDF1(
-    agents_array,
-    customTitle.trim().length > 0 ? customTitle : undefined
-  );
+  let title = !!customTitle ? customTitle.trim() : undefined;
+
+  printPDF1(agents_array, title);
 }
 
 export function printDailyRepport(data, date, filename, adj_sacs = true) {
