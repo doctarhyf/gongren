@@ -211,6 +211,7 @@ function App() {
       onUpdatePassword={onUpdatePassword}
       uid={uid}
       lang={lang}
+      onCancelUpdatePIN={(e) => setUpdatingPassword(false)}
     />
   ) : (
     <>
