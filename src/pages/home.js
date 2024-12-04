@@ -155,8 +155,7 @@ export default function Home() {
 
         <HUDSacsCalc />
         <HUDCalculsBons />
-        {(UserHasAccessCode(user, ACCESS_CODES.ROOT) ||
-          user.poste === "INT") && <HUDAgents />}
+        <HUDAgents />
         {false && <HUDGestionSacs />}
         {(UserHasAccessCode(user, ACCESS_CODES.ROOT) ||
           user.poste === "INT") && <HUDOpsLogs />}
