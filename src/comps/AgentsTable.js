@@ -1,38 +1,21 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useRef } from "react";
 
+import userEvent from "@testing-library/user-event";
+import { UserContext } from "../App";
+import { CLASS_INPUT_TEXT, CLASS_TD, CLASS_TODAY } from "../helpers/flow";
+import { _, getDaysInMonth, printPDF1 } from "../helpers/func";
+import { print_agents_rl } from "../helpers/funcs_print";
 import GetRoulemenDaysData from "../helpers/GetRoulemenDaysData.mjs";
-import shield from "../img/shield.png";
-import sup from "../img/sup.png";
-import pdf from "../img/pdf.png";
-import {
-  AddOneToRoulementCurMonth,
-  CountAgentsByPostType,
-  _,
-  getDaysInMonth,
-  getRouelemtDaysLetters,
-  getRouelemtDaysLetters2,
-  printPDF1,
-} from "../helpers/func";
-import { GetRandomArray, doc, print_agents_rl } from "../helpers/funcs_print";
-import {
-  K_POSTE_AIDE_OPERATEUR,
-  K_POSTE_CHARGEUR,
-  K_POSTE_NETTOYEUR,
-  CLASS_TD,
-  CLASS_BTN,
-  K_POSTE_OPERATEUR,
-  CLASS_TODAY,
-  CLASS_INPUT_TEXT,
-} from "../helpers/flow";
-import ItemNotSelected from "./ItemNotSelected";
 import {
   GetTransForTokenName,
   GetTransForTokensArray,
   LANG_TOKENS,
 } from "../helpers/lang_strings";
-import userEvent from "@testing-library/user-event";
-import { UserContext } from "../App";
+import pdf from "../img/pdf.png";
+import shield from "../img/shield.png";
+import sup from "../img/sup.png";
 import ActionButton from "./ActionButton";
+import ItemNotSelected from "./ItemNotSelected";
 
 export default function AgentsTable({
   agentsf,
@@ -66,8 +49,8 @@ export default function AgentsTable({
 
   const ref_custom_title = useRef();
 
-  function printNameListPDF(agents_array) {
-    const customTitle = _(ref_custom_title);
+  function printNameListPDF(agents_array, customTitle) {
+    //const customTitle = _(ref_custom_title);
 
     if (agents_array.length === 0) {
       alert("Agents list cant be empty!");
@@ -219,7 +202,12 @@ export default function AgentsTable({
                       LANG_TOKENS.PRINT_LIST,
                       user.lang
                     )}
-                    onClick={(e) => printNameListPDF(agentsf)}
+                    onClick={(e) =>
+                      printNameListPDF(
+                        isCustomList ? customAgentsList : agentsf,
+                        !!_(ref_custom_title) ? _(ref_custom_title) : ""
+                      )
+                    }
                   />
 
                   <div>

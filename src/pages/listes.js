@@ -3,7 +3,7 @@ import AgentList2 from "../comps/AgentList2";
 import ActionButton from "../comps/ActionButton";
 import print from "../img/pdf.png";
 import del from "../img/delete.png";
-import { printTable } from "../helpers/print";
+import { printNameListPDF, printTable } from "../helpers/print";
 import { CLASS_INPUT_TEXT } from "../helpers/flow";
 import AgentsList from "../comps/AgentsList";
 
@@ -62,12 +62,18 @@ export default function Listes() {
     });
   }
 
-  function printList(agents, selprops) {
+  function printList(agents, selprops, simplelist) {
+    if (simplelist) {
+      printNameListPDF(agents);
+      console.log("Printing simple list ...");
+      return;
+    }
+
     const headers = [["No", ...selprops]];
     const title = `${listtitle} (${agents.length} Agent(s))`;
     const data = parseAgentsToPrintList(agents, selprops);
 
-    console.log(data);
+    //console.log(data);
 
     printTable(data, title, headers);
   }

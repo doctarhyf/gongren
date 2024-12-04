@@ -333,12 +333,6 @@ export default function AgentRoulementTable({
         </div>
       )}
 
-      {/*  <ActionButton
-        icon={chart}
-        title={"LEGEB"}
-        onClick={(e) => setShowHideStats(!showStats)}
-      /> */}
-      {/*   {showStats && ( */}
       {editRoulement && (
         <div className=" w-fit p-2 bg-white rounded-md shadow-md   ">
           {stats &&
@@ -350,7 +344,6 @@ export default function AgentRoulementTable({
             ))}
         </div>
       )}
-      {/*   )} */}
     </div>
   );
 }

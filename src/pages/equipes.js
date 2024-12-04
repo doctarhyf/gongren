@@ -221,11 +221,6 @@ function AgentsMap({ agentsf, section, equipe }) {
             </div>
           ) : null
         )}
-      {/*  <ActionButton
-        icon={print}
-        title={GetTransForTokensArray(LANG_TOKENS.PRINT, user.lang)}
-        onClick={onPrint}
-      /> */}
     </div>
   );
 }
@@ -283,6 +278,14 @@ export default function Equipes() {
     ALL_DEQ: { fr: "ALL DEQ", zh: "所有小班长" },
     ALL_SUPERVISORS: { fr: "ALL SUPERVISORS", zh: "所有班长" },
     INTERPRETES: { fr: "INTERPRETES", zh: "所有翻译" },
+    // --------------------------------------------------------------- //
+    ALL_MOR_BROYAGE: { fr: "ALL MOR BROYAGE", zh: "所有水泥磨临时工" },
+    ALL_GCK_BROYAGE: { fr: "ALL GCK BROYAGE", zh: "所有包装临时工" },
+    ALL_MOR_CHARG: { fr: "ALL MOR BROYAGE", zh: "所有水泥磨临时工" },
+    ALL_GCK_CHARG: { fr: "ALL GCK BROYAGE", zh: "所有包装临时工" },
+    // --------------------------------------------------------------- //
+    ALL_BROYAGE: { fr: "ALL BROYAGE", zh: "所有水泥磨工" },
+    ALL_CHARG: { fr: "ALL ENSACHAGE", zh: "所有包装工" },
   };
 
   const FILTERS = [
@@ -351,6 +354,38 @@ export default function Equipes() {
       ref: ref_int,
       zh: FILTERS_KEYS.INTERPRETES.zh,
     },
+    // --------------------------------------------------------------- //
+    {
+      name: FILTERS_KEYS.ALL_MOR_BROYAGE.fr,
+      ref: ref_int,
+      zh: FILTERS_KEYS.ALL_MOR_BROYAGE.zh,
+    },
+    {
+      name: FILTERS_KEYS.ALL_GCK_BROYAGE.fr,
+      ref: ref_int,
+      zh: FILTERS_KEYS.ALL_GCK_BROYAGE.zh,
+    },
+    {
+      name: FILTERS_KEYS.ALL_MOR_CHARG.fr,
+      ref: ref_int,
+      zh: FILTERS_KEYS.ALL_MOR_CHARG.zh,
+    },
+    {
+      name: FILTERS_KEYS.ALL_GCK_CHARG.fr,
+      ref: ref_int,
+      zh: FILTERS_KEYS.ALL_GCK_CHARG.zh,
+    },
+    // --------------------------------------------------------------- //
+    {
+      name: FILTERS_KEYS.ALL_BROYAGE.fr,
+      ref: ref_int,
+      zh: FILTERS_KEYS.ALL_BROYAGE.zh,
+    },
+    {
+      name: FILTERS_KEYS.ALL_CHARG.fr,
+      ref: ref_int,
+      zh: FILTERS_KEYS.ALL_CHARG.zh,
+    },
   ];
 
   useEffect(() => {
@@ -402,6 +437,18 @@ export default function Equipes() {
       const interpretes_only = ag.poste === "INT";
       const all_deq = ag.chef_deq === "OUI";
 
+      const all_mor_bro = ag.section === "BROYAGE" && ag.contrat !== "GCK";
+      const all_gck_bro = ag.section === "BROYAGE" && ag.contrat === "GCK";
+      const all_mor_charg = ag.section === "ENSACHAGE" && ag.contrat !== "GCK";
+      const all_gck_charg = ag.section === "ENSACHAGE" && ag.contrat === "GCK";
+
+      /*
+  ALL_BROYAGE: { fr: "ALL BROYAGE", zh: "所有水泥磨工" },
+    ALL_CHARG: { fr: "ALL ENSACHAGE", zh: "所有包装工" },
+      */
+      const all_bro = ag.section === "BROYAGE";
+      const all_charg = ag.section === "ENSACHAGE";
+
       if (filter) {
         if (FILTERS_KEYS.GCK_AGENTS.fr === filter.name) {
           set_list_title("AGENTS GCK");
@@ -422,6 +469,20 @@ export default function Equipes() {
           return agents_only_no_sup;
         if (FILTERS_KEYS.INTERPRETES.fr === filter.name)
           return interpretes_only;
+        // -------------------------------------- //
+        /*
+ const all_mor_bro = ag.section === "BROYAGE" && ag.contrat !== "GCK";
+      const all_gck_bro = ag.section === "BROYAGE" && ag.contrat === "GCK";
+      const all_mor_charg = ag.section === "ENSACHAGE" && ag.contrat !== "GCK";
+      const all_gck_charg = ag.section === "ENSACHAGE" && ag.contrat === "GCK";
+        */
+        if (FILTERS_KEYS.ALL_MOR_BROYAGE.fr === filter.name) return all_mor_bro;
+        if (FILTERS_KEYS.ALL_GCK_BROYAGE.fr === filter.name) return all_gck_bro;
+        if (FILTERS_KEYS.ALL_MOR_CHARG.fr === filter.name) return all_mor_charg;
+        if (FILTERS_KEYS.ALL_GCK_CHARG.fr === filter.name) return all_gck_charg;
+        // -------------------------------------- //
+        if (FILTERS_KEYS.ALL_BROYAGE.fr === filter.name) return all_bro;
+        if (FILTERS_KEYS.ALL_CHARG.fr === filter.name) return all_charg;
       }
 
       return equipe_section;
@@ -505,6 +566,10 @@ export default function Equipes() {
 
   function onSetFilter(e) {
     setSelectedFilter(e);
+  }
+
+  function onTeamClick(agents) {
+    agents.forEach((it) => onAgentClick(it));
   }
 
   function onAgentClick(ag) {
@@ -609,10 +674,13 @@ export default function Equipes() {
               </div>
 
               <div className={` ${isCustomList ? "block" : "hidden"} `}>
-                <AgentsList onAgentClick={onAgentClick} />
+                <AgentsList
+                  onAgentClick={onAgentClick}
+                  showToggleTeamsView
+                  onTeamClick={onTeamClick}
+                />
               </div>
 
-              {/* TEAM STATS */}
               <div>
                 <div>
                   <div>
@@ -819,7 +887,7 @@ export default function Equipes() {
                   />
                 </div>
               ) : (
-                <div className=" overflow-auto scroll-auto  bg-slate-100  ">
+                <div className=" p-2 overflow-x-auto   ">
                   <AgentsTable
                     agentsf={agentsf}
                     ref_sp_equipe={ref_sp_equipe}

@@ -8,6 +8,7 @@ import {
   draw_date,
   GCK_LOGO,
 } from "./print_utils";
+import { printPDF1 } from "./func";
 export function printTable(
   data,
   title,
@@ -69,20 +70,18 @@ people: [
   doc.save(filename);
 }
 
-function printBaozhuang(doc, data) {
-  /* {
-    "team": "A",
-    "y": 2024,
-    "m": 8,
-    "d": 30,
-    "sup": "ALBERT KANKOBWE - 刚果贝",
-    "shift": "NUIT - 夜班 - 23h00 - 07h00",
-    "s": "N",
-    "camions": 0,
-    "sacs": 15880,
-    "t": 794,
-    "dechires": 0
-} */
+export function printNameListPDF(agents_array, customTitle) {
+  //const customTitle = _(ref_custom_title);
+
+  if (agents_array.length === 0) {
+    alert("Agents list cant be empty!");
+    return;
+  }
+
+  printPDF1(
+    agents_array,
+    customTitle.trim().length > 0 ? customTitle : undefined
+  );
 }
 
 export function printDailyRepport(data, date, filename, adj_sacs = true) {
