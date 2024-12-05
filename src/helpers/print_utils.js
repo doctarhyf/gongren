@@ -332,7 +332,10 @@ export function draw_date(
     : formatFrenchDate(other_date || new Date()).toUpperCase();
   let { w, h } = doc.getTextDimensions(date);
 
-  doc.text(date, page_width - w - page_margin, page_margin);
+  const dx = page_width - w - page_margin;
+  const dy = page_margin;
+  console.log("drawing date: ", finalDate, " at x: ", dx, " and y: ", dy);
+  doc.text(date, dx, dy);
   doc.setFontSize(old_font_size);
 }
 
