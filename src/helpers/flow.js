@@ -381,6 +381,12 @@ export const dateFormatter = new Intl.DateTimeFormat("fr-FR", {
 });
 
 export const KAOQIN = {
+  B: {
+    desc: "Jour",
+    trad: ["LONG DAY", "长白班", "LONG-JOUR"],
+    printSym: "BR",
+    h: "0700 - 1700",
+  },
   J: {
     desc: "Jour",
     trad: ["DAY", "白班", "JOUR"],
