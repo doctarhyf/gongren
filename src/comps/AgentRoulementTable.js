@@ -32,10 +32,6 @@ export const KAOQIN = {
     desc: "Jour",
     trad: ["DAY : 07H ~ 17H", "白班 : 07H ~ 17H", "JOUR : 07H ~ 17H"],
   },
-  P: {
-    desc: "Apres-midi",
-    trad: ["AFTERNOON : 15H ~ 23H", "下午 : 15H ~ 23H", "APREM : 15H ~ 23H"],
-  },
   N: {
     desc: "Nuit",
     trad: [
@@ -44,13 +40,22 @@ export const KAOQIN = {
       "LONGUE NUIT : 17H ~ 07H",
     ],
   },
-  Z: {
+  M: {
+    desc: "Matin",
+    trad: ["MORNING : 07H ~ 15H", "早班 : 07H ~ 15H", "MATIN : 07H ~ 15H"],
+  },
+  P: {
+    desc: "Apres-midi",
+    trad: ["AFTERNOON : 15H ~ 23H", "下午 : 15H ~ 23H", "APREM : 15H ~ 23H"],
+  },
+
+  W: {
     desc: "Nuit",
     trad: ["NIGHT : 23H ~ 07H", "夜班 : 23H ~ 07H", "NUIT : 23H ~ 07H"],
   },
   R: { desc: "Repos", trad: ["LEAVE", "休息", "REPOS"] },
   A: { desc: "Absent", trad: ["ABSENT", "旷空", "ABSENT"] },
-  M: { desc: "Malade", trad: ["SICK LEAVE", "病假", "MALADE"] },
+  B: { desc: "Malade", trad: ["SICK LEAVE", "病假", "MALADE"] },
   C: {
     desc: "Conge conditionel",
     trad: ["CONDITIONAL LEAVE", "请假", "CONGE CONDITIONEL"],
