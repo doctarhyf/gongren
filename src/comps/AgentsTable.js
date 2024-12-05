@@ -2,7 +2,13 @@ import React, { useContext, useRef } from "react";
 
 import userEvent from "@testing-library/user-event";
 import { UserContext } from "../App";
-import { CLASS_INPUT_TEXT, CLASS_TD, CLASS_TODAY } from "../helpers/flow";
+import {
+  CLASS_INPUT_TEXT,
+  CLASS_TD,
+  CLASS_TODAY,
+  KAOQIN,
+  rldToPrintSymbols,
+} from "../helpers/flow";
 import { _, getDaysInMonth, printPDF1 } from "../helpers/func";
 import { print_agents_rl } from "../helpers/funcs_print";
 import GetRoulemenDaysData from "../helpers/GetRoulemenDaysData.mjs";
@@ -98,6 +104,7 @@ export default function AgentsTable({
           zh: ` ${ag.mingzi}`,
         },
         rld: rld,
+        rldPrintSym: rldToPrintSymbols(rld.split("")),
         month: m,
         year: y,
         poste: ag.poste,
@@ -341,7 +348,7 @@ export default function AgentsTable({
                               : ""
                           } `}
                         >
-                          {r}
+                          {KAOQIN[r] && KAOQIN[r].printSym}
                         </td>
                       ) : null
                     )}

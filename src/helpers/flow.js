@@ -428,7 +428,8 @@ export function rldToPrintSymbols(rld) {
 
   if (Array.isArray(rld)) {
     rld.forEach((it) => {
-      let newt = !!KAOQIN[it] ? KAOQIN[it].printSym : it;
+      let newt = it === "Z" ? "j" : !!KAOQIN[it] ? KAOQIN[it].printSym : it;
+
       newrld.push(newt);
     });
 

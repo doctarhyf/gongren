@@ -663,10 +663,6 @@ function print_agents_rl(agents_list, print_empty, team_name) {
     chinese_team_name_tokens
   );
 
-  console.log("team_name:", team_name);
-  console.log("chinese team name :", chinese_team_name);
-  console.log("chinese team name tokens", chinese_team_name_tokens);
-
   doc.setFontSize(fsize);
 
   let title_tokens = [
@@ -779,6 +775,8 @@ function print_agents_rl(agents_list, print_empty, team_name) {
   copyAndInsert(final_data, AGENTS_NEW_PAGE_SPLIT_INDEX - 1);
 
   final_data.forEach((cur_ag_data, i) => {
+    console.log("cur agd: ", cur_ag_data);
+
     let y = newPage ? idx * fsize + pm : rly + idx * fsize + fsize;
     const is_day_nams_row = i === 0;
     const is_header_row = i === 1 || i === AGENTS_NEW_PAGE_SPLIT_INDEX;
@@ -898,7 +896,9 @@ function draw_agent_single_line(
 
   let boxes_w = pw - pm - (rect.x + rect.w);
   rects.push({ x: rect.x + rect.w, y: rect.y, w: boxes_w, h: rect.h });
-  let rld_data = agd.rld.split("");
+  let rld_data = Array.isArray(agd.rldPrintSym)
+    ? agd.rldPrintSym
+    : agd.rld.split("");
   let days_count = agd.rld.length;
   let box_w = boxes_w / agd.rld.length;
   let box_h = rect.h;
