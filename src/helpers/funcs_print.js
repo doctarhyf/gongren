@@ -357,7 +357,7 @@ function getDayName(dateString, oneLetter) {
   return oneLetter ? val2ret1let : val2ret;
 }
 
-function print_agent_roulement(doc, agent_data, print_empty) {
+function print_agent_roulement(doc, agent_data, print_empty, arrayPrintSim) {
   // Delete all existing pages
 
   const pageCount = doc.internal.getNumberOfPages();
@@ -374,7 +374,7 @@ function print_agent_roulement(doc, agent_data, print_empty) {
   }_${year}.pdf`;
   //console.log(fname);
   let days_letters = [];
-  const array_rld = agent_data.rld.split("");
+  const array_rld = !!arrayPrintSim ? arrayPrintSim : agent_data.rld.split("");
 
   const END_DATE = array_rld.length;
   const num_days = array_rld.length;

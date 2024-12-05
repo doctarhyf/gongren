@@ -10,6 +10,7 @@ import Loading from "./Loading";
 import printer from "../img/printer.png";
 import { UserContext } from "../App";
 import { GetTransForTokensArray, LANG_TOKENS } from "../helpers/lang_strings";
+import { rldToPrintSymbols } from "../helpers/flow";
 
 const ERRORS = {
   AGENT_DATA_UNDEFINED: { code: "no_ag_data", msg: "agentData is undefined!" },
@@ -192,6 +193,10 @@ export default function TableRoulement({ agentData }) {
   const ref_print_empty = useRef();
 
   function printPDF(monthCode, curAgent, curAgentRld) {
+    // console.log(curAgentRld);
+    const arrayRldPrintSyms = rldToPrintSymbols(curAgentRld);
+    //console.log(curAgentRld);
+    //return;
     const print_empty = ref_print_empty.current.checked;
 
     console.log("print_empty", print_empty);
@@ -214,7 +219,7 @@ export default function TableRoulement({ agentData }) {
       matricule,
     };
 
-    print_agent_roulement(doc, print_data, print_empty);
+    print_agent_roulement(doc, print_data, print_empty, arrayRldPrintSyms);
   }
 
   if (agentData === undefined) {

@@ -5,6 +5,7 @@ import {
   CLASS_BTN,
   CLASS_TD,
   CLASS_TODAY,
+  KAOQIN,
 } from "../helpers/flow";
 import { AddOneToRoulementCurMonth, UserHasAccessCode } from "../helpers/func";
 import { GFMN } from "../helpers/GetRoulemenDaysData.mjs";
@@ -16,47 +17,17 @@ import {
   LANG_TOKENS,
 } from "../helpers/lang_strings";
 import chart from "../img/chart.png";
+import save from "../img/save.png";
 import sync from "../img/sync.png";
 import ActionButton from "./ActionButton";
 import Loading from "./Loading";
-import save from "../img/save.png";
 
-const POINTAGES_HOURS_LEN = {
+/* const POINTAGES_HOURS_LEN = {
   J: 10,
   N: 14,
   R: 0,
 };
-
-export const KAOQIN = {
-  J: {
-    desc: "Jour",
-    trad: ["DAY : 07H ~ 17H", "白班 : 07H ~ 17H", "JOUR : 07H ~ 17H"],
-  },
-  P: {
-    desc: "Apres-midi",
-    trad: ["AFTERNOON : 15H ~ 23H", "下午 : 15H ~ 23H", "APREM : 15H ~ 23H"],
-  },
-  N: {
-    desc: "Nuit",
-    trad: [
-      "LONG NIGHT : 17H ~ 07H",
-      "长夜班 : 17H ~ 07H",
-      "LONGUE NUIT : 17H ~ 07H",
-    ],
-  },
-  Z: {
-    desc: "Nuit",
-    trad: ["NIGHT : 23H ~ 07H", "夜班 : 23H ~ 07H", "NUIT : 23H ~ 07H"],
-  },
-  R: { desc: "Repos", trad: ["LEAVE", "休息", "REPOS"] },
-  A: { desc: "Absent", trad: ["ABSENT", "旷空", "ABSENT"] },
-  M: { desc: "Malade", trad: ["SICK LEAVE", "病假", "MALADE"] },
-  C: {
-    desc: "Conge conditionel",
-    trad: ["CONDITIONAL LEAVE", "请假", "CONGE CONDITIONEL"],
-  },
-  "-": { desc: "-", trad: ["-", "-", "-"] },
-};
+ */
 
 export default function AgentRoulementTable({
   agentData,
@@ -108,11 +79,6 @@ export default function AgentRoulementTable({
     <div>
       <div className={`m-1 ${errors.length === 0 ? "hidden" : "block"} `}>
         <span className="p-1 m-1 rounded-md bg-red-700 border-red-400 border  text-white">
-          {/*  {errors.map((e, i) => (
-            <span>
-              {i + 1}. {e.msg}
-            </span>
-          ))} */}
           Veuillez selection le mot pour afficher le roulement!
         </span>
       </div>
@@ -277,7 +243,7 @@ export default function AgentRoulementTable({
                     : ""
                 } `}
               >
-                {!editRoulement && r}
+                {!editRoulement && `${(KAOQIN[r] && KAOQIN[r].printSym) || r}`}
 
                 {editRoulement && (
                   <select
@@ -296,6 +262,7 @@ export default function AgentRoulementTable({
                         selected={d[0] === r}
                         className=" text-black dark:text-white  "
                       >
+                        {d[1].printSym} :{" "}
                         {d[1].trad[GetLangIndexByLangCode(user.lang)]}
                       </option>
                     ))}
@@ -337,8 +304,8 @@ export default function AgentRoulementTable({
         <div className=" w-fit p-2 bg-white rounded-md shadow-md   ">
           {stats &&
             Object.entries(KAOQIN).map((it, i) => (
-              <div>
-                <span className="font-bold">{it[0]}:</span>
+              <div className=" border-b mb-1 border-gray-300 ">
+                <span className="font-bold"> {it[1].printSym}:</span>
                 {it[1].trad[GetLangIndexByLangCode(user.lang)]}
               </div>
             ))}

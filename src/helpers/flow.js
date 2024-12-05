@@ -379,3 +379,58 @@ export const dateFormatter = new Intl.DateTimeFormat("fr-FR", {
   second: "numeric",
   timeZone: "UTC", // You can adjust the timezone accordingly
 });
+
+export const KAOQIN = {
+  J: {
+    desc: "Jour",
+    trad: ["DAY : 07H ~ 17H", "白班 : 07H ~ 17H", "JOUR : 07H ~ 17H"],
+    printSym: "J",
+  },
+  P: {
+    desc: "Apres-midi",
+    trad: ["AFTERNOON : 15H ~ 23H", "下午 : 15H ~ 23H", "APREM : 15H ~ 23H"],
+    printSym: "AP",
+  },
+  N: {
+    desc: "Nuit",
+    trad: [
+      "LONG NIGHT : 17H ~ 07H",
+      "长夜班 : 17H ~ 07H",
+      "LONGUE NUIT : 17H ~ 07H",
+    ],
+    printSym: "N*",
+  },
+  Y: {
+    desc: "Nuit",
+    trad: ["NIGHT : 23H ~ 07H", "夜班 : 23H ~ 07H", "NUIT : 23H ~ 07H"],
+    printSym: "N",
+  },
+  R: { desc: "Repos", trad: ["LEAVE", "休息", "REPOS"], printSym: "R" },
+  A: { desc: "Absent", trad: ["ABSENT", "旷空", "ABSENT"], printSym: "A" },
+  M: { desc: "Malade", trad: ["SICK LEAVE", "病假", "MALADE"], printSym: "M" },
+  C: {
+    desc: "Conge conditionel",
+    trad: ["CONDITIONAL LEAVE", "请假", "CONGE CONDITIONEL"],
+    printSym: "CC",
+  },
+  "-": { desc: "-", trad: ["-", "-", "-"], printSym: "-" },
+};
+
+export function rldToPrintSymbols(rld) {
+  let newrld = [];
+
+  if (Array.isArray(rld)) {
+    rld.forEach((it) => {
+      let newt = !!KAOQIN[it] ? KAOQIN[it].printSym : it;
+      newrld.push(newt);
+    });
+
+    console.log("Old rld: ", rld);
+    console.log("New rld: ", newrld);
+  } else {
+    console.log("Roulemed data is not an array!\n", rld);
+    return rld;
+  }
+
+  return newrld;
+}
