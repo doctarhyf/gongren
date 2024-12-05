@@ -263,7 +263,8 @@ export default function AgentRoulementTable({
                         className=" text-black dark:text-white  "
                       >
                         {d[1].printSym} :{" "}
-                        {d[1].trad[GetLangIndexByLangCode(user.lang)]}
+                        {d[1].trad[GetLangIndexByLangCode(user.lang)]} -{" "}
+                        {d[1].h}
                       </option>
                     ))}
                   </select>
@@ -302,11 +303,25 @@ export default function AgentRoulementTable({
 
       {editRoulement && (
         <div className=" w-fit p-2 bg-white rounded-md shadow-md   ">
+          <div className=" text-xl font-thin text-center text-slate-800  ">
+            LEGENDE
+          </div>
           {stats &&
             Object.entries(KAOQIN).map((it, i) => (
               <div className=" border-b mb-1 border-gray-300 ">
-                <span className="font-bold"> {it[1].printSym}:</span>
-                {it[1].trad[GetLangIndexByLangCode(user.lang)]}
+                {it[1].printSym !== "-" && (
+                  <>
+                    {" "}
+                    <span className="font-bold"> {it[1].printSym}:</span>
+                    {it[1].trad[GetLangIndexByLangCode(user.lang)]}
+                    {it[1].h && (
+                      <span className="  text-xs bg-slate-700 text-white p-1 rounded-md mx-2  ">
+                        {" "}
+                        {it[1].h}{" "}
+                      </span>
+                    )}
+                  </>
+                )}
               </div>
             ))}
         </div>

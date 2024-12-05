@@ -383,27 +383,34 @@ export const dateFormatter = new Intl.DateTimeFormat("fr-FR", {
 export const KAOQIN = {
   J: {
     desc: "Jour",
-    trad: ["DAY : 07H ~ 17H", "白班 : 07H ~ 17H", "JOUR : 07H ~ 17H"],
+    trad: ["DAY", "白班", "JOUR"],
     printSym: "J",
-  },
-  P: {
-    desc: "Apres-midi",
-    trad: ["AFTERNOON : 15H ~ 23H", "下午 : 15H ~ 23H", "APREM : 15H ~ 23H"],
-    printSym: "AP",
+    h: "0700 - 1700",
   },
   N: {
     desc: "Nuit",
-    trad: [
-      "LONG NIGHT : 17H ~ 07H",
-      "长夜班 : 17H ~ 07H",
-      "LONGUE NUIT : 17H ~ 07H",
-    ],
+    trad: ["LONG NIGHT", "长夜班", "LONGUE NUIT"],
     printSym: "N*",
+    h: "1700 - 0700",
   },
+  Z: {
+    desc: "Matin",
+    trad: ["MORNING", "早班", "MATIN"],
+    printSym: "✔",
+    h: "0700 - 1500",
+  },
+  P: {
+    desc: "Apres-midi",
+    trad: ["AFTERNOON", "下午", "APREM"],
+    printSym: "AP",
+    h: "1500 - 2300",
+  },
+
   Y: {
     desc: "Nuit",
-    trad: ["NIGHT : 23H ~ 07H", "夜班 : 23H ~ 07H", "NUIT : 23H ~ 07H"],
+    trad: ["NIGHT", "夜班", "NUIT"],
     printSym: "N",
+    h: "2300 - 0700",
   },
   R: { desc: "Repos", trad: ["LEAVE", "休息", "REPOS"], printSym: "R" },
   A: { desc: "Absent", trad: ["ABSENT", "旷空", "ABSENT"], printSym: "A" },
