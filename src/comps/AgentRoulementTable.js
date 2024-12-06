@@ -5,7 +5,9 @@ import {
   CLASS_BTN,
   CLASS_TD,
   CLASS_TODAY,
+  getFrenchDayName,
   KAOQIN,
+  WEEK_DAYS_TRAD,
 } from "../helpers/flow";
 import { AddOneToRoulementCurMonth, UserHasAccessCode } from "../helpers/func";
 import { GFMN } from "../helpers/GetRoulemenDaysData.mjs";
@@ -75,6 +77,7 @@ export default function AgentRoulementTable({
     stats.REPOS = [REPOS, 0];
   }
 
+  console.log("daysData : ", daysData);
   return (
     <div>
       <div className={`m-1 ${errors.length === 0 ? "hidden" : "block"} `}>
@@ -198,7 +201,18 @@ export default function AgentRoulementTable({
                         : ""
                     } ${["S", "D"].includes(d) ? "bg-black text-white" : ""} `}
                   >
-                    {editRoulement ? "cool AgentRoulementTable" : d} 
+                    {editRoulement
+                      ? GetTransForTokenName(
+                          getFrenchDayName(
+                            daysData.date.y,
+                            i < daysData.firstMonthRoulementDaysCount
+                              ? daysData.date.m
+                              : daysData.secondMonth,
+                            daysData.dates[i]
+                          ),
+                          user.lang
+                        )
+                      : d}
                   </td>
                 ))}
             </tr>

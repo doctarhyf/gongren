@@ -3,6 +3,13 @@ import usa from "../img/usa.png";
 import china from "../img/china.png";
 
 export const LANG_TOKENS = {
+  L: ["MONDAY", "星期一", "LUNDI"],
+  M: ["TUESDAY", "星期二", "MARDI"],
+  W: ["WEDNESDAY", "星期三", "MERCREDI"],
+  J: ["THURSDAY", "星期四", "JEUDI"],
+  V: ["FRIDAY", "星期五", "VENDREDI"],
+  S: ["SATURDAY", "星期六", "SAMEDI"],
+  DIM: ["SUNDAY", "星期天", "DIMANCHE"],
   janvier: ["January", "一月", "Janvier"],
   CUSTOM_TITLE: ["CUSTOM TITLE", "自定义标题", "TITRE PERSONALISE"],
   février: ["February", "二月", "Février"],

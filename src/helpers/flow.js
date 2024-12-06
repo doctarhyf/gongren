@@ -448,3 +448,27 @@ export function rldToPrintSymbols(rld) {
 
   return newrld;
 }
+
+export function getFrenchDayName(year, month, day, fullName) {
+  const date = new Date(year, month - 1, day); // Month is zero-based in JavaScript
+  const dayIdx = date.getDay();
+  const daysInFrench = [
+    "Dimanche",
+    "Lundi",
+    "Mardi",
+    "Mercredi",
+    "Jeudi",
+    "Vendredi",
+    "Samedi",
+  ];
+
+  const dayName = daysInFrench[dayIdx];
+
+  if (fullName) return dayName;
+
+  return dayName === "Mercredi"
+    ? "W"
+    : dayName === "Dimanche"
+    ? "DIM"
+    : dayName.charAt(0);
+}
