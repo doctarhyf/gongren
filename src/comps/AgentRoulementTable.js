@@ -198,7 +198,7 @@ export default function AgentRoulementTable({
                         : ""
                     } ${["S", "D"].includes(d) ? "bg-black text-white" : ""} `}
                   >
-                    {editRoulement ? "cool AgentRoulementTable" : d}
+                    {editRoulement ? "cool AgentRoulementTable" : d} 
                   </td>
                 ))}
             </tr>
