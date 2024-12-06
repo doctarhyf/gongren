@@ -302,7 +302,7 @@ export default function AgentRoulementTable({
       )}
 
       {editRoulement && (
-        <div className=" w-fit p-2 bg-white rounded-md shadow-md   ">
+        <div className=" w-fit p-2 bg-white rounded-md shadow-md dark:text-black   ">
           <div className=" text-xl font-thin text-center text-slate-800  ">
             LEGENDE
           </div>

@@ -309,8 +309,11 @@ export default function AgentsTable({
                   isCustomList
                     ? "hover:bg-red-700 hover:cursor-pointer hover:text-black hover:font-bold"
                     : " "
-                } ${ag.chef_deq === "OUI" && "bg-neutral-200/60 font-bold"}   ${
-                  ag.poste === "SUP" && "bg-neutral-200/60 font-bold"
+                } ${
+                  ag.chef_deq === "OUI" &&
+                  "  font-bold dark:bg-black bg-slate-300"
+                }   ${
+                  ag.poste === "SUP" && " dark:bg-black bg-slate-300 font-bold"
                 }  `}
               >
                 <td className={` ${CLASS_TD} w-min `}>{i + 1}</td>

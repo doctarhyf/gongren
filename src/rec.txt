@@ -1,114 +1,44 @@
-import React, { useState } from 'react';
-import AudioPlayer from 'react-audio-player';
-
-const MicrophoneRecorder = ({ onAudioRecorded }) => {
-  const [audioStream, setAudioStream] = useState(null);
-  const [recording, setRecording] = useState(false);
-  const [recordedAudioBlob, setRecordedAudioBlob] = useState(null);
-
-  const startRecording = async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      setAudioStream(stream);
-      setRecording(true);
-    } catch (error) {
-      console.error('Error accessing microphone:', error.message);
-    }
-  };
-
-  const stopRecording = () => {
-    if (audioStream) {
-      const tracks = audioStream.getTracks();
-      tracks.forEach((track) => track.stop());
-      setAudioStream(null);
-      setRecording(false);
-    }
-  };
-
-  const handleAudioRecorded = (blob) => {
-    setRecordedAudioBlob(blob);
-    onAudioRecorded(blob);
-  };
-
-  return (
-    <div>
-      <button onClick={startRecording} disabled={recording}>
-        Start Recording
-      </button>
-      <button onClick={stopRecording} disabled={!recording}>
-        Stop Recording
-      </button>
-
-      {recordedAudioBlob && (
-        <div>
-          <p>Recorded Audio:</p>
-          <AudioPlayer src={URL.createObjectURL(recordedAudioBlob)} controls />
-        </div>
-      )}
-    </div>
-  );
-};
-
-export default MicrophoneRecorder;
-
-
-
-import React from 'react';
-import MicrophoneRecorder from './MicrophoneRecorder';
-import saveAudioToSupabase from './saveAudioToSupabase';
-
-const YourComponent = () => {
-  const handleAudioRecorded = async (blob) => {
-    // Save the recorded audio to Supabase Storage
-    try {
-      await saveAudioToSupabase(blob, 'recorded_audio.wav');
-      console.log('Audio saved to Supabase successfully!');
-    } catch (error) {
-      console.error('Error saving audio to Supabase:', error.message);
-    }
-  };
-
-  return (
-    <div>
-      <MicrophoneRecorder onAudioRecorded={handleAudioRecorded} />
-    </div>
-  );
-};
-
-export default YourComponent;
-
-import { createClient } from '@supabase/supabase-js';
-
-const supabaseUrl = 'YOUR_SUPABASE_URL';
-const supabaseKey = 'YOUR_SUPABASE_KEY';
-const supabase = createClient(supabaseUrl, supabaseKey);
-
-const saveAudioToSupabase = async (file, fileName) => {
-  try {
-    const { data, error } = await supabase.storage
-      .from('YOUR_STORAGE_BUCKET_NAME')
-      .upload(fileName, file, { cacheControl: '3600' });
-
-    if (error) {
-      throw error;
-    }
-
-    return data;
-  } catch (error) {
-    console.error('Error saving audio to Supabase:', error.message);
-    throw error;
+  function onSaveRoulement() {
+    setloading(true);
+    //console.log(agentRoulementData);
+    SB.UpdateRoulement2(
+      selectedMonthCode,
+      agentRoulementData.rl,
+      (s) => {
+        console.log("Roulement saved", s);
+        alert("Roulement saved!");
+        setloading(false);
+      },
+      (e) => {
+        console.log(e);
+        alert("Error saving!", JSON.stringify(e));
+        setloading(false);
+      }
+    );
   }
-};
-
-export default saveAudioToSupabase;
 
 
-
-
-
-
-
-
-
-
-
+   {editRoulement && (
+                  <select
+                    className={`${CLASS_TD} texts-xs text-black dark:text-white   ${
+                      i === daysData.dates.indexOf(new Date().getDate()) &&
+                      daysData.date.m === new Date().getMonth() + 1
+                        ? "text-green-500"
+                        : ""
+                    } `}
+                    defaultValue={r}
+                    onChange={(e) => onChangeRoulement(i, e.target.value)}
+                  >
+                    {Object.entries(KAOQIN).map((d, i) => (
+                      <option
+                        value={d[0]}
+                        selected={d[0] === r}
+                        className=" text-black dark:text-white  "
+                      >
+                        {d[1].printSym} :{" "}
+                        {d[1].trad[GetLangIndexByLangCode(user.lang)]} -{" "}
+                        {d[1].h}
+                      </option>
+                    ))}
+                  </select>
+                )}
