@@ -295,7 +295,7 @@ function addTitle(doc, agents, customTitle) {
   let date = new Date().toLocaleDateString();
 
   let title = !!customTitle
-    ? `${customTitle}, le ${date}`
+    ? `${customTitle}`
     : `NOM DES AGENTS DE L'ATELIER CIMENT, ${section} EQUIPE ${equipe}`; //, le ${date}`;
   doc.setFontSize(12);
   const x = 10;
