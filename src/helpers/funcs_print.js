@@ -374,8 +374,9 @@ function print_agent_roulement(doc, agent_data, print_empty, arrayPrintSim) {
   }_${year}.pdf`;
   //console.log(fname);
   let days_letters = [];
-  const array_rld = !!arrayPrintSim ? arrayPrintSim : agent_data.rld.split("");
-
+  let array_rld = !!arrayPrintSim ? arrayPrintSim : agent_data.rld.split("");
+  // array_rld = agent_data.rld.split("");
+  //return;
   const END_DATE = array_rld.length;
   const num_days = array_rld.length;
   let date_idx = 21;
@@ -614,14 +615,10 @@ function print_agents_rl(agents_list, print_empty, team_name) {
   const first_el = { ...agents_list[0] };
   const days_names_el = { ...agents_list[agents_list.length - 1] };
 
-  //alert(JSON.stringify(days_names_el))
   if (days_names_el.month === 4) {
     let new_rld = days_names_el.rld.slice(0, -1);
     days_names_el.rld = new_rld;
   }
-  //alert(JSON.stringify(days_names_el))
-
-  //return;
 
   const doc = new jsPDF({ orientation: orientation });
   let r = doc.addFont(

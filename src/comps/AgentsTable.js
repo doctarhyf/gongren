@@ -104,7 +104,7 @@ export default function AgentsTable({
           zh: ` ${ag.mingzi}`,
         },
         rld: rld,
-        rldPrintSym: rldToPrintSymbols(rld.split("")),
+        // rldPrintSym: rldToPrintSymbols(rld.split("")),
         month: m,
         year: y,
         poste: ag.poste,
