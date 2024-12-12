@@ -374,8 +374,8 @@ function print_agent_roulement(doc, agent_data, print_empty, arrayPrintSim) {
   }_${year}.pdf`;
   //console.log(fname);
   let days_letters = [];
-  let array_rld = !!arrayPrintSim ? arrayPrintSim : agent_data.rld.split("");
-  // array_rld = agent_data.rld.split("");
+  //let array_rld = !!arrayPrintSim ? arrayPrintSim : agent_data.rld.split("");
+  const array_rld = agent_data.rld.split("");
   //return;
   const END_DATE = array_rld.length;
   const num_days = array_rld.length;
