@@ -41,7 +41,7 @@ export const STOCK_TYPE = {
 };
 
 export const SUPERVISORS = {
-  A: { nom: "ALBERT KANKOBWE", zh: "刚果贝" },
+  A: { nom: "MPOYO BUDIMBO", zh: "抱有" },
   B: { nom: "NKULU MWENZE", zh: "库鲁" },
   C: { nom: "SERGE KAZALI", zh: "塞基尔" },
   D: { nom: "AMEDEE KATANGA", zh: "噶当噶" },
