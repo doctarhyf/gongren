@@ -109,7 +109,7 @@ export default function DateSelector({
                   defaultDate && defaultDate.y === new Date().getFullYear() + i
                 }
               >
-                {new Date().getFullYear() + i}
+                {2024 + i}
               </option>
             ))}
           </select>
