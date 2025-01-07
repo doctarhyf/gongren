@@ -838,7 +838,7 @@ export default function Equipes() {
                       className={CLASS_SELECT}
                     >
                       {[...Array(10)].map((it, i) => (
-                        <option key={i}>{new Date().getFullYear() + i}</option>
+                        <option key={i}>{2024 + i}</option>
                       ))}
                     </select>
                   </div>
