@@ -22,7 +22,7 @@ export default function TableLoads({ date, totalData, loadsData }) {
         <tr>
           <td className={CLASS_TD} align="center" colSpan={11}>
             <b>
-              RAPPORT CHARGEMENT, {date && MONTHS[date.m].toUpperCase()} -{" "}
+              RAPPORT CHARGEMENT, {date && MONTHS[date.m]?.toUpperCase()} -{" "}
               {date.y}
             </b>
           </td>
