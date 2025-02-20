@@ -157,7 +157,7 @@ export default function JinChu() {
             onChange={(e) =>
               setData({ ...data, park_int: parseInt(e.target.value) })
             }
-            type="text"
+            type="number"
             size={4}
             className=" outline-none border-purple-500 border rounded-md mx-1 "
           />
@@ -170,7 +170,7 @@ export default function JinChu() {
             onChange={(e) =>
               setData({ ...data, charges: parseInt(e.target.value) })
             }
-            type="text"
+            type="number"
             size={4}
             className=" outline-none border-purple-500 border rounded-md mx-1 "
           />
@@ -183,7 +183,7 @@ export default function JinChu() {
             onChange={(e) =>
               setData({ ...data, encours: parseInt(e.target.value) })
             }
-            type="text"
+            type="number"
             size={4}
             className=" outline-none border-purple-500 border rounded-md mx-1 "
           />
@@ -196,7 +196,7 @@ export default function JinChu() {
             onChange={(e) =>
               setData({ ...data, charges_bigbag: parseInt(e.target.value) })
             }
-            type="text"
+            type="number"
             size={4}
             className=" outline-none border-purple-500 border rounded-md mx-1 "
           />
@@ -209,7 +209,7 @@ export default function JinChu() {
             onChange={(e) =>
               setData({ ...data, noncharges_bigbag: parseInt(e.target.value) })
             }
-            type="text"
+            type="number"
             size={4}
             className=" outline-none border-purple-500 border rounded-md mx-1 "
           />
