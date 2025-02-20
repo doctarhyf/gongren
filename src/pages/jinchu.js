@@ -97,7 +97,7 @@ export default function JinChu() {
   const SHIFTS = ["MATIN/白班", "APREM/中班", "NUIT/夜班"];
   //const [selectedShift, setSelectedShift] = useState(SHIFTS[0]);
   const [data, setData] = useState({
-    shift: SHIFTS[0],
+    shift: "MATIN/白班",
     park_int: 0,
     charges: 0,
     encours: 0,
@@ -140,7 +140,11 @@ export default function JinChu() {
       <div className=" shadow-black/10  shadow-lg border border-gray-400 rounded-md p-2 max-w-fit mt-2 ">
         <div>
           <span className=" text-black mx-1   ">•SHIFT:</span>
-          <select className=" border border-purple-500 rounded-md outline-none ">
+          <select
+            value={data.shift}
+            onChange={(e) => setData({ ...data, shift: e.target.value })}
+            className=" border border-purple-500 rounded-md outline-none "
+          >
             {SHIFTS.map((sh) => (
               <option>{sh}</option>
             ))}
@@ -213,7 +217,7 @@ export default function JinChu() {
         </div>
       </div>
 
-      <ActionButton icon={save} title="Save" onClick={onCopy} />
+      <ActionButton icon={save} title="Save" onClick={(e) => onCopy(data)} />
     </div>
   );
 }
