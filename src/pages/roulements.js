@@ -196,9 +196,6 @@ export default function Roulements() {
         curAgent={curAgent}
         onlyShowCurrentAgent={matricule}
       />
-
-      {/* <ItemNotSelected show={!curAgent} /> */}
-
       <div id="sc" className=" bg-black/50 p-4 overflow-scroll  ">
         <TableRoulement agentData={curAgent} />
       </div>
