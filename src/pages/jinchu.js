@@ -116,11 +116,11 @@ export default function JinChu() {
     } = data;
 
     const text = `•${shift}
-停车内Parking intérieur : ${park_int}辆车
-车已近装Camions Chargés:${charges}辆
-在车道装Camion sur la voie de changement: ${encours}辆车
-吨袋车满载/Camions Chargés(BIG BAG): ${charges_bigbag}辆
-吨袋空车/Camions Non Chargés(Big Bag): ${noncharges_bigbag}辆`;
+ 停车/Parking intérieur : ${park_int}辆车
+已装车/Camions Chargés:${charges}辆
+车道装车中/Camion sur voies de changement: ${encours}辆车
+吨袋车满载/Camions Chargés(BIG-BAG): ${charges_bigbag}辆
+吨袋空车/Camions Non Chargés(BIG-BAG): ${noncharges_bigbag}辆`;
 
     await navigator.clipboard
       .writeText(text)
