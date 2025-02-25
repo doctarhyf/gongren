@@ -95,7 +95,7 @@ function OpsLogs({}) {
 
 export default function JinChu() {
   const SHIFTS = ["MATIN/白班", "APREM/中班", "NUIT/夜班"];
-  //const [selectedShift, setSelectedShift] = useState(SHIFTS[0]);
+  const [showTonnage, setShowTonnage] = useState(false);
   const [data, setData] = useState({
     shift: "MATIN/白班",
     park_int: 0,
@@ -106,7 +106,7 @@ export default function JinChu() {
     noncharges_bigbag: 0,
   });
 
-  async function onCopy(data) {
+  async function onCopy(data, st) {
     const {
       shift,
       park_int,
@@ -117,10 +117,12 @@ export default function JinChu() {
       noncharges_bigbag,
     } = data;
 
+    const ttext = st ? `已装吨位/Tonnage : ${t}吨` : "";
+
     const text = `•${shift}
+    ${ttext}
  停车/Parking intérieur : ${park_int}辆车
 已装车/Camions Chargés:${charges}辆
-已装吨位/Tonnage : ${t}吨
 车道装车中/Camion sur voies de changement: ${encours}辆车
 吨袋车满载/Camions Chargés(BIG-BAG): ${charges_bigbag}辆
 吨袋空车/Camions Non Chargés(BIG-BAG): ${noncharges_bigbag}辆`;
@@ -166,17 +168,29 @@ export default function JinChu() {
           />
           辆车
         </div>
-        <div>
-          吨位Tonnage:{" "}
-          <input
-            value={data.t}
-            onChange={(e) => setData({ ...data, t: parseInt(e.target.value) })}
-            type="number"
-            size={4}
-            className=" outline-none border-purple-500 border rounded-md mx-1 "
-          />
-          吨
-        </div>
+
+        <button
+          className=" p-1 border bg-sky-500 hover:bg-sky-600 text-white rounded-md  "
+          onClick={() => setShowTonnage(!showTonnage)}
+        >
+          {showTonnage ? "Hide Tonnage" : "Show Tonnage"}
+        </button>
+
+        {showTonnage && (
+          <div>
+            吨位Tonnage:{" "}
+            <input
+              value={data.t}
+              onChange={(e) =>
+                setData({ ...data, t: parseInt(e.target.value) })
+              }
+              type="number"
+              size={4}
+              className=" outline-none border-purple-500 border rounded-md mx-1 "
+            />
+            吨
+          </div>
+        )}
 
         <div>
           在车道装Camion sur la voie de changement:{" "}
@@ -219,7 +233,11 @@ export default function JinChu() {
         </div>
       </div>
 
-      <ActionButton icon={save} title="Save" onClick={(e) => onCopy(data)} />
+      <ActionButton
+        icon={save}
+        title="Save"
+        onClick={(e) => onCopy(data, showTonnage)}
+      />
     </div>
   );
 }
