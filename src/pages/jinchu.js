@@ -168,6 +168,19 @@ export default function JinChu() {
           />
           辆车
         </div>
+        <div>
+          车已经装Camions Chargés:{" "}
+          <input
+            value={data.charges}
+            onChange={(e) =>
+              setData({ ...data, charges: parseInt(e.target.value) })
+            }
+            type="number"
+            size={4}
+            className=" outline-none border-purple-500 border rounded-md mx-1 "
+          />
+          辆
+        </div>
 
         <button
           className=" p-1 border bg-sky-500 hover:bg-sky-600 text-white rounded-md  "
