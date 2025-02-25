@@ -100,6 +100,7 @@ export default function JinChu() {
     shift: "MATIN/白班",
     park_int: 0,
     charges: 0,
+    t: 0,
     encours: 0,
     charges_bigbag: 0,
     noncharges_bigbag: 0,
@@ -110,6 +111,7 @@ export default function JinChu() {
       shift,
       park_int,
       charges,
+      t,
       encours,
       charges_bigbag,
       noncharges_bigbag,
@@ -118,6 +120,7 @@ export default function JinChu() {
     const text = `•${shift}
  停车/Parking intérieur : ${park_int}辆车
 已装车/Camions Chargés:${charges}辆
+已装吨位/Tonnage : ${t}
 车道装车中/Camion sur voies de changement: ${encours}辆车
 吨袋车满载/Camions Chargés(BIG-BAG): ${charges_bigbag}辆
 吨袋空车/Camions Non Chargés(BIG-BAG): ${noncharges_bigbag}辆`;
@@ -164,18 +167,17 @@ export default function JinChu() {
           辆车
         </div>
         <div>
-          车已经装Camions Chargés:{" "}
+          吨位Tonnage:{" "}
           <input
-            value={data.charges}
-            onChange={(e) =>
-              setData({ ...data, charges: parseInt(e.target.value) })
-            }
+            value={data.t}
+            onChange={(e) => setData({ ...data, t: parseInt(e.target.value) })}
             type="number"
             size={4}
             className=" outline-none border-purple-500 border rounded-md mx-1 "
           />
-          辆
+          吨
         </div>
+
         <div>
           在车道装Camion sur la voie de changement:{" "}
           <input
