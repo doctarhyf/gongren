@@ -195,7 +195,7 @@ export default function JinChu() {
             <input
               value={data.t}
               onChange={(e) =>
-                setData({ ...data, t: parseNumber(e.target.value) })
+                setData({ ...data, t: parseFloat(e.target.value) })
               }
               type="number"
               size={4}
