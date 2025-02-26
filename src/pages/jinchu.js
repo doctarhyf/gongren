@@ -156,13 +156,6 @@ ${text_bigbag}`;
 
         <button
           className=" p-1 border bg-sky-500 hover:bg-sky-600 text-white rounded-md  "
-          onClick={() => setShowTonnage(!showTonnage)}
-        >
-          {showTonnage ? "Hide Tonnage" : "Show Tonnage"}
-        </button>
-
-        <button
-          className=" p-1 border bg-sky-500 hover:bg-sky-600 text-white rounded-md  "
           onClick={() => setShowBigBag(!showBigBag)}
         >
           {showTonnage ? "Hide BigBag" : "Show BigBag"}
