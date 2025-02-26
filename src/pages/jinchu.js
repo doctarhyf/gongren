@@ -195,9 +195,9 @@ export default function JinChu() {
             <input
               value={data.t}
               onChange={(e) =>
-                setData({ ...data, t: e.target.value })
+                setData({ ...data, t: parseNumber(e.target.value) })
               }
-              type="text"
+              type="number"
               size={4}
               className=" outline-none border-purple-500 border rounded-md mx-1 "
             />
