@@ -96,6 +96,7 @@ function OpsLogs({}) {
 export default function JinChu() {
   const SHIFTS = ["MATIN/白班", "APREM/中班", "NUIT/夜班"];
   const [showTonnage, setShowTonnage] = useState(false);
+  const [showBigBag, setShowBigBag] = useState(false);
   const [data, setData] = useState({
     shift: "MATIN/白班",
     park_int: 0,
@@ -106,7 +107,7 @@ export default function JinChu() {
     noncharges_bigbag: 0,
   });
 
-  async function onCopy(data, st) {
+  async function onCopy(data, show_tonnage, show_bigbag) {
     const {
       shift,
       park_int,
@@ -117,15 +118,18 @@ export default function JinChu() {
       noncharges_bigbag,
     } = data;
 
-    const ttext = st ? `已装吨位/Tonnage : ${t}吨` : "";
+    const text_tonnage = show_tonnage ? `已装吨位/Tonnage : ${t}吨` : "";
+    const text_bigbag = show_bigbag
+      ? `吨袋车满载/Camions Chargés(BIG-BAG): ${charges_bigbag}辆
+吨袋空车/Camions Non Chargés(BIG-BAG): ${noncharges_bigbag}辆`
+      : null;
 
     const text = `•${shift}
-    ${ttext}
+  ${text_tonnage}
  停车/Parking intérieur : ${park_int}辆车
 已装车/Camions Chargés:${charges}辆
 车道装车中/Camion sur voies de changement: ${encours}辆车
-吨袋车满载/Camions Chargés(BIG-BAG): ${charges_bigbag}辆
-吨袋空车/Camions Non Chargés(BIG-BAG): ${noncharges_bigbag}辆`;
+${text_bigbag}`;
 
     await navigator.clipboard
       .writeText(text)
@@ -143,6 +147,27 @@ export default function JinChu() {
   return (
     <div>
       <div className=" shadow-black/10  shadow-lg border border-gray-400 rounded-md p-2 max-w-fit mt-2 ">
+        <button
+          className=" p-1 border bg-sky-500 hover:bg-sky-600 text-white rounded-md  "
+          onClick={() => setShowTonnage(!showTonnage)}
+        >
+          {showTonnage ? "Hide Tonnage" : "Show Tonnage"}
+        </button>
+
+        <button
+          className=" p-1 border bg-sky-500 hover:bg-sky-600 text-white rounded-md  "
+          onClick={() => setShowTonnage(!showTonnage)}
+        >
+          {showTonnage ? "Hide Tonnage" : "Show Tonnage"}
+        </button>
+
+        <button
+          className=" p-1 border bg-sky-500 hover:bg-sky-600 text-white rounded-md  "
+          onClick={() => setShowBigBag(!showBigBag)}
+        >
+          {showTonnage ? "Hide BigBag" : "Show BigBag"}
+        </button>
+
         <div>
           <span className=" text-black mx-1   ">•SHIFT:</span>
           <select
@@ -182,13 +207,6 @@ export default function JinChu() {
           辆
         </div>
 
-        <button
-          className=" p-1 border bg-sky-500 hover:bg-sky-600 text-white rounded-md  "
-          onClick={() => setShowTonnage(!showTonnage)}
-        >
-          {showTonnage ? "Hide Tonnage" : "Show Tonnage"}
-        </button>
-
         {showTonnage && (
           <div>
             吨位Tonnage:{" "}
@@ -218,32 +236,40 @@ export default function JinChu() {
           />
           辆车
         </div>
-        <div>
-          吨袋车满载/Camions Chargés(BIG BAG):{" "}
-          <input
-            value={data.charges_bigbag}
-            onChange={(e) =>
-              setData({ ...data, charges_bigbag: parseInt(e.target.value) })
-            }
-            type="number"
-            size={4}
-            className=" outline-none border-purple-500 border rounded-md mx-1 "
-          />
-          辆
-        </div>
-        <div>
-          吨袋空车/Camions NonChargés(Big Bag):{" "}
-          <input
-            value={data.noncharges_bigbag}
-            onChange={(e) =>
-              setData({ ...data, noncharges_bigbag: parseInt(e.target.value) })
-            }
-            type="number"
-            size={4}
-            className=" outline-none border-purple-500 border rounded-md mx-1 "
-          />
-          辆
-        </div>
+
+        {showBigBag && (
+          <>
+            <div>
+              吨袋车满载/Camions Chargés(BIG BAG):{" "}
+              <input
+                value={data.charges_bigbag}
+                onChange={(e) =>
+                  setData({ ...data, charges_bigbag: parseInt(e.target.value) })
+                }
+                type="number"
+                size={4}
+                className=" outline-none border-purple-500 border rounded-md mx-1 "
+              />
+              辆
+            </div>
+            <div>
+              吨袋空车/Camions NonChargés(Big Bag):{" "}
+              <input
+                value={data.noncharges_bigbag}
+                onChange={(e) =>
+                  setData({
+                    ...data,
+                    noncharges_bigbag: parseInt(e.target.value),
+                  })
+                }
+                type="number"
+                size={4}
+                className=" outline-none border-purple-500 border rounded-md mx-1 "
+              />
+              辆
+            </div>
+          </>
+        )}
       </div>
 
       <ActionButton
