@@ -130,7 +130,7 @@ export default function JinChu() {
 已装车/Camions Chargés:${charges}辆
 车道装车中/Camion sur voies de changement: ${encours}辆车
 ${text_bigbag}`;
-    chang;
+
     await navigator.clipboard
       .writeText(text)
       .then(() => {
