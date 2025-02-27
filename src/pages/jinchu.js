@@ -174,7 +174,7 @@ ${text_bigbag}`;
           </select>{" "}
         </div>
         <div>
-          停车内Parking intérieur :{" "}
+          厂内Parking intérieur :{" "}
           <input
             value={data.park_int}
             onChange={(e) =>
