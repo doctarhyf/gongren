@@ -126,11 +126,11 @@ export default function JinChu() {
 
     const text = `•${shift}
   ${text_tonnage}
- 停车/Parking intérieur : ${park_int}辆车
+ 厂内/Parking intérieur : ${park_int}辆车
 已装车/Camions Chargés:${charges}辆
 车道装车中/Camion sur voies de changement: ${encours}辆车
 ${text_bigbag}`;
-
+    chang;
     await navigator.clipboard
       .writeText(text)
       .then(() => {
