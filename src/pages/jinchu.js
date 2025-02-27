@@ -118,17 +118,17 @@ export default function JinChu() {
       noncharges_bigbag,
     } = data;
 
-    const text_tonnage = show_tonnage ? `已装吨位/Tonnage : ${t}吨` : "";
+    const text_tonnage = show_tonnage ? `Tonnage/已装吨位 : ${t}吨` : "";
     const text_bigbag = show_bigbag
-      ? `吨袋车满载/Camions Chargés(BIG-BAG): ${charges_bigbag}辆
-吨袋空车/Camions Non Chargés(BIG-BAG): ${noncharges_bigbag}辆`
+      ? `Camions Chargés(BIG-BAG)/吨袋车满载: ${charges_bigbag}辆
+Camions NonChargés(BIG-BAG)/吨袋空车: ${noncharges_bigbag}辆`
       : null;
 
     const text = `•${shift}
   ${text_tonnage}
- 厂内/Parking intérieur : ${park_int}辆车
-已装车/Camions Chargés:${charges}辆
-车道装车中/Camion sur voies de changement: ${encours}辆车
+ Parking intérieur/厂内 : ${park_int}辆车
+Camions Chargés/已装车:${charges}辆
+En cours de changement/正在装车: ${encours}辆车
 ${text_bigbag}`;
 
     await navigator.clipboard
