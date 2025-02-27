@@ -124,19 +124,19 @@ export default function JinChu() {
 Camions NonChargés(BIG-BAG)/吨袋空车: ${noncharges_bigbag}辆`
       : null;
 
-    const text = `•${shift}
-  ${text_tonnage}
+    const final_text = `•${shift}
+${text_tonnage}
  Parking intérieur/厂内 : ${park_int}辆车
 Camions Chargés/已装车:${charges}辆
 En cours de changement/正在装车: ${encours}辆车
 ${text_bigbag}`;
 
     await navigator.clipboard
-      .writeText(text)
+      .writeText(final_text)
       .then(() => {
         console.log("Text copied to clipboard");
         alert("Text copied to clipboard");
-        console.log(text);
+        console.log(final_text);
       })
       .catch((err) => {
         console.error("Failed to copy text: ", err);
@@ -158,7 +158,7 @@ ${text_bigbag}`;
           className=" p-1 border bg-sky-500 hover:bg-sky-600 text-white rounded-md  "
           onClick={() => setShowBigBag(!showBigBag)}
         >
-          {showTonnage ? "Hide BigBag" : "Show BigBag"}
+          {showBigBag ? "Hide BigBag" : "Show BigBag"}
         </button>
 
         <div>
