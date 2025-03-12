@@ -838,8 +838,22 @@ export default function Equipes() {
                       className={CLASS_SELECT}
                     >
                       {[...Array(10)].map((it, i) => (
-                        <option key={i}>{2024 + i}</option>
+                        <option
+                          key={i}
+                          selected={new Date().getFullYear() === 2024 + i}
+                        >
+                          {2024 + i}
+                        </option>
                       ))}
+
+                      {/*  {[...Array(10)].map((it, i) => (
+                        <option
+                          key={it}
+                          selected={defaultDate && defaultDate.y === 2024 + i}
+                        >
+                          {2024 + i}
+                        </option>
+                      ))} */}
                     </select>
                   </div>
 
