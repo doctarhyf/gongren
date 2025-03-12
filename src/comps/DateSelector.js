@@ -105,9 +105,7 @@ export default function DateSelector({
             {[...Array(10)].map((it, i) => (
               <option
                 key={it}
-                selected={
-                  defaultDate && defaultDate.y === new Date().getFullYear() + i
-                }
+                selected={defaultDate && defaultDate.y === 2024 + i}
               >
                 {2024 + i}
               </option>
