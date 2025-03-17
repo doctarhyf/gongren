@@ -193,7 +193,6 @@ export default function TableRoulement({ agentData }) {
   const ref_print_empty = useRef();
 
   function printPDF(monthCode, curAgent, curAgentRld) {
-    // console.log(curAgentRld);
     const arrayRldPrintSyms = rldToPrintSymbols(curAgentRld);
     //console.log(curAgentRld);
     //return;

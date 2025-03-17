@@ -83,16 +83,6 @@ function OpsLogs({}) {
   );
 }
 
-/*
-
-•MATIN白班
-停车内Parking intérieur : 0辆车
-车已近装Camions Chargés:16辆
-在车道装Camion sur la voie de changement: 3辆车
-吨袋车满载/Camions Chargés(BIG BAG): 0辆
-吨袋空车/Camions Non Chargés(Big Bag): 0辆
-*/
-
 export default function JinChu() {
   const SHIFTS = ["MATIN/白班", "APREM/中班", "NUIT/夜班"];
   const [showTonnage, setShowTonnage] = useState(false);
@@ -122,7 +112,7 @@ export default function JinChu() {
     const text_bigbag = show_bigbag
       ? `Camions Chargés(BIG-BAG)/吨袋车满载: ${charges_bigbag}辆
 Camions NonChargés(BIG-BAG)/吨袋空车: ${noncharges_bigbag}辆`
-      : null;
+      : "";
 
     const final_text = `•${shift}
 ${text_tonnage}
