@@ -167,7 +167,7 @@ export default function RapportChargement() {
     const parts = GetDateParts("all");
     //console.log("parts", parts);
     const curmcode = `${parts.year}_${parts.month}`;
-    //console.log(curmcode);
+    //console.log("cmc => ", curmcode);
     setmcode(curmcode);
   }, []);
 
@@ -185,7 +185,7 @@ export default function RapportChargement() {
     setloads([]);
     setloadsf([]);
     const data = await SB.LoadAllItems(TABLES_NAMES.LOADS, "created_at", true);
-    //console.log(data[0]);
+    //console.log("datal => ", data.length);
     setloads(data);
     setloadsf(filterLoads(data, mcode, team));
     //console.log(data);
@@ -193,6 +193,8 @@ export default function RapportChargement() {
   }
 
   function filterLoads(loads, mcode, team) {
+    //console.log("curmcode => ", mcode);
+
     setbonustot(0);
     let btot = 0;
     let tot = 0;
@@ -205,6 +207,9 @@ export default function RapportChargement() {
 
       return loads;
     }
+
+    console.log("selloads => ", loads);
+
     if (loads.length === 0) return [];
     let filteredloads = loads.filter((ld) =>
       ld.code.includes(mcode) && ["A", "B", "C", "D"].includes(team)
