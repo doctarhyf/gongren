@@ -176,28 +176,34 @@ export default function Listes() {
               }}
               title={"CLEAR LIST"}
             />
-            <div className=" font-bold text-xl underline  ">
-              {listtitle} ({agents.length})
-            </div>
+
             <div>
               <div>
                 <input
                   defaultChecked={false}
                   type="checkbox"
+                  className="toggle toggle-xs"
                   value={showSimpleList}
                   onChange={(e) => setShowSimpleList(e.target.checked)}
                 />
-                SHOW SIMPLE LIST
+                SHOW {showSimpleList ? "TABLE" : "SIMPLE LIST"}
               </div>
-              <div>
-                <input
-                  defaultChecked={false}
-                  type="checkbox"
-                  value={addId}
-                  onChange={(e) => setAddID(e.target.checked)}
-                />
-                ADD NUM.
-              </div>
+              {showSimpleList && (
+                <div>
+                  <input
+                    defaultChecked={false}
+                    type="checkbox"
+                    className=" toggle toggle-xs "
+                    value={addId}
+                    onChange={(e) => setAddID(e.target.checked)}
+                  />
+                  ADD NUMBERS
+                </div>
+              )}
+            </div>
+
+            <div className=" font-bold text-xl underline  ">
+              {listtitle} ({agents.length})
             </div>
 
             {showSimpleList ? (

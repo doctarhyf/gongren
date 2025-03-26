@@ -3,7 +3,7 @@ import imageCompression from "browser-image-compression";
 import * as SB from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
 import ActionButton from "../comps/ActionButton";
-import save from "../img/save.png";
+import copy from "../img/copy.png";
 
 function ImageCompressor() {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -136,20 +136,22 @@ ${text_bigbag}`;
 
   return (
     <div>
-      <div className=" shadow-black/10  shadow-lg border border-gray-400 rounded-md p-2 max-w-fit mt-2 ">
-        <button
-          className=" p-1 border bg-sky-500 hover:bg-sky-600 text-white rounded-md  "
-          onClick={() => setShowTonnage(!showTonnage)}
-        >
-          {showTonnage ? "Hide Tonnage" : "Show Tonnage"}
-        </button>
+      <div className=" shadow-black/10 space-y-3  shadow-lg border border-gray-400 rounded-md p-2 max-w-fit mt-2 ">
+        <div className=" space-x-2  ">
+          <button
+            className=" p-1 border bg-sky-500 hover:bg-sky-600 text-white rounded-md  "
+            onClick={() => setShowTonnage(!showTonnage)}
+          >
+            {showTonnage ? "Hide Tonnage" : "Show Tonnage"}
+          </button>
 
-        <button
-          className=" p-1 border bg-sky-500 hover:bg-sky-600 text-white rounded-md  "
-          onClick={() => setShowBigBag(!showBigBag)}
-        >
-          {showBigBag ? "Hide BigBag" : "Show BigBag"}
-        </button>
+          <button
+            className=" p-1 border bg-sky-500 hover:bg-sky-600 text-white rounded-md  "
+            onClick={() => setShowBigBag(!showBigBag)}
+          >
+            {showBigBag ? "Hide BigBag" : "Show BigBag"}
+          </button>
+        </div>
 
         <div>
           <span className=" text-black mx-1   ">•SHIFT:</span>
@@ -256,8 +258,8 @@ ${text_bigbag}`;
       </div>
 
       <ActionButton
-        icon={save}
-        title="Save"
+        icon={copy}
+        title="COPY"
         onClick={(e) => onCopy(data, showTonnage)}
       />
     </div>
