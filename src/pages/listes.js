@@ -3,9 +3,14 @@ import AgentList2 from "../comps/AgentList2";
 import ActionButton from "../comps/ActionButton";
 import print from "../img/pdf.png";
 import del from "../img/delete.png";
+import save from "../img/save.png";
+
 import { printNameListPDF, printTable } from "../helpers/print";
 import { CLASS_INPUT_TEXT } from "../helpers/flow";
 import AgentsList from "../comps/AgentsList";
+
+import * as SB from "../helpers/sb";
+import { TABLES_NAMES } from "../helpers/sb.config";
 
 export default function Listes() {
   const [agents, setagents] = useState([]);
@@ -96,6 +101,21 @@ export default function Listes() {
   const [showSimpleList, setShowSimpleList] = useState(false);
   const [addId, setAddID] = useState(false);
 
+  async function saveList(agents) {
+    if (agents.length === 0) {
+      alert("No agents to save");
+      return;
+    }
+
+    const list_name = prompt("Enter your name:");
+    const list_ids = agents.map((it) => it.id).join(",");
+    const data = { list_name: list_name, list_ids: list_ids };
+
+    const res = await SB.InsertItem(TABLES_NAMES.CUSTOM_AGENTS_LISTS, data);
+
+    console.log("custom list res : ", res);
+  }
+
   return (
     <div className=" container  ">
       <dialog id="my_modal_5" className="modal modal-bottom sm:modal-middle">
@@ -167,6 +187,7 @@ export default function Listes() {
               onClick={(e) => printList(agents, propsToPrint, showSimpleList)}
               title={"PRINT"}
             />
+
             <ActionButton
               icon={del}
               onClick={(e) => {
@@ -175,6 +196,12 @@ export default function Listes() {
                 }
               }}
               title={"CLEAR LIST"}
+            />
+
+            <ActionButton
+              icon={save}
+              onClick={(e) => saveList(agents)}
+              title={"Save List"}
             />
 
             <div>

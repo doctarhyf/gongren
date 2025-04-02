@@ -11,6 +11,27 @@ import {
 import { GetTransForTokensArray, LANG_TOKENS } from "../helpers/lang_strings";
 import { UserContext } from "../App";
 
+function SavedAgentsList({ agents, lists, onSavedAgentsSelected }) {
+  function onListSelected(e) {
+    const list_data = e.target.value;
+    onSavedAgentsSelected(agents, list_data);
+    //console.log(list_data);
+  }
+  return (
+    <div>
+      <div className=" text-sm font-bold">
+        <select onChange={onListSelected}>
+          {lists.map((list, i) => (
+            <option key={i} value={JSON.stringify(list)}>
+              {list.name}
+            </option>
+          ))}
+        </select>
+      </div>
+    </div>
+  );
+}
+
 export default function AgentsList({
   onAgentClick,
   curAgent,
@@ -33,10 +54,37 @@ export default function AgentsList({
   const [showTeamMode, setShowTeamMode] = useState(false);
   const [teams, setteams] = useState([]);
   const [showOnlyActive, setShowOnlyActive] = useState(onlyActive);
+  const [custom_agents_list, set_custom_agents_list] = useState([]);
 
   useEffect(() => {
     loadAgents(onlyShowCurrentAgent);
   }, [showOnlyActive, onlyShowCurrentAgent]);
+
+  useEffect(() => {
+    loadCustomAgentsList();
+  }, []);
+
+  async function loadCustomAgentsList() {
+    setloading(true);
+    set_custom_agents_list([]);
+    const lists = await SB.LoadAllItems(TABLES_NAMES.CUSTOM_AGENTS_LISTS);
+
+    if (lists.length === 0) {
+      setloading(false);
+      return;
+    }
+
+    const nl = lists.map((l) => ({
+      name: l.list_name,
+      ids: l.list_ids.split(","),
+    }));
+
+    // console.log("lists : ", nl);
+    set_custom_agents_list(nl);
+
+    // console.log(lists);
+    setloading(false);
+  }
 
   function GetSplittedItemsIntoPages(items_raw, items_per_page) {
     let items = [];
@@ -124,6 +172,16 @@ export default function AgentsList({
     setagentf(agents_filtered);
   }
 
+  function onSavedAgentsSelected(agents, customList) {
+    customList = JSON.parse(customList);
+    const { name, ids } = customList;
+    //console.log(ids);
+
+    const na = ids.map((it) => agents.find((a) => a.id === parseInt(it)));
+    console.log(na);
+    setagentf(na);
+  }
+
   return (
     <section className="p-1  w-full md:w-min  ">
       <Loading isLoading={loading} />{" "}
@@ -165,6 +223,11 @@ export default function AgentsList({
           />
         </div>
       )}
+      <SavedAgentsList
+        agents={agents}
+        lists={custom_agents_list}
+        onSavedAgentsSelected={onSavedAgentsSelected}
+      />
       {!showTeamMode && (
         <div className="">
           {!showNamesInTable && (

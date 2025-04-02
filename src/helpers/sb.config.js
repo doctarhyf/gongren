@@ -20,4 +20,5 @@ export const TABLES_NAMES = {
   OPERATIONS_LOGS: "ops_logs",
   BIGBAG: "bigbag",
   NOTIFICATIONS: "notifications",
+  CUSTOM_AGENTS_LISTS: "custom_agents_lists",
 };
