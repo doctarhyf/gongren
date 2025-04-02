@@ -630,6 +630,23 @@ export default function Equipes() {
     }
   }, [isCustomList]);
 
+  const [selectedCustomList, setSelectedCustomList] = useState({});
+
+  function onCustomListSelected(list) {
+    console.log("onCustomListSelected", list);
+
+    let y = ref_year.current.value;
+    let m = ref_month.current.value;
+    const { id, list_name, agents } = list;
+    setSelectedCustomList(list);
+
+    let agwirld = agents.map((agent, index, arr) =>
+      CheckAgentRoulementData(agent, index, arr, y, m)
+    );
+
+    setCustomAgents([...agwirld]);
+    console.log("agentsf", agentsf);
+  }
   return (
     <div>
       <Loading isLoading={loading} />
@@ -684,6 +701,7 @@ export default function Equipes() {
                   onAgentClick={onAgentClick}
                   showToggleTeamsView
                   onTeamClick={onTeamClick}
+                  onCustomListSelected={onCustomListSelected}
                 />
               </div>
 
@@ -845,8 +863,6 @@ export default function Equipes() {
                           {2024 + i}
                         </option>
                       ))}
-
-                     
                     </select>
                   </div>
 
