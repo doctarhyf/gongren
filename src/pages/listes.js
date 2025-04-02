@@ -115,6 +115,7 @@ export default function Listes() {
 
     const res = await SB.InsertItem(TABLES_NAMES.CUSTOM_AGENTS_LISTS, data);
 
+    setalk(Math.random());
     console.log("custom list res : ", res);
   }
 
@@ -132,6 +133,9 @@ export default function Listes() {
       selectedCustomList
     );
 
+    if (res === null) {
+      setagents([]);
+    }
     console.log("custom list res : ", res);
     setalk(Math.random());
   }

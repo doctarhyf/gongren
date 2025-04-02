@@ -14,6 +14,10 @@ import { UserContext } from "../App";
 function SavedAgentsList({ agents, lists, onSavedAgentsSelected }) {
   function onListSelected(e) {
     const list_data = e.target.value;
+
+    if (list_data === "N/A") {
+      return;
+    }
     onSavedAgentsSelected(agents, list_data);
     console.log("fucking", list_data);
   }
@@ -21,6 +25,9 @@ function SavedAgentsList({ agents, lists, onSavedAgentsSelected }) {
     <div>
       <div className=" text-sm font-bold">
         <select onChange={onListSelected}>
+          <option key={-1} value={"N/A"}>
+            - Selected list -
+          </option>
           {lists.map((list, i) => (
             <option key={i} value={JSON.stringify(list)}>
               {list.name}
