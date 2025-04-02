@@ -100,6 +100,8 @@ export default function Listes() {
   const [listtitle, setlisttitle] = useState("LISTE AGENT CIMENTERIE");
   const [showSimpleList, setShowSimpleList] = useState(false);
   const [addId, setAddID] = useState(false);
+  const [alk, setalk] = useState(0);
+  const [selectedCustomList, setSelectedCustomList] = useState({});
 
   async function saveList(agents) {
     if (agents.length === 0) {
@@ -118,16 +120,26 @@ export default function Listes() {
 
   function onCustomListSelected(list) {
     console.log("onCustomListSelected", list);
-    setagents([...list]);
+
+    const { id, list_name, agents } = list;
+    setSelectedCustomList(list);
+    setagents([...agents]);
   }
 
   async function deleteSavedList() {
-    const list_name = prompt("Enter the name of the list to delete:");
-    const res = await SB.DeleteItem(TABLES_NAMES.CUSTOM_AGENTS_LISTS, {
-      list_name: list_name,
-    });
+    if (
+      window.confirm(
+        `Are you sure you want to delete the list ${selectedCustomList} ?`
+      )
+    ) {
+      const res = await SB.DeleteItem(
+        TABLES_NAMES.CUSTOM_AGENTS_LISTS,
+        selectedCustomList
+      );
 
-    console.log("custom list res : ", res);
+      console.log("custom list res : ", res);
+      setalk(Math.random());
+    }
   }
 
   return (
@@ -190,6 +202,7 @@ export default function Listes() {
 
         <div className=" flex ">
           <AgentsList
+            key={alk}
             onAgentClick={onAgentClick}
             showToggleTeamsView
             onTeamClick={onTeamClick}

@@ -15,7 +15,7 @@ function SavedAgentsList({ agents, lists, onSavedAgentsSelected }) {
   function onListSelected(e) {
     const list_data = e.target.value;
     onSavedAgentsSelected(agents, list_data);
-    //console.log(list_data);
+    console.log("fucking", list_data);
   }
   return (
     <div>
@@ -76,6 +76,7 @@ export default function AgentsList({
     }
 
     const nl = lists.map((l) => ({
+      id: l.id,
       name: l.list_name,
       ids: l.list_ids.split(","),
     }));
@@ -175,12 +176,14 @@ export default function AgentsList({
 
   function onSavedAgentsSelected(agents, customList) {
     customList = JSON.parse(customList);
-    const { name, ids } = customList;
-    //console.log(ids);
+    const { id, name: list_name, ids } = customList;
+    console.log("da fucking id:", customList);
 
-    const na = ids.map((it) => agents.find((a) => a.id === parseInt(it)));
-    console.log(na);
-    onCustomListSelected(na);
+    const agents_ids = ids.map((it) =>
+      agents.find((a) => a.id === parseInt(it))
+    );
+    console.log(agents_ids);
+    onCustomListSelected({ id: id, list_name, agents: agents_ids });
   }
 
   return (
