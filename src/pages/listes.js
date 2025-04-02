@@ -231,7 +231,7 @@ export default function Listes() {
                   deleteSavedList();
                 }
               }}
-              title={`DELETE SAVED LIST `}
+              title={`DELETE SAVED LIST : " ${selectedCustomList.list_name} " `}
             />
 
             <ActionButton
