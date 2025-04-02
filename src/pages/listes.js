@@ -116,6 +116,20 @@ export default function Listes() {
     console.log("custom list res : ", res);
   }
 
+  function onCustomListSelected(list) {
+    console.log("onCustomListSelected", list);
+    setagents([...list]);
+  }
+
+  async function deleteSavedList() {
+    const list_name = prompt("Enter the name of the list to delete:");
+    const res = await SB.DeleteItem(TABLES_NAMES.CUSTOM_AGENTS_LISTS, {
+      list_name: list_name,
+    });
+
+    console.log("custom list res : ", res);
+  }
+
   return (
     <div className=" container  ">
       <dialog id="my_modal_5" className="modal modal-bottom sm:modal-middle">
@@ -179,6 +193,7 @@ export default function Listes() {
             onAgentClick={onAgentClick}
             showToggleTeamsView
             onTeamClick={onTeamClick}
+            onCustomListSelected={onCustomListSelected}
           />
 
           <div className=" bg-slate-700 text-white p-2 ">
@@ -196,6 +211,16 @@ export default function Listes() {
                 }
               }}
               title={"CLEAR LIST"}
+            />
+
+            <ActionButton
+              icon={del}
+              onClick={(e) => {
+                if (window.confirm(`Delete the list : ${"x"}`)) {
+                  deleteSavedList();
+                }
+              }}
+              title={"DELETE SAVED LIST"}
             />
 
             <ActionButton

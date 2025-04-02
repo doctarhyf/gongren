@@ -41,6 +41,7 @@ export default function AgentsList({
   onlyActive = true,
   perPage = 10,
   onlyShowCurrentAgent,
+  onCustomListSelected,
 }) {
   const [q, setq] = useState("");
 
@@ -179,7 +180,7 @@ export default function AgentsList({
 
     const na = ids.map((it) => agents.find((a) => a.id === parseInt(it)));
     console.log(na);
-    setagentf(na);
+    onCustomListSelected(na);
   }
 
   return (
