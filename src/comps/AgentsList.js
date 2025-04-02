@@ -227,11 +227,14 @@ export default function AgentsList({
           />
         </div>
       )}
-      <SavedAgentsList
-        agents={agents}
-        lists={custom_agents_list}
-        onSavedAgentsSelected={onSavedAgentsSelected}
-      />
+      <div className=" space-y-2 py-2 ">
+        <div>SAVE LISTS</div>
+        <SavedAgentsList
+          agents={agents}
+          lists={custom_agents_list}
+          onSavedAgentsSelected={onSavedAgentsSelected}
+        />
+      </div>
       {!showTeamMode && (
         <div className="">
           {!showNamesInTable && (

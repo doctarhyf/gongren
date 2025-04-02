@@ -127,19 +127,13 @@ export default function Listes() {
   }
 
   async function deleteSavedList() {
-    if (
-      window.confirm(
-        `Are you sure you want to delete the list ${selectedCustomList} ?`
-      )
-    ) {
-      const res = await SB.DeleteItem(
-        TABLES_NAMES.CUSTOM_AGENTS_LISTS,
-        selectedCustomList
-      );
+    const res = await SB.DeleteItem(
+      TABLES_NAMES.CUSTOM_AGENTS_LISTS,
+      selectedCustomList
+    );
 
-      console.log("custom list res : ", res);
-      setalk(Math.random());
-    }
+    console.log("custom list res : ", res);
+    setalk(Math.random());
   }
 
   return (
@@ -229,11 +223,15 @@ export default function Listes() {
             <ActionButton
               icon={del}
               onClick={(e) => {
-                if (window.confirm(`Delete the list : ${"x"}`)) {
+                if (
+                  window.confirm(
+                    `Are you sure you want to delete " ${selectedCustomList.list_name} " ?`
+                  )
+                ) {
                   deleteSavedList();
                 }
               }}
-              title={"DELETE SAVED LIST"}
+              title={`DELETE SAVED LIST `}
             />
 
             <ActionButton
