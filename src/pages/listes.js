@@ -98,8 +98,8 @@ export default function Listes() {
   }
 
   const [listtitle, setlisttitle] = useState("LISTE AGENT CIMENTERIE");
-  const [showSimpleList, setShowSimpleList] = useState(false);
-  const [addId, setAddID] = useState(false);
+  const [showSimpleList, setShowSimpleList] = useState(true);
+  const [addNumber, setAddNumber] = useState(true);
   const [alk, setalk] = useState(0);
   const [selectedCustomList, setSelectedCustomList] = useState({});
 
@@ -253,7 +253,7 @@ export default function Listes() {
                   value={showSimpleList}
                   onChange={(e) => setShowSimpleList(e.target.checked)}
                 />
-                SHOW {showSimpleList ? "TABLE" : "SIMPLE LIST"}
+                TABLE MODE/ LIST MODE
               </div>
               {showSimpleList && (
                 <div>
@@ -261,8 +261,8 @@ export default function Listes() {
                     defaultChecked={false}
                     type="checkbox"
                     className=" toggle toggle-xs "
-                    value={addId}
-                    onChange={(e) => setAddID(e.target.checked)}
+                    value={addNumber}
+                    onChange={(e) => setAddNumber(e.target.checked)}
                   />
                   ADD NUMBERS
                 </div>
@@ -275,7 +275,7 @@ export default function Listes() {
 
             {showSimpleList ? (
               <div>
-                {parseAgentsToPrintList(agents, propsToPrint, addId).map(
+                {parseAgentsToPrintList(agents, propsToPrint, addNumber).map(
                   (ag, i) => (
                     <div>{Object.values(ag).map((v) => v + " ")}</div>
                   )

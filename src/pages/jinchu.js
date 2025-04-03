@@ -116,9 +116,9 @@ Camions NonChargés(BIG-BAG)/吨袋空车: ${noncharges_bigbag}辆`
 
     const final_text = `•${shift}
 ${text_tonnage}
- Parking intérieur/厂内 : ${park_int}辆车
+ Camions en attente/等待装车 : ${park_int}辆
 Camions Chargés/已装车:${charges}辆
-En cours de changement/正在装车: ${encours}辆车
+En cours de changement/正在装车: ${encours}辆
 ${text_bigbag}`;
 
     await navigator.clipboard
@@ -166,7 +166,7 @@ ${text_bigbag}`;
           </select>{" "}
         </div>
         <div>
-          厂内Parking intérieur :{" "}
+          等待装车Camions en attente :{" "}
           <input
             value={data.park_int}
             onChange={(e) =>
@@ -179,7 +179,7 @@ ${text_bigbag}`;
           辆车
         </div>
         <div>
-          车已经装Camions Chargés:{" "}
+          车已经装/Camions Chargés:{" "}
           <input
             value={data.charges}
             onChange={(e) =>
@@ -194,7 +194,7 @@ ${text_bigbag}`;
 
         {showTonnage && (
           <div>
-            吨位Tonnage:{" "}
+            吨位/Tonnage:{" "}
             <input
               value={data.t}
               onChange={(e) =>
@@ -209,7 +209,7 @@ ${text_bigbag}`;
         )}
 
         <div>
-          在车道装Camion sur la voie de changement:{" "}
+          在车道装/En cours de changement:{" "}
           <input
             value={data.encours}
             onChange={(e) =>
