@@ -250,13 +250,13 @@ export const MAIN_MENU = [
     access_code: ACCESS_CODES.PAGE_HOME,
     trad: LANG_TOKENS.HOME,
   },
-  {
+  /*  {
     name: "Notifications",
     path: "/notifications",
     el: Notifications,
     access_code: ACCESS_CODES.PAGE_NOTIFICATIONS,
     trad: LANG_TOKENS.NOTIFICATIONS,
-  },
+  }, */
   {
     name: "Agents",
     path: "/agents",
@@ -285,18 +285,19 @@ export const MAIN_MENU = [
     access_code: ACCESS_CODES.PAGE_SUIVI_CAMIONS,
     trad: LANG_TOKENS.TRUCKS_LOADING_TRACKING,
   },
-  {
+  /*  {
     name: "BIGBAG",
     path: "/bigbag",
     el: Bigbag,
     access_code: ACCESS_CODES.PAGE_CHARGEMENT,
     trad: LANG_TOKENS.BIGBAG,
-  },
+  }, */
   {
     name: "JinChu",
     path: "/jinchu",
     el: JinChu,
     access_code: ACCESS_CODES.PAGE_JINCHU,
+    trad: LANG_TOKENS.LOADING_STATS,
   },
   {
     name: "Roulements",

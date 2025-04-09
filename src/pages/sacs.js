@@ -238,7 +238,7 @@ export default function Sacs() {
             )}
             {SACS_SECTIONS.CALCULATOR.label === curtab[1].label && <SacsCalc />}
           </>
-        )}{" "}
+        )}
       </div>
     </div>
   );
