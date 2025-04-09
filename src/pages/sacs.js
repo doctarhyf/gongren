@@ -139,6 +139,7 @@ export default function Sacs() {
 
       if (success) {
         alert("Data saved!");
+        loadData();
         console.log(res);
       } else {
         alert(`Error saving data! \n ${JSON.stringify(res)}`);

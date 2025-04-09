@@ -6,6 +6,7 @@ import {
 } from "../../helpers/flow";
 import Stock from "./Stock";
 import ButtonPrint from "../ButtonPrint";
+import { formatCreatedAt } from "../../helpers/func";
 
 export default function SacsContainer({
   trans,
@@ -81,7 +82,7 @@ export default function SacsContainer({
         <table>
           <thead>
             <th className="p1 border border-gray-900">id</th>
-            <th className="p1 border border-gray-900">Operation</th>
+            {/*   <th className="p1 border border-gray-900">Operation</th> */}
             <th className="p1 border border-gray-900">Equipe</th>
             <th className="p1 border border-gray-900">32.5</th>
             <th className="p1 border border-gray-900">42.5</th>
@@ -94,7 +95,7 @@ export default function SacsContainer({
             {showInput && (
               <tr>
                 <td className="p1 border border-gray-900">0</td>
-                <td className="p1 border border-gray-900">in</td>
+                {/*   <td className="p1 border border-gray-900">in</td> */}
                 <td className="p1 border border-gray-900">
                   <select
                     className=" border p-1 "
@@ -134,6 +135,7 @@ export default function SacsContainer({
                     }
                   />
                 </td>
+
                 <td className="p1 border border-gray-900"> - </td>
                 <td className="p1 border border-gray-900"> - </td>
                 <td className="p1 border border-gray-900">
@@ -153,9 +155,9 @@ export default function SacsContainer({
             )}
             {!showInput &&
               trans.map((t, i) => (
-                <tr className={`  ${showInput ? "opacity-20" : ""}   `}>
+                <tr key={i} className={`  ${showInput ? "opacity-20" : ""}   `}>
                   <td className="p1 border border-gray-900">{i}</td>
-                  <td className="p1 border border-gray-900">{t.op}</td>
+                  {/*  <td className="p1 border border-gray-900">{t.op}</td> */}
                   <td className="p1 border border-gray-900">{t.team}</td>
                   <td className="p1 border border-gray-900">{t.s32}</td>
                   <td className="p1 border border-gray-900">{t.s42}</td>
@@ -164,7 +166,9 @@ export default function SacsContainer({
                   <td className="p1 border border-gray-900">
                     {t.stockres ? "yes" : "no"}
                   </td>
-                  <td className="p1 border border-gray-900">{t.created_at}</td>
+                  <td className="p1 border border-gray-900">
+                    {formatCreatedAt(t.created_at)}
+                  </td>
                 </tr>
               ))}
           </tbody>

@@ -6,7 +6,7 @@ import {
 } from "../../helpers/flow";
 import Stock from "./Stock";
 import ButtonPrint from "../ButtonPrint";
-import { printPDF1 } from "../../helpers/func";
+import { formatCreatedAt, printPDF1 } from "../../helpers/func";
 
 export default function SacsProduction({
   trans,
@@ -374,7 +374,9 @@ export default function SacsProduction({
                   <td className="p1 border border-gray-900">{i}</td>
 
                   <td className="p1 border border-gray-900">{t.team}</td>
-                  <td className="p1 border border-gray-900">{t.created_at}</td>
+                  <td className="p1 border border-gray-900">
+                    {formatCreatedAt(t.created_at)}
+                  </td>
                   <td className="p1 border border-gray-900">{t.sortis32}</td>
                   <td className="p1 border border-gray-900">
                     {t.tonnage32} T.
