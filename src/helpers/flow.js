@@ -157,10 +157,10 @@ export const SACS_SECTIONS = {
     label: "Sacs Production",
     access_code: ACCESS_CODES.TAB_SAC_PROD,
   },
-  CALCULATOR: {
+  /* CALCULATOR: {
     label: "Sacs Calculator",
     access_code: ACCESS_CODES.TAB_SAC_CALC,
-  },
+  }, */
 };
 
 export const BIGBAG_SECTIONS = {

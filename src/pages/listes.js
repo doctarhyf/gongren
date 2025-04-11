@@ -301,7 +301,7 @@ export default function Listes() {
                   <tbody>
                     {parseAgentsToPrintList(agents, propsToPrint).map((ag) => (
                       <tr
-                        className=" hover:bg-sky-500 p-2 hover:text-white cursor-pointer "
+                        className=" hover:bg-sky-800 p-2 hover:text-white cursor-pointer "
                         onClick={(e) => removeAgent(ag, true)}
                       >
                         {ag.map((it) => (
