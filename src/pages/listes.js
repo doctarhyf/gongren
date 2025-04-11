@@ -282,28 +282,36 @@ export default function Listes() {
                 )}
               </div>
             ) : (
-              <table class="table-fixed">
-                <thead>
-                  <tr>
-                    {propsToPrint.map((prop, i) => (
-                      <th key={i}>{prop}</th>
-                    ))}
-                  </tr>
-                </thead>
-
-                <tbody>
-                  {parseAgentsToPrintList(agents, propsToPrint).map((ag) => (
-                    <tr
-                      className=" hover:bg-sky-500 p-2 hover:text-white cursor-pointer "
-                      onClick={(e) => removeAgent(ag, true)}
-                    >
-                      {ag.map((it) => (
-                        <td>{it}</td>
+              <div>
+                <div className=" rounded-md text-xs my-2 bg-red-950 text-red-300 italic text-center p-1 ">
+                  Click on an agent to remove it
+                </div>
+                <table class="table-fixed">
+                  <thead>
+                    <tr>
+                      <th className=" border-2 border-black p-1  ">No</th>
+                      {propsToPrint.map((prop, i) => (
+                        <th key={i} className=" border-2 p-1 border-black  ">
+                          {prop}
+                        </th>
                       ))}
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+
+                  <tbody>
+                    {parseAgentsToPrintList(agents, propsToPrint).map((ag) => (
+                      <tr
+                        className=" hover:bg-sky-500 p-2 hover:text-white cursor-pointer "
+                        onClick={(e) => removeAgent(ag, true)}
+                      >
+                        {ag.map((it) => (
+                          <td className=" border-2 border-black p-1  ">{it}</td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             )}
           </div>
         </div>
