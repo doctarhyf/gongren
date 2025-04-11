@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   SACS_CONTAINER_OPERATION_TYPE,
   STOCK_TYPE,
@@ -6,7 +6,13 @@ import {
 } from "../../helpers/flow";
 import Stock from "./Stock";
 import ButtonPrint from "../ButtonPrint";
-import { formatCreatedAt, printPDF1 } from "../../helpers/func";
+import {
+  formatCreatedAt,
+  formatFrenchDate,
+  printPDF1,
+} from "../../helpers/func";
+import { useReactToPrint } from "react-to-print";
+import jsPDF from "jspdf";
 
 export default function SacsProduction({
   trans,
@@ -75,9 +81,103 @@ export default function SacsProduction({
     });
   }
 
-  const print = () => {
-    console.log(trans);
-  };
+  function repeatChar(char = "*", count = 15) {
+    return [...Array(count)].map((c, i) => char).join("");
+  }
+
+  function createHeaders(keys) {
+    var result = [];
+    for (var i = 0; i < keys.length; i += 1) {
+      result.push({
+        id: keys[i],
+        name: keys[i],
+        prompt: keys[i],
+        width: 80,
+        align: "center",
+        padding: 0,
+      });
+    }
+    return result;
+  }
+
+  function print(loads) {
+    const doc = new jsPDF({ orientation: "landscape" });
+    const FONT_SIZE = 9;
+    let ty = -1;
+    let tm = -1;
+
+    doc.setFont("helvetica");
+    doc.setFontSize(FONT_SIZE);
+
+    let r = doc.addFont(
+      "fonts/DroidSansFallback.ttf",
+      "DroidSansFallback",
+      "normal"
+    );
+
+    console.log(r);
+
+    const body = [];
+
+    const def = {
+      id: 6,
+      created_at: "2025-04-09T08:08:40.281224+00:00",
+      team: "A",
+      sortis32: 0,
+      tonnage32: 0,
+      sortis42: 40,
+      tonnage42: 0,
+      dechires32: 0,
+      dechires42: 20,
+      utilises32: 0,
+      utilises42: 0,
+      restants32: 0,
+      restants42: 20,
+    };
+
+    const load_data = {
+      id: "6",
+      created_at: "2025-04-09T08:08:40",
+      team: "A",
+      sortis32: "0",
+      tonnage32: "0",
+      sortis42: "40",
+      tonnage42: "0",
+      dechires32: "0",
+      dechires42: "20",
+      utilises32: "0",
+      utilises42: "0",
+      restants32: "0",
+      restants42: "20",
+    };
+
+    body.push(load_data);
+
+    console.log("loads => ", loads);
+
+    var headers = createHeaders(Object.keys(def));
+
+    const tableConfig = {
+      printHeaders: true,
+      autoSize: true,
+      margins: 0,
+      fontSize: FONT_SIZE,
+      padding: 2.5,
+    };
+
+    // body.push(def);
+
+    doc.text(formatFrenchDate(new Date()), 210 - 15, 10, { align: "right" });
+
+    const doc_title = `RAPPORT CHARGEMENT`;
+    const file_name = `RAPPORT_CHARGEMENT`;
+    doc.text(doc_title, 105, 20, {
+      align: "center",
+    });
+
+    doc.table(15, 25, body, headers, tableConfig);
+    doc.save(file_name);
+  }
 
   return (
     <div>
@@ -96,7 +196,7 @@ export default function SacsProduction({
             >
               INSERT
             </button>
-            <ButtonPrint onClick={print} />
+            <ButtonPrint onClick={(e) => print(trans)} />
           </div>
         )}
 
@@ -118,7 +218,7 @@ export default function SacsProduction({
         )}
       </div>
       <div className=" container  ">
-        <table>
+        <table className="table-auto w-full ">
           <thead>
             <th className="p1 border border-gray-900">id</th>
             <th className="p1 border border-gray-900">Equipe</th>

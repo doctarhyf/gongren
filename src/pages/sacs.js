@@ -212,11 +212,6 @@ export default function Sacs() {
       <Loading isLoading={loading} />
 
       <div className={`  ${loading ? "hidden" : "block"} `}>
-        {/* <Stock
-          stock={stock_cont}
-          label={"CONTAINER"}
-          onResetStock={(e) => set_stock_cont({ s32: 0, s42: 0 })}
-        /> */}
         <TabCont tabs={SACS_SECTIONS} onSelectTab={onSelectTab} />
         {curtab && (
           <>
@@ -237,7 +232,6 @@ export default function Sacs() {
                 onResetStock={onResetStock}
               />
             )}
-            {/*  {SACS_SECTIONS.CALCULATOR.label === curtab[1].label && <SacsCalc />} */}
           </>
         )}
       </div>

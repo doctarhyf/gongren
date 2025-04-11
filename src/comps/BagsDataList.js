@@ -359,17 +359,6 @@ export default function BagsDataList({
 
         const [s_fr, s_zh, s_h] = SHIFT_HOURS_ZH[s];
 
-        /* const load_data_a = [
-          day_key,
-          t,
-          s_fr,
-          // s_zh,
-          sacs + "",
-          tonnage.toFixed(2),
-          camions + "",
-          dechires + "",
-        ]; */
-
         const date_str = `${y}.${Number(m) + 1}.${d}`;
         ty = y;
         tm = m;
@@ -408,8 +397,6 @@ export default function BagsDataList({
       margins: 0,
       fontSize: FONT_SIZE,
       padding: 2.5,
-      //headerBackgroundColor: "gray",
-      // headerTextColor?: string;
     };
 
     body.push(def);
