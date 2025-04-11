@@ -100,7 +100,29 @@ export default function SacsProduction({
     return result;
   }
 
+  function transformData(dataArray) {
+    return dataArray.map((obj) => {
+      // Destructure to remove adj32 and adj42
+      const { adj32, adj42, ...rest } = obj;
+
+      // Convert all remaining values to strings
+      const stringified = {};
+      for (let key in rest) {
+        if (key === "created_at") {
+          stringified[key] = formatCreatedAt(rest[key]);
+        } else {
+          stringified[key] = String(rest[key]);
+        }
+      }
+
+      return stringified;
+    });
+  }
+
   function print(loads) {
+    console.log("loads => ", loads);
+    loads = transformData(loads);
+    console.log("loads => ", loads);
     const doc = new jsPDF({ orientation: "landscape" });
     const FONT_SIZE = 9;
     let ty = -1;
@@ -115,27 +137,11 @@ export default function SacsProduction({
       "normal"
     );
 
-    console.log(r);
+    //console.log(r);
 
-    const body = [];
+    const body = loads;
 
     const def = {
-      id: 6,
-      created_at: "2025-04-09T08:08:40.281224+00:00",
-      team: "A",
-      sortis32: 0,
-      tonnage32: 0,
-      sortis42: 40,
-      tonnage42: 0,
-      dechires32: 0,
-      dechires42: 20,
-      utilises32: 0,
-      utilises42: 0,
-      restants32: 0,
-      restants42: 20,
-    };
-
-    const load_data = {
       id: "6",
       created_at: "2025-04-09T08:08:40",
       team: "A",
@@ -151,9 +157,23 @@ export default function SacsProduction({
       restants42: "20",
     };
 
-    body.push(load_data);
+    /*   const load_data = {
+      id: "6",
+      created_at: "2025-04-09T08:08:40",
+      team: "A",
+      sortis32: "0",
+      tonnage32: "0",
+      sortis42: "40",
+      tonnage42: "0",
+      dechires32: "0",
+      dechires42: "20",
+      utilises32: "0",
+      utilises42: "0",
+      restants32: "0",
+      restants42: "20",
+    };
 
-    console.log("loads => ", loads);
+    body.push(load_data); */
 
     var headers = createHeaders(Object.keys(def));
 
