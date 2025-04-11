@@ -6,7 +6,8 @@ import {
 } from "../../helpers/flow";
 import Stock from "./Stock";
 import ButtonPrint from "../ButtonPrint";
-import { formatCreatedAt } from "../../helpers/func";
+import { formatCreatedAt, formatFrenchDate } from "../../helpers/func";
+import jsPDF from "jspdf";
 
 export default function SacsContainer({
   trans,
@@ -41,9 +42,105 @@ export default function SacsContainer({
     });
   }
 
-  const print = () => {
-    console.log(trans);
-  };
+  function repeatChar(char = "*", count = 15) {
+    return [...Array(count)].map((c, i) => char).join("");
+  }
+
+  function createHeaders(keys) {
+    var result = [];
+    for (var i = 0; i < keys.length; i += 1) {
+      result.push({
+        id: keys[i],
+        name: keys[i],
+        prompt: keys[i],
+        width: 80,
+        align: "center",
+        padding: 0,
+      });
+    }
+    return result;
+  }
+
+  function transformData(dataArray) {
+    return dataArray.map((obj) => {
+      // Destructure to remove adj32 and adj42
+      const { adj1, adj2, ...rest } = obj;
+
+      // Convert all remaining values to strings
+      const stringified = {};
+      for (let key in rest) {
+        if (key === "created_at") {
+          stringified[key] = formatCreatedAt(rest[key]);
+        } else {
+          stringified[key] = String(rest[key]);
+        }
+      }
+
+      return stringified;
+    });
+  }
+
+  function print(loads) {
+    //console.log(loads);
+    //return;
+    console.log("loads => ", loads);
+    loads = transformData(loads);
+    console.log("loads => ", loads);
+    const doc = new jsPDF({ orientation: "landscape" });
+    const FONT_SIZE = 9;
+    const PW = 297;
+    const PH = 210;
+    let ty = -1;
+    let tm = -1;
+
+    doc.setFont("helvetica");
+    doc.setFontSize(FONT_SIZE);
+
+    let r = doc.addFont(
+      "fonts/DroidSansFallback.ttf",
+      "DroidSansFallback",
+      "normal"
+    );
+
+    const body = loads;
+
+    const defaultObject = {
+      id: "18",
+      created_at: "2025-04-09T08:07:50.009876+00:00",
+      op: "in",
+      s32: "0",
+      s42: "100",
+      team: "A",
+      stock32: "0",
+      stock42: "100",
+      stockres: "false",
+    };
+
+    var headers = createHeaders(Object.keys(defaultObject));
+
+    const tableConfig = {
+      printHeaders: true,
+      autoSize: true,
+      margins: 0,
+      fontSize: FONT_SIZE,
+      padding: 2.5,
+    };
+
+    // body.push(def);
+
+    doc.text(formatFrenchDate(new Date()), PW - 15, 10, { align: "right" });
+
+    const doc_title = `SACS CONTAINER`;
+    const file_name = `SACS_CONTAINER_${formatCreatedAt(
+      new Date().toISOString()
+    )}`;
+    doc.text(doc_title, 105, 20, {
+      align: "center",
+    });
+
+    doc.table(15, 25, body, headers, tableConfig);
+    doc.save(file_name);
+  }
 
   return (
     <div>
@@ -57,7 +154,7 @@ export default function SacsContainer({
             >
               INSERT
             </button>
-            <ButtonPrint onClick={print} />
+            <ButtonPrint onClick={(e) => print(trans)} />
           </div>
         )}
 
