@@ -195,6 +195,8 @@ export default function Sacs() {
         alert(`Error saving data! \n ${JSON.stringify(res)}`);
       }
     }
+
+    loadData();
   }
 
   const onResetStock = (stockType) => {
