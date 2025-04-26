@@ -178,15 +178,31 @@ export default function SacsContainer({
       <div className=" container  ">
         <table>
           <thead>
-            <th className="p1 border border-gray-900">id</th>
+            <th className="p1 border border-gray-900 dark:border-white p-1 ">
+              id
+            </th>
             {/*   <th className="p1 border border-gray-900">Operation</th> */}
-            <th className="p1 border border-gray-900">Equipe</th>
-            <th className="p1 border border-gray-900">32.5</th>
-            <th className="p1 border border-gray-900">42.5</th>
-            <th className="p1 border border-gray-900">Stock 32.5</th>
-            <th className="p1 border border-gray-900">Stock 42.5</th>
-            <th className="p1 border border-gray-900">Stock Reset</th>
-            <th className="p1 border border-gray-900">Date</th>
+            <th className="p1 border border-gray-900 dark:border-white p-1 ">
+              Equipe
+            </th>
+            <th className="p1 border border-gray-900 dark:border-white p-1 ">
+              32.5
+            </th>
+            <th className="p1 border border-gray-900 dark:border-white p-1 ">
+              42.5
+            </th>
+            <th className="p1 border border-gray-900 dark:border-white p-1 ">
+              Stock 32.5
+            </th>
+            <th className="p1 border border-gray-900 dark:border-white p-1 ">
+              Stock 42.5
+            </th>
+            <th className="p1 border border-gray-900 dark:border-white p-1 ">
+              Stock Reset
+            </th>
+            <th className="p1 border border-gray-900 dark:border-white p-1 ">
+              Date
+            </th>
           </thead>
           <tbody>
             {showInput && (
@@ -253,17 +269,29 @@ export default function SacsContainer({
             {!showInput &&
               trans.map((t, i) => (
                 <tr key={i} className={`  ${showInput ? "opacity-20" : ""}   `}>
-                  <td className="p1 border border-gray-900">{i}</td>
+                  <td className="p1 border border-gray-900 dark:border-white p-1 ">
+                    {i}
+                  </td>
                   {/*  <td className="p1 border border-gray-900">{t.op}</td> */}
-                  <td className="p1 border border-gray-900">{t.team}</td>
-                  <td className="p1 border border-gray-900">{t.s32}</td>
-                  <td className="p1 border border-gray-900">{t.s42}</td>
-                  <td className="p1 border border-gray-900">{t.stock32}</td>
-                  <td className="p1 border border-gray-900">{t.stock42}</td>
-                  <td className="p1 border border-gray-900">
+                  <td className="p1 border border-gray-900 dark:border-white p-1 ">
+                    {t.team}
+                  </td>
+                  <td className="p1 border border-gray-900 dark:border-white p-1 ">
+                    {t.s32}
+                  </td>
+                  <td className="p1 border border-gray-900 dark:border-white p-1 ">
+                    {t.s42}
+                  </td>
+                  <td className="p1 border border-gray-900 dark:border-white p-1 ">
+                    {t.stock32}
+                  </td>
+                  <td className="p1 border border-gray-900 dark:border-white p-1 ">
+                    {t.stock42}
+                  </td>
+                  <td className="p1 border border-gray-900 dark:border-white p-1 ">
                     {t.stockres ? "yes" : "no"}
                   </td>
-                  <td className="p1 border border-gray-900">
+                  <td className="p1 border border-gray-900 dark:border-white p-1 ">
                     {formatCreatedAt(t.created_at)}
                   </td>
                 </tr>

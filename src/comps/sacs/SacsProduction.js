@@ -223,79 +223,89 @@ export default function SacsProduction({
       <div className=" container  ">
         <table className="table-auto w-full ">
           <thead>
-            <th className="p1 border border-gray-900">id</th>
-            <th className="p1 border border-gray-900">Equipe</th>
-            <th className="p1 border border-gray-900">Date</th>
-            <th className="p1 border border-gray-900">
+            <th className="p1 border border-gray-900 dark:border-white p-1 ">
+              id
+            </th>
+            <th className="p1 border border-gray-900 dark:border-white p-1 ">
+              Equipe
+            </th>
+            <th className="p1 border border-gray-900 dark:border-white p-1 ">
+              Date
+            </th>
+            <th className="p1 border border-gray-900 dark:border-white p-1 ">
               Sacs Sortis{" "}
               <span className=" bg-green-500 text-white text-xs p-1 rounded-md font-bold  ">
                 32.5n
               </span>
             </th>
-            <th className="p1 border border-gray-900">
+            <th className="p1 border border-gray-900 dark:border-white p-1 ">
               Tonnage{" "}
               <span className=" bg-green-500 text-white text-xs p-1 rounded-md font-bold  ">
                 32.5n
               </span>
             </th>
-            <th className="p1 border border-gray-900">
+            <th className="p1 border border-gray-900 dark:border-white p-1 ">
               Sacs Sortis{" "}
               <span className=" bg-black text-white text-xs p-1 rounded-md font-bold  ">
                 42.5n
               </span>
             </th>
-            <th className="p1 border border-gray-900">
+            <th className="p1 border border-gray-900 dark:border-white p-1 ">
               Tonnage{" "}
               <span className=" bg-black text-white text-xs p-1 rounded-md font-bold  ">
                 42.5n
               </span>
             </th>
 
-            <th className="p1 border border-gray-900">
+            <th className="p1 border border-gray-900 dark:border-white p-1 ">
               Sacs Dechires{" "}
               <span className=" bg-green-500 text-white text-xs p-1 rounded-md font-bold  ">
                 32.5n
               </span>
             </th>
-            <th className="p1 border border-gray-900">
+            <th className="p1 border border-gray-900 dark:border-white p-1 ">
               Sacs Dechires{" "}
               <span className=" bg-black text-white text-xs p-1 rounded-md font-bold  ">
                 42.5n
               </span>
             </th>
-            <th className="p1 border border-gray-900">
+            <th className="p1 border border-gray-900 dark:border-white p-1 ">
               Sacs Utilises{" "}
               <span className=" bg-green-500 text-white text-xs p-1 rounded-md font-bold  ">
                 32.5n
               </span>
             </th>
-            <th className="p1 border border-gray-900">
+            <th className="p1 border border-gray-900 dark:border-white p-1 ">
               Sacs Utilises{" "}
               <span className=" bg-black text-white text-xs p-1 rounded-md font-bold  ">
                 42.5n
               </span>
             </th>
 
-            <th className="p1 border border-gray-900">
+            <th className="p1 border border-gray-900 dark:border-white p-1 ">
               Sacs Restants{" "}
               <span className=" bg-green-500 text-white text-xs p-1 rounded-md font-bold  ">
                 32.5n
               </span>
             </th>
-            <th className="p1 border border-gray-900">
+            <th className="p1 border border-gray-900 dark:border-white p-1 ">
               Sacs Restants{" "}
               <span className=" bg-black text-white text-xs p-1 rounded-md font-bold  ">
                 42.5
               </span>
             </th>
-            <th className="p1 border border-gray-900">Ajust (Sacs Perdus )</th>
+            <th className="p1 border border-gray-900 dark:border-white p-1 ">
+              Ajust (Sacs Perdus )
+            </th>
           </thead>
           <tbody>
             {showInput && (
               <tr>
-                <td className="p1 border border-gray-900">{-1}</td>
+                <td className="p1 border border-gray-900 dark:border-white p-1 ">
+                  {-1}
+                </td>
 
-                <td className="p1 border border-gray-900">
+                <td className="p1 border border-gray-900 dark:border-white p-1 ">
                   <select
                     className=" border p-1 "
                     value={data.team}
@@ -309,11 +319,11 @@ export default function SacsProduction({
                   </select>
                 </td>
 
-                <td className="p1 border border-gray-900">
+                <td className="p1 border border-gray-900 dark:border-white p-1 ">
                   {new Date().toDateString()}
                 </td>
 
-                <td className="p1 border border-gray-900">
+                <td className="p1 border border-gray-900 dark:border-white p-1 ">
                   <input
                     className=" w-16 "
                     value={data.sortis32}
@@ -327,11 +337,11 @@ export default function SacsProduction({
                   />
                 </td>
 
-                <td className="p1 border border-gray-900">
+                <td className="p1 border border-gray-900 dark:border-white p-1 ">
                   {data.utilises32 / 20 || 0}
                 </td>
 
-                <td className="p1 border border-gray-900">
+                <td className="p1 border border-gray-900 dark:border-white p-1 ">
                   <input
                     className=" w-16 "
                     value={data.sortis42}
@@ -345,11 +355,11 @@ export default function SacsProduction({
                   />
                 </td>
 
-                <td className="p1 border border-gray-900">
+                <td className="p1 border border-gray-900 dark:border-white p-1 ">
                   {data.utilises42 / 20 || 0}
                 </td>
 
-                <td className="p1 border border-gray-900">
+                <td className="p1 border border-gray-900 dark:border-white p-1 ">
                   <input
                     className=" w-16 "
                     value={data.dechires32}
@@ -363,7 +373,7 @@ export default function SacsProduction({
                   />
                 </td>
 
-                <td className="p1 border border-gray-900">
+                <td className="p1 border border-gray-900 dark:border-white p-1 ">
                   <input
                     className=" w-16 "
                     value={data.dechires42}
@@ -377,7 +387,7 @@ export default function SacsProduction({
                   />
                 </td>
 
-                <td className="p1 border border-gray-900">
+                <td className="p1 border border-gray-900 dark:border-white p-1 ">
                   <input
                     className=" w-16 "
                     value={data.utilises32}
@@ -391,7 +401,7 @@ export default function SacsProduction({
                   />
                 </td>
 
-                <td className="p1 border border-gray-900">
+                <td className="p1 border border-gray-900 dark:border-white p-1 ">
                   <input
                     className=" w-16 "
                     value={data.utilises42}
@@ -405,7 +415,7 @@ export default function SacsProduction({
                   />
                 </td>
 
-                <td className="p1 border border-gray-900">
+                <td className="p1 border border-gray-900 dark:border-white p-1 ">
                   {restants.s32 || 0}
                   <div>
                     <input
@@ -429,7 +439,7 @@ export default function SacsProduction({
                   </div>
                 </td>
 
-                <td className="p1 border border-gray-900">
+                <td className="p1 border border-gray-900 dark:border-white p-1 ">
                   {restants.s42 || 0}
                   <div>
                     <input
@@ -455,7 +465,7 @@ export default function SacsProduction({
                   </div>
                 </td>
 
-                <td className="p1 border border-gray-900"></td>
+                <td className="p1 border border-gray-900 dark:border-white p-1 "></td>
               </tr>
             )}
 
@@ -474,27 +484,43 @@ export default function SacsProduction({
                   
                   `}
                 >
-                  <td className="p1 border border-gray-900">{i}</td>
+                  <td className="p1 border border-gray-900 dark:border-white p-1 ">
+                    {i}
+                  </td>
 
-                  <td className="p1 border border-gray-900">{t.team}</td>
-                  <td className="p1 border border-gray-900">
+                  <td className="p1 border border-gray-900 dark:border-white p-1 ">
+                    {t.team}
+                  </td>
+                  <td className="p1 border border-gray-900 dark:border-white p-1 ">
                     {formatCreatedAt(t.created_at)}
                   </td>
-                  <td className="p1 border border-gray-900">{t.sortis32}</td>
-                  <td className="p1 border border-gray-900">
+                  <td className="p1 border border-gray-900 dark:border-white p-1 ">
+                    {t.sortis32}
+                  </td>
+                  <td className="p1 border border-gray-900 dark:border-white p-1 ">
                     {t.tonnage32} T.
                   </td>
-                  <td className="p1 border border-gray-900">{t.sortis42}</td>
-                  <td className="p1 border border-gray-900">
+                  <td className="p1 border border-gray-900 dark:border-white p-1 ">
+                    {t.sortis42}
+                  </td>
+                  <td className="p1 border border-gray-900 dark:border-white p-1 ">
                     {t.tonnage42} T.
                   </td>
 
-                  <td className="p1 border border-gray-900">{t.dechires32}</td>
-                  <td className="p1 border border-gray-900">{t.dechires42}</td>
-                  <td className="p1 border border-gray-900">{t.utilises32}</td>
-                  <td className="p1 border border-gray-900">{t.utilises42}</td>
+                  <td className="p1 border border-gray-900 dark:border-white p-1 ">
+                    {t.dechires32}
+                  </td>
+                  <td className="p1 border border-gray-900 dark:border-white p-1 ">
+                    {t.dechires42}
+                  </td>
+                  <td className="p1 border border-gray-900 dark:border-white p-1 ">
+                    {t.utilises32}
+                  </td>
+                  <td className="p1 border border-gray-900 dark:border-white p-1 ">
+                    {t.utilises42}
+                  </td>
 
-                  <td className="p1 border border-gray-900">
+                  <td className="p1 border border-gray-900 dark:border-white p-1 ">
                     <div>{t.restants32}</div>
                     {(t.adj32 || 0) !== 0 && (
                       <div className=" bg-red-500 text-xs p-1 w-min  m-1 rounded-md text-white ">
@@ -503,7 +529,7 @@ export default function SacsProduction({
                       </div>
                     )}
                   </td>
-                  <td className="p1 border border-gray-900">
+                  <td className="p1 border border-gray-900 dark:border-white p-1 ">
                     <div>{t.restants42}</div>
                     {(t.adj42 || 0) !== 0 && (
                       <div className=" bg-red-500 text-xs p-1 w-min m-1 rounded-md text-white ">
@@ -512,7 +538,7 @@ export default function SacsProduction({
                       </div>
                     )}
                   </td>
-                  <td className="p-1 border border-gray-900 font-bold text-xs  ">
+                  <td className="p-1 border border-gray-900 dark:border-white p-1  font-bold text-xs  ">
                     {(t.adj42 || 0) !== 0 && (
                       <div className=" w-full text-center mx-1 bg-black text-white p-1 rounded-md ">
                         {(t.adj42 || 0) * -1} (42.5)
