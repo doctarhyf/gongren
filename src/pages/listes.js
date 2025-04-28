@@ -56,7 +56,14 @@ export default function Listes() {
 
   const reftitle = useRef();
 
+  function cleanArray(arr, length = arr.length) {
+    return arr
+      .slice(0, length) // Truncate to the desired length
+      .filter((item) => item !== undefined); // Remove all undefineds
+  }
+
   function parseAgentsToPrintList(agents, selprops, addId = true) {
+    agents = cleanArray(agents, agents.length);
     return agents.map((item, idx) => {
       let el = addId ? [idx + 1 + ". "] : [];
       selprops.map((prop) => {
