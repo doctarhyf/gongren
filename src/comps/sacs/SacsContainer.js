@@ -6,7 +6,12 @@ import {
 } from "../../helpers/flow";
 import Stock from "./Stock";
 import ButtonPrint from "../ButtonPrint";
-import { formatCreatedAt, formatFrenchDate } from "../../helpers/func";
+import {
+  formatCreatedAt,
+  formatDateForDatetimeLocal,
+  formatDateTime,
+  formatFrenchDate,
+} from "../../helpers/func";
 import jsPDF from "jspdf";
 
 export default function SacsContainer({
@@ -23,6 +28,7 @@ export default function SacsContainer({
     s32: 0,
     s42: 0,
     stockres: false,
+    date_time: formatDateForDatetimeLocal(new Date()),
   });
 
   function onSaveTrans() {
@@ -263,7 +269,18 @@ export default function SacsContainer({
                 </td>
                 <td className="p1 border border-gray-900">
                   {/* new Date().toDateString() */}
-                  <input type="datetime-local" />
+                  <input
+                    type="datetime-local"
+                    value={data.date_time}
+                    onChange={(e) => {
+                      let selDate = new Date(e.target.value);
+                      selDate = formatDateForDatetimeLocal(selDate);
+                      setdata((old) => ({
+                        ...old,
+                        date_time: selDate,
+                      }));
+                    }}
+                  />
                 </td>
               </tr>
             )}
@@ -293,7 +310,7 @@ export default function SacsContainer({
                     {t.stockres ? "yes" : "no"}
                   </td>
                   <td className="p1 border border-gray-900 dark:border-white p-1 ">
-                    {formatCreatedAt(t.created_at)}
+                    {formatDateTime(t.date_time)}
                   </td>
                 </tr>
               ))}

@@ -129,6 +129,12 @@ export function GetMonthNumDays(year, month) {
   };
 }
 
+export function formatDateTime(dt) {
+  // if (!!dt) return dt;
+
+  return dt.replaceAll("-", ".").replaceAll("T", " ");
+}
+
 export function formatCreatedAt(input) {
   const date = new Date(input);
 
@@ -709,6 +715,18 @@ export function GetDatesPartsFromShiftCode(shift_code) {
   const [t, s, y, m, d] = shift_code.split("_");
 
   return { y: Number(y), m: Number(m), d: Number(d) };
+}
+
+export function formatDateForDatetimeLocal(date = new Date()) {
+  const pad = (num) => String(num).padStart(2, "0");
+
+  const year = date.getFullYear();
+  const month = pad(date.getMonth() + 1);
+  const day = pad(date.getDate());
+  const hours = pad(date.getHours());
+  const minutes = pad(date.getMinutes());
+
+  return `${year}-${month}-${day}T${hours}:${minutes}`;
 }
 
 export function GetTodaysDateYMDObject() {

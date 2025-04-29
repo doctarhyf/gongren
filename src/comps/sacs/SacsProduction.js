@@ -8,6 +8,8 @@ import Stock from "./Stock";
 import ButtonPrint from "../ButtonPrint";
 import {
   formatCreatedAt,
+  formatDateForDatetimeLocal,
+  formatDateTime,
   formatFrenchDate,
   printPDF1,
 } from "../../helpers/func";
@@ -33,6 +35,7 @@ export default function SacsProduction({
     dechires42: 0,
     utilises32: 0,
     utilises42: 0,
+    date_time: formatDateForDatetimeLocal(new Date()),
   });
 
   const [restants, set_restants] = useState({ s32: 0, s42: 0 });
@@ -320,7 +323,18 @@ export default function SacsProduction({
                 </td>
 
                 <td className="p1 border border-gray-900 dark:border-white p-1 ">
-                  {new Date().toDateString()}
+                  <input
+                    type="datetime-local"
+                    value={data.date_time}
+                    onChange={(e) => {
+                      let selDate = new Date(e.target.value);
+                      selDate = formatDateForDatetimeLocal(selDate);
+                      setdata((old) => ({
+                        ...old,
+                        date_time: selDate,
+                      }));
+                    }}
+                  />
                 </td>
 
                 <td className="p1 border border-gray-900 dark:border-white p-1 ">
@@ -474,7 +488,7 @@ export default function SacsProduction({
                 <tr
                   className={`  ${
                     showInput ? "opacity-20" : ""
-                  } cursor-pointer hover:bg-slate-300 
+                  } cursor-pointer hover:bg-slate-300 dark:hover:bg-slate-700
                   
                   ${
                     (t.adj32 || 0) !== 0 || (t.adj42 || 0) !== 0
@@ -492,7 +506,7 @@ export default function SacsProduction({
                     {t.team}
                   </td>
                   <td className="p1 border border-gray-900 dark:border-white p-1 ">
-                    {formatCreatedAt(t.created_at)}
+                    {formatDateTime(t.date_time)}
                   </td>
                   <td className="p1 border border-gray-900 dark:border-white p-1 ">
                     {t.sortis32}
