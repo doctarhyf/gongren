@@ -262,7 +262,8 @@ export default function SacsContainer({
                   />{" "}
                 </td>
                 <td className="p1 border border-gray-900">
-                  {new Date().toDateString()}
+                  {/* new Date().toDateString() */}
+                  <input type="datetime-local" />
                 </td>
               </tr>
             )}
