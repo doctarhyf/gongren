@@ -2,7 +2,7 @@ import { STOCK_RESET_PWD, STOCK_TYPE } from "../../helpers/flow";
 
 export default function Stock({ id, stock, label, onResetStock }) {
   return (
-    <div className=" py-4 border rounded-md p-1 bg-slate-300/50 ">
+    <div className=" py-4 border rounded-md p-1 bg-slate-900 shadow-md flex flex-col gap-2">
       <div className=" font-bold  ">STOCK {label}</div>
 
       <div className=" flex flex-col ">
@@ -11,14 +11,14 @@ export default function Stock({ id, stock, label, onResetStock }) {
           <span className=" bg-green-500 text-white text-xs p-1 rounded-md font-bold  ">
             32.5n
           </span>{" "}
-          :<span className=" font-bold "> {stock.s32}</span>{" "}
+          :<span className="  text-4xl text-pretty  "> {stock.s32}</span>{" "}
         </div>
         <div>
           {" "}
           <span className=" bg-black text-white text-xs p-1 rounded-md font-bold  ">
             42.5n
           </span>{" "}
-          : <span className=" font-bold ">{stock.s42}</span>{" "}
+          : <span className="  text-4xl text-pretty  ">{stock.s42}</span>{" "}
         </div>
       </div>
 
