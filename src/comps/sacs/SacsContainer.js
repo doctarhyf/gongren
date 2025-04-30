@@ -1,5 +1,6 @@
 import { useState } from "react";
 import {
+  DAIZI_FUZEREN,
   SACS_CONTAINER_OPERATION_TYPE,
   STOCK_TYPE,
   TRANSACTION_TYPE,
@@ -29,6 +30,7 @@ export default function SacsContainer({
     s42: 0,
     stockres: false,
     date_time: formatDateForDatetimeLocal(new Date()),
+    fuzeren: "",
   });
 
   function onSaveTrans() {
@@ -209,6 +211,9 @@ export default function SacsContainer({
             <th className="p1 border border-gray-900 dark:border-white p-1 ">
               Date
             </th>
+            <th className="p1 border border-gray-900 dark:border-white p-1 ">
+              Fuzeren
+            </th>
           </thead>
           <tbody>
             {showInput && (
@@ -282,6 +287,20 @@ export default function SacsContainer({
                     }}
                   />
                 </td>
+                <td className="p1 border border-gray-900">
+                  {
+                    <select
+                      value={data.fuzeren}
+                      onChange={(e) =>
+                        setdata((old) => ({ ...old, fuzeren: e.target.value }))
+                      }
+                    >
+                      {DAIZI_FUZEREN.map((eq) => (
+                        <option value={eq}>{eq}</option>
+                      ))}
+                    </select>
+                  }
+                </td>
               </tr>
             )}
             {!showInput &&
@@ -311,6 +330,9 @@ export default function SacsContainer({
                   </td>
                   <td className="p1 border border-gray-900 dark:border-white p-1 ">
                     {formatDateTime(t.date_time)}
+                  </td>
+                  <td className="p1 border border-gray-900 dark:border-white p-1 ">
+                    {t.fuzeren}
                   </td>
                 </tr>
               ))}

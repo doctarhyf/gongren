@@ -148,6 +148,17 @@ export const COLUMNS_TO_HIDE = {
   CDF: "cdf",
 };
 
+export const DAIZI_FUZEREN = [
+  "谭义勇",
+  "赵峰",
+  "王刚",
+  "张玉波",
+  "武子瑞",
+  "徐华",
+  "刘刚",
+  "李波",
+];
+
 export const SACS_SECTIONS = {
   CONTAINER: {
     label: "Sacs Container",
