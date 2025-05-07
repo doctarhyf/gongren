@@ -294,7 +294,7 @@ export default function BagsDataList({
         id: keys[i],
         name: keys[i],
         prompt: keys[i],
-        width: 80,
+        width: 100,
         align: "center",
         padding: 0,
       });
@@ -411,6 +411,9 @@ export default function BagsDataList({
       margins: 0,
       fontSize: FONT_SIZE,
       padding: 2.5,
+      columnStyles: {
+        4: { cellWidth: "wrap" }, // Let column 2 auto-size based on content
+      },
     };
 
     body.push(def);
@@ -424,6 +427,30 @@ export default function BagsDataList({
     });
 
     doc.table(15, 25, body, headers, tableConfig);
+    /* doc.autoTable({
+      head: [["ID", "Name", "Description"]],
+      body: [
+        ["1", "Apple", "A small red fruit."],
+        [
+          "2",
+          "Banana",
+          "A yellow fruit that is longer and has a soft texture.",
+        ],
+        [
+          "3",
+          "Watermelon",
+          "A very large fruit with a thick rind and lots of juicy red flesh inside. This description is purposely long to test auto-expansion.",
+        ],
+        ["4", "Grape", "Small and round fruit, often purple or green."],
+      ],
+      styles: { overflow: "linebreak" }, // Wrap if needed
+      columnStyles: {
+        1: { cellWidth: "wrap" }, // Let column 2 auto-size based on content
+      },
+      didDrawCell: function (data) {
+        // Optional: custom logic per cell
+      },
+    }); */
     doc.save(file_name);
   }
 
