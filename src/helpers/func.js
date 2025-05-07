@@ -135,6 +135,10 @@ export function formatDateTime(dt) {
   return dt.replaceAll("-", ".").replaceAll("T", " ");
 }
 
+export function sumAllPropsFromObjectArray(array, prop) {
+  return array.reduce((total, obj) => total + (Number(obj[prop]) || 0), 0);
+}
+
 export function formatCreatedAt(input) {
   const date = new Date(input);
 

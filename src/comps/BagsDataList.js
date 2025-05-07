@@ -23,6 +23,7 @@ import {
   CaclculateAllTeamsTotals,
   SortLoadsByShiftOfDay,
   CalculateYearTotal,
+  sumAllPropsFromObjectArray,
 } from "../helpers/func";
 import ButtonPrint from "./ButtonPrint";
 import RepportCard from "./RepportCard";
@@ -306,6 +307,18 @@ export default function BagsDataList({
   }
 
   function printLoadTabled(loads, totals) {
+    /* console.log(
+      "printLoadTabled",
+      Object.entries(loads)
+        .flat(2)
+        .filter((t) => typeof t !== "string"),
+      totals
+    );
+    return; */
+
+    const loads_array = Object.entries(loads)
+      .flat(2)
+      .filter((t) => typeof t !== "string");
     const doc = new jsPDF({ orientation: "portrait" });
     const FONT_SIZE = 10;
     let ty = -1;
@@ -324,14 +337,23 @@ export default function BagsDataList({
 
     const body = [];
 
+    const total_label = "TOTAL";
+    const total_t = 0;
+    const total_camions = 0;
+    const total_dechires = 0;
+    const total_sacs = 0; /*  sumAllPropsFromObjectArray(
+      loads_array,
+      "sacs"
+    ).toString(); */
+
     const def = {
       date: repeatChar(),
       shift: repeatChar(),
-      equipe: repeatChar(),
-      sacs: repeatChar(),
-      T: repeatChar(),
-      camions: repeatChar(),
-      dechires: repeatChar(),
+      equipe: total_label, //repeatChar(),
+      sacs: total_sacs, //repeatChar(),
+      T: total_t, //repeatChar(),
+      camions: total_camions, //repeatChar(),
+      dechires: total_dechires, //repeatChar(),
     };
 
     Object.entries(loads).map((data_day, i_loads) => {
