@@ -307,15 +307,6 @@ export default function BagsDataList({
   }
 
   function printLoadTabled(loads, totals) {
-    /* console.log(
-      "printLoadTabled",
-      Object.entries(loads)
-        .flat(2)
-        .filter((t) => typeof t !== "string"),
-      totals
-    );
-    return; */
-
     const loads_array = Object.entries(loads)
       .flat(2)
       .filter((t) => typeof t !== "string");
@@ -337,23 +328,24 @@ export default function BagsDataList({
 
     const body = [];
 
+    const {
+      sacs: total_sacs,
+      tonnage: total_t,
+      camions: total_camions,
+      dechires: total_dechires,
+      bonus: total_bonus,
+    } = totals.TOTAL;
+
     const total_label = "TOTAL";
-    const total_t = 0;
-    const total_camions = 0;
-    const total_dechires = 0;
-    const total_sacs = 0; /*  sumAllPropsFromObjectArray(
-      loads_array,
-      "sacs"
-    ).toString(); */
 
     const def = {
       date: repeatChar(),
       shift: repeatChar(),
-      equipe: total_label, //repeatChar(),
-      sacs: total_sacs, //repeatChar(),
-      T: total_t, //repeatChar(),
-      camions: total_camions, //repeatChar(),
-      dechires: total_dechires, //repeatChar(),
+      equipe: total_label.toString(),
+      sacs: total_sacs.toString(),
+      T: total_t.toString(),
+      camions: total_camions.toString(),
+      dechires: total_dechires.toString(),
     };
 
     Object.entries(loads).map((data_day, i_loads) => {
@@ -656,7 +648,7 @@ export default function BagsDataList({
                           <ButtonPrint
                             title={"PRINT"}
                             onClick={(e) =>
-                              printLoadTabled(loadsByShiftOfDay, yearTotals)
+                              printLoadTabled(loadsByShiftOfDay, allTeamsTotals)
                             }
                           />
                           <Excelexport
