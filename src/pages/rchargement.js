@@ -529,7 +529,7 @@ export default function RapportChargement() {
     return date_fix.join("/");
   }
 
-  const [date, setdate] = useState();
+  const [date, setdate] = useState({ y: new Date().year, m: new Date().month });
   const [allTeamsTotals, setAllTeamsTotals] = useState([]);
   const [showTotalsByTeam, setShowTotalsByTeam] = useState(false);
 
@@ -546,27 +546,29 @@ export default function RapportChargement() {
         <>
           <div className=" md:flex items-center md:justify-center  ">
             <DateSelector onDateSelected={onDateSelected} />
-            <div className="flex md:-mt-3 items-center gap-2  w-fit ml-11 ">
-              <div className=" text-sm font-bold">
-                {" "}
-                {LANG_TOKENS.TEAM[GetLangIndexByLangCode(user.lang)]} :{" "}
-              </div>
+            {!showTotalsByTeam && (
+              <div className="flex md:-mt-3 items-center gap-2  w-fit ml-11 ">
+                <div className=" text-sm font-bold">
+                  {" "}
+                  {LANG_TOKENS.TEAM[GetLangIndexByLangCode(user.lang)]} :{" "}
+                </div>
 
-              {user.is_exp === "OUI" ? (
-                <span> {user.equipe} </span>
-              ) : (
-                <select
-                  className={CLASS_SELECT}
-                  onChange={(e) => setteam(e.target.value)}
-                >
-                  {["A", "B", "C", "D", "ALL"].map((op) => (
-                    <option selected={op === team} value={op}>
-                      {op}
-                    </option>
-                  ))}
-                </select>
-              )}
-            </div>
+                {user.is_exp === "OUI" ? (
+                  <span> {user.equipe} </span>
+                ) : (
+                  <select
+                    className={CLASS_SELECT}
+                    onChange={(e) => setteam(e.target.value)}
+                  >
+                    {["A", "B", "C", "D", "ALL"].map((op) => (
+                      <option selected={op === team} value={op}>
+                        {op}
+                      </option>
+                    ))}
+                  </select>
+                )}
+              </div>
+            )}
           </div>
           <div className=" flex justify-between  sm:justify-center  gap-2 my-2   ">
             {!adding && UserHasAccessCode(user, ACCESS_CODES.ADD_NEW_LOAD) && (
