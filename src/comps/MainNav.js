@@ -50,7 +50,7 @@ function MainNav({ user, onMenuClick, curPage, onLogout }) {
       <div
         className={`${
           hidden ? "max-h-0" : "max-h-[700px] "
-        } md:block   overflow-hidden transition-all duration-[250ms] ease-in-out`}
+        } md:block md:max-h-[700px]  overflow-hidden transition-all duration-[250ms] ease-in-out`}
       >
         <div className={`md:flex  items-center justify-between `}>
           <ul className="text-end p-2 md:flex gap-2 flex-wrap ">

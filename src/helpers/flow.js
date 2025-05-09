@@ -41,9 +41,9 @@ export const STOCK_TYPE = {
 };
 
 export const SUPERVISORS = {
-  A: { nom: "MPOYO BUDIMBO", zh: "抱有" },
+  C: { nom: "MPOYO BUDIMBO", zh: "抱有" },
   B: { nom: "NKULU MWENZE", zh: "库鲁" },
-  C: { nom: "SERGE KAZALI", zh: "塞基尔" },
+  A: { nom: "SERGE KAZALI", zh: "塞基尔" },
   D: { nom: "AMEDEE KATANGA", zh: "噶当噶" },
 };
 
@@ -58,9 +58,9 @@ export const NO_IMAGE =
 
 export const SHIFTS_ZH = ["白班", "中班", "夜班"];
 export const SHIFT_HOURS_ZH = {
-  M: ["MATIN", "白班", "07h00 - 15h00", "M"],
+  M: ["MATIN", "白班", "07h00 - 17h00", "M"],
   P: ["APREM", "中班", "15h00 - 23h00", "P"],
-  N: ["NUIT", "夜班", "23h00 - 07h00", "N"],
+  N: ["NUIT", "夜班", "17h00 - 07h00", "N"],
 };
 
 export const CLASS_REPPORT_CARD = `border mt-2 rounded-md p-1 h-min bg-neutral-100 shadow-md`;
@@ -250,7 +250,9 @@ export const EQUIPES_NAMES = {
   CHIN: "CHINOISE",
 };
 
-export const CONTRATS = ["BNC", "KAY", "GCK"];
+export const PRIME_MIN = 750;
+
+export const CONTRATS = ["BNC", "KAY", "GCK", "EMCO"];
 export const NATIONALITIES = ["CD", "ZH"];
 
 export const MAIN_MENU = [

@@ -9,6 +9,7 @@ import {
   ACCESS_CODES,
   CLASS_SELECT,
   LOG_OPERATION,
+  PRIME_MIN,
   SHIFT_HOURS_ZH,
 } from "../helpers/flow";
 import {
@@ -144,7 +145,7 @@ function FormAddLoad({ onDataUpdate }) {
       <td className="  border border-slate-500 p-1 text-end ">{sacs / 20}</td>
 
       <td className="  border border-slate-500 p-1 text-end ">
-        {sacs / 20 - 600 > 0 ? (sacs / 20 - 600).toFixed(2) : 0}
+        {sacs / 20 - PRIME_MIN > 0 ? (sacs / 20 - PRIME_MIN).toFixed(2) : 0}
       </td>
     </tr>
   );
@@ -228,8 +229,8 @@ export default function RapportChargement() {
         team: t,
 
         bonus:
-          filterloaditem.sacs / 20 - 600 > 0
-            ? filterloaditem.sacs / 20 - 600
+          filterloaditem.sacs / 20 - PRIME_MIN > 0
+            ? filterloaditem.sacs / 20 - PRIME_MIN
             : 0,
       };
 
@@ -667,9 +668,11 @@ export default function RapportChargement() {
                         </td>
                         {UserHasAccessCode(user, ACCESS_CODES.BONUS_ROW) && (
                           <td className="  border border-slate-500 p-1 text-end ">
-                            {parseFloat(ld.sacs) / 20 > 600 ? (
+                            {parseFloat(ld.sacs) / 20 > PRIME_MIN ? (
                               <span className=" font-serif text-sky-700 font-bold ">
-                                {(parseFloat(ld.sacs) / 20 - 600).toFixed(2)}
+                                {(parseFloat(ld.sacs) / 20 - PRIME_MIN).toFixed(
+                                  2
+                                )}
                               </span>
                             ) : (
                               0

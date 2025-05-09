@@ -1,4 +1,4 @@
-import { CLASS_TD, MONTHS } from "../helpers/flow";
+import { CLASS_TD, MONTHS, PRIME_MIN } from "../helpers/flow";
 import { ParseDayRepport } from "../helpers/func";
 import { draw_load_table } from "../helpers/funcs_print";
 import ButtonPrint from "./ButtonPrint";
@@ -125,9 +125,9 @@ export default function TableLoads({ date, totalData, loadsData }) {
                 {ld[1].map &&
                   ld[1].map((it, i) => (
                     <div className={CLASS_TD}>
-                      {Number(it.sacs) / 20 - 600 < 0
+                      {Number(it.sacs) / 20 - PRIME_MIN < 0
                         ? 0
-                        : (Number(it.sacs) / 20 - 600).toFixed(2)}
+                        : (Number(it.sacs) / 20 - PRIME_MIN).toFixed(2)}
                     </div>
                   ))}
               </td>

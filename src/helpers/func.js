@@ -3,6 +3,7 @@ import {
   ACCESS_CODES,
   MONTHS,
   POSTE,
+  PRIME_MIN,
   SHIFT_HOURS_ZH,
   SUPERVISORS,
 } from "./flow";
@@ -662,7 +663,8 @@ export function ParseShiftRepport(shift_data) {
   repport.retours = shift.retours;
   repport.ajouts = shift.ajouts;
   repport.dechires = shift.dechires;
-  const bonus_marg_t = repport.tonnage - 600 < 0 ? 0 : repport.tonnage - 600;
+  const bonus_marg_t =
+    repport.tonnage - PRIME_MIN < 0 ? 0 : repport.tonnage - PRIME_MIN;
   const bonus_marg_cdf = bonus_marg_t * 1000;
   repport.bonus = formatAsMoney(bonus_marg_cdf);
 
@@ -795,7 +797,7 @@ export function CaclculateAllTeamsTotals(data, addSacsAdj) {
       let new_ajouts = Number(ajouts);
       let new_camions = Number(camions);
       let new_dechires = Number(dechires);
-      let new_bonus = new_tonnage < 600 ? 0 : new_tonnage - 600;
+      let new_bonus = new_tonnage < PRIME_MIN ? 0 : new_tonnage - PRIME_MIN;
 
       totalsData[t].sacs += new_sacs;
       totalsData[t].tonnage += new_tonnage;
@@ -869,7 +871,8 @@ export const CalculateYearTotal = (year_data, addSacsAdj) => {
     tot_retours += retours;
     tot_dechires += dechires;
 
-    const bonus = Number(sacs) / 20 - 600 < 0 ? 0 : Number(sacs) / 20 - 600;
+    const bonus =
+      Number(sacs) / 20 - PRIME_MIN < 0 ? 0 : Number(sacs) / 20 - PRIME_MIN;
     tot_bonus += bonus;
   });
 
