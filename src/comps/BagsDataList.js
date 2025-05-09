@@ -282,7 +282,7 @@ export default function BagsDataList({
     console.log("loads_by_item", loads_by_item);
 
     setLoadsByShiftOfDay(sortedByShiftOfDay);
-
+    console.log("sortedByShiftOfDay", sortedByShiftOfDay);
     const totals = CaclculateAllTeamsTotals(sortedByShiftOfDay);
     console.log("totals", totals);
     setAllTeamsTotals(totals);

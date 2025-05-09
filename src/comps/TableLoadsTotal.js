@@ -5,6 +5,8 @@ import {
   AddLeadingZero,
   ParseDate,
   UserHasAccessCode,
+  printTotalsTable,
+  calculateTotalsFromLoadsArray,
 } from "../helpers/func";
 import { UserContext } from "../App";
 
@@ -122,10 +124,7 @@ export default function TableLoadsTotals({
                           <ActionButton
                             icon={pdf}
                             title={""}
-                            onClick={
-                              (e) => alert(`Impression rapport equipe ${td[0]}`)
-                              //console.log(td)
-                            }
+                            onClick={(e) => console.log(td)}
                           />
                         </span>
                       </td>
@@ -152,18 +151,6 @@ export default function TableLoadsTotals({
                         <span>
                           {" "}
                           {formatAsMoney(Number(td[1].bonus * 1000).toFixed(2))}
-                        </span>
-
-                        <span>
-                          <ActionButton
-                            icon={pdf}
-                            title={""}
-                            onClick={
-                              (e) =>
-                                alert(`Impression rapport pour toutes equipes`)
-                              //console.log(td)
-                            }
-                          />
                         </span>
                       </td>
                     )}

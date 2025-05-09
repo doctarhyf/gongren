@@ -14,11 +14,13 @@ import {
 } from "../helpers/flow";
 import {
   AddLeadingZero,
+  calculateTotalsFromLoadsArray,
   //CaclculateAllTeamsTotals,
   customSortShifts,
   formatFrenchDate,
   GetDateParts,
   ParseBaozhuang,
+  printTotalsTable,
   SortLoadsByShiftOfDay,
   UpdateOperationsLogs,
   UserHasAccessCode,
@@ -260,60 +262,6 @@ export default function RapportChargement() {
     return fin;
   }
 
-  function calculateTotals(arr) {
-    const model = {
-      sacs: 0,
-      retours: 0,
-      ajouts: 0,
-      tonnage: 0,
-      camions: 26,
-      dechires: 17,
-      bonus: 0,
-    };
-
-    let totalsData = {
-      A: { ...model },
-      B: { ...model },
-      C: { ...model },
-      D: { ...model },
-      TOTAL: { ...model },
-    };
-
-    arr.forEach((s_data, si) => {
-      let { sacs, sacs_adj, retours, ajouts, code, camions, dechires } = s_data;
-      const [t, s, y, m, d] = code.split("_");
-
-      let new_sacs_adj = Number(sacs_adj);
-      //if (addSacsAdj) sacs += new_sacs_adj;
-      let new_sacs = Number(sacs);
-      let new_tonnage = Number(sacs) / 20;
-      let new_retours = Number(retours);
-      let new_ajouts = Number(ajouts);
-      let new_camions = Number(camions);
-      let new_dechires = Number(dechires);
-      let new_bonus = new_tonnage < PRIME_MIN ? 0 : new_tonnage - PRIME_MIN;
-
-      totalsData[t].sacs += new_sacs;
-      totalsData[t].tonnage += new_tonnage;
-      totalsData[t].retours += new_retours;
-      totalsData[t].ajouts += new_ajouts;
-      totalsData[t].camions += new_camions;
-      totalsData[t].dechires += new_dechires;
-      totalsData[t].bonus += new_bonus;
-
-      totalsData.TOTAL.sacs += new_sacs;
-      totalsData.TOTAL.tonnage += new_tonnage;
-      totalsData.TOTAL.retours += new_retours;
-      totalsData.TOTAL.ajouts += new_ajouts;
-      totalsData.TOTAL.camions += new_camions;
-      totalsData.TOTAL.dechires += new_dechires;
-      totalsData.TOTAL.bonus += new_bonus;
-    });
-
-    console.log("ttzc => ", totalsData);
-    return totalsData;
-  }
-
   function onDateSelected(date) {
     //console.log(date);
     const { d, m: month, y: year } = date;
@@ -326,7 +274,7 @@ export default function RapportChargement() {
 
     // console.log("curMLoads => ", curMLoads);
 
-    const totals = calculateTotals(curMLoads);
+    const totals = calculateTotalsFromLoadsArray(curMLoads);
     //console.log("totals => ", totals);
     setAllTeamsTotals(totals);
   }
@@ -389,7 +337,11 @@ export default function RapportChargement() {
 
   function onPrint(loads, printTotals) {
     if (printTotals) {
-      console.log("printing totals");
+      const totals = calculateTotalsFromLoadsArray(loads);
+      //console.log("totals => ", totals);
+      const [year, month, day] = loads[0].meta.date.split("/");
+      printTotalsTable(totals, year, month);
+      console.log("printing totals", loads);
       return;
     }
 
