@@ -278,8 +278,14 @@ export default function BagsDataList({
       year,
       month
     );
+
+    console.log("loads_by_item", loads_by_item);
+
     setLoadsByShiftOfDay(sortedByShiftOfDay);
-    setAllTeamsTotals(CaclculateAllTeamsTotals(sortedByShiftOfDay));
+
+    const totals = CaclculateAllTeamsTotals(sortedByShiftOfDay);
+    console.log("totals", totals);
+    setAllTeamsTotals(totals);
     setYearTotal(CalculateYearTotal(loads_by_item));
   }
 

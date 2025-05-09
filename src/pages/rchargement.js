@@ -14,10 +14,12 @@ import {
 } from "../helpers/flow";
 import {
   AddLeadingZero,
+  //CaclculateAllTeamsTotals,
   customSortShifts,
   formatFrenchDate,
   GetDateParts,
   ParseBaozhuang,
+  SortLoadsByShiftOfDay,
   UpdateOperationsLogs,
   UserHasAccessCode,
 } from "../helpers/func";
@@ -35,6 +37,7 @@ import {
   GetTransForTokensArray,
   LANG_TOKENS,
 } from "../helpers/lang_strings";
+import TableLoadsTotals from "../comps/TableLoadsTotal";
 
 const TEAMS = ["A", "B", "C", "D"];
 
@@ -236,7 +239,7 @@ export default function RapportChargement() {
 
       btot += filterloaditem.meta.bonus;
       tot += filterloaditem.sacs;
-      console.log("meta => ", filterloaditem.meta);
+      //  console.log("meta => ", filterloaditem.meta);
 
       if (finalfilteredloadsgroupnyday[d] === undefined)
         finalfilteredloadsgroupnyday[d] = [];
@@ -257,11 +260,75 @@ export default function RapportChargement() {
     return fin;
   }
 
+  function calculateTotals(arr) {
+    const model = {
+      sacs: 0,
+      retours: 0,
+      ajouts: 0,
+      tonnage: 0,
+      camions: 26,
+      dechires: 17,
+      bonus: 0,
+    };
+
+    let totalsData = {
+      A: { ...model },
+      B: { ...model },
+      C: { ...model },
+      D: { ...model },
+      TOTAL: { ...model },
+    };
+
+    arr.forEach((s_data, si) => {
+      let { sacs, sacs_adj, retours, ajouts, code, camions, dechires } = s_data;
+      const [t, s, y, m, d] = code.split("_");
+
+      let new_sacs_adj = Number(sacs_adj);
+      //if (addSacsAdj) sacs += new_sacs_adj;
+      let new_sacs = Number(sacs);
+      let new_tonnage = Number(sacs) / 20;
+      let new_retours = Number(retours);
+      let new_ajouts = Number(ajouts);
+      let new_camions = Number(camions);
+      let new_dechires = Number(dechires);
+      let new_bonus = new_tonnage < PRIME_MIN ? 0 : new_tonnage - PRIME_MIN;
+
+      totalsData[t].sacs += new_sacs;
+      totalsData[t].tonnage += new_tonnage;
+      totalsData[t].retours += new_retours;
+      totalsData[t].ajouts += new_ajouts;
+      totalsData[t].camions += new_camions;
+      totalsData[t].dechires += new_dechires;
+      totalsData[t].bonus += new_bonus;
+
+      totalsData.TOTAL.sacs += new_sacs;
+      totalsData.TOTAL.tonnage += new_tonnage;
+      totalsData.TOTAL.retours += new_retours;
+      totalsData.TOTAL.ajouts += new_ajouts;
+      totalsData.TOTAL.camions += new_camions;
+      totalsData.TOTAL.dechires += new_dechires;
+      totalsData.TOTAL.bonus += new_bonus;
+    });
+
+    console.log("ttzc => ", totalsData);
+    return totalsData;
+  }
+
   function onDateSelected(date) {
     //console.log(date);
-    const { d, m, y } = date;
-    const code = `${y}_${m}`;
+    const { d, m: month, y: year } = date;
+    const code = `${year}_${month}`;
     setmcode(code);
+    const curd = { y: year, m: month - 1 };
+    setdate(curd);
+
+    const curMLoads = loads.filter((ld) => ld.code.includes(code));
+
+    // console.log("curMLoads => ", curMLoads);
+
+    const totals = calculateTotals(curMLoads);
+    //console.log("totals => ", totals);
+    setAllTeamsTotals(totals);
   }
 
   async function saveLoad(load) {
@@ -320,7 +387,12 @@ export default function RapportChargement() {
     //setviewload(true);
   }
 
-  function onPrint(loads) {
+  function onPrint(loads, printTotals) {
+    if (printTotals) {
+      console.log("printing totals");
+      return;
+    }
+
     if (loads.length === 0) {
       alert("Cant print empty data!\nPlease select a month with load data!");
       return;
@@ -457,6 +529,10 @@ export default function RapportChargement() {
     return date_fix.join("/");
   }
 
+  const [date, setdate] = useState();
+  const [allTeamsTotals, setAllTeamsTotals] = useState([]);
+  const [showTotalsByTeam, setShowTotalsByTeam] = useState(false);
+
   return (
     <div className=" container  ">
       <div>
@@ -561,175 +637,211 @@ export default function RapportChargement() {
               />
             ) : (
               <>
-                <div className=" flex justify-center py-2  ">
-                  <ActionButton
-                    icon={pdf}
-                    title={
-                      LANG_TOKENS.PRINT_REPPORT[
+                <div className=" flex justify-center py-2 space-x-2  ">
+                  {
+                    <ActionButton
+                      icon={pdf}
+                      title={
+                        showTotalsByTeam
+                          ? "PRINT TOTALS"
+                          : LANG_TOKENS.PRINT_REPPORT[
+                              GetLangIndexByLangCode(user.lang)
+                            ]
+                      }
+                      onClick={(e) => onPrint(loadsf, showTotalsByTeam)}
+                    />
+                  }
+
+                  {UserHasAccessCode(user, ACCESS_CODES.ROOT) && (
+                    <ActionButton
+                      icon={pdf}
+                      title={
+                        showTotalsByTeam
+                          ? "DONNEES JOURN."
+                          : "VOIR TOTAL PAR EQ."
+                        /* LANG_TOKENS.PRINT_REPPORT[
                         GetLangIndexByLangCode(user.lang)
-                      ]
-                    }
-                    onClick={(e) => onPrint(loadsf)}
-                  />
+                      ] */
+                      }
+                      onClick={(e) =>
+                        showTotalsByTeam
+                          ? setShowTotalsByTeam(false)
+                          : setShowTotalsByTeam(true)
+                      }
+                    />
+                  )}
                 </div>
-                <table class="table-auto mx-auto">
-                  <thead>
-                    <tr>
-                      <th className="border border-slate-500 p-1">
-                        {GetTransForTokensArray(LANG_TOKENS.DATE, user.lang)}
-                      </th>
-                      <th className="border border-slate-500 p-1">
-                        {GetTransForTokensArray(LANG_TOKENS.EQ, user.lang)}
-                      </th>
-                      <th className="border border-slate-500 p-1">
-                        {GetTransForTokensArray(LANG_TOKENS.SHIFT, user.lang)}
-                      </th>
-                      <th className="border border-slate-500 p-1">
-                        {GetTransForTokensArray(LANG_TOKENS.BAGS, user.lang)}
-                      </th>
-                      <th className="border border-slate-500 p-1 hidden sm:table-cell">
-                        {LANG_TOKENS.TRUCK[GetLangIndexByLangCode(user.lang)]}
-                      </th>
-                      <th className="border border-slate-500 p-1 hidden sm:table-cell">
-                        {GetTransForTokensArray(
-                          LANG_TOKENS.TORN_BAGS,
-                          user.lang
+
+                {showTotalsByTeam ? (
+                  <div className="flex justify-center py-2 space-x-2   ">
+                    <div className="mx-auto">
+                      <TableLoadsTotals
+                        totalData={allTeamsTotals}
+                        date={date}
+                      />
+                    </div>
+                  </div>
+                ) : (
+                  <table class="table-auto mx-auto">
+                    <thead>
+                      <tr>
+                        <th className="border border-slate-500 p-1">
+                          {GetTransForTokensArray(LANG_TOKENS.DATE, user.lang)}
+                        </th>
+                        <th className="border border-slate-500 p-1">
+                          {GetTransForTokensArray(LANG_TOKENS.EQ, user.lang)}
+                        </th>
+                        <th className="border border-slate-500 p-1">
+                          {GetTransForTokensArray(LANG_TOKENS.SHIFT, user.lang)}
+                        </th>
+                        <th className="border border-slate-500 p-1">
+                          {GetTransForTokensArray(LANG_TOKENS.BAGS, user.lang)}
+                        </th>
+                        <th className="border border-slate-500 p-1 hidden sm:table-cell">
+                          {LANG_TOKENS.TRUCK[GetLangIndexByLangCode(user.lang)]}
+                        </th>
+                        <th className="border border-slate-500 p-1 hidden sm:table-cell">
+                          {GetTransForTokensArray(
+                            LANG_TOKENS.TORN_BAGS,
+                            user.lang
+                          )}
+                        </th>
+                        <th className="border border-slate-500 p-1">
+                          {GetTransForTokensArray(LANG_TOKENS.T, user.lang)}
+                        </th>
+                        {UserHasAccessCode(user, ACCESS_CODES.BONUS_ROW) && (
+                          <th className="border border-slate-500 p-1">BNS</th>
                         )}
-                      </th>
-                      <th className="border border-slate-500 p-1">
-                        {GetTransForTokensArray(LANG_TOKENS.T, user.lang)}
-                      </th>
-                      {UserHasAccessCode(user, ACCESS_CODES.BONUS_ROW) && (
-                        <th className="border border-slate-500 p-1">BNS</th>
-                      )}
-                      <th className="border border-slate-500 p-1">ACT</th>
-                    </tr>
-                  </thead>
+                        <th className="border border-slate-500 p-1">ACT</th>
+                      </tr>
+                    </thead>
 
-                  <tbody>
-                    <tr>
-                      <td className="  border border-slate-500 p-1 text-end "></td>
-                      <td className="  border border-slate-500 p-1 text-end "></td>
-                      <td className="  border border-slate-500 p-1 text-end "></td>
-                      <td className="  border border-slate-500 p-1 text-end ">
-                        {tot}
-                      </td>
-                      <td className="  border border-slate-500 p-1 text-end hidden sm:table-cell"></td>
-                      <td className="  border border-slate-500 p-1 text-end hidden sm:table-cell"></td>
-                      <td className="  border border-slate-500 p-1 text-end ">
-                        {(parseFloat(tot) / 20).toFixed(2)}
-                      </td>
-                      {UserHasAccessCode(user, ACCESS_CODES.BONUS_ROW) && (
+                    <tbody>
+                      <tr>
+                        <td className="  border border-slate-500 p-1 text-end "></td>
+                        <td className="  border border-slate-500 p-1 text-end "></td>
+                        <td className="  border border-slate-500 p-1 text-end "></td>
                         <td className="  border border-slate-500 p-1 text-end ">
-                          {bonustot}
+                          {tot}
                         </td>
-                      )}
-                      <td className="  border border-slate-500 p-1 text-end "></td>
-                    </tr>
-                    {loadsf.map((ld, i) => (
-                      <tr
-                        className={` hover:bg-slate-400 dark:hover:bg-black/50 cursor-pointer  ${
-                          ld.code[2] === "M" &&
-                          " bg-slate-100 dark:bg-slate-700  "
-                        }  `}
-                        onClick={(e) => onClickLoad(ld)}
-                      >
+                        <td className="  border border-slate-500 p-1 text-end hidden sm:table-cell"></td>
+                        <td className="  border border-slate-500 p-1 text-end hidden sm:table-cell"></td>
                         <td className="  border border-slate-500 p-1 text-end ">
-                          <span className=" md:hidden  ">
-                            {AddOneMonth(ld.meta?.date.split("/202")[0])}
-                          </span>
-                          <span className=" hidden md:block ">
-                            {AddOneMonth(ld.meta?.date)}
-                          </span>
-                        </td>
-                        <td className="  border border-slate-500 p-1 text-end ">
-                          {ld.meta?.team}
-                        </td>
-                        <td className="  border border-slate-500 p-1 text-end ">
-                          <span className=" md:hidden ">
-                            {ld.meta?.shift.split(" - ")[0].split(" : ")[1]}
-                          </span>
-                          <span className=" hidden md:block  ">
-                            {ld.meta?.shift}
-                          </span>
-                        </td>
-                        <td className="  border border-slate-500 p-1 text-end ">
-                          {ld.sacs}
-                        </td>
-                        <td className="  border border-slate-500 p-1 text-end hidden sm:table-cell ">
-                          {ld.camions}
-                        </td>
-                        <td className="  border border-slate-500 p-1 text-end hidden sm:table-cell ">
-                          {ld.dechires}
-                        </td>
-
-                        <td className="  border border-slate-500 p-1 text-end ">
-                          {parseFloat(ld.sacs) / 20}
+                          {(parseFloat(tot) / 20).toFixed(2)}
                         </td>
                         {UserHasAccessCode(user, ACCESS_CODES.BONUS_ROW) && (
                           <td className="  border border-slate-500 p-1 text-end ">
-                            {parseFloat(ld.sacs) / 20 > PRIME_MIN ? (
-                              <span className=" font-serif text-sky-700 font-bold ">
-                                {(parseFloat(ld.sacs) / 20 - PRIME_MIN).toFixed(
-                                  2
-                                )}
-                              </span>
-                            ) : (
-                              0
-                            )}
+                            {bonustot}
                           </td>
                         )}
-                        <td className="  border border-slate-500 p-1 text-end ">
-                          {ld.code[2] === "M" &&
-                            UserHasAccessCode(
+                        <td className="  border border-slate-500 p-1 text-end "></td>
+                      </tr>
+                      {loadsf.map((ld, i) => (
+                        <tr
+                          className={` hover:bg-slate-400 dark:hover:bg-black/50 cursor-pointer  ${
+                            ld.code[2] === "M" &&
+                            " bg-slate-100 dark:bg-slate-700  "
+                          }  `}
+                          onClick={(e) => onClickLoad(ld)}
+                        >
+                          <td className="  border border-slate-500 p-1 text-end ">
+                            <span className=" md:hidden  ">
+                              {AddOneMonth(ld.meta?.date.split("/202")[0])}
+                            </span>
+                            <span className=" hidden md:block ">
+                              {AddOneMonth(ld.meta?.date)}
+                            </span>
+                          </td>
+                          <td className="  border border-slate-500 p-1 text-end ">
+                            {ld.meta?.team}
+                          </td>
+                          <td className="  border border-slate-500 p-1 text-end ">
+                            <span className=" md:hidden ">
+                              {ld.meta?.shift.split(" - ")[0].split(" : ")[1]}
+                            </span>
+                            <span className=" hidden md:block  ">
+                              {ld.meta?.shift}
+                            </span>
+                          </td>
+                          <td className="  border border-slate-500 p-1 text-end ">
+                            {ld.sacs}
+                          </td>
+                          <td className="  border border-slate-500 p-1 text-end hidden sm:table-cell ">
+                            {ld.camions}
+                          </td>
+                          <td className="  border border-slate-500 p-1 text-end hidden sm:table-cell ">
+                            {ld.dechires}
+                          </td>
+
+                          <td className="  border border-slate-500 p-1 text-end ">
+                            {parseFloat(ld.sacs) / 20}
+                          </td>
+                          {UserHasAccessCode(user, ACCESS_CODES.BONUS_ROW) && (
+                            <td className="  border border-slate-500 p-1 text-end ">
+                              {parseFloat(ld.sacs) / 20 > PRIME_MIN ? (
+                                <span className=" font-serif text-sky-700 font-bold ">
+                                  {(
+                                    parseFloat(ld.sacs) / 20 -
+                                    PRIME_MIN
+                                  ).toFixed(2)}
+                                </span>
+                              ) : (
+                                0
+                              )}
+                            </td>
+                          )}
+                          <td className="  border border-slate-500 p-1 text-end ">
+                            {ld.code[2] === "M" &&
+                              UserHasAccessCode(
+                                user,
+                                ACCESS_CODES.PRINT_DAILY_REPPORT
+                              ) && (
+                                <ActionButton
+                                  icon={pdf}
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    onPrintDailyRepport(loads, ld, i);
+                                  }}
+                                />
+                              )}
+
+                            {UserHasAccessCode(
                               user,
-                              ACCESS_CODES.PRINT_DAILY_REPPORT
+                              ACCESS_CODES.DELETE_LOAD
                             ) && (
                               <ActionButton
-                                icon={pdf}
+                                icon={del}
                                 onClick={(e) => {
                                   e.stopPropagation();
-                                  onPrintDailyRepport(loads, ld, i);
+                                  onDeleteLoad(ld);
                                 }}
                               />
                             )}
-
-                          {UserHasAccessCode(
-                            user,
-                            ACCESS_CODES.DELETE_LOAD
-                          ) && (
-                            <ActionButton
-                              icon={del}
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                onDeleteLoad(ld);
-                              }}
-                            />
-                          )}
-                        </td>
-                      </tr>
-                    ))}{" "}
-                    <tr>
-                      <td className="  border border-slate-500 p-1 text-end "></td>
-                      <td className="  border border-slate-500 p-1 text-end "></td>
-                      <td className="  border border-slate-500 p-1 text-end "></td>
-                      <td className="  border border-slate-500 p-1 text-end ">
-                        {tot}
-                      </td>
-                      <td className="  border border-slate-500 p-1 text-end hidden sm:table-cell"></td>
-                      <td className="  border border-slate-500 p-1 text-end hidden sm:table-cell"></td>
-                      <td className="  border border-slate-500 p-1 text-end ">
-                        {(parseFloat(tot) / 20).toFixed(2)}
-                      </td>
-                      {UserHasAccessCode(user, ACCESS_CODES.BONUS_ROW) && (
+                          </td>
+                        </tr>
+                      ))}{" "}
+                      <tr>
+                        <td className="  border border-slate-500 p-1 text-end "></td>
+                        <td className="  border border-slate-500 p-1 text-end "></td>
+                        <td className="  border border-slate-500 p-1 text-end "></td>
                         <td className="  border border-slate-500 p-1 text-end ">
-                          {bonustot}
+                          {tot}
                         </td>
-                      )}
-                      <td className="  border border-slate-500 p-1 text-end "></td>
-                    </tr>
-                  </tbody>
-                </table>
+                        <td className="  border border-slate-500 p-1 text-end hidden sm:table-cell"></td>
+                        <td className="  border border-slate-500 p-1 text-end hidden sm:table-cell"></td>
+                        <td className="  border border-slate-500 p-1 text-end ">
+                          {(parseFloat(tot) / 20).toFixed(2)}
+                        </td>
+                        {UserHasAccessCode(user, ACCESS_CODES.BONUS_ROW) && (
+                          <td className="  border border-slate-500 p-1 text-end ">
+                            {bonustot}
+                          </td>
+                        )}
+                        <td className="  border border-slate-500 p-1 text-end "></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                )}
               </>
             )}
           </>

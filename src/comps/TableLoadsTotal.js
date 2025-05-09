@@ -11,8 +11,10 @@ import { UserContext } from "../App";
 import * as SB from "../helpers/sb";
 import congo from "../img/congo.png";
 import china from "../img/china.png";
+import pdf from "../img/pdf.png";
 import { TABLES_NAMES } from "../helpers/sb.config";
 import { GetTransForTokensArray, LANG_TOKENS } from "../helpers/lang_strings";
+import ActionButton from "./ActionButton";
 
 function AgentsByTeam({ agents_by_team, team }) {
   //const [agents_by_team, set_agents_by_team] = useState(undefined);
@@ -110,8 +112,22 @@ export default function TableLoadsTotals({
                     )}
 
                     {!columnsToHide.includes(COLUMNS_TO_HIDE.CDF) && (
-                      <td className={CLASS_TD}>
-                        {formatAsMoney((td[1].bonus * 1000).toFixed(2))}
+                      <td
+                        className={` ${CLASS_TD} flex gap-3 justify-between  `}
+                      >
+                        <span>
+                          {formatAsMoney((td[1].bonus * 1000).toFixed(2))}
+                        </span>
+                        <span>
+                          <ActionButton
+                            icon={pdf}
+                            title={""}
+                            onClick={
+                              (e) => alert(`Impression rapport equipe ${td[0]}`)
+                              //console.log(td)
+                            }
+                          />
+                        </span>
                       </td>
                     )}
                   </tr>
@@ -130,8 +146,25 @@ export default function TableLoadsTotals({
                     )}
 
                     {!columnsToHide.includes(COLUMNS_TO_HIDE.CDF) && (
-                      <td className={CLASS_TD}>
-                        {formatAsMoney(Number(td[1].bonus * 1000).toFixed(2))}
+                      <td
+                        className={` ${CLASS_TD} flex gap-3 justify-between  `}
+                      >
+                        <span>
+                          {" "}
+                          {formatAsMoney(Number(td[1].bonus * 1000).toFixed(2))}
+                        </span>
+
+                        <span>
+                          <ActionButton
+                            icon={pdf}
+                            title={""}
+                            onClick={
+                              (e) =>
+                                alert(`Impression rapport pour toutes equipes`)
+                              //console.log(td)
+                            }
+                          />
+                        </span>
                       </td>
                     )}
                   </tr>

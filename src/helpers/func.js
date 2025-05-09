@@ -759,6 +759,8 @@ export function formatAsMoney(value, currency) {
   });
 }
 
+function addUpShiftData(arr) {}
+
 export function CaclculateAllTeamsTotals(data, addSacsAdj) {
   const model = {
     sacs: 0,
@@ -779,6 +781,7 @@ export function CaclculateAllTeamsTotals(data, addSacsAdj) {
   };
 
   const entries = Object.entries(data);
+  console.log("entr", entries);
   const no_data = entries.length === 0;
 
   entries.forEach((d_entry, di) => {
