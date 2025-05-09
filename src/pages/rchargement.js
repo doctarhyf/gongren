@@ -31,6 +31,7 @@ import { TABLES_NAMES } from "../helpers/sb.config";
 import check from "../img/check.svg";
 import del from "../img/delete.png";
 import pdf from "../img/pdf.png";
+import eye from "../img/eye.png";
 import plus from "../img/plus.png";
 import reload from "../img/reload.png";
 import {
@@ -608,7 +609,7 @@ export default function RapportChargement() {
 
                   {UserHasAccessCode(user, ACCESS_CODES.ROOT) && (
                     <ActionButton
-                      icon={pdf}
+                      icon={eye}
                       title={
                         showTotalsByTeam
                           ? "DONNEES JOURN."
