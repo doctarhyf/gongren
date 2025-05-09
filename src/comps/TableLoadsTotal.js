@@ -96,12 +96,12 @@ export default function TableLoadsTotals({
             )}
           </tr>
           {Object.entries(totalData)
-            .sort((a, b) => -a[1].bonus + b[1].bonus)
+            //.sort((a, b) => -a[1].bonus + b[1].bonus)
             .map((td, i) => (
               <>
                 {" "}
                 {td[0] !== "TOTAL" && (
-                  <tr>
+                  <tr className=" hover:bg-slate-950 hover:cursor-pointer ">
                     <td className={CLASS_TD}>{`${i + 1}). ${td[0]}`}</td>
                     {!columnsToHide.includes(COLUMNS_TO_HIDE.SACS) && (
                       <td className={CLASS_TD}>{td[1].sacs}</td>
