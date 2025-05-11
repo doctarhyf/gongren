@@ -137,7 +137,9 @@ export default function TableLoadsTotals({
                           <ActionButton
                             icon={pdf}
                             title={""}
-                            onClick={(e) => console.log(td)}
+                            onClick={(e) =>
+                              alert("La fonction n'est pas encore faite ...")
+                            }
                           />
                         </span>
                       </td>
