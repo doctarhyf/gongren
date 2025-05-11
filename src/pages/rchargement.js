@@ -668,9 +668,10 @@ export default function RapportChargement() {
                       RAPPORT CHARGEMENT,{" "}
                       {team === "ALL"
                         ? "TOUTES LES EQUIPES"
-                        : `EQUIPE ${team}, ${date.y && date.y}.${
-                            date.m && parseInt(date.m) + 2
-                          }`}
+                        : `EQUIPE ${team} `}{" "}
+                      {
+                        //, ${date.y && date.y}.${date.m && parseInt(date.m) + 2}`}
+                      }
                     </div>
                     <table class="table-auto mx-auto">
                       <thead>
