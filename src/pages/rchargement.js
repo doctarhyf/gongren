@@ -610,8 +610,10 @@ export default function RapportChargement() {
                     />
                   }
 
-                  {UserHasAccessCode(user, ACCESS_CODES.ROOT) ||
-                    (true && (
+                  {
+                    // UserHasAccessCode(user, ACCESS_CODES.ROOT)
+
+                    true && (
                       <ActionButton
                         icon={eye}
                         title={
@@ -628,7 +630,8 @@ export default function RapportChargement() {
                             : setShowTotalsByTeam(true)
                         }
                       />
-                    ))}
+                    )
+                  }
                 </div>
 
                 {showTotalsByTeam ? (
