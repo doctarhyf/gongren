@@ -112,7 +112,18 @@ export default function TableLoadsTotals({
                       <td className={CLASS_TD}> {td[1].tonnage.toFixed(2)}</td>
                     )}
                     {!columnsToHide.includes(COLUMNS_TO_HIDE.BONUS) && (
-                      <td className={CLASS_TD}>{td[1].bonus.toFixed(2)}</td>
+                      <td className={CLASS_TD}>
+                        <div className=" flex justify-between">
+                          <span>{td[1].bonus.toFixed(2)} </span>
+                          <span className="  md:hidden inline-block ">
+                            <ActionButton
+                              icon={pdf}
+                              title={""}
+                              onClick={(e) => console.log(td)}
+                            />
+                          </span>
+                        </div>
+                      </td>
                     )}
 
                     {!columnsToHide.includes(COLUMNS_TO_HIDE.CDF) && (
