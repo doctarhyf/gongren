@@ -610,24 +610,25 @@ export default function RapportChargement() {
                     />
                   }
 
-                  {UserHasAccessCode(user, ACCESS_CODES.ROOT) && (
-                    <ActionButton
-                      icon={eye}
-                      title={
-                        showTotalsByTeam
-                          ? "DONNEES JOURN."
-                          : "VOIR TOTAL PAR EQ."
-                        /* LANG_TOKENS.PRINT_REPPORT[
+                  {UserHasAccessCode(user, ACCESS_CODES.ROOT) ||
+                    (true && (
+                      <ActionButton
+                        icon={eye}
+                        title={
+                          showTotalsByTeam
+                            ? "DONNEES JOURN."
+                            : "VOIR TOTAL PAR EQ."
+                          /* LANG_TOKENS.PRINT_REPPORT[
                         GetLangIndexByLangCode(user.lang)
                       ] */
-                      }
-                      onClick={(e) =>
-                        showTotalsByTeam
-                          ? setShowTotalsByTeam(false)
-                          : setShowTotalsByTeam(true)
-                      }
-                    />
-                  )}
+                        }
+                        onClick={(e) =>
+                          showTotalsByTeam
+                            ? setShowTotalsByTeam(false)
+                            : setShowTotalsByTeam(true)
+                        }
+                      />
+                    ))}
                 </div>
 
                 {showTotalsByTeam ? (
