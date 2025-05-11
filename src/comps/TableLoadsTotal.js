@@ -92,7 +92,9 @@ export default function TableLoadsTotals({
               <td className={CLASS_TD}>BONUS 奖金(T)</td>
             )}
             {!columnsToHide.includes(COLUMNS_TO_HIDE.CDF) && (
-              <td className={CLASS_TD}>CDF 钢狼</td>
+              <td className={`  ${CLASS_TD} hidden md:table-cell  `}>
+                CDF 钢狼
+              </td>
             )}
           </tr>
           {Object.entries(totalData)
@@ -115,7 +117,7 @@ export default function TableLoadsTotals({
 
                     {!columnsToHide.includes(COLUMNS_TO_HIDE.CDF) && (
                       <td
-                        className={` ${CLASS_TD} flex gap-3 justify-between  `}
+                        className={` ${CLASS_TD} hidden md:flex gap-3 justify-between    `}
                       >
                         <span>
                           {formatAsMoney((td[1].bonus * 1000).toFixed(2))}
@@ -146,7 +148,7 @@ export default function TableLoadsTotals({
 
                     {!columnsToHide.includes(COLUMNS_TO_HIDE.CDF) && (
                       <td
-                        className={` ${CLASS_TD} flex gap-3 justify-between  `}
+                        className={` ${CLASS_TD} hidden md:flex gap-3 justify-between  `}
                       >
                         <span>
                           {" "}

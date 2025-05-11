@@ -11,6 +11,8 @@ import {
   LOG_OPERATION,
   PRIME_MIN,
   SHIFT_HOURS_ZH,
+  SUPERVISORS,
+  SUPERVISORS_EMCO,
 } from "../helpers/flow";
 import {
   AddLeadingZero,
@@ -31,6 +33,7 @@ import { TABLES_NAMES } from "../helpers/sb.config";
 import check from "../img/check.svg";
 import del from "../img/delete.png";
 import pdf from "../img/pdf.png";
+import gck from "../img/gck.png";
 import eye from "../img/eye.png";
 import plus from "../img/plus.png";
 import reload from "../img/reload.png";
@@ -513,7 +516,7 @@ export default function RapportChargement() {
                     className={CLASS_SELECT}
                     onChange={(e) => setteam(e.target.value)}
                   >
-                    {["A", "B", "C", "D", "ALL"].map((op) => (
+                    {["A", "B", "C", "ALL"].map((op) => (
                       <option selected={op === team} value={op}>
                         {op}
                       </option>
@@ -637,165 +640,210 @@ export default function RapportChargement() {
                     </div>
                   </div>
                 ) : (
-                  <table class="table-auto mx-auto">
-                    <thead>
-                      <tr>
-                        <th className="border border-slate-500 p-1">
-                          {GetTransForTokensArray(LANG_TOKENS.DATE, user.lang)}
-                        </th>
-                        <th className="border border-slate-500 p-1">
-                          {GetTransForTokensArray(LANG_TOKENS.EQ, user.lang)}
-                        </th>
-                        <th className="border border-slate-500 p-1">
-                          {GetTransForTokensArray(LANG_TOKENS.SHIFT, user.lang)}
-                        </th>
-                        <th className="border border-slate-500 p-1">
-                          {GetTransForTokensArray(LANG_TOKENS.BAGS, user.lang)}
-                        </th>
-                        <th className="border border-slate-500 p-1 hidden sm:table-cell">
-                          {LANG_TOKENS.TRUCK[GetLangIndexByLangCode(user.lang)]}
-                        </th>
-                        <th className="border border-slate-500 p-1 hidden sm:table-cell">
-                          {GetTransForTokensArray(
-                            LANG_TOKENS.TORN_BAGS,
-                            user.lang
+                  <>
+                    {team !== "ALL" && team !== "D" && (
+                      <div className=" flex justify-between py-2 space-x-2 mx-auto max-w-[420pt] ">
+                        <div className=" text-start ">
+                          <image src={gck} width={30} height={30} />
+                          <div>Superviseur GCK</div>
+                          <div className="  font-bold text-2xl ">
+                            Mr. {SUPERVISORS[team].nom}
+                          </div>
+                        </div>
+                        <div className=" text-end ">
+                          <image src={gck} width={30} height={30} />
+                          <div>Superviseur EMCO</div>
+                          <div className="  font-bold text-2xl ">
+                            Mr. {SUPERVISORS_EMCO[team].nom}
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    <div className=" text-center text-2xl p-3 font-bold text-slate-700 dark:text-slate-200">
+                      RAPPORT CHARGEMENT,{" "}
+                      {team === "ALL"
+                        ? "TOUTES LES EQUIPES"
+                        : `EQUIPE ${team}, ${date.y && date.y}.${
+                            date.m && parseInt(date.m) + 2
+                          }`}
+                    </div>
+                    <table class="table-auto mx-auto">
+                      <thead>
+                        <tr>
+                          <th className="border border-slate-500 p-1">
+                            {GetTransForTokensArray(
+                              LANG_TOKENS.DATE,
+                              user.lang
+                            )}
+                          </th>
+                          <th className="border border-slate-500 p-1">
+                            {GetTransForTokensArray(LANG_TOKENS.EQ, user.lang)}
+                          </th>
+                          <th className="border border-slate-500 p-1">
+                            {GetTransForTokensArray(
+                              LANG_TOKENS.SHIFT,
+                              user.lang
+                            )}
+                          </th>
+                          <th className="border border-slate-500 p-1">
+                            {GetTransForTokensArray(
+                              LANG_TOKENS.BAGS,
+                              user.lang
+                            )}
+                          </th>
+                          <th className="border border-slate-500 p-1 hidden sm:table-cell">
+                            {
+                              LANG_TOKENS.TRUCK[
+                                GetLangIndexByLangCode(user.lang)
+                              ]
+                            }
+                          </th>
+                          <th className="border border-slate-500 p-1 hidden sm:table-cell">
+                            {GetTransForTokensArray(
+                              LANG_TOKENS.TORN_BAGS,
+                              user.lang
+                            )}
+                          </th>
+                          <th className="border border-slate-500 p-1">
+                            {GetTransForTokensArray(LANG_TOKENS.T, user.lang)}
+                          </th>
+                          {UserHasAccessCode(user, ACCESS_CODES.BONUS_ROW) && (
+                            <th className="border border-slate-500 p-1">BNS</th>
                           )}
-                        </th>
-                        <th className="border border-slate-500 p-1">
-                          {GetTransForTokensArray(LANG_TOKENS.T, user.lang)}
-                        </th>
-                        {UserHasAccessCode(user, ACCESS_CODES.BONUS_ROW) && (
-                          <th className="border border-slate-500 p-1">BNS</th>
-                        )}
-                        <th className="border border-slate-500 p-1">ACT</th>
-                      </tr>
-                    </thead>
+                          <th className="border border-slate-500 p-1">ACT</th>
+                        </tr>
+                      </thead>
 
-                    <tbody>
-                      <tr>
-                        <td className="  border border-slate-500 p-1 text-end "></td>
-                        <td className="  border border-slate-500 p-1 text-end "></td>
-                        <td className="  border border-slate-500 p-1 text-end "></td>
-                        <td className="  border border-slate-500 p-1 text-end ">
-                          {tot}
-                        </td>
-                        <td className="  border border-slate-500 p-1 text-end hidden sm:table-cell"></td>
-                        <td className="  border border-slate-500 p-1 text-end hidden sm:table-cell"></td>
-                        <td className="  border border-slate-500 p-1 text-end ">
-                          {(parseFloat(tot) / 20).toFixed(2)}
-                        </td>
-                        {UserHasAccessCode(user, ACCESS_CODES.BONUS_ROW) && (
+                      <tbody>
+                        <tr>
+                          <td className="  border border-slate-500 p-1 text-end "></td>
+                          <td className="  border border-slate-500 p-1 text-end "></td>
+                          <td className="  border border-slate-500 p-1 text-end "></td>
                           <td className="  border border-slate-500 p-1 text-end ">
-                            {bonustot}
+                            {tot}
                           </td>
-                        )}
-                        <td className="  border border-slate-500 p-1 text-end "></td>
-                      </tr>
-                      {loadsf.map((ld, i) => (
-                        <tr
-                          className={` hover:bg-slate-400 dark:hover:bg-black/50 cursor-pointer  ${
-                            ld.code[2] === "M" &&
-                            " bg-slate-100 dark:bg-slate-700  "
-                          }  `}
-                          onClick={(e) => onClickLoad(ld)}
-                        >
+                          <td className="  border border-slate-500 p-1 text-end hidden sm:table-cell"></td>
+                          <td className="  border border-slate-500 p-1 text-end hidden sm:table-cell"></td>
                           <td className="  border border-slate-500 p-1 text-end ">
-                            <span className=" md:hidden  ">
-                              {AddOneMonth(ld.meta?.date.split("/202")[0])}
-                            </span>
-                            <span className=" hidden md:block ">
-                              {AddOneMonth(ld.meta?.date)}
-                            </span>
-                          </td>
-                          <td className="  border border-slate-500 p-1 text-end ">
-                            {ld.meta?.team}
-                          </td>
-                          <td className="  border border-slate-500 p-1 text-end ">
-                            <span className=" md:hidden ">
-                              {ld.meta?.shift.split(" - ")[0].split(" : ")[1]}
-                            </span>
-                            <span className=" hidden md:block  ">
-                              {ld.meta?.shift}
-                            </span>
-                          </td>
-                          <td className="  border border-slate-500 p-1 text-end ">
-                            {ld.sacs}
-                          </td>
-                          <td className="  border border-slate-500 p-1 text-end hidden sm:table-cell ">
-                            {ld.camions}
-                          </td>
-                          <td className="  border border-slate-500 p-1 text-end hidden sm:table-cell ">
-                            {ld.dechires}
-                          </td>
-
-                          <td className="  border border-slate-500 p-1 text-end ">
-                            {parseFloat(ld.sacs) / 20}
+                            {(parseFloat(tot) / 20).toFixed(2)}
                           </td>
                           {UserHasAccessCode(user, ACCESS_CODES.BONUS_ROW) && (
                             <td className="  border border-slate-500 p-1 text-end ">
-                              {parseFloat(ld.sacs) / 20 > PRIME_MIN ? (
-                                <span className=" font-serif text-sky-700 font-bold ">
-                                  {(
-                                    parseFloat(ld.sacs) / 20 -
-                                    PRIME_MIN
-                                  ).toFixed(2)}
-                                </span>
-                              ) : (
-                                0
-                              )}
+                              {bonustot}
                             </td>
                           )}
-                          <td className="  border border-slate-500 p-1 text-end ">
-                            {ld.code[2] === "M" &&
-                              UserHasAccessCode(
+                          <td className="  border border-slate-500 p-1 text-end "></td>
+                        </tr>
+                        {loadsf.map((ld, i) => (
+                          <tr
+                            className={` hover:bg-slate-400 dark:hover:bg-black/50 cursor-pointer  ${
+                              ld.code[2] === "M" &&
+                              " bg-slate-100 dark:bg-slate-700  "
+                            }  `}
+                            onClick={(e) => onClickLoad(ld)}
+                          >
+                            <td className="  border border-slate-500 p-1 text-end ">
+                              <span className=" md:hidden  ">
+                                {AddOneMonth(ld.meta?.date.split("/202")[0])}
+                              </span>
+                              <span className=" hidden md:block ">
+                                {AddOneMonth(ld.meta?.date)}
+                              </span>
+                            </td>
+                            <td className="  border border-slate-500 p-1 text-end ">
+                              {ld.meta?.team}
+                            </td>
+                            <td className="  border border-slate-500 p-1 text-end ">
+                              <span className=" md:hidden ">
+                                {ld.meta?.shift.split(" - ")[0].split(" : ")[1]}
+                              </span>
+                              <span className=" hidden md:block  ">
+                                {ld.meta?.shift}
+                              </span>
+                            </td>
+                            <td className="  border border-slate-500 p-1 text-end ">
+                              {ld.sacs}
+                            </td>
+                            <td className="  border border-slate-500 p-1 text-end hidden sm:table-cell ">
+                              {ld.camions}
+                            </td>
+                            <td className="  border border-slate-500 p-1 text-end hidden sm:table-cell ">
+                              {ld.dechires}
+                            </td>
+
+                            <td className="  border border-slate-500 p-1 text-end ">
+                              {parseFloat(ld.sacs) / 20}
+                            </td>
+                            {UserHasAccessCode(
+                              user,
+                              ACCESS_CODES.BONUS_ROW
+                            ) && (
+                              <td className="  border border-slate-500 p-1 text-end ">
+                                {parseFloat(ld.sacs) / 20 > PRIME_MIN ? (
+                                  <span className=" font-serif text-sky-700 font-bold ">
+                                    {(
+                                      parseFloat(ld.sacs) / 20 -
+                                      PRIME_MIN
+                                    ).toFixed(2)}
+                                  </span>
+                                ) : (
+                                  0
+                                )}
+                              </td>
+                            )}
+                            <td className="  border border-slate-500 p-1 text-end ">
+                              {ld.code[2] === "M" &&
+                                UserHasAccessCode(
+                                  user,
+                                  ACCESS_CODES.PRINT_DAILY_REPPORT
+                                ) && (
+                                  <ActionButton
+                                    icon={pdf}
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      onPrintDailyRepport(loads, ld, i);
+                                    }}
+                                  />
+                                )}
+
+                              {UserHasAccessCode(
                                 user,
-                                ACCESS_CODES.PRINT_DAILY_REPPORT
+                                ACCESS_CODES.DELETE_LOAD
                               ) && (
                                 <ActionButton
-                                  icon={pdf}
+                                  icon={del}
                                   onClick={(e) => {
                                     e.stopPropagation();
-                                    onPrintDailyRepport(loads, ld, i);
+                                    onDeleteLoad(ld);
                                   }}
                                 />
                               )}
-
-                            {UserHasAccessCode(
-                              user,
-                              ACCESS_CODES.DELETE_LOAD
-                            ) && (
-                              <ActionButton
-                                icon={del}
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  onDeleteLoad(ld);
-                                }}
-                              />
-                            )}
-                          </td>
-                        </tr>
-                      ))}{" "}
-                      <tr>
-                        <td className="  border border-slate-500 p-1 text-end "></td>
-                        <td className="  border border-slate-500 p-1 text-end "></td>
-                        <td className="  border border-slate-500 p-1 text-end "></td>
-                        <td className="  border border-slate-500 p-1 text-end ">
-                          {tot}
-                        </td>
-                        <td className="  border border-slate-500 p-1 text-end hidden sm:table-cell"></td>
-                        <td className="  border border-slate-500 p-1 text-end hidden sm:table-cell"></td>
-                        <td className="  border border-slate-500 p-1 text-end ">
-                          {(parseFloat(tot) / 20).toFixed(2)}
-                        </td>
-                        {UserHasAccessCode(user, ACCESS_CODES.BONUS_ROW) && (
+                            </td>
+                          </tr>
+                        ))}{" "}
+                        <tr>
+                          <td className="  border border-slate-500 p-1 text-end "></td>
+                          <td className="  border border-slate-500 p-1 text-end "></td>
+                          <td className="  border border-slate-500 p-1 text-end "></td>
                           <td className="  border border-slate-500 p-1 text-end ">
-                            {bonustot}
+                            {tot}
                           </td>
-                        )}
-                        <td className="  border border-slate-500 p-1 text-end "></td>
-                      </tr>
-                    </tbody>
-                  </table>
+                          <td className="  border border-slate-500 p-1 text-end hidden sm:table-cell"></td>
+                          <td className="  border border-slate-500 p-1 text-end hidden sm:table-cell"></td>
+                          <td className="  border border-slate-500 p-1 text-end ">
+                            {(parseFloat(tot) / 20).toFixed(2)}
+                          </td>
+                          {UserHasAccessCode(user, ACCESS_CODES.BONUS_ROW) && (
+                            <td className="  border border-slate-500 p-1 text-end ">
+                              {bonustot}
+                            </td>
+                          )}
+                          <td className="  border border-slate-500 p-1 text-end "></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </>
                 )}
               </>
             )}

@@ -41,10 +41,17 @@ export const STOCK_TYPE = {
 };
 
 export const SUPERVISORS = {
-  C: { nom: "MPOYO BUDIMBO", zh: "抱有" },
-  B: { nom: "NKULU MWENZE", zh: "库鲁" },
   A: { nom: "SERGE KAZALI", zh: "塞基尔" },
+  B: { nom: "NKULU MWENZE", zh: "库鲁" },
+  C: { nom: "MPOYO BUDIMBO", zh: "抱有" },
   D: { nom: "AMEDEE KATANGA", zh: "噶当噶" },
+};
+
+export const SUPERVISORS_EMCO = {
+  A: { nom: "DIEM MUTUND", zh: "塞基尔" },
+  B: { nom: "OSE YAV", zh: "库鲁" },
+  C: { nom: "RACH ROMBO", zh: "抱有" },
+  D: { nom: "", zh: "噶当噶" },
 };
 
 export const STOCK_RESET_PWD = "1505";
