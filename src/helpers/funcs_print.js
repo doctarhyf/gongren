@@ -6,7 +6,7 @@ import {
   AddLeadingZero,
   splitZhAndLat,
 } from "./func";
-import { MONTHS, POSTE, POSTES, SUPERVISORS } from "./flow";
+import { MONTHS, POSTE, POSTES, SUPERVISORS, SUPERVISORS_EMCO } from "./flow";
 import autoTable from "jspdf-autotable";
 const orientation = "landscape";
 const doc = new jsPDF({ orientation: orientation });
@@ -1346,8 +1346,20 @@ function draw_charg_table(doc, pw, ph, pm, rect_title, fsize, load_data) {
   doc.setFontSize(old_fsize);
 }
 
-export function printTeamMonthlyRepport(data) {
-  const t = data[0];
+export function printTeamMonthlyRepport(data, date) {
+  console.log("printTeamMonthlyRepport", data, date);
+
+  const { sacs, retours, ajouts, tonnage, camions, dechires, bonus } = data[1];
+
+  const day = new Date().getDate();
+  let { y, m } = date;
+  m = parseInt(m) + 2;
+  const monthName = MONTHS[m - 1];
+  const team = data[0];
+  const gck_sup = SUPERVISORS[team];
+  const emco_sup = SUPERVISORS_EMCO[team];
+  const gck_banzhang = `${gck_sup.nom} ${gck_sup.zh}`;
+  const emco_banzhang = `${emco_sup.nom} ${emco_sup.zh}`;
 
   const doc = new jsPDF({ orientation: "portrait" });
   let r = doc.addFont(
@@ -1356,35 +1368,8 @@ export function printTeamMonthlyRepport(data) {
     "normal"
   );
   const fontSize = 10;
-  /* let rect = drawLogo(doc);
-
-  rect = drawChineseEnglishTextLine(doc, rect.x, rect.y + rect.h + 8, 12, [
-    { zh: "水泥车间包装奖金" },
-    { lat: " - " },
-    { lat: "" + y },
-    { zh: "年" },
-    { lat: "" + m },
-    { zh: "月" },
-  ]); */
 
   doc.setFontSize(fontSize);
-  // doc.text(`TOTAL CHARGEMENTS ${MONTHS[m]} ${y}`, rect.x, rect.y + 8);
-  //doc.text("cool", 10, 10);
-
-  /* let head = Object.keys(totalData.A);
-  head = [["Equipe", ...head]];
-  let body = Object.entries(totalData).map((dt, i) => [
-    dt[0],
-    ...Object.values(dt[1]).map((v, i) =>
-      [3, 6].includes(i) ? (i === 6 ? (v * 1000).toFixed(2) : v.toFixed(2)) : v
-    ),
-  ]);
-
-  autoTable(doc, {
-    head: head,
-    body: body,
-    margin: { top: rect.y + rect.h + 8 },
-  }); */
 
   // Header
   const rect = drawLogo(doc);
@@ -1400,11 +1385,12 @@ export function printTeamMonthlyRepport(data) {
   doc.setFontSize(12);
   doc.setFont("Helvetica", "bold");
   doc.text(
-    "RAPPORT TECHNIQUE PARTIEL DE LA PRODUCTION DU MOIS D’AVRIL",
+    `RAPPORT PRODUCTION DU MOIS ${
+      m - 1 === 3 || m - 1 === 7 ? "D'" : "DE"
+    } ${monthName.toLocaleUpperCase()} ${y}, DE L'ÉQUIPE ${team}`,
     10,
     35 + offsety
   );
-  doc.text("DU 3 AU 30 AVRIL 2025 DE L’ÉQUIPE B", 10, 42 + offsety);
 
   // Subtitle (Chinese date)
   doc.setFontSize(11);
@@ -1414,42 +1400,97 @@ export function printTeamMonthlyRepport(data) {
     doc,
     10,
     50 + offsety,
-    fontSize,
-    "B班2025年4月3日至4月30日部分生产技术报告"
+    18,
+    `${y}年${m}月${team}组生产报告`
   );
+  //const lat_font_name = "helvetica";
+  //const zh_font_name = "DroidSansFallback";
 
-  autoTable(doc, {
+  // doc.setFont(zh_font_name, "normal");
+
+  /*  autoTable(doc, {
     startY: 60 + offsety,
     head: [["TOTAL PARTIEL 阶段总计", ""]],
     body: [
-      ["- Sacs Utilisés / 使用水泥袋", "319 305 pièces / 个"],
-      ["- Tonnage / 吨位", "15 965,25 T / 吨"],
-      ["- Camions chargés / 装载卡车数", "626 camions / 辆"],
-      ["- Sacs Déchirés / 破损水泥袋", "2 237 pièces / 个"],
+      [`- Sacs Utilisés / 使用水泥袋`, `${sacs} pièces / 个`],
+      ["- Tonnage / 吨位", `${tonnage} T / 吨`],
+      ["- Camions chargés / 装载卡车数", `${camions} camions / 辆`],
+      ["- Sacs Déchirés / 破损水泥袋", `${dechires} pièces / 个`],
     ],
     styles: { fontSize: 10 },
     theme: "grid",
     headStyles: { fillColor: [220, 220, 220] },
-  });
+  }); */
 
+  const spacing = 8;
+  drawChineseEnglishTextLine(doc, 10, 60 + offsety, 12, "TOTAL 总计");
+  drawChineseEnglishTextLine(
+    doc,
+    10,
+    60 + spacing + offsety,
+    12,
+    `- Sacs Utilisés / 使用水泥袋 : ${sacs} pièces / 个`
+  );
+  drawChineseEnglishTextLine(
+    doc,
+    10,
+    60 + spacing * 2 + offsety,
+    12,
+    `- Tonnage / 吨位 : ${tonnage} T / 吨`
+  );
+  drawChineseEnglishTextLine(
+    doc,
+    10,
+    60 + spacing * 3 + offsety,
+    12,
+    `- Camions chargés / 装载卡车数 : ${camions} camions / 辆`
+  );
+  drawChineseEnglishTextLine(
+    doc,
+    10,
+    60 + spacing * 4 + offsety,
+    12,
+    `- Sacs Déchirés / 破损水泥袋 : ${dechires} pièces / 个`
+  );
+
+  //doc.setFont(lat_font_name, "normal");
   // Supervisors
   doc.setFontSize(11);
-  doc.text("SUPERVISEUR DE L'ÉQUIPE", 10, 130 + offsety);
+  doc.text("SUPERVISEUR GCK", 10, 130 + offsety);
   doc.text("SUPERVISEUR EMCO", 110, 130 + offsety);
 
-  doc.setFont("Helvetica", "bold");
-  //doc.text("GCK B 班包装", 10, 137 + offsety);
-  drawChineseEnglishTextLine(doc, 10, 137 + offsety, fontSize, "GCK B 班包装");
-  //doc.text("EMCO 监督员", 110, 137 + offsety);
-  drawChineseEnglishTextLine(doc, 110, 137 + offsety, fontSize, "EMCO 监督员");
+  //doc.setFont("Helvetica", "bold");
 
-  doc.setFont("Helvetica", "normal");
-  doc.text("CHRISTIAN NKULU MWENZE 库鲁", 10, 144 + offsety);
-  doc.text("OSÉE YAV-MBA", 110, 144 + offsety);
+  drawChineseEnglishTextLine(
+    doc,
+    10,
+    137 + offsety,
+    fontSize,
+    `GCK ${team} 班班长`
+  );
+  //doc.text("EMCO ${team} 管理员", 110, 137 + offsety);
+  drawChineseEnglishTextLine(
+    doc,
+    110,
+    137 + offsety,
+    fontSize,
+    `EMCO ${team} 管理员`
+  );
+  //doc.setFont("Helvetica", "normal");
+  //doc.text("CHRISTIAN NKULU MWENZE 库鲁", 10, 144 + offsety);
+  drawChineseEnglishTextLine(doc, 10, 144 + offsety, 14, gck_banzhang);
+  //doc.text("OSÉE YAV-MBA", 110, 144 + offsety);
+  drawChineseEnglishTextLine(doc, 110, 144 + offsety, 14, emco_banzhang);
 
   // Footer
   doc.setFontSize(10);
-  doc.text("Fait à Likasi, le 5 Mai 2025", 10, 170 + offsety);
+  doc.text(
+    `Fait à Likasi, le ${day} ${
+      MONTHS[new Date().getMonth()]
+    } ${new Date().getFullYear()}`,
+    10,
+    170 + offsety
+  );
 
   // Save
 

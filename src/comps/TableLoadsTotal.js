@@ -67,10 +67,10 @@ export default function TableLoadsTotals({
 
   let dt = Object.entries(totalData);
 
-  function print(td) {
-    //console.log("print", td);
-    // alert("La fonction n'est pas encore implementee ...");
-    printTeamMonthlyRepport(td);
+  function print(td, date) {
+    console.log("print", td);
+
+    printTeamMonthlyRepport(td, date);
   }
 
   return (
@@ -149,7 +149,7 @@ export default function TableLoadsTotals({
                             title={""}
                             onClick={(e) => {
                               // alert("La fonction n'est pas encore faite ...");
-                              print(td);
+                              print(td, date);
                             }}
                           />
                         </span>
