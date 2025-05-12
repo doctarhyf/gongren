@@ -108,13 +108,16 @@ export default function JinChu() {
       noncharges_bigbag,
     } = data;
 
+    let [y, m, d] = new Date().toLocaleString("zh-CN").split(" ")[0].split("/");
+    const date = `${y}年${m}月${d}日`;
     const text_tonnage = show_tonnage ? `Tonnage/已装吨位 : ${t}吨` : "";
     const text_bigbag = show_bigbag
       ? `Camions Chargés(BIG-BAG)/吨袋车满载: ${charges_bigbag}辆
 Camions NonChargés(BIG-BAG)/吨袋空车: ${noncharges_bigbag}辆`
       : "";
 
-    const final_text = `•${shift}
+    const final_text = `•${date}
+•${shift}
 ${text_tonnage}
  Camions en attente/等待装车 : ${park_int}辆
 Camions Chargés/已装车:${charges}辆
