@@ -2,6 +2,7 @@ import { jsPDF } from "jspdf";
 
 import { getDaysInMonth, formatFrenchDate, AddLeadingZero } from "./func";
 import { MONTHS, POSTE, POSTES, SUPERVISORS } from "./flow";
+import autoTable from "jspdf-autotable";
 const orientation = "landscape";
 const doc = new jsPDF({ orientation: orientation });
 let r = doc.addFont(
@@ -1331,6 +1332,121 @@ function draw_charg_table(doc, pw, ph, pm, rect_title, fsize, load_data) {
   });
 
   doc.setFontSize(old_fsize);
+}
+
+export function printTeamMonthlyRepport(data) {
+  const t = data[0];
+
+  const doc = new jsPDF({ orientation: "portrait" });
+  let r = doc.addFont(
+    "fonts/DroidSansFallback.ttf",
+    "DroidSansFallback",
+    "normal"
+  );
+
+  /* let rect = drawLogo(doc);
+
+  rect = drawChineseEnglishTextLine(doc, rect.x, rect.y + rect.h + 8, 12, [
+    { zh: "水泥车间包装奖金" },
+    { lat: " - " },
+    { lat: "" + y },
+    { zh: "年" },
+    { lat: "" + m },
+    { zh: "月" },
+  ]); */
+
+  doc.setFontSize(10);
+  // doc.text(`TOTAL CHARGEMENTS ${MONTHS[m]} ${y}`, rect.x, rect.y + 8);
+  //doc.text("cool", 10, 10);
+
+  /* let head = Object.keys(totalData.A);
+  head = [["Equipe", ...head]];
+  let body = Object.entries(totalData).map((dt, i) => [
+    dt[0],
+    ...Object.values(dt[1]).map((v, i) =>
+      [3, 6].includes(i) ? (i === 6 ? (v * 1000).toFixed(2) : v.toFixed(2)) : v
+    ),
+  ]);
+
+  autoTable(doc, {
+    head: head,
+    body: body,
+    margin: { top: rect.y + rect.h + 8 },
+  }); */
+
+  // Header
+  const rect = drawLogo(doc);
+  const offsety = rect.h + rect.y + 8;
+  doc.setFontSize(14);
+  doc.setFont("Helvetica", "bold");
+  doc.text("GCK - LA GRANDE CIMENTERIE DU KATANGA", 10, 15 + offsety);
+  doc.setFontSize(12);
+  doc.setFont("Helvetica", "normal");
+  doc.text("SOUS-TRAITANCE EMPIRE CORPORATION (EMCO)", 10, 22 + offsety);
+
+  // Title
+  doc.setFontSize(12);
+  doc.setFont("Helvetica", "bold");
+  doc.text(
+    "RAPPORT TECHNIQUE PARTIEL DE LA PRODUCTION DU MOIS D’AVRIL",
+    10,
+    35 + offsety
+  );
+  doc.text("DU 3 AU 30 AVRIL 2025 DE L’ÉQUIPE B", 10, 42 + offsety);
+
+  // Subtitle (Chinese date)
+  doc.setFontSize(11);
+  doc.setFont("Helvetica", "normal");
+  doc.text("B班2025年4月3日至4月30日部分生产技术报告", 10, 50 + offsety);
+  /* drawChineseEnglishTextLine(
+    doc,
+    10,
+    50 + offsety,
+    { lat: t },
+    { zh: "班" },
+    { lat: " - " },
+    { lat: "" + y },
+    { zh: "年" },
+    { lat: "" + m },
+    { zh: "月" }
+  ); */
+
+  // Table: TOTAL PARTIEL
+  autoTable(doc, {
+    startY: 60 + offsety,
+    head: [["TOTAL PARTIEL 阶段总计", ""]],
+    body: [
+      ["- Sacs Utilisés / 使用水泥袋", "319 305 pièces / 个"],
+      ["- Tonnage / 吨位", "15 965,25 T / 吨"],
+      ["- Camions chargés / 装载卡车数", "626 camions / 辆"],
+      ["- Sacs Déchirés / 破损水泥袋", "2 237 pièces / 个"],
+    ],
+    styles: { fontSize: 10 },
+    theme: "grid",
+    headStyles: { fillColor: [220, 220, 220] },
+  });
+
+  // Supervisors
+  doc.setFontSize(11);
+  doc.text("SUPERVISEUR DE L'ÉQUIPE", 10, 130 + offsety);
+  doc.text("SUPERVISEUR EMCO", 110, 130 + offsety);
+
+  doc.setFont("Helvetica", "bold");
+  doc.text("GCK B 班包装", 10, 137 + offsety);
+  doc.text("EMCO 监督员", 110, 137 + offsety);
+
+  doc.setFont("Helvetica", "normal");
+  doc.text("CHRISTIAN NKULU MWENZE 库鲁", 10, 144 + offsety);
+  doc.text("OSÉE YAV-MBA", 110, 144 + offsety);
+
+  // Footer
+  doc.setFontSize(10);
+  doc.text("Fait à Likasi, le 5 Mai 2025", 10, 170 + offsety);
+
+  // Save
+
+  const fileName = `RAPPORT_EQUIPE_${data[0]}`;
+  doc.save(fileName);
 }
 
 export {

@@ -17,6 +17,7 @@ import pdf from "../img/pdf.png";
 import { TABLES_NAMES } from "../helpers/sb.config";
 import { GetTransForTokensArray, LANG_TOKENS } from "../helpers/lang_strings";
 import ActionButton from "./ActionButton";
+import { printTeamMonthlyRepport } from "../helpers/funcs_print";
 
 function AgentsByTeam({ agents_by_team, team }) {
   //const [agents_by_team, set_agents_by_team] = useState(undefined);
@@ -65,6 +66,12 @@ export default function TableLoadsTotals({
   }, [lastUpdateDate]);
 
   let dt = Object.entries(totalData);
+
+  function print(td) {
+    console.log("print", td);
+    alert("La fonction n'est pas encore implementee ...");
+    //printTeamMonthlyRepport(td);
+  }
 
   return (
     <table className=" w-full rounded-md   ">
@@ -119,7 +126,10 @@ export default function TableLoadsTotals({
                             <ActionButton
                               icon={pdf}
                               title={""}
-                              onClick={(e) => console.log(td)}
+                              onClick={(e) => {
+                                console.log(td);
+                                print(td);
+                              }}
                             />
                           </span>
                         </div>
@@ -137,9 +147,10 @@ export default function TableLoadsTotals({
                           <ActionButton
                             icon={pdf}
                             title={""}
-                            onClick={(e) =>
-                              alert("La fonction n'est pas encore faite ...")
-                            }
+                            onClick={(e) => {
+                              alert("La fonction n'est pas encore faite ...");
+                              //print(td);
+                            }}
                           />
                         </span>
                       </td>
