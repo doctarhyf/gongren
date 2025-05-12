@@ -763,6 +763,38 @@ export function formatAsMoney(value, currency) {
 
 function addUpShiftData(arr) {}
 
+export function splitZhAndLat(input) {
+  const result = [];
+  let buffer = "";
+  let currentType = null;
+
+  // Helper to check if a character is Chinese
+  function isChinese(char) {
+    return /[\u4e00-\u9fff]/.test(char);
+  }
+
+  for (const char of input) {
+    const type = isChinese(char) ? "zh" : "lat";
+
+    if (type !== currentType) {
+      if (buffer) {
+        result.push({ [currentType]: buffer });
+      }
+      buffer = char;
+      currentType = type;
+    } else {
+      buffer += char;
+    }
+  }
+
+  // Push remaining buffer
+  if (buffer) {
+    result.push({ [currentType]: buffer });
+  }
+
+  return result;
+}
+
 export function printTotalsTable(totalData, y, m) {
   const doc = new jsPDF({ orientation: "portrait" });
   let r = doc.addFont(

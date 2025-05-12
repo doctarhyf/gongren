@@ -1,6 +1,11 @@
 import { jsPDF } from "jspdf";
 
-import { getDaysInMonth, formatFrenchDate, AddLeadingZero } from "./func";
+import {
+  getDaysInMonth,
+  formatFrenchDate,
+  AddLeadingZero,
+  splitZhAndLat,
+} from "./func";
 import { MONTHS, POSTE, POSTES, SUPERVISORS } from "./flow";
 import autoTable from "jspdf-autotable";
 const orientation = "landscape";
@@ -34,6 +39,13 @@ function drawChineseEnglishTextLine(doc, x, y, fontSize, tokens) {
 
   const lat_font_name = "helvetica";
   const zh_font_name = "DroidSansFallback";
+
+  if (!Array.isArray(tokens)) {
+    tokens = splitZhAndLat(tokens);
+
+    console.log("gen tokens", tokens);
+  }
+
   tokens.forEach((t, i) => {
     const k = Object.keys(t)[0];
     const text = Object.values(t)[0];
@@ -1343,7 +1355,7 @@ export function printTeamMonthlyRepport(data) {
     "DroidSansFallback",
     "normal"
   );
-
+  const fontSize = 10;
   /* let rect = drawLogo(doc);
 
   rect = drawChineseEnglishTextLine(doc, rect.x, rect.y + rect.h + 8, 12, [
@@ -1355,7 +1367,7 @@ export function printTeamMonthlyRepport(data) {
     { zh: "月" },
   ]); */
 
-  doc.setFontSize(10);
+  doc.setFontSize(fontSize);
   // doc.text(`TOTAL CHARGEMENTS ${MONTHS[m]} ${y}`, rect.x, rect.y + 8);
   //doc.text("cool", 10, 10);
 
@@ -1397,21 +1409,15 @@ export function printTeamMonthlyRepport(data) {
   // Subtitle (Chinese date)
   doc.setFontSize(11);
   doc.setFont("Helvetica", "normal");
-  doc.text("B班2025年4月3日至4月30日部分生产技术报告", 10, 50 + offsety);
-  /* drawChineseEnglishTextLine(
+  //doc.text("B班2025年4月3日至4月30日部分生产技术报告", 10, 50 + offsety);
+  drawChineseEnglishTextLine(
     doc,
     10,
     50 + offsety,
-    { lat: t },
-    { zh: "班" },
-    { lat: " - " },
-    { lat: "" + y },
-    { zh: "年" },
-    { lat: "" + m },
-    { zh: "月" }
-  ); */
+    fontSize,
+    "B班2025年4月3日至4月30日部分生产技术报告"
+  );
 
-  // Table: TOTAL PARTIEL
   autoTable(doc, {
     startY: 60 + offsety,
     head: [["TOTAL PARTIEL 阶段总计", ""]],
@@ -1432,8 +1438,10 @@ export function printTeamMonthlyRepport(data) {
   doc.text("SUPERVISEUR EMCO", 110, 130 + offsety);
 
   doc.setFont("Helvetica", "bold");
-  doc.text("GCK B 班包装", 10, 137 + offsety);
-  doc.text("EMCO 监督员", 110, 137 + offsety);
+  //doc.text("GCK B 班包装", 10, 137 + offsety);
+  drawChineseEnglishTextLine(doc, 10, 137 + offsety, fontSize, "GCK B 班包装");
+  //doc.text("EMCO 监督员", 110, 137 + offsety);
+  drawChineseEnglishTextLine(doc, 110, 137 + offsety, fontSize, "EMCO 监督员");
 
   doc.setFont("Helvetica", "normal");
   doc.text("CHRISTIAN NKULU MWENZE 库鲁", 10, 144 + offsety);
