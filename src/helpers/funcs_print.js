@@ -1423,32 +1423,33 @@ export function printTeamMonthlyRepport(data, date) {
   }); */
 
   const spacing = 8;
-  drawChineseEnglishTextLine(doc, 10, 60 + offsety, 12, "TOTAL 总计");
+  const starty = 70;
+  drawChineseEnglishTextLine(doc, 10, starty + offsety, 12, "TOTAL 总计");
   drawChineseEnglishTextLine(
     doc,
     10,
-    60 + spacing + offsety,
+    starty + spacing + offsety,
     12,
     `- Sacs Utilisés / 使用水泥袋 : ${sacs} pièces / 个`
   );
   drawChineseEnglishTextLine(
     doc,
     10,
-    60 + spacing * 2 + offsety,
+    starty + spacing * 2 + offsety,
     12,
     `- Tonnage / 吨位 : ${tonnage} T / 吨`
   );
   drawChineseEnglishTextLine(
     doc,
     10,
-    60 + spacing * 3 + offsety,
+    starty + spacing * 3 + offsety,
     12,
     `- Camions chargés / 装载卡车数 : ${camions} camions / 辆`
   );
   drawChineseEnglishTextLine(
     doc,
     10,
-    60 + spacing * 4 + offsety,
+    starty + spacing * 4 + offsety,
     12,
     `- Sacs Déchirés / 破损水泥袋 : ${dechires} pièces / 个`
   );
@@ -1489,7 +1490,7 @@ export function printTeamMonthlyRepport(data, date) {
       MONTHS[new Date().getMonth()]
     } ${new Date().getFullYear()}`,
     10,
-    170 + offsety
+    220 + offsety
   );
 
   // Save
