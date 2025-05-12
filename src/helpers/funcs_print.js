@@ -1454,18 +1454,17 @@ export function printTeamMonthlyRepport(data, date) {
     `- Sacs Déchirés / 破损水泥袋 : ${dechires} pièces / 个`
   );
 
-  //doc.setFont(lat_font_name, "normal");
-  // Supervisors
+  const decalage = 40;
   doc.setFontSize(11);
-  doc.text("SUPERVISEUR GCK", 10, 130 + offsety);
-  doc.text("SUPERVISEUR EMCO", 110, 130 + offsety);
+  doc.text("SUPERVISEUR GCK", 10, 130 + decalage + offsety);
+  doc.text("SUPERVISEUR EMCO", 110, 130 + decalage + offsety);
 
   //doc.setFont("Helvetica", "bold");
 
   drawChineseEnglishTextLine(
     doc,
     10,
-    137 + offsety,
+    137 + decalage + offsety,
     fontSize,
     `GCK ${team} 班班长`
   );
@@ -1473,15 +1472,27 @@ export function printTeamMonthlyRepport(data, date) {
   drawChineseEnglishTextLine(
     doc,
     110,
-    137 + offsety,
+    137 + decalage + offsety,
     fontSize,
     `EMCO ${team} 管理员`
   );
   //doc.setFont("Helvetica", "normal");
   //doc.text("CHRISTIAN NKULU MWENZE 库鲁", 10, 144 + offsety);
-  drawChineseEnglishTextLine(doc, 10, 144 + offsety, 14, gck_banzhang);
+  drawChineseEnglishTextLine(
+    doc,
+    10,
+    144 + decalage + offsety,
+    14,
+    gck_banzhang
+  );
   //doc.text("OSÉE YAV-MBA", 110, 144 + offsety);
-  drawChineseEnglishTextLine(doc, 110, 144 + offsety, 14, emco_banzhang);
+  drawChineseEnglishTextLine(
+    doc,
+    110,
+    144 + decalage + offsety,
+    14,
+    emco_banzhang
+  );
 
   // Footer
   doc.setFontSize(10);
