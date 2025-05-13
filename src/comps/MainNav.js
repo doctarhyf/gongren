@@ -62,7 +62,7 @@ function MainNav({ user, onMenuClick, curPage, onLogout }) {
                       onMenuClick(menu_item);
                       sethidden(true);
                     }}
-                    className={` p-2 dark:text-black hover:bg-white rounded-md dark:hover:bg-black/50
+                    className={` p-2 dark:text-black hover:bg-orange-500 hover:text-white rounded-md dark:hover:bg-black/50
                 ${curPage === menu_item.path && "  bg-white dark:bg-black/50 "}
 
               `}
@@ -77,7 +77,7 @@ function MainNav({ user, onMenuClick, curPage, onLogout }) {
             <li className="  ">
               <button
                 onClick={onLogout}
-                className=" flex gap-2 w-fit text-xs p-2  rounded-md mx-auto border-white border text-red-900 hover:bg-red-700 "
+                className=" flex gap-2 w-fit text-xs p-2  rounded-md mx-auto border-white border text-orange-600 hover:bg-orange-500 hover:text-white "
               >
                 <img src={logout} className=" w-4 h-4 " />
                 {GetTransForTokensArray(LANG_TOKENS.LOGOUT, user.lang)}

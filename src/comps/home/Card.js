@@ -10,7 +10,7 @@ const COLORS = [
 ];
 
 const Card = ({ id, title, desc, children, wfull }) => {
-  const [showChildren, setShowChildren] = useState(false);
+  const [showChildren, setShowChildren] = useState(true);
 
   return (
     <div
