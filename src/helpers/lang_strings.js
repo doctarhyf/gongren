@@ -212,6 +212,16 @@ export const LANG_TOKENS = {
     "欢迎来到水泥厂门户",
     "Bienvenue sur le portail de la cimenterie",
   ],
+  MSG_WELCOME_HOME: [
+    "Welcome to your all-in-one expedition tracking platform – streamline bag tracking, agent management, and storage with ease.nerate detailed team reports and keep every big bag accounted for, every month.",
+    "欢迎使用您的一体化平台，轻松追踪袋子运输，管理代理信息及空大袋存储。每月自动生成团队报告，全面掌握每一个袋子的动向。",
+    "Bienvenue sur votre plateforme tout-en-un pour le suivi des expéditions, la gestion des agents et le stockage des big bags vides. Générez facilement des rapports mensuels par équipe et gardez chaque sac sous contrôle.",
+  ],
+  WCM_2_BT: [
+    "Welcome to BagTrack",
+    "欢迎使用 BagTrack",
+    "Bienvenue sur BagTrack",
+  ],
   MSG_SECTION: [
     "Click on a section to see more details.",
     " 点击一个栏目查看更多详情。",

@@ -16,7 +16,11 @@ import {
 import { ACCESS_CODES } from "../helpers/flow";
 import { UserHasAccessCode } from "../helpers/func";
 
-import { GetTransForTokensArray, LANG_TOKENS } from "../helpers/lang_strings";
+import {
+  GetTransForTokenName,
+  GetTransForTokensArray,
+  LANG_TOKENS,
+} from "../helpers/lang_strings";
 import * as SB from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
 
@@ -121,7 +125,14 @@ export default function Home() {
     <div className=" container md:mx-auto ">
       <Loading isLoading={loading} />
 
-      <HUDGreetings user={user} />
+      <div className=" py-2  ">
+        <div className=" text-4xl font-thin text-orange-400 ">
+          {LANG_TOKENS.WCM_2_BT[0]}
+        </div>
+        <div className=" py-2 font-serif italic  ">
+          {LANG_TOKENS.MSG_WELCOME_HOME[0]}
+        </div>
+      </div>
 
       <div className="p-2 text-cente mx-auto text-center text-lg font-thin px-2">
         {GetTransForTokensArray(LANG_TOKENS.MSG_SECTION, user.lang)}
@@ -160,6 +171,8 @@ export default function Home() {
         {(UserHasAccessCode(user, ACCESS_CODES.ROOT) ||
           user.poste === "INT") && <HUDOpsLogs />}
       </div>
+
+      <HUDGreetings user={user} />
 
       <div className="text-sm text-center">
         Code & Design by{" "}
