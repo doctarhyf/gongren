@@ -125,7 +125,7 @@ export default function Home() {
     <div className=" container md:mx-auto ">
       <Loading isLoading={loading} />
 
-      <div className=" py-4  bg-cover bg-center   w-full ">
+      <div className=" py-4  bg-cover bg-center    w-full ">
         <div className=" text-4xl  text-orange-400 mb-2 ">
           {GetTransForTokensArray(LANG_TOKENS.WCM_2_BT, user.lang)}
         </div>
