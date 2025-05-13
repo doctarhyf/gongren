@@ -23,7 +23,7 @@ import {
 } from "../helpers/lang_strings";
 import * as SB from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
-
+import loaded_truck from "../img/loaded_truck.jpg";
 export default function Home() {
   const [, , user] = useContext(UserContext);
   const [loading, setloading] = useState(false);
@@ -125,12 +125,12 @@ export default function Home() {
     <div className=" container md:mx-auto ">
       <Loading isLoading={loading} />
 
-      <div className=" py-2  ">
-        <div className=" text-4xl font-thin text-orange-400 ">
-          {LANG_TOKENS.WCM_2_BT[0]}
+      <div className=" py-4  bg-cover bg-center   w-full ">
+        <div className=" text-4xl  text-orange-400 mb-2 ">
+          {GetTransForTokensArray(LANG_TOKENS.WCM_2_BT, user.lang)}
         </div>
-        <div className=" py-2 font-serif italic  ">
-          {LANG_TOKENS.MSG_WELCOME_HOME[0]}
+        <div className="  font-serif italic  ">
+          {GetTransForTokensArray(LANG_TOKENS.MSG_WELCOME_HOME, user.lang)}
         </div>
       </div>
 
