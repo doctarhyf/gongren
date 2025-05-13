@@ -21,7 +21,7 @@ function MyForm({
 }) {
   return (
     <div className="mx-auto   flex flex-col space-y-4    md:card md:bg-base-100 md:w-96 md:p-2 md:shadow-xl ">
-      <img src={LOGO} width={200} />
+      <img src={LOGO} width={200} className=" bg-white " />
       <div>{GetTransForTokensArray(LANG_TOKENS.EMPLOYE_ID, lang)}</div>
       <input
         ref={ref_mat}
@@ -63,7 +63,7 @@ function MyForm({
 
       <LanguageChooser onLanguageChanged={onLanguageChanged} />
 
-      <div className=" md:hidden ">
+      <div className=" hidden ">
         <Christmas lang={lang} isMobile={true} />
       </div>
 

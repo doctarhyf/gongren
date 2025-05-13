@@ -179,7 +179,7 @@ function App() {
       <UserContext.Provider value={[showImage, showData, user, setuser]}>
         <div>
           <div
-            className={`  flex flex-col justify-center items-center bg-black/60 backdrop-blur-md text-white  absolute h-lvh w-lvw ${
+            className={`  flex flex-col justify-center items-center backdrop-blur-md text-white  absolute h-lvh w-lvw ${
               showModal ? "absolute" : "hidden"
             } `}
           >

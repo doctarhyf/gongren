@@ -153,8 +153,8 @@ export default function Home() {
         <HUDMonthProgress loads={loads} date={date} />
         <HUDMyTeam user={user} />
 
-        <HUDSacsCalc />
-        <HUDCalculsBons />
+        {/*  <HUDSacsCalc /> */}
+        {/*  <HUDCalculsBons /> */}
         <HUDAgents />
         {false && <HUDGestionSacs />}
         {(UserHasAccessCode(user, ACCESS_CODES.ROOT) ||

@@ -36,7 +36,7 @@ function MainNav({ user, onMenuClick, curPage, onLogout }) {
   const [hidden, sethidden] = useState(true);
 
   return (
-    <section className=" p-1  relative  items-start  bg-sky-500 h-min md:h-fit w-full  md:flex justify-between">
+    <section className=" p-1  relative  items-start bg-white text-black h-min md:h-fit w-full  md:flex justify-between">
       <div
         onClick={(e) => sethidden(!hidden)}
         className="    p-1 cursor-pointer h-[30pt]   md:w-fit md:max-w-[120pt] flex justify-between md:justify-center items-center "
@@ -62,7 +62,7 @@ function MainNav({ user, onMenuClick, curPage, onLogout }) {
                       onMenuClick(menu_item);
                       sethidden(true);
                     }}
-                    className={` p-2 dark:text-white hover:bg-white rounded-md dark:hover:bg-black/50
+                    className={` p-2 dark:text-black hover:bg-white rounded-md dark:hover:bg-black/50
                 ${curPage === menu_item.path && "  bg-white dark:bg-black/50 "}
 
               `}
@@ -77,7 +77,7 @@ function MainNav({ user, onMenuClick, curPage, onLogout }) {
             <li className="  ">
               <button
                 onClick={onLogout}
-                className=" flex gap-2 w-fit text-xs p-2  rounded-md mx-auto border-white border text-white hover:bg-red-700 "
+                className=" flex gap-2 w-fit text-xs p-2  rounded-md mx-auto border-white border text-red-900 hover:bg-red-700 "
               >
                 <img src={logout} className=" w-4 h-4 " />
                 {GetTransForTokensArray(LANG_TOKENS.LOGOUT, user.lang)}
