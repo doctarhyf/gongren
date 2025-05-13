@@ -110,7 +110,7 @@ export default function TableLoadsTotals({
               <>
                 {" "}
                 {td[0] !== "TOTAL" && (
-                  <tr className=" hover:bg-slate-950 hover:cursor-pointer ">
+                  <tr className=" hover:bg-slate-500 hover:cursor-pointer ">
                     <td className={CLASS_TD}>{`${i + 1}). ${td[0]}`}</td>
                     {!columnsToHide.includes(COLUMNS_TO_HIDE.SACS) && (
                       <td className={CLASS_TD}>{td[1].sacs}</td>
@@ -187,7 +187,8 @@ export default function TableLoadsTotals({
 
           <tr>
             <td className={CLASS_TD} colSpan={5 - columnsToHide.length}>
-              Last Update : <b>{upddate}</b>
+              {GetTransForTokensArray(LANG_TOKENS.LAST_UPDATE, user.lang)} :{" "}
+              <b>{upddate}</b>
             </td>
           </tr>
         </div>
