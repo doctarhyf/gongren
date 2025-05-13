@@ -865,7 +865,9 @@ export function HUDAgents() {
       (agents) => {
         setloading(false);
 
-        const agentsf = agents.filter((agent, i) => agent.active === "OUI");
+        const agentsf = agents.filter(
+          (agent, i) => agent.active === "OUI" && agent.equipe !== "N/A"
+        );
         const agentsg = GroupBySectionAndEquipe(agentsf);
         setAgentsFiltered(agentsf);
         setAgentsGrouped(agentsg);

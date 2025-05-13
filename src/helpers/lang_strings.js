@@ -192,7 +192,7 @@ export const LANG_TOKENS = {
   AGENTS: ["Agents", "工人", "Agents"],
   AGENTS_COUNT: ["Agents Count", "工人数量", "Nombre d'Agents"],
   LOADING_REPPORT: ["Loading Repport", "包装报告", "Rapport de chargement"],
-  BIGBAG: ["BigBag", "吨包包装", "BigBag"],
+  BIGBAG: ["BigBag", "吨袋包装", "BigBag"],
   LOADING_STATS: [
     "Loading Stats",
     "包装统计数据",
