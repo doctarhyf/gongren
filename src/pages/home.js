@@ -13,7 +13,7 @@ import {
   HUDOpsLogs,
   HUDSacsCalc,
 } from "../comps/home/HUDS";
-import { ACCESS_CODES } from "../helpers/flow";
+import { ACCESS_CODES, POSTES } from "../helpers/flow";
 import { UserHasAccessCode } from "../helpers/func";
 
 import {
@@ -121,6 +121,8 @@ export default function Home() {
     setdate(d);
   }
 
+  const isSup = user.poste === "SUP";
+
   return (
     <div className=" container md:mx-auto ">
       <Loading isLoading={loading} />
@@ -170,7 +172,7 @@ export default function Home() {
         {(UserHasAccessCode(user, ACCESS_CODES.ROOT) ||
           user.poste === "INT") && <HUDOpsLogs />}
       </div>
-      <HUDMyTeam user={user} />
+      {isSup && <HUDMyTeam user={user} />}
       <HUDGreetings user={user} />
 
       <div className="text-sm text-center">
