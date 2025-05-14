@@ -823,10 +823,10 @@ export function HUDGestionSacs() {
               {Object.entries(stock[1]).map((s, i) => (
                 <div className="  ">
                   <div>
-                    <span className=" text-[16pt] ">{s[1]}</span>
                     <span className=" font-bold  px-2 text-sm  ">
                       {`${s[0]} `}
                     </span>
+                    :<span className=" text-[16pt] "> {s[1]}</span>
                   </div>
                 </div>
               ))}
