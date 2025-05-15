@@ -248,12 +248,18 @@ export default function TableLoadsTotals({
                         </span>
                         <span className="  opacity-50  "> - CHARG</span>
                       </div>
-                      <div className=" text-[14pt]  text-xs p-1 rounded-md  ">
-                        <span className=" font-black bg-emerald-950 p-1 mx-1 rounded-md  ">
-                          {formatAsMoney((td[1].bonus * 1000).toFixed(2))}
-                        </span>{" "}
-                        <span className="  opacity-50 "> - BONUS</span>
-                      </div>
+
+                      {UserHasAccessCode(
+                        user,
+                        ACCESS_CODES.CAN_SEE_HOME_PAGE_BONUS_DATA
+                      ) && (
+                        <div className=" text-[14pt]  text-xs p-1 rounded-md  ">
+                          <span className=" font-black bg-emerald-950 p-1 mx-1 rounded-md  ">
+                            {formatAsMoney((td[1].bonus * 1000).toFixed(2))}
+                          </span>{" "}
+                          <span className="  opacity-50 "> - BONUS</span>
+                        </div>
+                      )}
                     </div>
                   </div>
                   <div>
