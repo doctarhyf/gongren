@@ -204,7 +204,10 @@ export default function TableLoadsTotals({
             >
               {(td[0] === user.equipe ||
                 UserHasAccessCode(user, ACCESS_CODES.ROOT) ||
-                UserHasAccessCode(user, ACCESS_CODES.CAN_SEE_ALL_BONUS) ||
+                UserHasAccessCode(
+                  user,
+                  ACCESS_CODES.CAN_SEE_ALL_TEAMS_LOADS_PROGRESS
+                ) ||
                 user.poste === "INT") && (
                 <div className=" border-b border-white/15 ">
                   <div className=" flex justify-between ">
