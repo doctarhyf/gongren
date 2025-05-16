@@ -779,10 +779,13 @@ export function HUDGestionSacs() {
     loadData();
   }, []);
 
+  //const [stockCont, setStockCont] = useState([]);
+  const [stockProd, setStockProd] = useState([]);
   async function loadData() {
     setloading(true);
     const stockCont = await SB.LoadAllItems(TABLES_NAMES.SACS_CONTAINER);
     const stockProd = await SB.LoadAllItems(TABLES_NAMES.SACS_PRODUCTION);
+    setStockProd(stockProd);
 
     const stockContLen = stockCont.length;
     const stockProdLen = stockProd.length;
@@ -792,9 +795,6 @@ export function HUDGestionSacs() {
 
     const { stock32, stock42 } = stockContLastEl;
     const { restants32, restants42 } = stockProdLastEl;
-
-    //console.log("sc", stockCont, stockCont.length);
-    //console.log("sp", stockProd, stockProd.length);
 
     setdata({
       cont: { s32: stock32, s42: stock42 },
@@ -814,27 +814,57 @@ export function HUDGestionSacs() {
         <Loading isLoading={true} />
       ) : (
         <div className="">
-          {[
-            ["CONT./集装箱袋数", data.cont],
-            ["REST./剩余总量", data.prod],
-          ].map((stock, i) => (
-            <div className=" border-b border-b-white/10 py-2 ">
-              {/* <div className=" text-[24pt] ">{it[1]}</div> */}
-              {Object.entries(stock[1]).map((s, i) => (
-                <div className="  ">
-                  <div>
-                    <span className=" font-bold  px-2 text-sm  ">
-                      {`${s[0]} `}
-                    </span>
-                    :<span className=" text-[16pt] "> {s[1]}</span>
+          <div>
+            {[
+              ["CONT./集装箱袋数", data.cont],
+              ["REST./剩余总量", data.prod],
+            ].map((stock, i) => (
+              <div className=" border-b border-b-white/10 py-2 ">
+                {/* <div className=" text-[24pt] ">{it[1]}</div> */}
+                {Object.entries(stock[1]).map((s, i) => (
+                  <div className="  ">
+                    <div>
+                      <span className=" font-bold  px-2 text-sm  ">
+                        {`${s[0]} `}
+                      </span>
+                      :<span className=" text-[16pt] "> {s[1]}</span>
+                    </div>
                   </div>
+                ))}
+                <div className="  text-xs bg-white/25 px-2 py-1 w-fit rounded-md ">
+                  {stock[0]}
                 </div>
-              ))}
-              <div className="  text-xs bg-white/25 px-2 py-1 w-fit rounded-md ">
-                {stock[0]}
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
+          <div>
+            <table className="  text-xs w-full">
+              <tr>
+                <td className=" border p-1  ">Date</td>
+                <td className=" border p-1  ">s32</td>
+                <td className=" border p-1  ">s42</td>
+                <td className=" border p-1  ">T32</td>
+                <td className=" border p-1  ">T42</td>
+              </tr>
+              {stockProd &&
+                stockProd
+                  .sort((a, b) => b.id - a.id)
+                  .map(
+                    (it, i) =>
+                      i < 5 && (
+                        <tr>
+                          <td className=" border p-1  ">
+                            {it.date_time.replace("T", " ")}
+                          </td>
+                          <td className=" border p-1  ">{it.sortis32}</td>
+                          <td className=" border p-1  ">{it.sortis42}</td>
+                          <td className=" border p-1  ">{it.tonnage32}</td>
+                          <td className=" border p-1  ">{it.tonnage42}</td>
+                        </tr>
+                      )
+                  )}
+            </table>
+          </div>
         </div>
       )}
     </Card>
