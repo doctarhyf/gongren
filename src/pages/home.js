@@ -170,7 +170,7 @@ export default function Home() {
         {(UserHasAccessCode(user, ACCESS_CODES.ROOT) ||
           user.poste === "INT") && <HUDOpsLogs />}
       </div>
-      {isSup && <HUDMyTeam user={user} />}
+      {/* {isSup && <HUDMyTeam user={user} />} */}
       <HUDGreetings user={user} />
 
       <div className="text-sm text-center">
