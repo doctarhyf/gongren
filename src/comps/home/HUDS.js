@@ -838,8 +838,10 @@ export function HUDGestionSacs() {
             ))}
           </div>
           <div>
+            <div className=" text-sm font-bold  my-2 ">Last 5 records</div>
             <table className="  text-xs w-full">
               <tr>
+                <td className=" border p-1  ">No</td>
                 <td className=" border p-1  ">Date</td>
                 <td className=" border p-1  ">s32</td>
                 <td className=" border p-1  ">s42</td>
@@ -853,6 +855,7 @@ export function HUDGestionSacs() {
                     (it, i) =>
                       i < 5 && (
                         <tr>
+                          <td className=" border p-1  ">{i + 1}</td>
                           <td className=" border p-1  ">
                             {it.date_time.replace("T", " ")}
                           </td>
