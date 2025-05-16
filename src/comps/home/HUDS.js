@@ -843,8 +843,8 @@ export function HUDGestionSacs() {
               <tr>
                 <td className=" border p-1  ">No</td>
                 <td className=" border p-1  ">Date</td>
-                <td className=" border p-1  ">s32</td>
-                <td className=" border p-1  ">s42</td>
+                <td className=" border p-1  ">srt.32</td>
+                <td className=" border p-1  ">srt.42</td>
                 <td className=" border p-1  ">T32</td>
                 <td className=" border p-1  ">T42</td>
               </tr>
