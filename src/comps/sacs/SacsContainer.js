@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import {
   DAIZI_FUZEREN,
   SACS_CONTAINER_OPERATION_TYPE,
@@ -14,6 +14,9 @@ import {
   formatFrenchDate,
 } from "../../helpers/func";
 import jsPDF from "jspdf";
+import { LANG_TOKENS } from "../../helpers/lang_strings";
+import { GetRandomArray } from "../../helpers/funcs_print";
+import { UserContext } from "../../App";
 
 export default function SacsContainer({
   trans,
@@ -21,6 +24,7 @@ export default function SacsContainer({
   stock,
   onResetStock,
 }) {
+  const [, , user] = useContext(UserContext);
   const [showInput, setShowInput] = useState(false);
   const [data, setdata] = useState({
     //id: 0,
@@ -152,7 +156,11 @@ export default function SacsContainer({
 
   return (
     <div>
-      <Stock id={STOCK_TYPE.CONTAINER} stock={stock} label={"CONTAINER"} />
+      <Stock
+        id={STOCK_TYPE.CONTAINER}
+        stock={stock}
+        label={GetRandomArray(LANG_TOKENS.CONTAINER_REST, user.lang)}
+      />
       <div>
         {!showInput && (
           <div className=" flex ">

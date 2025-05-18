@@ -172,10 +172,16 @@ export const SACS_SECTIONS = {
   CONTAINER: {
     label: "Sacs Container",
     access_code: ACCESS_CODES.TAB_SAC_CONT,
+    "zh-CN": "集装箱",
+    "en-US": "Container",
+    "fr-FR": "Conteneur",
   },
   PRODUCTION: {
     label: "Sacs Production",
     access_code: ACCESS_CODES.TAB_SAC_PROD,
+    "zh-CN": "生产",
+    "en-US": "Production",
+    "fr-FR": "Production",
   },
   /* CALCULATOR: {
     label: "Sacs Calculator",

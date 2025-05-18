@@ -301,6 +301,13 @@ export const LANG_TOKENS = {
   lang: ["LANGUAGE", "语言", "LANGUE"],
   CHIN: ["CHINESE AGENTS", "中方员工", "AGENTS CHINOIS"],
   JR: ["DAILY TEAM", "常白班", "EQUIPE DU JOUR"],
+  PROD_REST: [
+    "PRODUCTION (REMAINS)",
+    "包装机（剩余）",
+    "PRODUCTION (RESTANTS)",
+  ],
+  CONTAINER_REST: ["CONTAINER (REMAINS)", "集装箱", "CONTAINEUR (RESTANTS)"],
+  STOCK: ["STOCK", "库存", "STOCK"],
 };
 
 //Each entry now includes a French translation as the third element in the array. Let me know if there are any terms that might need adjustment or further customization!

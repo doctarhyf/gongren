@@ -24,7 +24,7 @@ export default function TabCont({ tabs, onSelectTab, selectedIndex = 0 }) {
                   : "  text-sky-500 "
               } p-1 border border-sky-500 rounded-md `}
             >
-              {t[1].label}
+              {t[1][user.lang]}
             </button>
           )}
         </>

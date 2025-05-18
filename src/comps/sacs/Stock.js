@@ -1,9 +1,20 @@
+import { useContext } from "react";
+import { UserContext } from "../../App";
 import { STOCK_RESET_PWD, STOCK_TYPE } from "../../helpers/flow";
+import {
+  GetTransForTokensArray,
+  LANG_TOKENS,
+} from "../../helpers/lang_strings";
 
 export default function Stock({ id, stock, label, onResetStock }) {
+  const [, , user] = useContext(UserContext);
+
   return (
     <div className=" py-4 border rounded-md p-1 bg-slate-200 shadow-md flex flex-col gap-2">
-      <div className=" font-bold  "> STOCK {label}</div>
+      <div className=" font-bold  ">
+        {" "}
+        {GetTransForTokensArray(LANG_TOKENS.STOCK, user.lang)} {label}
+      </div>
 
       <div className=" flex flex-col ">
         <div>

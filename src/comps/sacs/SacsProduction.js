@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import {
   SACS_CONTAINER_OPERATION_TYPE,
   STOCK_TYPE,
@@ -15,6 +15,11 @@ import {
 } from "../../helpers/func";
 import { useReactToPrint } from "react-to-print";
 import jsPDF from "jspdf";
+import {
+  GetTransForTokensArray,
+  LANG_TOKENS,
+} from "../../helpers/lang_strings";
+import { UserContext } from "../../App";
 
 export default function SacsProduction({
   trans,
@@ -22,6 +27,7 @@ export default function SacsProduction({
   stock,
   onResetStock,
 }) {
+  const [, , user] = useContext(UserContext);
   const [adjust, set_adjust] = useState(0);
   const [showAdjust, setShowAdjust] = useState(false);
   const [showInput, setShowInput] = useState(false);
@@ -190,7 +196,7 @@ export default function SacsProduction({
       <Stock
         id={STOCK_TYPE.PRODUCTION}
         stock={stock}
-        label={"PRODUCTION (RESTANTS)"}
+        label={GetTransForTokensArray(LANG_TOKENS.PROD_REST, user.lang)}
         onResetStock={onResetStock}
       />
       <div>
