@@ -129,7 +129,8 @@ export default function Home() {
 
       <div className=" py-4  bg-cover bg-center md:text-center   w-full ">
         <div className=" text-4xl  text-orange-400 mb-2 ">
-          {GetTransForTokensArray(LANG_TOKENS.WCM_2_BT, user.lang)}
+          {GetTransForTokensArray(LANG_TOKENS.WCM_2_BT, user.lang)}, Mr.
+          {user.nom} {user.postnom}
         </div>
         <div className="  font-serif italic  ">
           {GetTransForTokensArray(LANG_TOKENS.MSG_WELCOME_HOME, user.lang)}
