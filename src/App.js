@@ -76,7 +76,7 @@ function App() {
         return;
       }
 
-      if (!UserHasAccessCode(nuser, ACCESS_CODES.CAN_ACCESS)) {
+      if (!UserHasAccessCode(nuser, ACCESS_CODES.CAN_ACCESS_PLATFORM)) {
         const { nom, postnom, prenom, mingzi, matricule } = nuser;
         const fname = `${nom} ${postnom} ${prenom} ${mingzi} - ${matricule}`;
 
