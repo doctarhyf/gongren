@@ -1056,7 +1056,7 @@ const ShiftTeamCard = () => {
     squadLeader: "KASONGO NUMBI Jina 奴婢",
     agentsCount: 14,
     currentShiftTime: "07:00 – 17:00",
-    shiftProgress: 67,
+    shiftProgress: 20,
   };
 
   return (
