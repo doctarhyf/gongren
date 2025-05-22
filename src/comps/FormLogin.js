@@ -19,6 +19,11 @@ function MyForm({
   onBtnLogin,
   onLanguageChanged,
 }) {
+  const location = window.location; //.pathname.split("/");
+  const { host, pathname } = location;
+  console.log("location: ", location);
+  console.log("host: ", host);
+  console.log("pathname: ", pathname);
   return (
     <div className="mx-auto   flex flex-col space-y-4    md:card md:bg-base-100 md:w-96 md:p-2 md:shadow-xl ">
       <img src={LOGO} width={200} className=" bg-white " />
@@ -48,7 +53,6 @@ function MyForm({
           {GetTransForTokensArray(LANG_TOKENS.LOGIN, lang)}
         </button>
       </div>
-
       <dialog id="my_modal_5" className="modal modal-bottom sm:modal-middle">
         <div className="modal-box">
           <h3 className="font-bold text-lg">Hello!</h3>
@@ -60,13 +64,10 @@ function MyForm({
           </div>
         </div>
       </dialog>
-
       <LanguageChooser onLanguageChanged={onLanguageChanged} />
-
       <div className=" hidden ">
         <Christmas lang={lang} isMobile={true} />
       </div>
-
       <div className="text-sm">
         {LANG_TOKENS.CODE_AND_DESIGN[langIdx]}
         <a className="text-sky-500  italic" href="https://github.com/doctarhyf">
