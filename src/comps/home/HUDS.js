@@ -1067,7 +1067,7 @@ const ShiftTeamCard = () => {
         </span>
         <span>EQUIPE {teamData.team}</span>
         <span className="ml-auto text-sm">
-          {y}年{m}月
+          {y}年{m}月{d}日
         </span>
       </div>
 
