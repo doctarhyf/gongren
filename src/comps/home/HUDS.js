@@ -1031,3 +1031,130 @@ export function HUDOpsLogs() {
     </Card>
   );
 }
+
+export function HUDCurrentTeam() {
+  return (
+    <Card
+      id={8}
+      title={"EQUIPE EN POSTE"}
+      desc={"Information sur l'equipe presentement en poste"}
+    >
+      <ShiftTeamCard />
+    </Card>
+  );
+}
+
+const ShiftTeamCard = () => {
+  const date = new Date();
+  const m = (date.getMonth() + 1).toString().padStart(2, "0");
+  const y = date.getFullYear();
+  const d = date.getDate();
+
+  const teamData = {
+    team: "B",
+    supervisor: "NKULU MWENZE Christian 库鲁",
+    squadLeader: "KASONGO NUMBI Jina 奴婢",
+    agentsCount: 14,
+    currentShiftTime: "07:00 – 17:00",
+    shiftProgress: 67,
+  };
+
+  return (
+    <div className=" p-1 rounded-2xl w-full max-w-sm shadow-lg space-y-6">
+      <div className=" py-2 border-b border-teal-500 font-semibold flex items-center gap-2">
+        <span role="img" aria-label="worker">
+          👷‍♂️
+        </span>
+        <span>EQUIPE {teamData.team}</span>
+        <span className="ml-auto text-sm">
+          {y}年{m}月
+        </span>
+      </div>
+
+      <div className="flex gap-4   ">
+        <img
+          src="https://ltvavdcgdrfqhlfpgkks.supabase.co/storage/v1/object/public/agents_photos/1732797003087.jpeg"
+          alt="Supervisor"
+          className="w-20 h-20 rounded-full border-2 border-teal-400 mb-2"
+        />
+        <div>
+          <div className="uppercase text-sm text-teal-300">Supervisor</div>
+          <div className="text-lg font-medium">{teamData.supervisor}</div>
+        </div>
+      </div>
+
+      <div className="flex gap-4   ">
+        <img
+          src="https://via.placeholder.com/100"
+          alt="Squad Leader"
+          className=" w-20 h-20 rounded-full border-2 border-teal-400 mb-2"
+        />
+        <div>
+          <div className="uppercase text-sm text-teal-300">Squad Leader</div>
+          <div className="text-lg font-medium">{teamData.squadLeader}</div>
+        </div>
+      </div>
+
+      <div className="space-y-2">
+        <div className="flex  gap-2">
+          <svg
+            className="w-5 h-5 text-teal-300"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            viewBox="0 0 24 24"
+          >
+            <path d="M17 20h5v-2a4 4 0 00-5-4M9 20H4v-2a4 4 0 015-4m6-4a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+          <div>
+            <div className="text-sm uppercase">Agent Count</div>
+            <div className="ml-auto text-xl font-medium">
+              {teamData.agentsCount}
+            </div>
+          </div>
+        </div>
+
+        <div className="flex  gap-2">
+          <svg
+            className="w-5 h-5 text-teal-300"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            viewBox="0 0 24 24"
+          >
+            <path d="M12 6v6l4 2M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z" />
+          </svg>
+          <div>
+            <div className="text-sm uppercase">Current Shift Time</div>
+            <div className="ml-auto text-xl font-medium">
+              {teamData.currentShiftTime}
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div className="flex items-center gap-2 mb-1">
+            <svg
+              className="w-5 h-5 text-teal-300"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+            >
+              <path d="M4 4v5h.582M20 20v-5h-.581M4 20h16M4 4h16" />
+            </svg>
+            <div className="text-sm uppercase">Shift Progress</div>
+            <div className="ml-auto text-base font-medium">
+              {teamData.shiftProgress}%
+            </div>
+          </div>
+          <div className="w-full h-2 bg-teal-900 rounded-full overflow-hidden">
+            <div
+              className={`h-full bg-teal-400 rounded-full w-[${teamData.shiftProgress}%]`}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};

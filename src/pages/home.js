@@ -6,6 +6,7 @@ import {
   HUDAgents,
   HUDBonus,
   HUDCalculsBons,
+  HUDCurrentTeam,
   HUDGestionSacs,
   HUDGreetings,
   HUDMonthProgress,
@@ -167,6 +168,8 @@ export default function Home() {
         {/*  <HUDSacsCalc /> */}
         {/*  <HUDCalculsBons /> */}
         <HUDAgents />
+
+        <HUDCurrentTeam />
 
         {(UserHasAccessCode(user, ACCESS_CODES.ROOT) ||
           user.poste === "INT") && <HUDOpsLogs />}
