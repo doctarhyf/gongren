@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from "react";
+import React, { useContext, useRef, useState } from "react";
 
 import userEvent from "@testing-library/user-event";
 import { UserContext } from "../App";
@@ -71,7 +71,8 @@ export default function AgentsTable({
 
   const ref_print_empty = useRef();
 
-  function printAgentsRoulementPDF(agents_array) {
+  const ref_adjust_m4 = useRef();
+  function printAgentsRoulementPDF(agents_array, adjustM4) {
     if (agents_array.length === 0) {
       alert("Agents list cant be empty!");
       return;
@@ -80,7 +81,12 @@ export default function AgentsTable({
     const agents_rld_parsed_data = PrepareAgentsPrintRLD(agents_array); //GetRandomArray(20);
     const print_empty = ref_print_empty.current.checked;
 
-    print_agents_rl(agents_rld_parsed_data, print_empty, customAgentsTableName);
+    print_agents_rl(
+      agents_rld_parsed_data,
+      print_empty,
+      customAgentsTableName,
+      adjustM4
+    );
   }
 
   function PrepareAgentsPrintRLD(array) {
@@ -188,10 +194,16 @@ export default function AgentsTable({
                     )}
                     onClick={(e) =>
                       printAgentsRoulementPDF(
-                        isCustomList ? customAgentsList : agentsf
+                        isCustomList ? customAgentsList : agentsf,
+                        ref_adjust_m4.current.checked
                       )
                     }
                   />
+
+                  <div>
+                    <input type="checkbox" ref={ref_adjust_m4} />
+                    {"DECALAGE MAI"}
+                  </div>
 
                   <div>
                     <input type="checkbox" ref={ref_print_empty} />

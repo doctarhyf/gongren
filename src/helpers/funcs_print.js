@@ -624,15 +624,16 @@ function copyAndInsert(agentsArray, copyIndex) {
   agentsArray.splice(copyIndex + 1, 0, { ...elementToCopy }); // Spread operator to create a new object
 }
 
-function print_agents_rl(agents_list, print_empty, team_name) {
+function print_agents_rl(agents_list, print_empty, team_name, adjustM4) {
   const first_el = { ...agents_list[0] };
   const days_names_el = { ...agents_list[agents_list.length - 1] };
 
-  /* if (days_names_el.month === 4  ) {
-    let new_rld = days_names_el.rld.slice(0, -1);
-    days_names_el.rld = new_rld;
-  } */
-
+  if (adjustM4) {
+    if (days_names_el.month === 4) {
+      let new_rld = days_names_el.rld.slice(0, -1);
+      days_names_el.rld = new_rld;
+    }
+  }
   const doc = new jsPDF({ orientation: orientation });
   let r = doc.addFont(
     "fonts/DroidSansFallback.ttf",
