@@ -134,6 +134,7 @@ export const ACCESS_CODES = {
   TAB_SAC_CONT: "SCONT",
   TAB_SAC_PROD: "SPROD",
   TAB_SAC_CALC: "SCAL",
+  TAB_EXIT_CONTAINER: "SEXIT",
   ADD_SAC_CONT: "ASC",
   ADD_SAC_PROD: "ASP",
   UPDATE_ROULEMENT: "UPDRL",
@@ -176,6 +177,13 @@ export const SACS_SECTIONS = {
     "en-US": "Container",
     "fr-FR": "Conteneur",
   },
+  EXIT_CONTAINER: {
+    label: "Sacs Exit Container",
+    access_code: ACCESS_CODES.TAB_EXIT_CONTAINER,
+    "zh-CN": "出口集装箱",
+    "en-US": "Exit Container",
+    "fr-FR": "Sortie Conteneur",
+  },
   PRODUCTION: {
     label: "Sacs Production",
     access_code: ACCESS_CODES.TAB_SAC_PROD,
@@ -183,6 +191,7 @@ export const SACS_SECTIONS = {
     "en-US": "Production",
     "fr-FR": "Production",
   },
+
   /* CALCULATOR: {
     label: "Sacs Calculator",
     access_code: ACCESS_CODES.TAB_SAC_CALC,

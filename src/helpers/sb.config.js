@@ -14,6 +14,7 @@ export const TABLES_NAMES = {
   DICO: "dico",
   SACS: "sacs",
   SACS_CONTAINER: "sacs_cont",
+  SACS_EXIT_CONTAINER: "sacs_exit_cont",
   SACS_PRODUCTION: "sacs_prod",
   SACS_STOCK_CONTAINER: "sacs_stock_cont",
   SACS_STOCK_PRODUCTION: "sacs_stock_prod",

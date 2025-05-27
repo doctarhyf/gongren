@@ -35,12 +35,14 @@ import {
 import Stock from "../comps/sacs/Stock";
 import SacsProduction from "../comps/sacs/SacsProduction";
 import SacsContainer from "../comps/sacs/SacsContainer";
+import SacsExitContainer from "../comps/sacs/SacsExitContainer";
 
 const SAVING_TO_SB = true;
 
 export default function Sacs() {
   const [curtab, setcurtab] = useState(Object.entries(SACS_SECTIONS)[0]);
   const [trans_cont, set_trans_cont] = useState([]);
+  const [trans_exit_cont, set_trans_exit_cont] = useState([]);
   const [trans_prod, set_trans_prod] = useState([]);
   const [stock_cont, set_stock_cont] = useState({ s32: 0, s42: 0 });
   const [stock_prod, set_stock_prod] = useState({ s32: 0, s42: 0 });
@@ -60,6 +62,12 @@ export default function Sacs() {
     const sacs_cont = await SB.LoadAllItems(TABLES_NAMES.SACS_CONTAINER);
     set_trans_cont(sacs_cont);
     console.log("sacs cont", sacs_cont);
+
+    const sacs_exit_cont = await SB.LoadAllItems(
+      TABLES_NAMES.SACS_EXIT_CONTAINER
+    );
+    set_trans_exit_cont(sacs_exit_cont);
+    console.log("sacs exit cont", sacs_exit_cont);
 
     let last_rec = sacs_cont[sacs_cont.length - 1];
 
@@ -225,6 +233,9 @@ export default function Sacs() {
                 setStock={set_stock_prod}
                 onResetStock={onResetStock}
               />
+            )}
+            {SACS_SECTIONS.EXIT_CONTAINER.label === curtab[1].label && (
+              <SacsExitContainer trans={trans_exit_cont} />
             )}
             {SACS_SECTIONS.CONTAINER.label === curtab[1].label && (
               <SacsContainer
