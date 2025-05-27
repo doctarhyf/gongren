@@ -191,7 +191,7 @@ export default function Sacs() {
       ]);
       const success = res.every((el) => el === null);
 
-      console.log("res prod insert", res);
+      //console.log("res prod insert", res);
 
       setloading(false);
 
