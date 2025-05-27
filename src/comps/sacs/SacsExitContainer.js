@@ -1,17 +1,6 @@
 import { useEffect } from "react";
 
 export default function SacsExitContainer({ trans }) {
-  /*
-
-{
-    "id": 1,
-    "created_at": "2025-05-22T19:45:03.016782+00:00",
-    "fuzeren": "王刚",
-    "daizi": 1500,
-    "date_time": "2025.05.22 20:30",
-    "team": "A"
-}
-  */
   return (
     <div className="sacs-exit-container">
       <table className="table table-striped table-bordered">

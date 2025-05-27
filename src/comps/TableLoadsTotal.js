@@ -30,7 +30,7 @@ function AgentsByTeam({ agents_by_team, team }) {
 
   delete data.team;
   const tot = data.congo + data.china;
-  console.log("agents_by_team", agents_by_team, "team", team, " data ", data);
+  // console.log("agents_by_team", agents_by_team, "team", team, " data ", data);
 
   return (
     <div className=" flex text-xs font-mono gap-1  ">

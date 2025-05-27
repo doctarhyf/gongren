@@ -769,6 +769,7 @@ export function HUDSacsCalc({}) {
 
 export function HUDGestionSacs() {
   const [loading, setloading] = useState(false);
+  const [no_data, set_no_data] = useState(false);
 
   const [data, setdata] = useState({
     cont: { s32: 0, s42: 0 },
@@ -782,6 +783,7 @@ export function HUDGestionSacs() {
   //const [stockCont, setStockCont] = useState([]);
   const [stockProd, setStockProd] = useState([]);
   async function loadData() {
+    set_no_data(false);
     setloading(true);
     const stockCont = await SB.LoadAllItems(TABLES_NAMES.SACS_CONTAINER);
     const stockProd = await SB.LoadAllItems(TABLES_NAMES.SACS_PRODUCTION);
@@ -789,6 +791,12 @@ export function HUDGestionSacs() {
 
     const stockContLen = stockCont.length;
     const stockProdLen = stockProd.length;
+
+    if (stockContLen === 0 || stockProdLen === 0) {
+      setloading(false);
+      set_no_data(true);
+      return;
+    }
 
     const stockContLastEl = stockCont[stockContLen - 1];
     const stockProdLastEl = stockProd[stockProdLen - 1];
@@ -812,6 +820,8 @@ export function HUDGestionSacs() {
     >
       {loading ? (
         <Loading isLoading={true} />
+      ) : no_data ? (
+        <div>No data</div>
       ) : (
         <div className="">
           <div>

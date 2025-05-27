@@ -558,7 +558,7 @@ export default function SacsProduction({
                       </div>
                     )}
                   </td>
-                  <td className="p-1 border border-gray-900 dark:border-white p-1  font-bold text-xs  ">
+                  <td className=" border border-gray-900 dark:border-white p-1  font-bold text-xs  ">
                     {(t.adj42 || 0) !== 0 && (
                       <div className=" w-full text-center mx-1 bg-black text-white p-1 rounded-md ">
                         {(t.adj42 || 0) * -1} (42.5)

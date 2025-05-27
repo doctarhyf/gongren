@@ -34,7 +34,7 @@ export default function SacsContainer({
     s42: 0,
     stockres: false,
     date_time: formatDateForDatetimeLocal(new Date()),
-    fuzeren: "",
+    fuzeren: "谭义勇",
   });
 
   function onSaveTrans() {
