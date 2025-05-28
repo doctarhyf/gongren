@@ -5,6 +5,7 @@ import { LANG_TOKENS } from "../../helpers/lang_strings";
 import Stock from "./Stock";
 import { UserContext } from "../../App";
 import { formatDateTime } from "../../helpers/func";
+import FormDzjzx from "../forms/FormDzjzx";
 
 export default function DaiziContainer({ stock, trans }) {
   const [, , user] = useContext(UserContext);
@@ -18,7 +19,9 @@ export default function DaiziContainer({ stock, trans }) {
         label={GetRandomArray(LANG_TOKENS.CONTAINER_REST, user.lang)}
       />
 
-      <div>{}</div>
+      <div>
+        <FormDzjzx />
+      </div>
     </div>
   );
 }

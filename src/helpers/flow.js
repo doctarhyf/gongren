@@ -369,7 +369,7 @@ export const MAIN_MENU = [
   {
     name: "Sacs",
     path: "/sacs",
-    el: Daizi, //Sacs,
+    el: Sacs,
     access_code: ACCESS_CODES.PAGE_SACS,
     trad: LANG_TOKENS.BAGS,
   },
