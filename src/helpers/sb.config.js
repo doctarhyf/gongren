@@ -22,4 +22,6 @@ export const TABLES_NAMES = {
   BIGBAG: "bigbag",
   NOTIFICATIONS: "notifications",
   CUSTOM_AGENTS_LISTS: "custom_agents_lists",
+  DAIZI_SHENGCHAN: "dzsc",
+  DAIZI_JIZHUANGXIANG: "dzjzx",
 };

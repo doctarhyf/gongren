@@ -14,6 +14,7 @@ import { Bigbag } from "../pages/bigbag";
 import SuiviCamions from "../pages/suivicamions";
 import Notifications from "../pages/notifications";
 import { LANG_TOKENS } from "./lang_strings";
+import Daizi from "../pages/daizi";
 
 export const LANG_COOKIE_KEY = "gongren_lang";
 
@@ -171,21 +172,21 @@ export const DAIZI_FUZEREN = [
 
 export const SACS_SECTIONS = {
   CONTAINER: {
-    label: "Sacs Container",
+    label: "Container",
     access_code: ACCESS_CODES.TAB_SAC_CONT,
     "zh-CN": "集装箱",
-    "en-US": "Container",
-    "fr-FR": "Conteneur",
+    "en-US": "In/Out Container",
+    "fr-FR": "Entree/Sortie Conteneur",
   },
-  EXIT_CONTAINER: {
+  /*  EXIT_CONTAINER: {
     label: "Sacs Exit Container",
     access_code: ACCESS_CODES.TAB_EXIT_CONTAINER,
     "zh-CN": "出口集装箱",
     "en-US": "Exit Container",
     "fr-FR": "Sortie Conteneur",
-  },
+  }, */
   PRODUCTION: {
-    label: "Sacs Production",
+    label: "Production",
     access_code: ACCESS_CODES.TAB_SAC_PROD,
     "zh-CN": "生产",
     "en-US": "Production",
@@ -368,7 +369,7 @@ export const MAIN_MENU = [
   {
     name: "Sacs",
     path: "/sacs",
-    el: Sacs,
+    el: Daizi, //Sacs,
     access_code: ACCESS_CODES.PAGE_SACS,
     trad: LANG_TOKENS.BAGS,
   },
