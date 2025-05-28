@@ -234,9 +234,9 @@ export default function Sacs() {
                 onResetStock={onResetStock}
               />
             )}
-            {SACS_SECTIONS.EXIT_CONTAINER.label === curtab[1].label && (
+            {/*  {SACS_SECTIONS.EXIT_CONTAINER.label === curtab[1].label && (
               <SacsExitContainer trans={trans_exit_cont} />
-            )}
+            )} */}
             {SACS_SECTIONS.CONTAINER.label === curtab[1].label && (
               <SacsContainer
                 trans={trans_cont}
