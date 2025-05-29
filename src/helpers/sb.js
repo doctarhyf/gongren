@@ -265,3 +265,19 @@ export async function DeleteItemByColEqVal(table_name, col_name, col_val) {
     .eq(col_name, col_val);
   if (error) return error;
 }
+
+export async function LoadLastItem(table_name) {
+  const { data, error } = await supabase
+    .from(table_name)
+    .select("*")
+    .order("id", { ascending: false }) // or use 'created_at'
+    .limit(1)
+    .single(); // returns a single object instead of an array
+
+  if (error) {
+    console.error("Error fetching the last record:", error);
+  } else {
+    console.log("Last record:", data);
+    return data;
+  }
+}
