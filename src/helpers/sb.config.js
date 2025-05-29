@@ -24,4 +24,5 @@ export const TABLES_NAMES = {
   CUSTOM_AGENTS_LISTS: "custom_agents_lists",
   DAIZI_SHENGCHAN: "dzsc",
   DAIZI_JIZHUANGXIANG: "dzjzx",
+  DAIZI_SHENGYU: "dzsy",
 };

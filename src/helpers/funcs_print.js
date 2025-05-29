@@ -5,6 +5,7 @@ import {
   formatFrenchDate,
   AddLeadingZero,
   splitZhAndLat,
+  formatCreatedAt,
 } from "./func";
 import { MONTHS, POSTE, POSTES, SUPERVISORS, SUPERVISORS_EMCO } from "./flow";
 import autoTable from "jspdf-autotable";
@@ -1509,6 +1510,40 @@ export function printTeamMonthlyRepport(data, date) {
 
   const fileName = `RAPPORT_EQUIPE_${data[0]}`;
   doc.save(fileName);
+}
+
+export function createHeaders(keys) {
+  var result = [];
+  for (var i = 0; i < keys.length; i += 1) {
+    result.push({
+      id: keys[i],
+      name: keys[i],
+      prompt: keys[i],
+      width: 80,
+      align: "center",
+      padding: 0,
+    });
+  }
+  return result;
+}
+
+export function transformDataForPrint(dataArray) {
+  return dataArray.map((obj) => {
+    // Destructure to remove adj32 and adj42
+    const { adj1, adj2, ...rest } = obj;
+
+    // Convert all remaining values to strings
+    const stringified = {};
+    for (let key in rest) {
+      if (key === "created_at") {
+        stringified[key] = formatCreatedAt(rest[key]);
+      } else {
+        stringified[key] = String(rest[key]);
+      }
+    }
+
+    return stringified;
+  });
 }
 
 export {

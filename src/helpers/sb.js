@@ -151,8 +151,10 @@ export async function LoadAllItems(
   orderby = "created_at",
   ascending = false
 ) {
-  let { data, error } = await supabase.from(tableName).select("*");
-  /*  .order(orderby, { ascending: ascending }); */
+  let { data, error } = await supabase
+    .from(tableName)
+    .select("*")
+    .order(orderby, { ascending: ascending });
 
   if (error) return error;
 

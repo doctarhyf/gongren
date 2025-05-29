@@ -5,10 +5,106 @@ import { TABLES_NAMES } from "../../helpers/sb.config";
 import {
   formatCreatedAt,
   formatDateForDatetimeLocal,
+  formatFrenchDate,
 } from "../../helpers/func";
 import { DAIZI_FUZEREN } from "../../helpers/flow";
+import ButtonPrint from "../ButtonPrint";
+import {
+  GetTransForTokensArray,
+  LANG_TOKENS,
+} from "../../helpers/lang_strings";
+import jsPDF from "jspdf";
+import {
+  createHeaders,
+  transformDataForPrint,
+} from "../../helpers/funcs_print";
 
 function TableContainer({ trans, onAdd }) {
+  const [, , user] = useContext(UserContext);
+
+  function onPrint(loads) {
+    //console.log(loads);
+    //return;
+    console.log("loads => ", loads);
+    loads = transformDataForPrint(loads);
+    console.log("loads => ", loads);
+    const doc = new jsPDF({ orientation: "landscape" });
+    const FONT_SIZE = 9;
+    const PW = 297;
+    const PH = 210;
+    let ty = -1;
+    let tm = -1;
+
+    doc.setFont("helvetica");
+    doc.setFontSize(FONT_SIZE);
+
+    let r = doc.addFont(
+      "fonts/DroidSansFallback.ttf",
+      "DroidSansFallback",
+      "normal"
+    );
+
+    const body = loads;
+
+    /*
+
+{
+    "id": 16,
+    "created_at": "2025-05-29T13:02:46.659377+00:00",
+    "date_time": "2025-05-29 15:02",
+    "operation": "out",
+    "s32": 0,
+    "s42": 4500,
+    "stock32": 30000,
+    "stock42": 45500,
+    "fuzeren": "谭义勇",
+    "team": "A",
+    "stockRes": false,
+    "key": "811dfeef-fc8d-428f-a899-9245926b2401"
+}
+      */
+
+    const defaultObject = {
+      id: 16,
+      created_at: "2025-05-29T13:02:46.659377+00:00",
+      date_time: "2025-05-29 15:02",
+      operation: "out",
+      s32: 0,
+      s42: 4500,
+      stock32: 30000,
+      stock42: 45500,
+      fuzeren: "谭义勇",
+      team: "A",
+      stockRes: false,
+      key: "811dfeef-fc8d-428f-a899-9245926b2401",
+    };
+
+    var headers = createHeaders(Object.keys(defaultObject));
+
+    const tableConfig = {
+      printHeaders: true,
+      autoSize: true,
+      margins: 0,
+      fontSize: FONT_SIZE,
+      padding: 2.5,
+    };
+
+    // body.push(def);
+
+    doc.text(formatFrenchDate(new Date()), PW - 15, 10, { align: "right" });
+
+    const doc_title = `SACS CONTAINER`;
+    const file_name = `SACS_CONTAINER_${formatCreatedAt(
+      new Date().toISOString()
+    )}`;
+    doc.text(doc_title, 105, 20, {
+      align: "center",
+    });
+
+    doc.table(15, 25, body, headers, tableConfig);
+    doc.save(file_name);
+  }
+
   return (
     <div>
       <div>CONTAINER</div>
@@ -16,79 +112,87 @@ function TableContainer({ trans, onAdd }) {
         <button className="btn btn-primary" onClick={onAdd}>
           Add
         </button>
+        <ButtonPrint
+          title={GetTransForTokensArray(LANG_TOKENS.PRINT, user.lang)}
+          onClick={(e) => onPrint(trans)}
+        />
       </div>
-      <table class="table-auto">
-        <thead className="p1 border border-gray-900 dark:border-white p-1 ">
-          <tr>
-            <th className="p1 border border-gray-900 dark:border-white p-1 ">
-              ID
-            </th>
-            {/*  <th className="p1 border border-gray-900 dark:border-white p-1 ">
+      {trans.length > 0 ? (
+        <table class="table-auto">
+          <thead className="p1 border border-gray-900 dark:border-white p-1 ">
+            <tr>
+              <th className="p1 border border-gray-900 dark:border-white p-1 ">
+                ID
+              </th>
+              {/*  <th className="p1 border border-gray-900 dark:border-white p-1 ">
         created
       </th> */}
-            <th className="p1 border border-gray-900 dark:border-white p-1 ">
-              DATE TIME
-            </th>
-            <th className="p1 border border-gray-900 dark:border-white p-1 ">
-              OP
-            </th>
-            <th className="p1 border border-gray-900 dark:border-white p-1 ">
-              s32
-            </th>
-            <th className="p1 border border-gray-900 dark:border-white p-1 ">
-              s42
-            </th>
-            <th className="p1 border border-gray-900 dark:border-white p-1 ">
-              stock32
-            </th>
-            <th className="p1 border border-gray-900 dark:border-white p-1 ">
-              stock42
-            </th>
-            <th className="p1 border border-gray-900 dark:border-white p-1 ">
-              fuzeren
-            </th>
-            <th className="p1 border border-gray-900 dark:border-white p-1 ">
-              team
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {trans.map((item) => (
-            <tr key={item.id}>
-              <td className="p1 border border-gray-900 dark:border-white p-1 ">
-                {item.id}
-              </td>
-              {/*   <td className="p1 border border-gray-900 dark:border-white p-1 ">
+              <th className="p1 border border-gray-900 dark:border-white p-1 ">
+                DATE TIME
+              </th>
+              <th className="p1 border border-gray-900 dark:border-white p-1 ">
+                OP
+              </th>
+              <th className="p1 border border-gray-900 dark:border-white p-1 ">
+                s32
+              </th>
+              <th className="p1 border border-gray-900 dark:border-white p-1 ">
+                s42
+              </th>
+              <th className="p1 border border-gray-900 dark:border-white p-1 ">
+                stock32
+              </th>
+              <th className="p1 border border-gray-900 dark:border-white p-1 ">
+                stock42
+              </th>
+              <th className="p1 border border-gray-900 dark:border-white p-1 ">
+                fuzeren
+              </th>
+              <th className="p1 border border-gray-900 dark:border-white p-1 ">
+                team
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {trans.map((item) => (
+              <tr key={item.id}>
+                <td className="p1 border border-gray-900 dark:border-white p-1 ">
+                  {item.id}
+                </td>
+                {/*   <td className="p1 border border-gray-900 dark:border-white p-1 ">
           {formatCreatedAt(item.created_at)}
         </td> */}
-              <td className="p1 border border-gray-900 dark:border-white p-1 ">
-                {item.date_time}
-              </td>
-              <td className="p1 border border-gray-900 dark:border-white p-1 ">
-                {item.operation}
-              </td>
-              <td className="p1 border border-gray-900 dark:border-white p-1 ">
-                {item.s32}
-              </td>
-              <td className="p1 border border-gray-900 dark:border-white p-1 ">
-                {item.s42}
-              </td>
-              <td className="p1 border border-gray-900 dark:border-white p-1 ">
-                {item.stock32}
-              </td>
-              <td className="p1 border border-gray-900 dark:border-white p-1 ">
-                {item.stock42}
-              </td>
-              <td className="p1 border border-gray-900 dark:border-white p-1 ">
-                {item.fuzeren}
-              </td>
-              <td className="p1 border border-gray-900 dark:border-white p-1 ">
-                {item.team}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+                <td className="p1 border border-gray-900 dark:border-white p-1 ">
+                  {item.date_time.replace("T", " ")}
+                </td>
+                <td className="p1 border border-gray-900 dark:border-white p-1 ">
+                  {item.operation}
+                </td>
+                <td className="p1 border border-gray-900 dark:border-white p-1 ">
+                  {item.s32}
+                </td>
+                <td className="p1 border border-gray-900 dark:border-white p-1 ">
+                  {item.s42}
+                </td>
+                <td className="p1 border border-gray-900 dark:border-white p-1 ">
+                  {item.stock32}
+                </td>
+                <td className="p1 border border-gray-900 dark:border-white p-1 ">
+                  {item.stock42}
+                </td>
+                <td className="p1 border border-gray-900 dark:border-white p-1 ">
+                  {item.fuzeren}
+                </td>
+                <td className="p1 border border-gray-900 dark:border-white p-1 ">
+                  {item.team}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ) : (
+        <div>No items</div>
+      )}
     </div>
   );
 }
@@ -110,8 +214,8 @@ function TableInput({
     stock42: 0,
     fuzeren: "谭义勇",
     team: "A",
+    stockRes: false,
   });
-  //const [operation, setOperation] = useState("in");
 
   useEffect(() => {
     const finalData = {
@@ -172,12 +276,15 @@ function TableInput({
             <th className="p1 border border-gray-900 dark:border-white p-1 ">
               team
             </th>
+            <th className="p1 border border-gray-900 dark:border-white p-1 ">
+              Stock Reset
+            </th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td className="p1 border border-gray-900 dark:border-white p-1 ">
-              <input
+              {/* <input
                 type="datetime-local"
                 className="w-full"
                 value={data.date_time}
@@ -187,7 +294,8 @@ function TableInput({
                     date_time: e.target.value.replace("T", " "),
                   }))
                 }
-              />
+              /> */}
+              {formatCreatedAt(new Date().toISOString())}
             </td>
             <td className="p1 border border-gray-900 dark:border-white p-1 ">
               <select
@@ -263,6 +371,15 @@ function TableInput({
                 <option value="C">C</option>
               </select>
             </td>
+            <td className="p1 border border-gray-900 dark:border-white p-1 ">
+              <input
+                type="checkbox"
+                value={data.stockRes}
+                onChange={(e) =>
+                  setData((prev) => ({ ...prev, stockRes: e.target.checked }))
+                }
+              />
+            </td>
           </tr>
         </tbody>
       </table>
@@ -291,7 +408,9 @@ export default function DaiziContainer({
   async function loadData() {
     setLoading(true);
     const fetchedTrans = await SB.LoadAllItems(
-      TABLES_NAMES.DAIZI_JIZHUANGXIANG
+      TABLES_NAMES.DAIZI_JIZHUANGXIANG,
+      "created_at",
+      false
     );
     if (fetchedTrans) {
       setTrans(fetchedTrans);

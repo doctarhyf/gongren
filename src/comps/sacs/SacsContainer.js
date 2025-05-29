@@ -15,7 +15,11 @@ import {
 } from "../../helpers/func";
 import jsPDF from "jspdf";
 import { LANG_TOKENS } from "../../helpers/lang_strings";
-import { GetRandomArray } from "../../helpers/funcs_print";
+import {
+  createHeaders,
+  GetRandomArray,
+  transformDataForPrint,
+} from "../../helpers/funcs_print";
 import { UserContext } from "../../App";
 
 export default function SacsContainer({
@@ -58,45 +62,11 @@ export default function SacsContainer({
     return [...Array(count)].map((c, i) => char).join("");
   }
 
-  function createHeaders(keys) {
-    var result = [];
-    for (var i = 0; i < keys.length; i += 1) {
-      result.push({
-        id: keys[i],
-        name: keys[i],
-        prompt: keys[i],
-        width: 80,
-        align: "center",
-        padding: 0,
-      });
-    }
-    return result;
-  }
-
-  function transformData(dataArray) {
-    return dataArray.map((obj) => {
-      // Destructure to remove adj32 and adj42
-      const { adj1, adj2, ...rest } = obj;
-
-      // Convert all remaining values to strings
-      const stringified = {};
-      for (let key in rest) {
-        if (key === "created_at") {
-          stringified[key] = formatCreatedAt(rest[key]);
-        } else {
-          stringified[key] = String(rest[key]);
-        }
-      }
-
-      return stringified;
-    });
-  }
-
   function print(loads) {
     //console.log(loads);
     //return;
     console.log("loads => ", loads);
-    loads = transformData(loads);
+    loads = transformDataForPrint(loads);
     console.log("loads => ", loads);
     const doc = new jsPDF({ orientation: "landscape" });
     const FONT_SIZE = 9;

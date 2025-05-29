@@ -6,6 +6,7 @@ import DaiziProd from "../comps/sacs/DaiziProd";
 import * as SB from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
 import Loading from "../comps/Loading";
+import { v4 as uuid } from "uuid";
 
 function PagesMenu({ setSelectedPage, selectedPage, pages, lang }) {
   return (
@@ -46,7 +47,11 @@ export default function Daizi() {
     loadData();
   }, []);
 
-  async function loadData() {
+  useEffect(() => {
+    loadData(true);
+  }, [selectedPage]);
+
+  async function loadData(reset) {
     setLoading(true);
     const last_rect = await SB.LoadLastItem(TABLES_NAMES.DAIZI_JIZHUANGXIANG);
 
@@ -65,6 +70,10 @@ export default function Daizi() {
       setLoading(false);
     } else {
       // console.log("No records found.");
+      if (reset) {
+        setContainerStock({ stock32: 0, stock42: 0 });
+        setOriginalContainerStock({ stock32: 0, stock42: 0 });
+      }
       setLoading(false);
     }
   }
@@ -119,62 +128,126 @@ export default function Daizi() {
     setStock42Unsufficient(false);
   }
 
-  function onSave(data) {
+  async function onSave(data) {
+    setLoading(true);
     data = {
       ...data,
       stock32: containerStock.stock32,
       stock42: containerStock.stock42,
+      date_time: data.date_time.replace("T", " "),
+      key: uuid(),
     };
-    console.log("saving :", data);
+
+    if (0 === parseInt(data.s32) && 0 === parseInt(data.s42)) {
+      alert("Number of bags cant be zero!");
+      return;
+    }
+
+    const res_trans_dzjzx = await SB.InsertItem(
+      TABLES_NAMES.DAIZI_JIZHUANGXIANG,
+      data
+    );
+    let res_trans_dzsy = null;
+
+    //save bags to daizi shengyu tabale dzsy
+    if (data.operation === "out") {
+      let last_dzsy = await SB.LoadLastItem(TABLES_NAMES.DAIZI_SHENGYU);
+
+      console.log("op out", last_dzsy);
+
+      if (last_dzsy) {
+        const { s32, s42 } = last_dzsy;
+        const news32 = s32 + data.s32;
+        const news42 = s42 + data.s42;
+
+        const newDzsy = {
+          operation: "in",
+          s32: news32,
+          s42: news42,
+          key_dzjzx: data.key,
+        };
+
+        res_trans_dzsy = await SB.InsertItem(
+          TABLES_NAMES.DAIZI_SHENGYU,
+          newDzsy
+        );
+      } else {
+        const newDzsy = {
+          operation: "in",
+          s32: data.s32,
+          s42: data.s42,
+          key_dzjzx: data.key,
+        };
+
+        res_trans_dzsy = await SB.InsertItem(
+          TABLES_NAMES.DAIZI_SHENGYU,
+          newDzsy
+        );
+      }
+    }
+
+    console.log("res_trans_dzsy : ", res_trans_dzsy);
+
+    if (res_trans_dzjzx === null) {
+      alert("Data Saved");
+      loadData();
+    }
+
+    setLoading(false);
+
+    console.log("saving :", data, "\nres:", res_trans_dzjzx);
   }
   return (
     <div className="container">
-      {loading ? (
-        <div>Loading ...</div>
-      ) : (
-        <>
-          <PagesMenu
-            setSelectedPage={setSelectedPage}
-            pages={pages}
-            selectedPage={selectedPage}
-            lang={user.lang}
+      <>
+        <PagesMenu
+          setSelectedPage={setSelectedPage}
+          pages={pages}
+          selectedPage={selectedPage}
+          lang={user.lang}
+        />
+
+        <div className=" bg-slate-400 rounded-md p-2  ">
+          <div>Container Stock</div>
+
+          {loading ? (
+            <div>Loading ...</div>
+          ) : (
+            <>
+              <div>
+                s32: {containerStock.stock32}{" "}
+                {stock32Unsufficient && (
+                  <span className=" bg-red-900 text-red-200 p-1 text-sm rounded-md  ">
+                    {" "}
+                    Stock insuffisant{" "}
+                  </span>
+                )}
+              </div>
+              <div>
+                s32: {containerStock.stock42}{" "}
+                {stock42Unsufficient && (
+                  <span className=" bg-red-900 text-red-200 p-1 text-sm rounded-md  ">
+                    Stock insuffisant
+                  </span>
+                )}
+              </div>{" "}
+            </>
+          )}
+        </div>
+
+        {SACS_SECTIONS.CONTAINER.label === selectedPage[1].label && (
+          <DaiziContainer
+            containerStock={containerStock}
+            onInputChage={onInputChage}
+            resetStock={resetStock}
+            stockInsufficient={stock32Unsufficient || stock42Unsufficient}
+            onSave={onSave}
           />
-
-          <div className=" bg-slate-400 rounded-md p-2  ">
-            <div>Container Stock</div>
-            <div>
-              s32: {containerStock.stock32}{" "}
-              {stock32Unsufficient && (
-                <span className=" bg-red-900 text-red-200 p-1 text-sm rounded-md  ">
-                  {" "}
-                  Stock insuffisant{" "}
-                </span>
-              )}
-            </div>
-            <div>
-              s32: {containerStock.stock42}{" "}
-              {stock42Unsufficient && (
-                <span className=" bg-red-900 text-red-200 p-1 text-sm rounded-md  ">
-                  Stock insuffisant
-                </span>
-              )}
-            </div>
-          </div>
-
-          {SACS_SECTIONS.CONTAINER.label === selectedPage[1].label && (
-            <DaiziContainer
-              containerStock={containerStock}
-              onInputChage={onInputChage}
-              resetStock={resetStock}
-              stockInsufficient={stock32Unsufficient || stock42Unsufficient}
-              onSave={onSave}
-            />
-          )}
-          {SACS_SECTIONS.PRODUCTION.label === selectedPage[1].label && (
-            <DaiziProd />
-          )}
-        </>
-      )}
+        )}
+        {SACS_SECTIONS.PRODUCTION.label === selectedPage[1].label && (
+          <DaiziProd />
+        )}
+      </>
     </div>
   );
 }
