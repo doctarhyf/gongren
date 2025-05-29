@@ -90,7 +90,7 @@ function TableContainer({ trans, onAdd }) {
   );
 }
 
-function TableInput({ onCancel, onInputChage }) {
+function TableInput({ onCancel, onInputChage, resetStock }) {
   const [data, setData] = useState({
     date_time: "",
     operation: "in",
@@ -101,10 +101,26 @@ function TableInput({ onCancel, onInputChage }) {
     fuzeren: "谭义勇",
     team: "A",
   });
+  //const [operation, setOperation] = useState("in");
 
   useEffect(() => {
-    console.log("Data changed:", data);
-    onInputChage(data);
+    const finalData = {
+      ...data,
+    };
+
+    console.log("final data", finalData);
+
+    if (isNaN(data.s32)) {
+      finalData.s32 = 0;
+      resetStock();
+    }
+
+    if (isNaN(data.s42)) {
+      finalData.s42 = 0;
+      resetStock();
+    }
+
+    onInputChage(finalData);
   }, [data]);
 
   return (
@@ -164,7 +180,7 @@ function TableInput({ onCancel, onInputChage }) {
                 className="w-full"
                 value={data.operation}
                 onChange={(e) =>
-                  setData((prev) => ({ ...data, operation: e.target.value }))
+                  setData((prev) => ({ ...prev, operation: e.target.value }))
                 }
               >
                 <option value="in">in</option>
@@ -240,7 +256,7 @@ function TableInput({ onCancel, onInputChage }) {
   );
 }
 
-export default function DaiziContainer({ onInputChage }) {
+export default function DaiziContainer({ onInputChage, resetStock }) {
   const [, , user] = useContext(UserContext);
 
   const [trans, setTrans] = useState([]);
@@ -270,7 +286,14 @@ export default function DaiziContainer({ onInputChage }) {
   return loading ? (
     <div>Loading ... </div>
   ) : input ? (
-    <TableInput onCancel={(e) => setInput(false)} onInputChage={onInputChage} />
+    <TableInput
+      onCancel={(e) => {
+        setInput(false);
+        resetStock();
+      }}
+      onInputChage={onInputChage}
+      resetStock={resetStock}
+    />
   ) : (
     <TableContainer trans={trans} onAdd={(e) => setInput(true)} />
   );

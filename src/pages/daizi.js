@@ -34,6 +34,12 @@ export default function Daizi() {
     stock32: 0,
     stock42: 0,
   });
+  const [originalContainerStock, setOriginalContainerStock] = useState({
+    stock32: 0,
+    stock42: 0,
+  });
+  const [stock32Unsufficient, setStock32Unsufficient] = useState(false);
+  const [stock42Unsufficient, setStock42Unsufficient] = useState(false);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -55,7 +61,7 @@ export default function Daizi() {
         stock42: stock42,
       };
       setContainerStock(newStock);
-      // console.log("Container stock updated:", newStock);
+      setOriginalContainerStock(newStock);
       setLoading(false);
     } else {
       // console.log("No records found.");
@@ -63,8 +69,51 @@ export default function Daizi() {
     }
   }
 
+  useEffect(() => {
+    console.log("Container stock updated:", containerStock);
+  }, [containerStock]);
+
   function onInputChage(data) {
-    console.log("Input changed:", data);
+    setStock32Unsufficient(false);
+    setStock42Unsufficient(false);
+
+    const { operation, s32, s42 } = data;
+    let newStock32 = 0;
+    let newStock42 = 0;
+    let newStock32IsUnsufficient = originalContainerStock.stock32 - s32 < 0;
+    let newStock42IsUnsufficient = originalContainerStock.stock42 - s42 < 0;
+
+    if (newStock32IsUnsufficient) {
+      setStock32Unsufficient(true);
+    }
+
+    if (newStock42IsUnsufficient) {
+      setStock42Unsufficient(true);
+    }
+
+    if (operation === "in") {
+      newStock32 = originalContainerStock.stock32 + s32;
+      newStock42 = originalContainerStock.stock42 + s42;
+    } else {
+      newStock32 = newStock32IsUnsufficient
+        ? originalContainerStock.stock32
+        : originalContainerStock.stock32 - s32;
+      newStock42 = newStock42IsUnsufficient
+        ? originalContainerStock.stock42
+        : originalContainerStock.stock42 - s42;
+    }
+
+    setContainerStock({
+      stock32: newStock32,
+      stock42: newStock42,
+    });
+  }
+
+  function resetStock() {
+    const origStock = { ...originalContainerStock };
+
+    console.log("orig stock : ", origStock);
+    setContainerStock(origStock);
   }
 
   return (
@@ -84,12 +133,25 @@ export default function Daizi() {
             <div>Container Stock</div>
             <div>s32: {containerStock.stock32}</div>
             <div>s32: {containerStock.stock42}</div>
+
+            {stock32Unsufficient ||
+              (stock42Unsufficient && (
+                <div className="text-red-100 bg-red-900">
+                  {stock32Unsufficient && (
+                    <div>The stock of 32 is unsufficient</div>
+                  )}
+                  {stock42Unsufficient && (
+                    <div>The stock of 42 is unsufficient</div>
+                  )}
+                </div>
+              ))}
           </div>
 
           {SACS_SECTIONS.CONTAINER.label === selectedPage[1].label && (
             <DaiziContainer
               containerStock={containerStock}
               onInputChage={onInputChage}
+              resetStock={resetStock}
             />
           )}
           {SACS_SECTIONS.PRODUCTION.label === selectedPage[1].label && (
