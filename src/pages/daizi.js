@@ -28,7 +28,7 @@ function PagesMenu({ setSelectedPage, selectedPage, pages, lang }) {
 
 export default function Daizi() {
   const [, , user] = useContext(UserContext);
-
+  const [rdk, setrdk] = useState(Math.random());
   const pages = Object.entries(SACS_SECTIONS);
   const [selectedPage, setSelectedPage] = useState(pages[0]);
   const [containerStock, setContainerStock] = useState({
@@ -196,6 +196,7 @@ export default function Daizi() {
     setLoading(false);
 
     console.log("saving :", data, "\nres:", res_trans_dzjzx);
+    setrdk(Math.random());
   }
   return (
     <div className="container">
@@ -237,6 +238,7 @@ export default function Daizi() {
 
         {SACS_SECTIONS.CONTAINER.label === selectedPage[1].label && (
           <DaiziContainer
+            key={rdk}
             containerStock={containerStock}
             onInputChage={onInputChage}
             resetStock={resetStock}
