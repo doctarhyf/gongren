@@ -80,21 +80,22 @@ export default function Daizi() {
     const { operation, s32, s42 } = data;
     let newStock32 = 0;
     let newStock42 = 0;
-    let newStock32IsUnsufficient = originalContainerStock.stock32 - s32 < 0;
-    let newStock42IsUnsufficient = originalContainerStock.stock42 - s42 < 0;
-
-    if (newStock32IsUnsufficient) {
-      setStock32Unsufficient(true);
-    }
-
-    if (newStock42IsUnsufficient) {
-      setStock42Unsufficient(true);
-    }
 
     if (operation === "in") {
       newStock32 = originalContainerStock.stock32 + s32;
       newStock42 = originalContainerStock.stock42 + s42;
     } else {
+      let newStock32IsUnsufficient = originalContainerStock.stock32 - s32 < 0;
+      let newStock42IsUnsufficient = originalContainerStock.stock42 - s42 < 0;
+
+      if (newStock32IsUnsufficient) {
+        setStock32Unsufficient(true);
+      }
+
+      if (newStock42IsUnsufficient) {
+        setStock42Unsufficient(true);
+      }
+
       newStock32 = newStock32IsUnsufficient
         ? originalContainerStock.stock32
         : originalContainerStock.stock32 - s32;
@@ -114,12 +115,22 @@ export default function Daizi() {
 
     console.log("orig stock : ", origStock);
     setContainerStock(origStock);
+    setStock32Unsufficient(false);
+    setStock42Unsufficient(false);
   }
 
+  function onSave(data) {
+    data = {
+      ...data,
+      stock32: containerStock.stock32,
+      stock42: containerStock.stock42,
+    };
+    console.log("saving :", data);
+  }
   return (
     <div className="container">
       {loading ? (
-        <Loading loading={loading} />
+        <div>Loading ...</div>
       ) : (
         <>
           <PagesMenu
@@ -131,20 +142,23 @@ export default function Daizi() {
 
           <div className=" bg-slate-400 rounded-md p-2  ">
             <div>Container Stock</div>
-            <div>s32: {containerStock.stock32}</div>
-            <div>s32: {containerStock.stock42}</div>
-
-            {stock32Unsufficient ||
-              (stock42Unsufficient && (
-                <div className="text-red-100 bg-red-900">
-                  {stock32Unsufficient && (
-                    <div>The stock of 32 is unsufficient</div>
-                  )}
-                  {stock42Unsufficient && (
-                    <div>The stock of 42 is unsufficient</div>
-                  )}
-                </div>
-              ))}
+            <div>
+              s32: {containerStock.stock32}{" "}
+              {stock32Unsufficient && (
+                <span className=" bg-red-900 text-red-200 p-1 text-sm rounded-md  ">
+                  {" "}
+                  Stock insuffisant{" "}
+                </span>
+              )}
+            </div>
+            <div>
+              s32: {containerStock.stock42}{" "}
+              {stock42Unsufficient && (
+                <span className=" bg-red-900 text-red-200 p-1 text-sm rounded-md  ">
+                  Stock insuffisant
+                </span>
+              )}
+            </div>
           </div>
 
           {SACS_SECTIONS.CONTAINER.label === selectedPage[1].label && (
@@ -152,6 +166,8 @@ export default function Daizi() {
               containerStock={containerStock}
               onInputChage={onInputChage}
               resetStock={resetStock}
+              stockInsufficient={stock32Unsufficient || stock42Unsufficient}
+              onSave={onSave}
             />
           )}
           {SACS_SECTIONS.PRODUCTION.label === selectedPage[1].label && (

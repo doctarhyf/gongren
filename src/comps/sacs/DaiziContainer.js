@@ -2,7 +2,10 @@ import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../App";
 import * as SB from "../../helpers/sb";
 import { TABLES_NAMES } from "../../helpers/sb.config";
-import { formatCreatedAt } from "../../helpers/func";
+import {
+  formatCreatedAt,
+  formatDateForDatetimeLocal,
+} from "../../helpers/func";
 import { DAIZI_FUZEREN } from "../../helpers/flow";
 
 function TableContainer({ trans, onAdd }) {
@@ -90,9 +93,16 @@ function TableContainer({ trans, onAdd }) {
   );
 }
 
-function TableInput({ onCancel, onInputChage, resetStock }) {
+function TableInput({
+  onCancel,
+  onInputChage,
+  resetStock,
+  stockInsufficient,
+  onSave,
+  containerStock,
+}) {
   const [data, setData] = useState({
-    date_time: "",
+    date_time: formatDateForDatetimeLocal(new Date()),
     operation: "in",
     s32: 0,
     s42: 0,
@@ -126,7 +136,11 @@ function TableInput({ onCancel, onInputChage, resetStock }) {
   return (
     <div>
       <div>
-        <button className="btn btn-primary">Save</button>
+        {!stockInsufficient && (
+          <button className="btn btn-primary" onClick={(e) => onSave(data)}>
+            Save
+          </button>
+        )}
         <button className="btn btn-secondary" onClick={onCancel}>
           Cancel
         </button>
@@ -216,10 +230,10 @@ function TableInput({ onCancel, onInputChage, resetStock }) {
               />
             </td>
             <td className="p1 border border-gray-900 dark:border-white p-1 ">
-              stock32
+              {containerStock.stock32}
             </td>
             <td className="p1 border border-gray-900 dark:border-white p-1 ">
-              stock42
+              {containerStock.stock42}
             </td>
             <td className="p1 border border-gray-900 dark:border-white p-1 ">
               <select
@@ -256,7 +270,13 @@ function TableInput({ onCancel, onInputChage, resetStock }) {
   );
 }
 
-export default function DaiziContainer({ onInputChage, resetStock }) {
+export default function DaiziContainer({
+  onInputChage,
+  resetStock,
+  stockInsufficient,
+  onSave,
+  containerStock,
+}) {
   const [, , user] = useContext(UserContext);
 
   const [trans, setTrans] = useState([]);
@@ -291,8 +311,11 @@ export default function DaiziContainer({ onInputChage, resetStock }) {
         setInput(false);
         resetStock();
       }}
+      onSave={onSave}
       onInputChage={onInputChage}
       resetStock={resetStock}
+      stockInsufficient={stockInsufficient}
+      containerStock={containerStock}
     />
   ) : (
     <TableContainer trans={trans} onAdd={(e) => setInput(true)} />
