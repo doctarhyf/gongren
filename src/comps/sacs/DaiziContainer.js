@@ -193,7 +193,9 @@ function TableContainer({ trans, onAdd }) {
           </tbody>
         </table>
       ) : (
-        <div>No items</div>
+        <div className=" bg-red-900 text-red-400 p-2 rounded-md text-sm ">
+          {GetTransForTokensArray(LANG_TOKENS.CONATINER_IS_EMPTY, user.lang)}
+        </div>
       )}
     </div>
   );

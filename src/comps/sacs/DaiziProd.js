@@ -327,6 +327,7 @@ export default function DaiziProd({}) {
   const [showInput, setShowInput] = useState(false);
   const [error, seterror] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [, , user] = useContext(UserContext);
   useEffect(() => {
     loadData();
   }, []);
@@ -381,11 +382,20 @@ export default function DaiziProd({}) {
     }
   }
 
-  function onSave(data) {
+  async function onSave(data) {
     if (data.used_32 === 0 && data.used_42 === 0) {
       alert("All bags cant be zero");
       return;
     }
+
+    /*  const res = await SB.InsertItem(TABLES_NAMES.DAIZI_SHENGCHAN, data);
+
+    if(res){
+const re
+    }else{
+
+    } */
+
     console.log("save prod and ssy", data);
   }
 
@@ -416,9 +426,11 @@ export default function DaiziProd({}) {
         </button>
       )}
       {error ? (
-        <div className=" bg-red-900 text-red-400 p-2 rounded-md text-sm ">
-          {error}
-        </div>
+        <>
+          <div className=" bg-red-900 text-red-400 p-2 rounded-md text-sm ">
+            {GetTransForTokensArray(LANG_TOKENS.NO_BAGS_AVAILABLE, user.lang)}
+          </div>
+        </>
       ) : showInput ? (
         <TableInput
           stockShengYu={stockShengYU}
