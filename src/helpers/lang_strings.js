@@ -137,6 +137,21 @@ export const LANG_TOKENS = {
     "%y年%m月 奖金 (超过: %tT)",
     "BONUS - %y/%m (Base: %tT)",
   ],
+  STOCK_CONTAINER: [
+    "Container Stock", // English
+    "集装箱库存", // Chinese (Simplified)
+    "Stock du conteneur", // French
+  ],
+  STOCK_BAGS_REMAINING_PRODUCTION: [
+    "Bags remaining in production", // English
+    "生产中剩余的袋数", // Chinese (Simplified)
+    "Sacs restants en production", // French
+  ],
+  STOCK_UNSUFFICIENT: [
+    "Insufficient stock", // English
+    "库存不足", // Chinese (Simplified)
+    "Stock insuffisant", // French
+  ],
   HUD_DESC_BONUS: [
     "Bonus Tracking for the Current Month",
     "本月奖金跟踪",

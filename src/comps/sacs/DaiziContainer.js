@@ -18,6 +18,8 @@ import {
   createHeaders,
   transformDataForPrint,
 } from "../../helpers/funcs_print";
+import Loading from "../Loading";
+import ContainerStock from "./ContainerStock";
 
 function TableContainer({ trans, onAdd }) {
   const [, , user] = useContext(UserContext);
@@ -390,7 +392,9 @@ function TableInput({
 export default function DaiziContainer({
   onInputChage,
   resetStock,
-  stockInsufficient,
+  //stockInsufficient,
+  stock32Unsufficient,
+  stock42Unsufficient,
   onSave,
   containerStock,
 }) {
@@ -422,21 +426,32 @@ export default function DaiziContainer({
     }
   }
 
+  const stockInsufficient = stock32Unsufficient || stock42Unsufficient;
+
   return loading ? (
-    <div>Loading ... </div>
-  ) : input ? (
-    <TableInput
-      onCancel={(e) => {
-        setInput(false);
-        resetStock();
-      }}
-      onSave={onSave}
-      onInputChage={onInputChage}
-      resetStock={resetStock}
-      stockInsufficient={stockInsufficient}
-      containerStock={containerStock}
-    />
+    <Loading isLoading={loading} />
   ) : (
-    <TableContainer trans={trans} onAdd={(e) => setInput(true)} />
+    <div>
+      <ContainerStock
+        containerStock={containerStock}
+        stock32Unsufficient={stock32Unsufficient}
+        stock42Unsufficient={stock42Unsufficient}
+      />
+      {input ? (
+        <TableInput
+          onCancel={(e) => {
+            setInput(false);
+            resetStock();
+          }}
+          onSave={onSave}
+          onInputChage={onInputChage}
+          resetStock={resetStock}
+          stockInsufficient={stockInsufficient}
+          containerStock={containerStock}
+        />
+      ) : (
+        <TableContainer trans={trans} onAdd={(e) => setInput(true)} />
+      )}{" "}
+    </div>
   );
 }

@@ -7,6 +7,7 @@ import * as SB from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
 import Loading from "../comps/Loading";
 import { v4 as uuid } from "uuid";
+import { GetTransForTokensArray, LANG_TOKENS } from "../helpers/lang_strings";
 
 function PagesMenu({ setSelectedPage, selectedPage, pages, lang }) {
   return (
@@ -208,33 +209,15 @@ export default function Daizi() {
           lang={user.lang}
         />
 
-        <div className=" bg-slate-400 rounded-md p-2  ">
-          <div>Container Stock</div>
-
-          {loading ? (
-            <div>Loading ...</div>
-          ) : (
-            <>
-              <div>
-                s32: {containerStock.stock32}{" "}
-                {stock32Unsufficient && (
-                  <span className=" bg-red-900 text-red-200 p-1 text-sm rounded-md  ">
-                    {" "}
-                    Stock insuffisant{" "}
-                  </span>
-                )}
-              </div>
-              <div>
-                s32: {containerStock.stock42}{" "}
-                {stock42Unsufficient && (
-                  <span className=" bg-red-900 text-red-200 p-1 text-sm rounded-md  ">
-                    Stock insuffisant
-                  </span>
-                )}
-              </div>{" "}
-            </>
-          )}
-        </div>
+        {/*  {loading ? (
+          <Loading isLoading={loading} />
+        ) : (
+          <ContainerStock
+            containerStock={containerStock}
+            stock32Unsufficient={stock32Unsufficient}
+            stock42Unsufficient={stock42Unsufficient}
+          />
+        )} */}
 
         {SACS_SECTIONS.CONTAINER.label === selectedPage[1].label && (
           <DaiziContainer
@@ -242,7 +225,9 @@ export default function Daizi() {
             containerStock={containerStock}
             onInputChage={onInputChage}
             resetStock={resetStock}
-            stockInsufficient={stock32Unsufficient || stock42Unsufficient}
+            // stockInsufficient={stock32Unsufficient || stock42Unsufficient}
+            stock32Unsufficient={stock32Unsufficient}
+            stock42Unsufficient={stock42Unsufficient}
             onSave={onSave}
           />
         )}
