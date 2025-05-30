@@ -93,7 +93,14 @@ function TableProduction({ trans }) {
   );
 }
 
-function TableInput({ stockShengYu, onDaiziProdChange }) {
+function TableInput({
+  stockShengYu,
+  onDaiziProdChange,
+  stock32Unsufficient,
+  stock42Unsufficient,
+  onCancel,
+  onSave,
+}) {
   const [, , user] = useContext(UserContext);
   const [data, setData] = useState({
     team: "A",
@@ -111,14 +118,14 @@ function TableInput({ stockShengYu, onDaiziProdChange }) {
 
   const [tonnage, setTonnage] = useState({ t_32: 0, t_42: 0 });
 
-  console.log("stockShengYu", stockShengYu);
+  const stockInsufficient = stock32Unsufficient || stock42Unsufficient;
 
   const { s32: rest32, s42: rest42 } = stockShengYu;
 
   useEffect(() => {
     setTonnage({
-      t_32: parseFloat((parseFloat(data.used_32) / 20).toFixed(2)),
-      t_42: parseFloat((parseFloat(data.used_42) / 20).toFixed(2)),
+      t_32: parseFloat((parseFloat(data.used_32) || 0 / 20).toFixed(2)),
+      t_42: parseFloat((parseFloat(data.used_42) || 0 / 20).toFixed(2)),
     });
 
     if (isNaN(data.used_32)) data.used_32 = 0;
@@ -130,77 +137,91 @@ function TableInput({ stockShengYu, onDaiziProdChange }) {
   }, [data]);
 
   return (
-    <table class="table-auto">
-      <thead className="p1 border border-gray-900 dark:border-white p-1 ">
-        <tr>
-          {[
-            GetTransForTokensArray(LANG_TOKENS.DATE, user.lang),
-            GetTransForTokensArray(LANG_TOKENS.TEAM, user.lang),
-            "used_32",
-            "used_42",
-            "T (32)",
-            "T (42)",
-            GetTransForTokensArray(LANG_TOKENS.TORN_BAGS, user.lang) + "(32)",
-            GetTransForTokensArray(LANG_TOKENS.TORN_BAGS, user.lang) + "(42)",
-            "REST (32)",
-            "REST (42)",
-            //"date_time",
-          ].map((it, i) => {
-            return (
-              <th className="p1 border border-gray-900 dark:border-white p-1 ">
-                {it}
-              </th>
-            );
-          })}
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td className="p1 border border-gray-900 dark:border-white p-1 ">
-            {formatCreatedAt(new Date())}
-          </td>
-          <td className="p1 border border-gray-900 dark:border-white p-1 ">
-            <select
-              value={data.team}
-              onChange={(e) =>
-                setData((prev) => ({ ...prev, team: e.target.value }))
-              }
-            >
-              {EQUIPES_CHARGEMENT.map((t, i) => (
-                <option value={t}>{t}</option>
-              ))}
-            </select>
-          </td>
-          <td className="p1 border border-gray-900 dark:border-white p-1 ">
-            <input
-              type="number"
-              min={0}
-              step={1}
-              value={data.used_32}
-              onChange={(e) =>
-                setData((prev) => ({
-                  ...prev,
-                  used_32: parseInt(e.target.value),
-                }))
-              }
-            />
-          </td>
-          <td className="p1 border border-gray-900 dark:border-white p-1 ">
-            <input
-              type="number"
-              min={0}
-              step={1}
-              value={data.used_42}
-              onChange={(e) =>
-                setData((prev) => ({
-                  ...prev,
-                  used_42: parseInt(e.target.value),
-                }))
-              }
-            />
-          </td>
-          <td className="p1 border border-gray-900 dark:border-white p-1 ">
-            {/*  <input
+    <div>
+      <div>
+        <div>
+          {!stockInsufficient && (
+            <button className="btn btn-primary" onClick={(e) => onSave(data)}>
+              Save
+            </button>
+          )}
+
+          <button className="btn btn-secondary" onClick={onCancel}>
+            Cancel
+          </button>
+        </div>
+      </div>
+      <table class="table-auto">
+        <thead className="p1 border border-gray-900 dark:border-white p-1 ">
+          <tr>
+            {[
+              GetTransForTokensArray(LANG_TOKENS.DATE, user.lang),
+              GetTransForTokensArray(LANG_TOKENS.TEAM, user.lang),
+              "used_32",
+              "used_42",
+              "T (32)",
+              "T (42)",
+              GetTransForTokensArray(LANG_TOKENS.TORN_BAGS, user.lang) + "(32)",
+              GetTransForTokensArray(LANG_TOKENS.TORN_BAGS, user.lang) + "(42)",
+              "REST (32)",
+              "REST (42)",
+              //"date_time",
+            ].map((it, i) => {
+              return (
+                <th className="p1 border border-gray-900 dark:border-white p-1 ">
+                  {it}
+                </th>
+              );
+            })}
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td className="p1 border border-gray-900 dark:border-white p-1 ">
+              {formatCreatedAt(new Date())}
+            </td>
+            <td className="p1 border border-gray-900 dark:border-white p-1 ">
+              <select
+                value={data.team}
+                onChange={(e) =>
+                  setData((prev) => ({ ...prev, team: e.target.value }))
+                }
+              >
+                {EQUIPES_CHARGEMENT.map((t, i) => (
+                  <option value={t}>{t}</option>
+                ))}
+              </select>
+            </td>
+            <td className="p1 border border-gray-900 dark:border-white p-1 ">
+              <input
+                type="number"
+                min={0}
+                step={1}
+                value={data.used_32}
+                onChange={(e) =>
+                  setData((prev) => ({
+                    ...prev,
+                    used_32: parseInt(e.target.value),
+                  }))
+                }
+              />
+            </td>
+            <td className="p1 border border-gray-900 dark:border-white p-1 ">
+              <input
+                type="number"
+                min={0}
+                step={1}
+                value={data.used_42}
+                onChange={(e) =>
+                  setData((prev) => ({
+                    ...prev,
+                    used_42: parseInt(e.target.value),
+                  }))
+                }
+              />
+            </td>
+            <td className="p1 border border-gray-900 dark:border-white p-1 ">
+              {/*  <input
               type="number" min={0} step={1}
               value={data.t_32}
               onChange={(e) =>
@@ -210,10 +231,10 @@ function TableInput({ stockShengYu, onDaiziProdChange }) {
                 }))
               }
             /> */}
-            {tonnage.t_32}
-          </td>
-          <td className="p1 border border-gray-900 dark:border-white p-1 ">
-            {/* <input
+              {tonnage.t_32}
+            </td>
+            <td className="p1 border border-gray-900 dark:border-white p-1 ">
+              {/* <input
               type="number" min={0} step={1}
               value={data.t_42}
               onChange={(e) =>
@@ -223,59 +244,76 @@ function TableInput({ stockShengYu, onDaiziProdChange }) {
                 }))
               }
             /> */}
-            {tonnage.t_42}
-          </td>
-          <td className="p1 border border-gray-900 dark:border-white p-1 ">
-            <input
-              type="number"
-              min={0}
-              step={1}
-              value={data.dech_32}
-              onChange={(e) =>
-                setData((prev) => ({
-                  ...prev,
-                  dech_32: parseInt(e.target.value),
-                }))
-              }
-            />
-          </td>
-          <td className="p1 border border-gray-900 dark:border-white p-1 ">
-            <input
-              type="number"
-              min={0}
-              step={1}
-              value={data.dech_42}
-              onChange={(e) =>
-                setData((prev) => ({
-                  ...prev,
-                  dech_42: parseInt(e.target.value),
-                }))
-              }
-            />
-          </td>
-          <td className="p1 border border-gray-900 dark:border-white p-1 ">
-            {rest32}
-          </td>
-          <td className="p1 border border-gray-900 dark:border-white p-1 ">
-            {rest42}
-          </td>
-          <td className="p1 border border-gray-900 dark:border-white p-1 ">
-            <input
-              type="datetime-local"
-              value={
-                data.date_time || formatCreatedAt(new Date().toISOString())
-              }
-              onChange={(e) =>
-                setData((prev) => ({
-                  ...prev,
-                  date_time: e.target.value.replace("T", " "),
-                }))
-              }
-            />
-          </td>
-        </tr>
-      </tbody>
-    </table>
+              {tonnage.t_42}
+            </td>
+            <td className="p1 border border-gray-900 dark:border-white p-1 ">
+              <input
+                type="number"
+                min={0}
+                step={1}
+                value={data.dech_32}
+                onChange={(e) =>
+                  setData((prev) => ({
+                    ...prev,
+                    dech_32: parseInt(e.target.value),
+                  }))
+                }
+              />
+            </td>
+            <td className="p1 border border-gray-900 dark:border-white p-1 ">
+              <input
+                type="number"
+                min={0}
+                step={1}
+                value={data.dech_42}
+                onChange={(e) =>
+                  setData((prev) => ({
+                    ...prev,
+                    dech_42: parseInt(e.target.value),
+                  }))
+                }
+              />
+            </td>
+            <td className="p1 border border-gray-900 dark:border-white p-1 ">
+              {rest32}
+              {stock32Unsufficient && (
+                <div className=" bg-red-900 text-red-300 p-1 rounded-sm text-sm ">
+                  {GetTransForTokensArray(
+                    LANG_TOKENS.STOCK_UNSUFFICIENT,
+                    user.lang
+                  )}
+                </div>
+              )}
+            </td>
+            <td className="p1 border border-gray-900 dark:border-white p-1 ">
+              {rest42}
+              {stock42Unsufficient && (
+                <div className=" bg-red-900 text-red-300 p-1 rounded-sm text-sm ">
+                  {GetTransForTokensArray(
+                    LANG_TOKENS.STOCK_UNSUFFICIENT,
+                    user.lang
+                  )}
+                </div>
+              )}
+            </td>
+            <td className="p1 border border-gray-900 dark:border-white p-1 ">
+              <input
+                type="datetime-local"
+                value={
+                  data.date_time || formatCreatedAt(new Date().toISOString())
+                }
+                onChange={(e) =>
+                  setData((prev) => ({
+                    ...prev,
+                    date_time: e.target.value.replace("T", " "),
+                  }))
+                }
+              />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   );
 }
 
@@ -322,15 +360,38 @@ export default function DaiziProd({}) {
     }
   }
 
+  const [stock32Unsufficient, setStock32Unsufficient] = useState(false);
+  const [stock42Unsufficient, setStock42Unsufficient] = useState(false);
+
   function onDaiziProdChange(data) {
-    console.log("upd==>>", data);
+    setStock32Unsufficient(false);
+    setStock42Unsufficient(false);
     const ns32 = stockShengYUOriginal.s32 - data.used_32;
     const ns42 = stockShengYUOriginal.s42 - data.used_42;
-    const newSSY = { s32: ns32, s42: ns42 };
 
-    setStockShengYu(newSSY);
+    if (ns32 < 0) setStock32Unsufficient(true);
+    if (ns42 < 0) setStock42Unsufficient(true);
+
+    if (stock32Unsufficient || stock42Unsufficient) {
+      setStockShengYu(stockShengYUOriginal);
+    } else {
+      const newSSY = { s32: ns32, s42: ns42 };
+
+      setStockShengYu(newSSY);
+    }
   }
 
+  function onSave(data) {
+    console.log("save prod and ssy", data);
+  }
+
+  function onCancel() {
+    setShowInput(false);
+    setStock32Unsufficient(false);
+    setStock42Unsufficient(false);
+
+    setStockShengYu(stockShengYUOriginal);
+  }
   return (
     <div>
       <div>PRODUCTION</div>
@@ -338,12 +399,18 @@ export default function DaiziProd({}) {
       {loading ? (
         <Loading isLoading={true} />
       ) : (
-        <ShengyuStock shengYuStock={stockShengYU} />
+        <ShengyuStock
+          shengYuStock={stockShengYU}
+          stock32Unsufficient={stock32Unsufficient}
+          stock42Unsufficient={stock42Unsufficient}
+        />
       )}
 
-      <button className="btn btn-primary" onClick={(e) => setShowInput(true)}>
-        Add
-      </button>
+      {!showInput && (
+        <button className="btn btn-primary" onClick={(e) => setShowInput(true)}>
+          Add
+        </button>
+      )}
       {error ? (
         <div className=" bg-red-900 text-red-400 p-2 rounded-md text-sm ">
           {error}
@@ -352,6 +419,10 @@ export default function DaiziProd({}) {
         <TableInput
           stockShengYu={stockShengYU}
           onDaiziProdChange={onDaiziProdChange}
+          onCancel={onCancel}
+          onSave={onSave}
+          stock32Unsufficient={stock32Unsufficient}
+          stock42Unsufficient={stock42Unsufficient}
         />
       ) : (
         <TableProduction trans={trans} stockShengYu={stockShengYU} />
