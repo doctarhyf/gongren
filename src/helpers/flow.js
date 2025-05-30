@@ -275,7 +275,8 @@ export const EQUIPES_NAMES = {
   CHIN: "CHINOISE",
 };
 
-export const PRIME_MIN = 750;
+export const PRIME_MIN = 600;
+export const TONNAGE_MONTHLY_TARGET = 45000;
 
 export const CONTRATS = ["BNC", "KAY", "GCK", "EMCO"];
 export const NATIONALITIES = ["CD", "ZH"];

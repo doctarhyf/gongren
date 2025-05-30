@@ -68,7 +68,7 @@ export const LANG_TOKENS = {
     "根据送货单计算完成的吨位",
     "Calcul du tonnage effectue, apartir de bons",
   ],
-  TARGET: ["TARGET", "目标", "CIBLE"],
+  TARGET: ["MONTHLY ARGET", "目标", "TARGET MENSUEL"],
   TONS_ALREADY_LOADED_THIS_MONTH: [
     "Tons Already Loaded for This Month.",
     "本月已装载吨数",

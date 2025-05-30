@@ -8,6 +8,7 @@ import {
   POSTE,
   POSTES,
   SECTIONS,
+  TONNAGE_MONTHLY_TARGET,
 } from "../../helpers/flow";
 import {
   AddLeadingZero,
@@ -618,14 +619,23 @@ export function HUDMonthProgress({ loads, date }) {
             <progress
               className="progress  progress-success w-full "
               value={parseInt(data.tonnage)}
-              max={60000}
+              max={TONNAGE_MONTHLY_TARGET}
             ></progress>
             <div className="text-[42pt]">
               {parseFloat(data.tonnage).toFixed(2)} T
             </div>
 
+            <div className="text-[16pt]   ">
+              Rest :{" "}
+              {(
+                parseFloat(TONNAGE_MONTHLY_TARGET) - parseFloat(data.tonnage)
+              ).toFixed(2)}{" "}
+              T
+            </div>
+
             <div className="p-1 bg-black w-fit text-white rounded-full px-2 ">
-              {GetTransForTokensArray(LANG_TOKENS.TARGET, user.lang)}: 60000T
+              {GetTransForTokensArray(LANG_TOKENS.TARGET, user.lang)}:{" "}
+              {TONNAGE_MONTHLY_TARGET}T
             </div>
           </div>
 
