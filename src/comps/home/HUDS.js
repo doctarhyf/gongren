@@ -7,6 +7,7 @@ import {
   LOG_OPERATION,
   POSTE,
   POSTES,
+  PRIME_MIN,
   SECTIONS,
   TONNAGE_MONTHLY_TARGET,
 } from "../../helpers/flow";
@@ -743,6 +744,7 @@ export function HUDBonus({ loads, agents, date, agents_by_team }) {
         {
           y: date.y,
           m: AddLeadingZero(date.m + 1),
+          t: parseInt(PRIME_MIN),
         }
       )}
       desc={GetTransForTokensArray(LANG_TOKENS.HUD_DESC_BONUS, user.lang)}

@@ -133,9 +133,9 @@ export const LANG_TOKENS = {
     "Suivi de chargement - %y/%m",
   ],
   HUD_TITLE_BONUS_TRACKING: [
-    "BONUS TRACKING %y/%m",
-    "奖金跟踪 - %y年%m月",
-    "Suivi des bonus - %y/%m",
+    "BONUS %y/%m (Base: %tT)",
+    "%y年%m月 奖金 (超过: %tT)",
+    "BONUS - %y/%m (Base: %tT)",
   ],
   HUD_DESC_BONUS: [
     "Bonus Tracking for the Current Month",
@@ -364,6 +364,21 @@ export function GetTransForTokenName(tokenName, langCode, holderData) {
 }
 
 export function GetTransForTokensArray(tokensArray, langCode, holderData) {
+  /*Use case for holder data 
+
+ex: GetTransForTokensArray(
+        LANG_TOKENS.HUD_TITLE_LOADING_TRACKING,
+        user.lang,
+        { y: date.y, m: AddLeadingZero(date.m + 1) }
+      )
+
+lang str : 
+HUD_TITLE_LOADING_TRACKING: [
+    "LOADING TRACKING %y/%m",
+    "装载跟踪 - %y年%m月",
+    "Suivi de chargement - %y/%m",
+  ], */
+
   const keys = Object.keys(LANG_TOKENS);
   //console.log("Keys :", keys);
   const vals = Object.values(LANG_TOKENS);
