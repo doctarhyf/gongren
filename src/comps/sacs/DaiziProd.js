@@ -123,13 +123,13 @@ function TableInput({
   const { s32: rest32, s42: rest42 } = stockShengYu;
 
   useEffect(() => {
-    setTonnage({
-      t_32: parseFloat((parseFloat(data.used_32) || 0 / 20).toFixed(2)),
-      t_42: parseFloat((parseFloat(data.used_42) || 0 / 20).toFixed(2)),
-    });
-
     if (isNaN(data.used_32)) data.used_32 = 0;
     if (isNaN(data.used_42)) data.used_42 = 0;
+
+    setTonnage({
+      t_32: parseFloat((parseFloat(data.used_32) / 20).toFixed(2)),
+      t_42: parseFloat((parseFloat(data.used_42) / 20).toFixed(2)),
+    });
 
     const prodDataUpdate = { ...data, ...tonnage };
 
@@ -382,6 +382,10 @@ export default function DaiziProd({}) {
   }
 
   function onSave(data) {
+    if (data.used_32 === 0 && data.used_42 === 0) {
+      alert("All bags cant be zero");
+      return;
+    }
     console.log("save prod and ssy", data);
   }
 
