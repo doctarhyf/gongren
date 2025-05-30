@@ -219,6 +219,8 @@ function TableInput({
     stockRes: false,
   });
 
+  const [, , user] = useContext(UserContext);
+
   useEffect(() => {
     const finalData = {
       ...data,
@@ -307,13 +309,20 @@ function TableInput({
                   setData((prev) => ({ ...prev, operation: e.target.value }))
                 }
               >
-                <option value="in">in</option>
-                <option value="out">out</option>
+                <option value="in">
+                  {" "}
+                  {GetTransForTokensArray(LANG_TOKENS.IN, user.lang)}
+                </option>
+                <option value="out">
+                  {GetTransForTokensArray(LANG_TOKENS.OUT, user.lang)}
+                </option>
               </select>
             </td>
             <td className="p1 border border-gray-900 dark:border-white p-1 ">
               <input
                 type="number"
+                min={0}
+                step={1}
                 className="w-full"
                 placeholder="s32"
                 value={data.s32}
@@ -328,6 +337,8 @@ function TableInput({
             <td className="p1 border border-gray-900 dark:border-white p-1 ">
               <input
                 type="number"
+                min={0}
+                step={1}
                 className="w-full"
                 placeholder="s42"
                 value={data.s42}

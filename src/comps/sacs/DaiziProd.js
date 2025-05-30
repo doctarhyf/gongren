@@ -93,14 +93,14 @@ function TableProduction({ trans }) {
   );
 }
 
-function TableInput({ stockShengYu }) {
+function TableInput({ stockShengYu, onDaiziProdChange }) {
   const [, , user] = useContext(UserContext);
   const [data, setData] = useState({
     team: "A",
     used_32: 0,
     used_42: 0,
-    t_32: 0,
-    t_42: 0,
+    //t_32: 0,
+    //t_42: 0,
     dech_32: 0,
     dech_42: 0,
     //rest32: 0,
@@ -109,9 +109,25 @@ function TableInput({ stockShengYu }) {
     key: uuid(),
   });
 
+  const [tonnage, setTonnage] = useState({ t_32: 0, t_42: 0 });
+
   console.log("stockShengYu", stockShengYu);
 
   const { s32: rest32, s42: rest42 } = stockShengYu;
+
+  useEffect(() => {
+    setTonnage({
+      t_32: parseFloat((parseFloat(data.used_32) / 20).toFixed(2)),
+      t_42: parseFloat((parseFloat(data.used_42) / 20).toFixed(2)),
+    });
+
+    if (isNaN(data.used_32)) data.used_32 = 0;
+    if (isNaN(data.used_42)) data.used_42 = 0;
+
+    const prodDataUpdate = { ...data, ...tonnage };
+
+    onDaiziProdChange(prodDataUpdate);
+  }, [data]);
 
   return (
     <table class="table-auto">
@@ -158,6 +174,8 @@ function TableInput({ stockShengYu }) {
           <td className="p1 border border-gray-900 dark:border-white p-1 ">
             <input
               type="number"
+              min={0}
+              step={1}
               value={data.used_32}
               onChange={(e) =>
                 setData((prev) => ({
@@ -170,6 +188,8 @@ function TableInput({ stockShengYu }) {
           <td className="p1 border border-gray-900 dark:border-white p-1 ">
             <input
               type="number"
+              min={0}
+              step={1}
               value={data.used_42}
               onChange={(e) =>
                 setData((prev) => ({
@@ -181,7 +201,7 @@ function TableInput({ stockShengYu }) {
           </td>
           <td className="p1 border border-gray-900 dark:border-white p-1 ">
             {/*  <input
-              type="number"
+              type="number" min={0} step={1}
               value={data.t_32}
               onChange={(e) =>
                 setData((prev) => ({
@@ -190,11 +210,11 @@ function TableInput({ stockShengYu }) {
                 }))
               }
             /> */}
-            t32
+            {tonnage.t_32}
           </td>
           <td className="p1 border border-gray-900 dark:border-white p-1 ">
             {/* <input
-              type="number"
+              type="number" min={0} step={1}
               value={data.t_42}
               onChange={(e) =>
                 setData((prev) => ({
@@ -203,11 +223,13 @@ function TableInput({ stockShengYu }) {
                 }))
               }
             /> */}
-            t42
+            {tonnage.t_42}
           </td>
           <td className="p1 border border-gray-900 dark:border-white p-1 ">
             <input
               type="number"
+              min={0}
+              step={1}
               value={data.dech_32}
               onChange={(e) =>
                 setData((prev) => ({
@@ -220,6 +242,8 @@ function TableInput({ stockShengYu }) {
           <td className="p1 border border-gray-900 dark:border-white p-1 ">
             <input
               type="number"
+              min={0}
+              step={1}
               value={data.dech_42}
               onChange={(e) =>
                 setData((prev) => ({
@@ -236,7 +260,18 @@ function TableInput({ stockShengYu }) {
             {rest42}
           </td>
           <td className="p1 border border-gray-900 dark:border-white p-1 ">
-            <input type="datetime-local" />
+            <input
+              type="datetime-local"
+              value={
+                data.date_time || formatCreatedAt(new Date().toISOString())
+              }
+              onChange={(e) =>
+                setData((prev) => ({
+                  ...prev,
+                  date_time: e.target.value.replace("T", " "),
+                }))
+              }
+            />
           </td>
         </tr>
       </tbody>
@@ -244,9 +279,13 @@ function TableInput({ stockShengYu }) {
   );
 }
 
-export default function DaiziProd({ stock }) {
+export default function DaiziProd({}) {
   const [trans, setTrans] = useState([]);
   const [stockShengYU, setStockShengYu] = useState({ s32: 0, s42: 0 });
+  const [stockShengYUOriginal, setStockShengYuOriginal] = useState({
+    s32: 0,
+    s42: 0,
+  });
   const [showInput, setShowInput] = useState(false);
   const [error, seterror] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -270,7 +309,9 @@ export default function DaiziProd({ stock }) {
     console.log("stock shengyu ", rest);
     if (rest) {
       const { s32, s42 } = rest;
-      setStockShengYu({ s32: s32, s42: s42 });
+      const ssy = { s32: s32, s42: s42 };
+      setStockShengYu(ssy);
+      setStockShengYuOriginal(ssy);
       setLoading(false);
     } else {
       const msg =
@@ -279,6 +320,15 @@ export default function DaiziProd({ stock }) {
       console.log(msg);
       setLoading(false);
     }
+  }
+
+  function onDaiziProdChange(data) {
+    console.log("upd==>>", data);
+    const ns32 = stockShengYUOriginal.s32 - data.used_32;
+    const ns42 = stockShengYUOriginal.s42 - data.used_42;
+    const newSSY = { s32: ns32, s42: ns42 };
+
+    setStockShengYu(newSSY);
   }
 
   return (
@@ -299,7 +349,10 @@ export default function DaiziProd({ stock }) {
           {error}
         </div>
       ) : showInput ? (
-        <TableInput stockShengYu={stockShengYU} />
+        <TableInput
+          stockShengYu={stockShengYU}
+          onDaiziProdChange={onDaiziProdChange}
+        />
       ) : (
         <TableProduction trans={trans} stockShengYu={stockShengYU} />
       )}

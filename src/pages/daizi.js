@@ -199,6 +199,7 @@ export default function Daizi() {
     console.log("saving :", data, "\nres:", res_trans_dzjzx);
     setrdk(Math.random());
   }
+
   return (
     <div className="container">
       <>
