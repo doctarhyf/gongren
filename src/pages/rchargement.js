@@ -714,7 +714,9 @@ export default function RapportChargement() {
                             {GetTransForTokensArray(LANG_TOKENS.T, user.lang)}
                           </th>
                           {UserHasAccessCode(user, ACCESS_CODES.BONUS_ROW) && (
-                            <th className="border border-slate-500 p-1">BNS</th>
+                            <th className="border border-slate-500 p-1">
+                              BNS ( {PRIME_MIN} )T
+                            </th>
                           )}
                           <th className="border border-slate-500 p-1">ACT</th>
                         </tr>
