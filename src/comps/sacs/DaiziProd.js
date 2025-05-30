@@ -103,6 +103,7 @@ function TableInput({
 }) {
   const [, , user] = useContext(UserContext);
   const [data, setData] = useState({
+    date_time: null,
     team: "A",
     used_32: 0,
     used_42: 0,
@@ -131,8 +132,11 @@ function TableInput({
       t_42: parseFloat((parseFloat(data.used_42) / 20).toFixed(2)),
     });
 
+    const { s32: rest32, s42: rest42 } = stockShengYu;
+    const rest = { rest32: rest32, rest42: rest42 };
     const prodDataUpdate = { ...data, ...tonnage };
 
+    console.log("pd", prodDataUpdate);
     onDaiziProdChange(prodDataUpdate);
   }, [data]);
 
@@ -300,7 +304,10 @@ function TableInput({
               <input
                 type="datetime-local"
                 value={
-                  data.date_time || formatCreatedAt(new Date().toISOString())
+                  data.date_time ||
+                  formatCreatedAt(
+                    new Date().toISOString().replace("T", " ").split(".")[0]
+                  )
                 }
                 onChange={(e) =>
                   setData((prev) => ({
@@ -328,12 +335,14 @@ export default function DaiziProd({}) {
   const [error, seterror] = useState(null);
   const [loading, setLoading] = useState(false);
   const [, , user] = useContext(UserContext);
+  const [rdk, setrdk] = useState(Math.random());
   useEffect(() => {
     loadData();
   }, []);
 
   async function loadData() {
     setLoading(true);
+    setrdk(Math.random());
     seterror(null);
     const trans = await SB.LoadAllItems(
       TABLES_NAMES.DAIZI_SHENGCHAN,
@@ -382,21 +391,48 @@ export default function DaiziProd({}) {
     }
   }
 
+  function calculateTonnage(data) {
+    const { used_32, used_42 } = data;
+    const t_32 = parseFloat(used_32) / 20;
+    const t_42 = parseFloat(used_42) / 20;
+
+    return { t_32: t_32, t_42: t_42 };
+  }
+
   async function onSave(data) {
+    setLoading(true);
     if (data.used_32 === 0 && data.used_42 === 0) {
       alert("All bags cant be zero");
       return;
     }
 
-    /*  const res = await SB.InsertItem(TABLES_NAMES.DAIZI_SHENGCHAN, data);
+    let { key: key_dzsc, date_time } = data;
+    if (date_time === null)
+      date_time = new Date().toISOString().replace("T", " ").split(".")[0];
 
-    if(res){
-const re
-    }else{
+    const { s32: rest32, s42: rest42 } = stockShengYU;
+    const rest = { rest32: rest32, rest42: rest42 };
+    const tonnage = calculateTonnage(data);
+    const finalDataDzsc = { ...data, ...rest, ...tonnage, date_time };
 
-    } */
+    const finalDataDzsy = {
+      s32: rest32,
+      s42: rest42,
+      operation: "out",
+      key_dzsc: key_dzsc,
+    };
 
-    console.log("save prod and ssy", data);
+    console.log("finalDataDzsy", finalDataDzsy);
+    console.log("finalDataDzsc", finalDataDzsc);
+
+    const res_sc = SB.InsertItem(TABLES_NAMES.DAIZI_SHENGCHAN, finalDataDzsc);
+    const res_sy = SB.InsertItem(TABLES_NAMES.DAIZI_SHENGYU, finalDataDzsy);
+
+    const res = await Promise.all([res_sc, res_sy]); //nnn
+
+    console.log("res all => ", res);
+
+    setLoading(false);
   }
 
   function onCancel() {
@@ -432,14 +468,20 @@ const re
           </div>
         </>
       ) : showInput ? (
-        <TableInput
-          stockShengYu={stockShengYU}
-          onDaiziProdChange={onDaiziProdChange}
-          onCancel={onCancel}
-          onSave={onSave}
-          stock32Unsufficient={stock32Unsufficient}
-          stock42Unsufficient={stock42Unsufficient}
-        />
+        <>
+          {/* <div className=" hidden md:block "> */}
+          <TableInput
+            key={rdk} //clcllc
+            stockShengYu={stockShengYU}
+            onDaiziProdChange={onDaiziProdChange}
+            onCancel={onCancel}
+            onSave={onSave}
+            stock32Unsufficient={stock32Unsufficient}
+            stock42Unsufficient={stock42Unsufficient}
+          />
+          {/*   </div>
+          <div className="block md:hidden">form</div> */}
+        </>
       ) : (
         <TableProduction trans={trans} stockShengYu={stockShengYU} />
       )}
