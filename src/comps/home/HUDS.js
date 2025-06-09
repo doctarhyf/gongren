@@ -797,12 +797,17 @@ export function HUDGestionSacs() {
   async function loadData() {
     set_no_data(false);
     setloading(true);
-    const stockCont = await SB.LoadAllItems(TABLES_NAMES.SACS_CONTAINER);
-    const stockProd = await SB.LoadAllItems(TABLES_NAMES.SACS_PRODUCTION);
+    const stockCont = await SB.LoadAllItems(TABLES_NAMES.DAIZI_JIZHUANGXIANG);
+    const stockProd = await SB.LoadAllItems(TABLES_NAMES.DAIZI_SHENGCHAN);
     setStockProd(stockProd);
+
+    console.log(stockCont);
+    console.log(stockProd);
 
     const stockContLen = stockCont.length;
     const stockProdLen = stockProd.length;
+
+    console.log("stockContLen", stockContLen, "stockProdLen", stockProdLen);
 
     if (stockContLen === 0 || stockProdLen === 0) {
       setloading(false);
@@ -814,11 +819,13 @@ export function HUDGestionSacs() {
     const stockProdLastEl = stockProd[stockProdLen - 1];
 
     const { stock32, stock42 } = stockContLastEl;
-    const { restants32, restants42 } = stockProdLastEl;
+    const { rest32, rest42 } = stockProdLastEl;
+
+    console.log(stockProdLastEl);
 
     setdata({
       cont: { s32: stock32, s42: stock42 },
-      prod: { s32: restants32, s42: restants42 },
+      prod: { s32: rest32, s42: rest42 },
     });
 
     setloading(false);
@@ -881,10 +888,10 @@ export function HUDGestionSacs() {
                           <td className=" border p-1  ">
                             {it.date_time.replace("T", " ")}
                           </td>
-                          <td className=" border p-1  ">{it.sortis32}</td>
-                          <td className=" border p-1  ">{it.sortis42}</td>
-                          <td className=" border p-1  ">{it.tonnage32}</td>
-                          <td className=" border p-1  ">{it.tonnage42}</td>
+                          <td className=" border p-1  ">{it.used_32}</td>
+                          <td className=" border p-1  ">{it.used_42}</td>
+                          <td className=" border p-1  ">{it.t_32}</td>
+                          <td className=" border p-1  ">{it.t_42}</td>
                         </tr>
                       )
                   )}
@@ -1097,7 +1104,7 @@ const ShiftTeamCard = () => {
         <img
           src="https://ltvavdcgdrfqhlfpgkks.supabase.co/storage/v1/object/public/agents_photos/1732797003087.jpeg"
           alt="Supervisor"
-          className="w-20 h-20 rounded-full border-2 border-teal-400 mb-2"
+          className="w-20 h-20 md:w-12 md:h-12 rounded-full border-2 border-teal-400 mb-2"
         />
         <div>
           <div className="uppercase text-sm text-teal-300">Supervisor</div>
@@ -1107,9 +1114,9 @@ const ShiftTeamCard = () => {
 
       <div className="flex gap-4   ">
         <img
-          src="https://via.placeholder.com/100"
+          src="https://ltvavdcgdrfqhlfpgkks.supabase.co/storage/v1/object/public/agents_photos/1732797003087.jpeg"
           alt="Squad Leader"
-          className=" w-20 h-20 rounded-full border-2 border-teal-400 mb-2"
+          className=" w-20 h-20 md:w-12 md:h-12 rounded-full border-2 border-teal-400 mb-2"
         />
         <div>
           <div className="uppercase text-sm text-teal-300">Squad Leader</div>
