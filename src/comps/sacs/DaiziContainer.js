@@ -157,6 +157,23 @@ function TableContainer({ trans, onAdd }) {
             </tr>
           </thead>
           <tbody>
+            <tr>
+              <td className="p1 border border-gray-900 dark:border-white p-1 ">
+                TOTAL
+              </td>
+              {/*   <td className="p1 border border-gray-900 dark:border-white p-1 ">
+          {formatCreatedAt(item.created_at)}
+        </td> */}
+              <td className="p1 border border-gray-900 dark:border-white p-1 "></td>
+              <td className="p1 border border-gray-900 dark:border-white p-1 "></td>
+              <td className="p1 border border-gray-900 dark:border-white p-1 "></td>
+              <td className="p1 border border-gray-900 dark:border-white p-1 "></td>
+              <td className="p1 border border-gray-900 dark:border-white p-1 "></td>
+              <td className="p1 border border-gray-900 dark:border-white p-1 "></td>
+              <td className="p1 border border-gray-900 dark:border-white p-1 "></td>
+              <td className="p1 border border-gray-900 dark:border-white p-1 "></td>
+            </tr>
+
             {trans.map((item) => (
               <tr key={item.id}>
                 <td className="p1 border border-gray-900 dark:border-white p-1 ">
