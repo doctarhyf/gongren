@@ -21,6 +21,7 @@ import {
 import { v4 as uuid } from "uuid";
 import ShengyuStock from "./ShengyuStock";
 import Loading from "../Loading";
+import MonthFilter from "./MonthFilter";
 
 function TableProduction({ trans }) {
   const [, , user] = useContext(UserContext);
@@ -326,6 +327,7 @@ function TableInput({
 
 export default function DaiziProd({}) {
   const [trans, setTrans] = useState([]);
+  const [transf, settransf] = useState([]);
   const [stockShengYU, setStockShengYu] = useState({ s32: 0, s42: 0 });
   const [stockShengYUOriginal, setStockShengYuOriginal] = useState({
     s32: 0,
@@ -351,6 +353,7 @@ export default function DaiziProd({}) {
     );
 
     setTrans(trans);
+    settransf(trans);
     console.log("prods => ", trans);
     const rest = await SB.LoadLastItem(TABLES_NAMES.DAIZI_SHENGYU);
 
@@ -442,6 +445,27 @@ export default function DaiziProd({}) {
 
     setStockShengYu(stockShengYUOriginal);
   }
+
+  const [filteredMonth, setFilteredMonth] = useState({
+    y: 2025,
+    m: new Date().getMonth(),
+  });
+
+  useEffect(() => {
+    const filtereds = trans.filter(
+      (it) => !it.created_at.indexOf(filteredMonth)
+    );
+
+    console.log("filtereds: ", filtereds);
+    settransf(filtereds);
+  }, [filteredMonth]);
+
+  function onMonthFiltered(d) {
+    let df = `${d.y}-${parseInt(d.m).toString().padStart(2, "0")}`;
+    setFilteredMonth(df);
+    console.log(d, df);
+  }
+
   return (
     <div>
       <div>PRODUCTION</div>
@@ -449,11 +473,14 @@ export default function DaiziProd({}) {
       {loading ? (
         <Loading isLoading={true} />
       ) : (
-        <ShengyuStock
-          shengYuStock={stockShengYU}
-          stock32Unsufficient={stock32Unsufficient}
-          stock42Unsufficient={stock42Unsufficient}
-        />
+        <>
+          <ShengyuStock
+            shengYuStock={stockShengYU}
+            stock32Unsufficient={stock32Unsufficient}
+            stock42Unsufficient={stock42Unsufficient}
+          />
+          <MonthFilter onMonthFiltered={onMonthFiltered} />
+        </>
       )}
 
       {!showInput && (
@@ -483,7 +510,7 @@ export default function DaiziProd({}) {
           <div className="block md:hidden">form</div> */}
         </>
       ) : (
-        <TableProduction trans={trans} stockShengYu={stockShengYU} />
+        <TableProduction trans={transf} stockShengYu={stockShengYU} />
       )}
     </div>
   );

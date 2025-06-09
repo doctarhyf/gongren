@@ -12,6 +12,7 @@ import { TABLES_NAMES } from "../helpers/sb.config";
 import {
   CLASS_BTN,
   CLASS_INPUT_TEXT,
+  CLASS_SELECT,
   CLASS_TD,
   STOCK_RESET_PWD,
   STOCK_TYPE,
@@ -217,12 +218,15 @@ export default function Sacs() {
     }
   };
 
+  //cool
+
   return (
     <div>
       <Loading isLoading={loading} />
 
       <div className={`  ${loading ? "hidden" : "block"} `}>
         <TabCont tabs={SACS_SECTIONS} onSelectTab={onSelectTab} />
+
         {curtab && (
           <>
             {SACS_SECTIONS.PRODUCTION.label === curtab[1].label && (

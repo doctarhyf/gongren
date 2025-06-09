@@ -7,7 +7,7 @@ import {
   formatDateForDatetimeLocal,
   formatFrenchDate,
 } from "../../helpers/func";
-import { DAIZI_FUZEREN } from "../../helpers/flow";
+import { CLASS_SELECT, DAIZI_FUZEREN, MONTHS } from "../../helpers/flow";
 import ButtonPrint from "../ButtonPrint";
 import {
   GetTransForTokensArray,
@@ -20,6 +20,7 @@ import {
 } from "../../helpers/funcs_print";
 import Loading from "../Loading";
 import ContainerStock from "./ContainerStock";
+import MonthFilter from "./MonthFilter";
 
 function TableContainer({ trans, onAdd }) {
   const [, , user] = useContext(UserContext);
@@ -414,14 +415,27 @@ export default function DaiziContainer({
   const [, , user] = useContext(UserContext);
 
   const [trans, setTrans] = useState([]);
+  const [transf, settransf] = useState([]);
   const [loading, setLoading] = useState(false);
   const [input, setInput] = useState(false);
+  const [filteredMonth, setFilteredMonth] = useState({
+    y: 2025,
+    m: new Date().getMonth(),
+  });
 
   useEffect(() => {
     // Load transactions or any other data needed
     loadData();
   }, []);
 
+  useEffect(() => {
+    const filtereds = trans.filter(
+      (it) => !it.created_at.indexOf(filteredMonth)
+    );
+
+    console.log("filtereds: ", filtereds);
+    settransf(filtereds);
+  }, [filteredMonth]);
   async function loadData() {
     setLoading(true);
     const fetchedTrans = await SB.LoadAllItems(
@@ -431,6 +445,7 @@ export default function DaiziContainer({
     );
     if (fetchedTrans) {
       setTrans(fetchedTrans);
+      settransf(fetchedTrans);
       console.log("Transactions loaded:", fetchedTrans);
       setLoading(false);
     } else {
@@ -441,6 +456,13 @@ export default function DaiziContainer({
 
   const stockInsufficient = stock32Unsufficient || stock42Unsufficient;
 
+  function onMonthFiltered(d) {
+    setFilteredMonth(d);
+    let df = `${d.y}-${parseInt(d.m).toString().padStart(2, "0")}`;
+    setFilteredMonth(df);
+    console.log("FilteredMonth: ", d);
+  }
+
   return loading ? (
     <Loading isLoading={loading} />
   ) : (
@@ -450,6 +472,7 @@ export default function DaiziContainer({
         stock32Unsufficient={stock32Unsufficient}
         stock42Unsufficient={stock42Unsufficient}
       />
+      <MonthFilter onMonthFiltered={onMonthFiltered} />
       {input ? (
         <TableInput
           onCancel={(e) => {
@@ -463,7 +486,7 @@ export default function DaiziContainer({
           containerStock={containerStock}
         />
       ) : (
-        <TableContainer trans={trans} onAdd={(e) => setInput(true)} />
+        <TableContainer trans={transf} onAdd={(e) => setInput(true)} />
       )}{" "}
     </div>
   );
