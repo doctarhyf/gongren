@@ -25,6 +25,13 @@ import MonthFilter from "./MonthFilter";
 function TableContainer({ trans, onAdd }) {
   const [, , user] = useContext(UserContext);
 
+  const totals = { s32: 0, s42: 0 };
+
+  if (trans && trans.length > 0) {
+    totals.s32 = trans.reduce((sum, it) => sum + it.s32, 0);
+    totals.s42 = trans.reduce((sum, it) => sum + it.s42, 0);
+  }
+
   function onPrint(loads) {
     //console.log(loads);
     //return;
@@ -48,24 +55,6 @@ function TableContainer({ trans, onAdd }) {
     );
 
     const body = loads;
-
-    /*
-
-{
-    "id": 16,
-    "created_at": "2025-05-29T13:02:46.659377+00:00",
-    "date_time": "2025-05-29 15:02",
-    "operation": "out",
-    "s32": 0,
-    "s42": 4500,
-    "stock32": 30000,
-    "stock42": 45500,
-    "fuzeren": "谭义勇",
-    "team": "A",
-    "stockRes": false,
-    "key": "811dfeef-fc8d-428f-a899-9245926b2401"
-}
-      */
 
     const defaultObject = {
       id: 16,
@@ -161,13 +150,15 @@ function TableContainer({ trans, onAdd }) {
               <td className="p1 border border-gray-900 dark:border-white p-1 ">
                 TOTAL
               </td>
-              {/*   <td className="p1 border border-gray-900 dark:border-white p-1 ">
-          {formatCreatedAt(item.created_at)}
-        </td> */}
+
               <td className="p1 border border-gray-900 dark:border-white p-1 "></td>
               <td className="p1 border border-gray-900 dark:border-white p-1 "></td>
-              <td className="p1 border border-gray-900 dark:border-white p-1 "></td>
-              <td className="p1 border border-gray-900 dark:border-white p-1 "></td>
+              <td className="p1 border border-gray-900 dark:border-white p-1 ">
+                {totals.s32}
+              </td>
+              <td className="p1 border border-gray-900 dark:border-white p-1 ">
+                {totals.s42}
+              </td>
               <td className="p1 border border-gray-900 dark:border-white p-1 "></td>
               <td className="p1 border border-gray-900 dark:border-white p-1 "></td>
               <td className="p1 border border-gray-900 dark:border-white p-1 "></td>
@@ -489,7 +480,7 @@ export default function DaiziContainer({
         stock32Unsufficient={stock32Unsufficient}
         stock42Unsufficient={stock42Unsufficient}
       />
-      <MonthFilter onMonthFiltered={onMonthFiltered} />
+      <MonthFilter onMonthFiltered={onMonthFiltered} isContainer={true} />
       {input ? (
         <TableInput
           onCancel={(e) => {

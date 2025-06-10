@@ -21,9 +21,9 @@ import {
 import { v4 as uuid } from "uuid";
 import ShengyuStock from "./ShengyuStock";
 import Loading from "../Loading";
-import MonthFilter from "./MonthFilter";
+import MonthFilter, { TEAMS } from "./MonthFilter";
 
-function TableProduction({ trans }) {
+function TableProduction({ trans, totals }) {
   const [, , user] = useContext(UserContext);
 
   return (
@@ -57,11 +57,19 @@ function TableProduction({ trans }) {
             TOTAL
           </td>
           <td className="p1 border border-gray-900 dark:border-white p-1 "></td>
+          <td className="p1 border border-gray-900 dark:border-white p-1 ">
+            {totals.used_32}
+          </td>
+          <td className="p1 border border-gray-900 dark:border-white p-1 ">
+            {totals.used_42}
+          </td>
           <td className="p1 border border-gray-900 dark:border-white p-1 "></td>
-          <td className="p1 border border-gray-900 dark:border-white p-1 "></td>
-          <td className="p1 border border-gray-900 dark:border-white p-1 "></td>
-          <td className="p1 border border-gray-900 dark:border-white p-1 "></td>
-          <td className="p1 border border-gray-900 dark:border-white p-1 "></td>
+          <td className="p1 border border-gray-900 dark:border-white p-1 ">
+            {totals.dech_32}
+          </td>
+          <td className="p1 border border-gray-900 dark:border-white p-1 ">
+            {totals.dech_42}
+          </td>
           <td className="p1 border border-gray-900 dark:border-white p-1 "></td>
           <td className="p1 border border-gray-900 dark:border-white p-1 "></td>
           <td className="p1 border border-gray-900 dark:border-white p-1 "></td>
@@ -72,7 +80,7 @@ function TableProduction({ trans }) {
         {trans.map((item) => (
           <tr key={item.id}>
             <td className="p1 border border-gray-900 dark:border-white p-1 ">
-              {formatCreatedAt(item.created_at)}
+              {formatCreatedAt(item.date_time)}
             </td>
             <td className="p1 border border-gray-900 dark:border-white p-1 ">
               {item.team}
@@ -355,6 +363,12 @@ export default function DaiziProd({}) {
   const [loading, setLoading] = useState(false);
   const [, , user] = useContext(UserContext);
   const [rdk, setrdk] = useState(Math.random());
+  const [totals, settoals] = useState({
+    used_32: 0,
+    used_42: 0,
+    dech32: 0,
+    dech42: 0,
+  });
   useEffect(() => {
     loadData();
   }, []);
@@ -369,8 +383,11 @@ export default function DaiziProd({}) {
       true
     );
 
+    // console.log(trans);
+
     setTrans(trans);
-    settransf(trans);
+    setFilteredTeam(TEAMS.ALL);
+    //settransf(trans);
     console.log("prods => ", trans);
     const rest = await SB.LoadLastItem(TABLES_NAMES.DAIZI_SHENGYU);
 
@@ -467,19 +484,49 @@ export default function DaiziProd({}) {
     y: 2025,
     m: new Date().getMonth(),
   });
+  const [filteredTeam, setFilteredTeam] = useState(TEAMS.ALL);
 
   useEffect(() => {
-    const filtereds = trans.filter(
-      (it) => !it.created_at.indexOf(filteredMonth)
+    console.log("filteredMonth", filteredMonth);
+    let filtereds = trans.filter((it) =>
+      it.date_time.startsWith(filteredMonth)
     );
 
-    console.log("filtereds: ", filtereds);
+    if (filteredTeam !== TEAMS.ALL) {
+      filtereds = filtereds.filter((t) => t.team === filteredTeam);
+    }
+
+    const tused_32 = filtereds.reduce(
+      (sum, it) => sum + parseInt(it.used_32),
+      0
+    );
+    const tused_42 = filtereds.reduce(
+      (sum, it) => sum + parseInt(it.used_42),
+      0
+    );
+    const tdech_32 = filtereds.reduce(
+      (sum, it) => sum + parseInt(it.dech_32),
+      0
+    );
+    const tdech_42 = filtereds.reduce(
+      (sum, it) => sum + parseInt(it.dech_42),
+      0
+    );
+
+    settoals({
+      used_32: tused_32,
+      used_42: tused_42,
+      dech_32: tdech_32,
+      dech_42: tdech_42,
+    });
+
     settransf(filtereds);
-  }, [filteredMonth]);
+  }, [filteredMonth, filteredTeam]);
 
   function onMonthFiltered(d) {
     let df = `${d.y}-${parseInt(d.m).toString().padStart(2, "0")}`;
     setFilteredMonth(df);
+    setFilteredTeam(d.team);
     console.log(d, df);
   }
 
@@ -496,7 +543,7 @@ export default function DaiziProd({}) {
             stock32Unsufficient={stock32Unsufficient}
             stock42Unsufficient={stock42Unsufficient}
           />
-          <MonthFilter onMonthFiltered={onMonthFiltered} />
+          <MonthFilter onMonthFiltered={onMonthFiltered} isProduction={true} />
         </>
       )}
 
@@ -527,7 +574,11 @@ export default function DaiziProd({}) {
           <div className="block md:hidden">form</div> */}
         </>
       ) : (
-        <TableProduction trans={transf} stockShengYu={stockShengYU} />
+        <TableProduction
+          trans={transf}
+          stockShengYu={stockShengYU}
+          totals={totals}
+        />
       )}
     </div>
   );

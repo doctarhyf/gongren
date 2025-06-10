@@ -1,17 +1,44 @@
 import { useEffect, useState } from "react";
 import { CLASS_SELECT, MONTHS } from "../../helpers/flow";
 
-export default function MonthFilter({ onMonthFiltered }) {
+export const CONTAINER_IN_OUT = {
+  CONTAINER_IN_OUT: "in/out",
+  IN: "in",
+  OUT: "out",
+};
+
+export const TEAMS = {
+  ALL: "ALL",
+  A: "A",
+  B: "B",
+  C: "C",
+};
+
+export default function MonthFilter({
+  onMonthFiltered,
+  isContainer,
+  isProduction,
+}) {
   const [y, sety] = useState(new Date().getFullYear());
   const [m, setm] = useState(new Date().getMonth());
-  const [data, setdata] = useState({ y: y, m: m });
+  const [inOut, setInOut] = useState(CONTAINER_IN_OUT.CONTAINER_IN_OUT);
+  const [team, setTeam] = useState(TEAMS.ALL);
+  //const [data, setdata] = useState({ y: y, m: m });
 
   useEffect(() => {
-    onMonthFiltered({ y: parseInt(y), m: parseInt(m) });
-  }, [y, m]);
+    const data = {
+      y: parseInt(y),
+      m: parseInt(m),
+      inOut: inOut,
+      team: team,
+    };
+
+    console.log(data);
+    onMonthFiltered(data);
+  }, [y, m, inOut, team]);
 
   return (
-    <div className=" flex gap-2 ">
+    <div className=" flex gap-2 my-4 ">
       <select
         className={` ${CLASS_SELECT} `}
         value={y}
@@ -32,6 +59,30 @@ export default function MonthFilter({ onMonthFiltered }) {
           <option value={idx + 1}>{MONTHS[idx]}</option>
         ))}
       </select>
+
+      {isContainer && (
+        <select
+          className={` ${CLASS_SELECT} `}
+          value={inOut}
+          onChange={(e) => setInOut(e.target.value)}
+        >
+          {Object.values(CONTAINER_IN_OUT).map((it, idx) => (
+            <option value={it}>{it}</option>
+          ))}
+        </select>
+      )}
+
+      {isProduction && (
+        <select
+          className={` ${CLASS_SELECT} `}
+          value={team}
+          onChange={(e) => setTeam(e.target.value)}
+        >
+          {Object.values(TEAMS).map((it, idx) => (
+            <option value={it}>{it}</option>
+          ))}
+        </select>
+      )}
     </div>
   );
 }
