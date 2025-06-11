@@ -808,7 +808,7 @@ export function HUDGestionSacs() {
     const stockContLen = stockCont.length;
     const stockProdLen = stockProd.length;
 
-    console.log("stockContLen", stockContLen, "stockProdLen", stockProdLen);
+    // console.log("stockContLen", stockContLen, "stockProdLen", stockProdLen);
 
     if (stockContLen === 0 || stockProdLen === 0) {
       setloading(false);
@@ -832,11 +832,16 @@ export function HUDGestionSacs() {
     setloading(false);
   }
 
+  const [, , user] = useContext(UserContext);
+
   return (
     <Card
       id={3}
-      title={`GESTIONS SACS/编织袋管理`}
-      desc={"Gestion sacs container/production"}
+      title={GetTransForTokensArray(
+        LANG_TOKENS.CONTAINER_BAGS_MANAGEMENT,
+        user.lang
+      )}
+      desc={""}
     >
       {loading ? (
         <Loading isLoading={true} />
@@ -867,15 +872,17 @@ export function HUDGestionSacs() {
             ))}
           </div>
           <div>
-            <div className=" text-sm font-bold  my-2 ">Last 5 records</div>
+            <div className=" text-sm font-bold  my-2 ">
+              {GetTransForTokensArray(LANG_TOKENS.LAST_5_RECORDS, user.lang)}
+            </div>
             <table className="  text-xs w-full">
               <tr>
                 <td className=" border p-1  ">No</td>
                 <td className=" border p-1  ">Date</td>
-                <td className=" border p-1  ">srt.32</td>
-                <td className=" border p-1  ">srt.42</td>
-                <td className=" border p-1  ">T32</td>
-                <td className=" border p-1  ">T42</td>
+                <td className=" border p-1  ">32.5</td>
+                <td className=" border p-1  ">42.5</td>
+                <td className=" border p-1  ">T 32.5</td>
+                <td className=" border p-1  ">T 42.5</td>
               </tr>
               {stockProd &&
                 stockProd

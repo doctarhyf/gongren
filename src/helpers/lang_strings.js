@@ -4,6 +4,8 @@ import china from "../img/china.png";
 
 export const LANG_TOKENS = {
   "IN/OUT": ["IN/OUT", "进/出", "SORTIE/ENTREE"],
+  REMAINING: ["REMAINING", "剩余", "RESTANTS"],
+  LAST_5_RECORDS: ["Last 5 transfers", "最近5次转账", "5 derniers transferts"],
   PRODUCTION_BAGS_MANAGEMENT: [
     "PRODUCTION BAGS MANAGEMENT",
     "生产袋子管理",

@@ -33,15 +33,19 @@ function TableProduction({ trans, totals }) {
           {[
             GetTransForTokensArray(LANG_TOKENS.DATE, user.lang),
             GetTransForTokensArray(LANG_TOKENS.TEAM, user.lang),
-            "used_32",
-            "used_42",
+            GetTransForTokensArray(LANG_TOKENS.DELIVER_BAGS, user.lang) +
+              " 32.5",
+            GetTransForTokensArray(LANG_TOKENS.DELIVER_BAGS, user.lang) +
+              " 42.5",
+            ,
             "T (32)",
             "T (42)",
             GetTransForTokensArray(LANG_TOKENS.TORN_BAGS, user.lang) + "(32)",
             GetTransForTokensArray(LANG_TOKENS.TORN_BAGS, user.lang) + "(42)",
-            "REST (32)",
-            "REST (42)",
+            GetTransForTokensArray(LANG_TOKENS.REMAINING) + " 32.5",
+            GetTransForTokensArray(LANG_TOKENS.REMAINING) + " 42.5",
             //"date_time",
+            ,
           ].map((it, i) => {
             return (
               <th className="p1 border border-gray-900 dark:border-white p-1 ">
@@ -202,7 +206,22 @@ function TableInput({
         <tbody>
           <tr>
             <td className="p1 border border-gray-900 dark:border-white p-1 ">
-              {formatCreatedAt(new Date())}
+              {/* {formatCreatedAt(new Date())}  */}
+              <input
+                type="datetime-local"
+                value={
+                  data.date_time ||
+                  formatCreatedAt(
+                    new Date().toISOString().replace("T", " ").split(".")[0]
+                  )
+                }
+                onChange={(e) =>
+                  setData((prev) => ({
+                    ...prev,
+                    date_time: e.target.value.replace("T", " "),
+                  }))
+                }
+              />
             </td>
             <td className="p1 border border-gray-900 dark:border-white p-1 ">
               <select
@@ -245,29 +264,9 @@ function TableInput({
               />
             </td>
             <td className="p1 border border-gray-900 dark:border-white p-1 ">
-              {/*  <input
-              type="number" min={0} step={1}
-              value={data.t_32}
-              onChange={(e) =>
-                setData((prev) => ({
-                  ...prev,
-                  t_32: parseInt(e.target.value),
-                }))
-              }
-            /> */}
               {tonnage.t_32}
             </td>
             <td className="p1 border border-gray-900 dark:border-white p-1 ">
-              {/* <input
-              type="number" min={0} step={1}
-              value={data.t_42}
-              onChange={(e) =>
-                setData((prev) => ({
-                  ...prev,
-                  t_42: parseInt(e.target.value),
-                }))
-              }
-            /> */}
               {tonnage.t_42}
             </td>
             <td className="p1 border border-gray-900 dark:border-white p-1 ">
@@ -320,23 +319,7 @@ function TableInput({
                 </div>
               )}
             </td>
-            <td className="p1 border border-gray-900 dark:border-white p-1 ">
-              <input
-                type="datetime-local"
-                value={
-                  data.date_time ||
-                  formatCreatedAt(
-                    new Date().toISOString().replace("T", " ").split(".")[0]
-                  )
-                }
-                onChange={(e) =>
-                  setData((prev) => ({
-                    ...prev,
-                    date_time: e.target.value.replace("T", " "),
-                  }))
-                }
-              />
-            </td>
+            <td className="p1 border border-gray-900 dark:border-white p-1 "></td>
           </tr>
         </tbody>
       </table>
