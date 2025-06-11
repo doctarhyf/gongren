@@ -1,13 +1,15 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { CLASS_SELECT, MONTHS } from "../../helpers/flow";
+import { GetTransForTokenName } from "../../helpers/lang_strings";
+import { UserContext } from "../../App";
 
-export const CONTAINER_IN_OUT = {
-  CONTAINER_IN_OUT: "in/out",
+export const FILTER_CONTAINER_IN_OUT = {
+  ALL: "in/out",
   IN: "in",
   OUT: "out",
 };
 
-export const TEAMS = {
+export const FILTER_TEAMS = {
   ALL: "ALL",
   A: "A",
   B: "B",
@@ -19,11 +21,11 @@ export default function MonthFilter({
   isContainer,
   isProduction,
 }) {
+  const [, , user] = useContext(UserContext);
   const [y, sety] = useState(new Date().getFullYear());
   const [m, setm] = useState(new Date().getMonth());
-  const [inOut, setInOut] = useState(CONTAINER_IN_OUT.CONTAINER_IN_OUT);
-  const [team, setTeam] = useState(TEAMS.ALL);
-  //const [data, setdata] = useState({ y: y, m: m });
+  const [inOut, setInOut] = useState(FILTER_CONTAINER_IN_OUT.ALL);
+  const [team, setTeam] = useState(FILTER_TEAMS.ALL);
 
   useEffect(() => {
     const data = {
@@ -66,19 +68,19 @@ export default function MonthFilter({
           value={inOut}
           onChange={(e) => setInOut(e.target.value)}
         >
-          {Object.values(CONTAINER_IN_OUT).map((it, idx) => (
-            <option value={it}>{it}</option>
+          {Object.values(FILTER_CONTAINER_IN_OUT).map((it, idx) => (
+            <option value={it}>{GetTransForTokenName(it, user.lang)}</option>
           ))}
         </select>
       )}
 
-      {isProduction && (
+      {(isProduction || isContainer) && (
         <select
           className={` ${CLASS_SELECT} `}
           value={team}
           onChange={(e) => setTeam(e.target.value)}
         >
-          {Object.values(TEAMS).map((it, idx) => (
+          {Object.values(FILTER_TEAMS).map((it, idx) => (
             <option value={it}>{it}</option>
           ))}
         </select>

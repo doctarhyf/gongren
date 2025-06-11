@@ -125,11 +125,16 @@ export function GetMonthNumDays(year, month) {
   const ext = count === 31 ? "st" : "th";
   const remaining = count - today;
 
-  return {
+  const res = {
     count: count,
     ext: ext,
     remaining: remaining,
+    current: count - remaining,
   };
+
+  console.log(res);
+
+  return res;
 }
 
 export function formatDateTime(dt) {

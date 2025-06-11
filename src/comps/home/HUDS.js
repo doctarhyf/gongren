@@ -617,17 +617,26 @@ export function HUDMonthProgress({ loads, date }) {
               )}
             </div>
 
+            <div className="text-[42pt]">
+              {parseFloat(data.tonnage).toFixed(2)} T
+            </div>
+
             <progress
               className="progress  progress-success w-full "
               value={parseInt(data.tonnage)}
               max={TONNAGE_MONTHLY_TARGET}
             ></progress>
-            <div className="text-[42pt]">
-              {parseFloat(data.tonnage).toFixed(2)} T
+
+            <div>
+              {(
+                (parseFloat(data.tonnage) / TONNAGE_MONTHLY_TARGET) *
+                100
+              ).toFixed(2)}
+              %
             </div>
 
             <div className="text-[16pt]   ">
-              Rest :{" "}
+              REST :{" "}
               {(
                 parseFloat(TONNAGE_MONTHLY_TARGET) - parseFloat(data.tonnage)
               ).toFixed(2)}{" "}
@@ -645,35 +654,27 @@ export function HUDMonthProgress({ loads, date }) {
               {GetTransForTokensArray(LANG_TOKENS.DAYS_REM_IN_MONTH, user.lang)}
             </div>
 
-            <progress
-              className="progress progress-success w-full "
-              value={
-                GetDateParts("all", new Date(`${date.y}-${date.m}-${date.d}`))
-                  .day
-              }
-              max={GetMonthNumDays(date.y, date.m).count}
-            ></progress>
             <div className="text-[42pt]">
               {/*  {GetMonthNumDays().remaining} J/天 */}
               <CountdownTimer />
             </div>
+            <progress
+              className="progress progress-success w-full "
+              value={GetMonthNumDays().current}
+              max={GetMonthNumDays().count}
+            ></progress>
+            <div>
+              {(
+                (GetMonthNumDays().current / GetMonthNumDays().count) *
+                100
+              ).toFixed(2)}
+              %
+            </div>
+
             <div className="p-1 bg-black w-fit text-white rounded-full px-2  ">
-              {JSON.stringify(date.d)}th /{" "}
+              {GetMonthNumDays().current}th /{" "}
               {GetMonthNumDays(date.y, date.m).count}
               {GetMonthNumDays(date.y, date.m).ext}
-            </div>
-          </div>
-
-          <div className=" border-b border-white/15 my-1 py-1 ">
-            <div>
-              {GetTransForTokensArray(
-                LANG_TOKENS.CEMENT_ALREADY_SHIPPED,
-                user.lang
-              )}
-            </div>
-
-            <div className="text-[22pt]">
-              {formatAsMoney(parseFloat(data.tonnage) * 124, "USD")}
             </div>
           </div>
         </div>
@@ -845,11 +846,13 @@ export function HUDGestionSacs() {
         <div className="">
           <div>
             {[
-              ["CONT./集装箱袋数", data.cont],
-              ["REST./剩余总量", data.prod],
+              ["集装箱袋数", data.cont],
+              ["剩余总量", data.prod],
             ].map((stock, i) => (
               <div className=" border-b border-b-white/10 py-2 ">
-                {/* <div className=" text-[24pt] ">{it[1]}</div> */}
+                <div className=" bg-purple-950  px-2 py-1 w-fit rounded-md ">
+                  {stock[0]}
+                </div>
                 {Object.entries(stock[1]).map((s, i) => (
                   <div className="  ">
                     <div>
@@ -860,9 +863,6 @@ export function HUDGestionSacs() {
                     </div>
                   </div>
                 ))}
-                <div className="  text-xs bg-white/25 px-2 py-1 w-fit rounded-md ">
-                  {stock[0]}
-                </div>
               </div>
             ))}
           </div>

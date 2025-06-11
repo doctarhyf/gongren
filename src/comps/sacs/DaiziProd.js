@@ -21,7 +21,7 @@ import {
 import { v4 as uuid } from "uuid";
 import ShengyuStock from "./ShengyuStock";
 import Loading from "../Loading";
-import MonthFilter, { TEAMS } from "./MonthFilter";
+import MonthFilter, { FILTER_TEAMS } from "./MonthFilter";
 
 function TableProduction({ trans, totals }) {
   const [, , user] = useContext(UserContext);
@@ -386,7 +386,7 @@ export default function DaiziProd({}) {
     // console.log(trans);
 
     setTrans(trans);
-    setFilteredTeam(TEAMS.ALL);
+    setFilteredTeam(FILTER_TEAMS.ALL);
     //settransf(trans);
     console.log("prods => ", trans);
     const rest = await SB.LoadLastItem(TABLES_NAMES.DAIZI_SHENGYU);
@@ -484,7 +484,7 @@ export default function DaiziProd({}) {
     y: 2025,
     m: new Date().getMonth(),
   });
-  const [filteredTeam, setFilteredTeam] = useState(TEAMS.ALL);
+  const [filteredTeam, setFilteredTeam] = useState(FILTER_TEAMS.ALL);
 
   useEffect(() => {
     console.log("filteredMonth", filteredMonth);
@@ -492,7 +492,7 @@ export default function DaiziProd({}) {
       it.date_time.startsWith(filteredMonth)
     );
 
-    if (filteredTeam !== TEAMS.ALL) {
+    if (filteredTeam !== FILTER_TEAMS.ALL) {
       filtereds = filtereds.filter((t) => t.team === filteredTeam);
     }
 

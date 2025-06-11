@@ -10,6 +10,7 @@ import {
 import { CLASS_SELECT, DAIZI_FUZEREN, MONTHS } from "../../helpers/flow";
 import ButtonPrint from "../ButtonPrint";
 import {
+  GetTransForTokenName,
   GetTransForTokensArray,
   LANG_TOKENS,
 } from "../../helpers/lang_strings";
@@ -20,7 +21,10 @@ import {
 } from "../../helpers/funcs_print";
 import Loading from "../Loading";
 import ContainerStock from "./ContainerStock";
-import MonthFilter from "./MonthFilter";
+import MonthFilter, {
+  FILTER_CONTAINER_IN_OUT,
+  FILTER_TEAMS,
+} from "./MonthFilter";
 
 function TableContainer({ trans, onAdd }) {
   const [, , user] = useContext(UserContext);
@@ -123,7 +127,7 @@ function TableContainer({ trans, onAdd }) {
                 DATE TIME
               </th>
               <th className="p1 border border-gray-900 dark:border-white p-1 ">
-                OP
+                {GetTransForTokensArray(LANG_TOKENS["IN/OUT"], user.lang)}
               </th>
               <th className="p1 border border-gray-900 dark:border-white p-1 ">
                 s32
@@ -177,7 +181,10 @@ function TableContainer({ trans, onAdd }) {
                   {item.date_time.replace("T", " ")}
                 </td>
                 <td className="p1 border border-gray-900 dark:border-white p-1 ">
-                  {item.operation}
+                  {GetTransForTokenName(
+                    item.operation.toUpperCase(),
+                    user.lang
+                  )}
                 </td>
                 <td className="p1 border border-gray-900 dark:border-white p-1 ">
                   {item.s32}
@@ -421,7 +428,8 @@ export default function DaiziContainer({
   containerStock,
 }) {
   const [, , user] = useContext(UserContext);
-
+  const [filteredTeam, setFilteredTeam] = useState(FILTER_TEAMS.ALL);
+  const [filterInOut, setFilterInOut] = useState();
   const [trans, setTrans] = useState([]);
   const [transf, settransf] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -437,13 +445,19 @@ export default function DaiziContainer({
   }, []);
 
   useEffect(() => {
-    const filtereds = trans.filter(
-      (it) => !it.created_at.indexOf(filteredMonth)
-    );
+    let filtereds = trans.filter((it) => !it.created_at.indexOf(filteredMonth));
 
-    console.log("filtereds: ", filtereds);
+    if (filteredTeam !== FILTER_TEAMS.ALL) {
+      filtereds = filtereds.filter((t) => t.team === filteredTeam);
+    }
+
+    if (FILTER_CONTAINER_IN_OUT.ALL !== filterInOut) {
+      filtereds = filtereds.filter((it) => it.operation === filterInOut);
+    }
+
     settransf(filtereds);
-  }, [filteredMonth]);
+  }, [filteredMonth, filteredTeam, filterInOut]);
+
   async function loadData() {
     setLoading(true);
     const fetchedTrans = await SB.LoadAllItems(
@@ -462,13 +476,24 @@ export default function DaiziContainer({
     }
   }
 
+  /* useEffect(() => {
+    if (FILTER_CONTAINER_IN_OUT.ALL === filterInOut) {
+      settransf(trans);
+    } else {
+      const fz = trans.filter((it) => it.operation === filterInOut);
+      settransf(fz);
+    }
+  }, [filterInOut]); */
+
   const stockInsufficient = stock32Unsufficient || stock42Unsufficient;
 
   function onMonthFiltered(d) {
-    setFilteredMonth(d);
+    console.log(d);
+
     let df = `${d.y}-${parseInt(d.m).toString().padStart(2, "0")}`;
     setFilteredMonth(df);
-    console.log("FilteredMonth: ", d);
+    setFilterInOut(d.inOut);
+    setFilteredTeam(d.team);
   }
 
   return loading ? (

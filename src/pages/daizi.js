@@ -210,16 +210,6 @@ export default function Daizi() {
           lang={user.lang}
         />
 
-        {/*  {loading ? (
-          <Loading isLoading={loading} />
-        ) : (
-          <ContainerStock
-            containerStock={containerStock}
-            stock32Unsufficient={stock32Unsufficient}
-            stock42Unsufficient={stock42Unsufficient}
-          />
-        )} */}
-
         {SACS_SECTIONS.CONTAINER.label === selectedPage[1].label && (
           <DaiziContainer
             key={rdk}

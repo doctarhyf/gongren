@@ -3,6 +3,7 @@ import usa from "../img/usa.png";
 import china from "../img/china.png";
 
 export const LANG_TOKENS = {
+  "IN/OUT": ["IN/OUT", "进/出", "SORTIE/ENTREE"],
   IN: ["IN", "进", "ENTREE"],
   OUT: ["OUT", "出", "SORTIE"],
   L: ["MONDAY", "星期一", "LUNDI"],
