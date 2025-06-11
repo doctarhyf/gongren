@@ -151,7 +151,7 @@ function TableContainer({ trans, onAdd }) {
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <tr className=" font-bold bg-slate-700  ">
               <td className="p1 border border-gray-900 dark:border-white p-1 ">
                 {GetTransForTokensArray(LANG_TOKENS.TOTAL, user.lang)}
               </td>
