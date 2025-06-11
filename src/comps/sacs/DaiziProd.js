@@ -26,94 +26,167 @@ import MonthFilter, { FILTER_TEAMS } from "./MonthFilter";
 function TableProduction({ trans, totals }) {
   const [, , user] = useContext(UserContext);
 
+  function onPrint(loads) {
+    ////console.log(loads);
+    //return;
+    //console.log("loads => ", loads);
+    loads = transformDataForPrint(loads);
+    //console.log("loads => ", loads);
+    const doc = new jsPDF({ orientation: "landscape" });
+    const FONT_SIZE = 9;
+    const PW = 297;
+    const PH = 210;
+    let ty = -1;
+    let tm = -1;
+
+    doc.setFont("helvetica");
+    doc.setFontSize(FONT_SIZE);
+
+    let r = doc.addFont(
+      "fonts/DroidSansFallback.ttf",
+      "DroidSansFallback",
+      "normal"
+    );
+
+    const body = loads;
+
+    const defaultObject = {
+      id: 10,
+      created_at: "2025-06-10T09:30:00.190243+00:00",
+      team: "A",
+      used_32: 0,
+      used_42: 100,
+      t_32: 0,
+      t_42: 5,
+      dech_32: 0,
+      dech_42: 0,
+      rest32: 0,
+      rest42: 7900,
+      date_time: "2025-06-10 08:29:44",
+      key: "abe18cf1-2229-442a-98e0-8f98a147ed70",
+    };
+
+    var headers = createHeaders(Object.keys(defaultObject));
+
+    const tableConfig = {
+      printHeaders: true,
+      autoSize: true,
+      margins: 0,
+      fontSize: FONT_SIZE,
+      padding: 2.5,
+    };
+
+    // body.push(def);
+
+    doc.text(formatFrenchDate(new Date()), PW - 15, 10, { align: "right" });
+
+    const doc_title = `SACS CONTAINER`;
+    const file_name = `SACS_CONTAINER_${formatCreatedAt(
+      new Date().toISOString()
+    )}`;
+    doc.text(doc_title, 105, 20, {
+      align: "center",
+    });
+
+    doc.table(15, 25, body, headers, tableConfig);
+    doc.save(file_name);
+  }
+
   return (
-    <table class="table-auto w-full">
-      <thead className="p1 border border-gray-900 dark:border-white p-1 ">
-        <tr>
-          {[
-            GetTransForTokensArray(LANG_TOKENS.DATE, user.lang),
-            GetTransForTokensArray(LANG_TOKENS.TEAM, user.lang),
-            GetTransForTokensArray(LANG_TOKENS.DELIVER_BAGS, user.lang) +
-              " 32.5",
-            GetTransForTokensArray(LANG_TOKENS.DELIVER_BAGS, user.lang) +
-              " 42.5",
-            ,
-            "T (32)",
-            "T (42)",
-            GetTransForTokensArray(LANG_TOKENS.TORN_BAGS, user.lang) + "(32)",
-            GetTransForTokensArray(LANG_TOKENS.TORN_BAGS, user.lang) + "(42)",
-            GetTransForTokensArray(LANG_TOKENS.REMAINING) + " 32.5",
-            GetTransForTokensArray(LANG_TOKENS.REMAINING) + " 42.5",
-            //"date_time",
-            ,
-          ].map((it, i) => {
-            return (
-              <th className="p1 border border-gray-900 dark:border-white p-1 ">
-                {it}
-              </th>
-            );
-          })}
-        </tr>
-      </thead>
-      <tbody>
-        <tr className=" font-bold bg-slate-700  ">
-          <td className="p1 border border-gray-900 dark:border-white p-1 ">
-            {GetTransForTokensArray(LANG_TOKENS.TOTAL, user.lang)}
-          </td>
-          <td className="p1 border border-gray-900 dark:border-white p-1 "></td>
-          <td className="p1 border border-gray-900 dark:border-white p-1 ">
-            {totals.used_32}
-          </td>
-          <td className="p1 border border-gray-900 dark:border-white p-1 ">
-            {totals.used_42}
-          </td>
-          <td className="p1 border border-gray-900 dark:border-white p-1 "></td>
-          <td className="p1 border border-gray-900 dark:border-white p-1 ">
-            {totals.dech_32}
-          </td>
-          <td className="p1 border border-gray-900 dark:border-white p-1 ">
-            {totals.dech_42}
-          </td>
-          <td className="p1 border border-gray-900 dark:border-white p-1 "></td>
-          <td className="p1 border border-gray-900 dark:border-white p-1 "></td>
-          <td className="p1 border border-gray-900 dark:border-white p-1 "></td>
-        </tr>
-        {trans.map((item) => (
-          <tr key={item.id} className=" hover:bg-slate-700 cursor-pointer ">
-            <td className="p1 border border-gray-900 dark:border-white p-1 ">
-              {formatCreatedAt(item.date_time)}
-            </td>
-            <td className="p1 border border-gray-900 dark:border-white p-1 ">
-              {item.team}
-            </td>
-            <td className="p1 border border-gray-900 dark:border-white p-1 ">
-              {item.used_32}
-            </td>
-            <td className="p1 border border-gray-900 dark:border-white p-1 ">
-              {item.used_42}
-            </td>
-            <td className="p1 border border-gray-900 dark:border-white p-1 ">
-              {item.t_32}
-            </td>
-            <td className="p1 border border-gray-900 dark:border-white p-1 ">
-              {item.t_42}
-            </td>
-            <td className="p1 border border-gray-900 dark:border-white p-1 ">
-              {item.dech_32}
-            </td>
-            <td className="p1 border border-gray-900 dark:border-white p-1 ">
-              {item.dech_42}
-            </td>
-            <td className="p1 border border-gray-900 dark:border-white p-1 ">
-              {item.rest32}
-            </td>
-            <td className="p1 border border-gray-900 dark:border-white p-1 ">
-              {item.rest42}
-            </td>
+    <div>
+      <ButtonPrint
+        title={GetTransForTokensArray(LANG_TOKENS.PRINT, user.lang)}
+        onClick={(e) => onPrint(trans)}
+      />
+
+      <table class="table-auto w-full">
+        <thead className="p1 border border-gray-900 dark:border-white p-1 ">
+          <tr>
+            {[
+              GetTransForTokensArray(LANG_TOKENS.DATE, user.lang),
+              GetTransForTokensArray(LANG_TOKENS.TEAM, user.lang),
+              GetTransForTokensArray(LANG_TOKENS.DELIVER_BAGS, user.lang) +
+                " 32.5",
+              GetTransForTokensArray(LANG_TOKENS.DELIVER_BAGS, user.lang) +
+                " 42.5",
+              ,
+              "T (32)",
+              "T (42)",
+              GetTransForTokensArray(LANG_TOKENS.TORN_BAGS, user.lang) + "(32)",
+              GetTransForTokensArray(LANG_TOKENS.TORN_BAGS, user.lang) + "(42)",
+              GetTransForTokensArray(LANG_TOKENS.REMAINING) + " 32.5",
+              GetTransForTokensArray(LANG_TOKENS.REMAINING) + " 42.5",
+              //"date_time",
+              ,
+            ].map((it, i) => {
+              return (
+                <th className="p1 border border-gray-900 dark:border-white p-1 ">
+                  {it}
+                </th>
+              );
+            })}
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          <tr className=" font-bold bg-slate-700  ">
+            <td className="p1 border border-gray-900 dark:border-white p-1 ">
+              {GetTransForTokensArray(LANG_TOKENS.TOTAL, user.lang)}
+            </td>
+            <td className="p1 border border-gray-900 dark:border-white p-1 "></td>
+            <td className="p1 border border-gray-900 dark:border-white p-1 ">
+              {totals.used_32}
+            </td>
+            <td className="p1 border border-gray-900 dark:border-white p-1 ">
+              {totals.used_42}
+            </td>
+            <td className="p1 border border-gray-900 dark:border-white p-1 "></td>
+            <td className="p1 border border-gray-900 dark:border-white p-1 ">
+              {totals.dech_32}
+            </td>
+            <td className="p1 border border-gray-900 dark:border-white p-1 ">
+              {totals.dech_42}
+            </td>
+            <td className="p1 border border-gray-900 dark:border-white p-1 "></td>
+            <td className="p1 border border-gray-900 dark:border-white p-1 "></td>
+            <td className="p1 border border-gray-900 dark:border-white p-1 "></td>
+          </tr>
+          {trans.map((item) => (
+            <tr key={item.id} className=" hover:bg-slate-700 cursor-pointer ">
+              <td className="p1 border border-gray-900 dark:border-white p-1 ">
+                {formatCreatedAt(item.date_time)}
+              </td>
+              <td className="p1 border border-gray-900 dark:border-white p-1 ">
+                {item.team}
+              </td>
+              <td className="p1 border border-gray-900 dark:border-white p-1 ">
+                {item.used_32}
+              </td>
+              <td className="p1 border border-gray-900 dark:border-white p-1 ">
+                {item.used_42}
+              </td>
+              <td className="p1 border border-gray-900 dark:border-white p-1 ">
+                {item.t_32}
+              </td>
+              <td className="p1 border border-gray-900 dark:border-white p-1 ">
+                {item.t_42}
+              </td>
+              <td className="p1 border border-gray-900 dark:border-white p-1 ">
+                {item.dech_32}
+              </td>
+              <td className="p1 border border-gray-900 dark:border-white p-1 ">
+                {item.dech_42}
+              </td>
+              <td className="p1 border border-gray-900 dark:border-white p-1 ">
+                {item.rest32}
+              </td>
+              <td className="p1 border border-gray-900 dark:border-white p-1 ">
+                {item.rest42}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }
 

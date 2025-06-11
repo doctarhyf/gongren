@@ -276,28 +276,29 @@ function TableInput({
         <thead className="p1 border border-gray-900 dark:border-white p-1 ">
           <tr>
             <th className="p1 border border-gray-900 dark:border-white p-1 ">
-              DATE TIME
+              {GetTransForTokensArray(LANG_TOKENS.DATE_TIME, user.lang)}
             </th>
             <th className="p1 border border-gray-900 dark:border-white p-1 ">
-              OP
+              {GetTransForTokensArray(LANG_TOKENS["IN/OUT"], user.lang) +
+                " 32.5"}
             </th>
             <th className="p1 border border-gray-900 dark:border-white p-1 ">
-              s32
+              32.5
             </th>
             <th className="p1 border border-gray-900 dark:border-white p-1 ">
-              s42
+              42.5
             </th>
             <th className="p1 border border-gray-900 dark:border-white p-1 ">
-              stock32
+              {GetTransForTokensArray(LANG_TOKENS.STOCK, user.lang) + " 32.5"}
             </th>
             <th className="p1 border border-gray-900 dark:border-white p-1 ">
-              stock42
+              {GetTransForTokensArray(LANG_TOKENS.STOCK, user.lang) + " 32.5"}
             </th>
             <th className="p1 border border-gray-900 dark:border-white p-1 ">
-              fuzeren
+              {GetTransForTokensArray(LANG_TOKENS.FUZEREN, user.lang)}
             </th>
             <th className="p1 border border-gray-900 dark:border-white p-1 ">
-              team
+              {GetTransForTokensArray(LANG_TOKENS.TEAM, user.lang)}
             </th>
             <th className="p1 border border-gray-900 dark:border-white p-1 ">
               Stock Reset
@@ -307,17 +308,6 @@ function TableInput({
         <tbody>
           <tr>
             <td className="p1 border border-gray-900 dark:border-white p-1 ">
-              {/* <input
-                type="datetime-local"
-                className="w-full"
-                value={data.date_time}
-                onChange={(e) =>
-                  setData((prev) => ({
-                    ...data,
-                    date_time: e.target.value.replace("T", " "),
-                  }))
-                }
-              /> */}
               {formatCreatedAt(new Date().toISOString())}
             </td>
             <td className="p1 border border-gray-900 dark:border-white p-1 ">
