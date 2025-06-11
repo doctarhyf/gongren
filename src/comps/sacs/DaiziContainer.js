@@ -103,10 +103,9 @@ function TableContainer({ trans, onAdd }) {
 
   return (
     <div>
-      <div>CONTAINER</div>
       <div>
         <button className="btn btn-primary" onClick={onAdd}>
-          Add
+          {GetTransForTokensArray(LANG_TOKENS.DELIVER_BAGS, user.lang)}
         </button>
         <ButtonPrint
           title={GetTransForTokensArray(LANG_TOKENS.PRINT, user.lang)}
@@ -124,35 +123,37 @@ function TableContainer({ trans, onAdd }) {
         created
       </th> */}
               <th className="p1 border border-gray-900 dark:border-white p-1 ">
-                DATE TIME
+                {GetTransForTokensArray(LANG_TOKENS.DATE_TIME, user.lang)}
               </th>
               <th className="p1 border border-gray-900 dark:border-white p-1 ">
                 {GetTransForTokensArray(LANG_TOKENS["IN/OUT"], user.lang)}
               </th>
               <th className="p1 border border-gray-900 dark:border-white p-1 ">
-                s32
+                {GetTransForTokensArray(LANG_TOKENS.DELIVERED_BAGS, user.lang)}
+                32.5
               </th>
               <th className="p1 border border-gray-900 dark:border-white p-1 ">
-                s42
+                {GetTransForTokensArray(LANG_TOKENS.DELIVERED_BAGS, user.lang)}
+                42.5
               </th>
               <th className="p1 border border-gray-900 dark:border-white p-1 ">
-                stock32
+                {GetTransForTokensArray(LANG_TOKENS.STOCK, user.lang)} 32.5
               </th>
               <th className="p1 border border-gray-900 dark:border-white p-1 ">
-                stock42
+                {GetTransForTokensArray(LANG_TOKENS.STOCK, user.lang)} 42.5
               </th>
               <th className="p1 border border-gray-900 dark:border-white p-1 ">
-                fuzeren
+                {GetTransForTokensArray(LANG_TOKENS.FUZEREN, user.lang)}
               </th>
               <th className="p1 border border-gray-900 dark:border-white p-1 ">
-                team
+                {GetTransForTokensArray(LANG_TOKENS.TEAM, user.lang)}
               </th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td className="p1 border border-gray-900 dark:border-white p-1 ">
-                TOTAL
+                {GetTransForTokensArray(LANG_TOKENS.TOTAL, user.lang)}
               </td>
 
               <td className="p1 border border-gray-900 dark:border-white p-1 "></td>
@@ -264,11 +265,11 @@ function TableInput({
       <div>
         {!stockInsufficient && (
           <button className="btn btn-primary" onClick={(e) => onSave(data)}>
-            Save
+            {GetTransForTokensArray(LANG_TOKENS.SAVE, user.lang)}
           </button>
         )}
         <button className="btn btn-secondary" onClick={onCancel}>
-          Cancel
+          {GetTransForTokensArray(LANG_TOKENS.CANCEL, user.lang)}
         </button>
       </div>
       <table class="table-auto">
@@ -428,7 +429,7 @@ export default function DaiziContainer({
   containerStock,
 }) {
   const [, , user] = useContext(UserContext);
-  const [filteredTeam, setFilteredTeam] = useState(FILTER_TEAMS.ALL);
+  const [filteredTeam, setFilteredTeam] = useState(FILTER_TEAMS.ALL_TEMS);
   const [filterInOut, setFilterInOut] = useState();
   const [trans, setTrans] = useState([]);
   const [transf, settransf] = useState([]);
@@ -447,11 +448,11 @@ export default function DaiziContainer({
   useEffect(() => {
     let filtereds = trans.filter((it) => !it.created_at.indexOf(filteredMonth));
 
-    if (filteredTeam !== FILTER_TEAMS.ALL) {
+    if (filteredTeam !== FILTER_TEAMS.ALL_TEMS) {
       filtereds = filtereds.filter((t) => t.team === filteredTeam);
     }
 
-    if (FILTER_CONTAINER_IN_OUT.ALL !== filterInOut) {
+    if (FILTER_CONTAINER_IN_OUT.IN_OUT !== filterInOut) {
       filtereds = filtereds.filter((it) => it.operation === filterInOut);
     }
 
@@ -476,15 +477,6 @@ export default function DaiziContainer({
     }
   }
 
-  /* useEffect(() => {
-    if (FILTER_CONTAINER_IN_OUT.ALL === filterInOut) {
-      settransf(trans);
-    } else {
-      const fz = trans.filter((it) => it.operation === filterInOut);
-      settransf(fz);
-    }
-  }, [filterInOut]); */
-
   const stockInsufficient = stock32Unsufficient || stock42Unsufficient;
 
   function onMonthFiltered(d) {
@@ -500,6 +492,12 @@ export default function DaiziContainer({
     <Loading isLoading={loading} />
   ) : (
     <div>
+      <div className=" text-xl mb-2 border-b   ">
+        {GetTransForTokensArray(
+          LANG_TOKENS.CONTAINER_BAGS_MANAGEMENT,
+          user.lang
+        )}
+      </div>
       <ContainerStock
         containerStock={containerStock}
         stock32Unsufficient={stock32Unsufficient}

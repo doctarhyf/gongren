@@ -4,6 +4,21 @@ import china from "../img/china.png";
 
 export const LANG_TOKENS = {
   "IN/OUT": ["IN/OUT", "进/出", "SORTIE/ENTREE"],
+  PRODUCTION_BAGS_MANAGEMENT: [
+    "PRODUCTION BAGS MANAGEMENT",
+    "生产袋子管理",
+    "GESTION DES SACS DE PRODUCTION",
+  ],
+  CONTAINER_BAGS_MANAGEMENT: [
+    "CONTAINER BAGS MANAGEMENT",
+    "集装箱袋子管理",
+    "GESTION DES SACS DU CONTAINER",
+  ],
+  FUZEREN: ["MANAGER", "负责人", "Responsable"],
+  DELIVERED_BAGS: ["DELIVERED", "领用袋子", "LIVRE"],
+  DELIVER_BAGS: ["DELIVER BAGS", "领袋子", "LIVRER LES SACS"],
+  "ALL TEAMS": ["ALL TEAMS", "所有班组", "TOUTES LES EQ."],
+  STOCK: ["STOCK", "库存", "STOCK"],
   IN: ["IN", "进", "ENTREE"],
   OUT: ["OUT", "出", "SORTIE"],
   L: ["MONDAY", "星期一", "LUNDI"],
@@ -201,6 +216,7 @@ export const LANG_TOKENS = {
   TORN_B: ["T.B.", "破袋", "DECH."],
   T: ["T", "吨", "T"],
   DATE: ["Date", "日期", "Date"],
+  DATE_TIME: ["DATE-TIME", "日期/时间", "DATE-HEURE"],
   EQ: ["EQ.", "班", "EQ."],
   SHIFT: ["Shift", "班次", "Shift"],
   BAGS: ["Bags", "袋子", "Sacs"],
@@ -222,6 +238,7 @@ export const LANG_TOKENS = {
   NEW_AGENT: ["NEW AGENT", "加薪的员工", "AJOUT NOUVEL AGENT"],
   NOTIFICATIONS: ["Notifications", "通知", "Notifications"],
   AGENTS: ["Agents", "工人", "Agents"],
+  SEND_REPPORT: ["SEND REPPORT", "发报告", "ENVOYER RAPPORT"],
   AGENTS_COUNT: ["Agents Count", "工人数量", "Nombre d'Agents"],
   LOADING_REPPORT: ["Loading Repport", "包装报告", "Rapport de chargement"],
   BIGBAG: ["BigBag", "吨袋包装", "BigBag"],
@@ -339,6 +356,7 @@ export const LANG_TOKENS = {
     "PRODUCTION (RESTANTS)",
   ],
   CONTAINER_REST: ["CONTAINER (REMAINS)", "集装箱", "CONTAINEUR (RESTANTS)"],
+  CONTAINER: ["CONTAINER", "集装箱", "CONTAINEUR"],
   STOCK: ["STOCK", "库存", "STOCK"],
 };
 

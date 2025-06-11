@@ -172,12 +172,12 @@ function TableInput({
         <div>
           {!stockInsufficient && (
             <button className="btn btn-primary" onClick={(e) => onSave(data)}>
-              Save
+              {GetTransForTokensArray(LANG_TOKENS.SAVE, user.lang)}
             </button>
           )}
 
           <button className="btn btn-secondary" onClick={onCancel}>
-            Cancel
+            {GetTransForTokensArray(LANG_TOKENS.CANCEL, user.lang)}
           </button>
         </div>
       </div>
@@ -386,7 +386,7 @@ export default function DaiziProd({}) {
     // console.log(trans);
 
     setTrans(trans);
-    setFilteredTeam(FILTER_TEAMS.ALL);
+    setFilteredTeam(FILTER_TEAMS.ALL_TEMS);
     //settransf(trans);
     console.log("prods => ", trans);
     const rest = await SB.LoadLastItem(TABLES_NAMES.DAIZI_SHENGYU);
@@ -484,7 +484,7 @@ export default function DaiziProd({}) {
     y: 2025,
     m: new Date().getMonth(),
   });
-  const [filteredTeam, setFilteredTeam] = useState(FILTER_TEAMS.ALL);
+  const [filteredTeam, setFilteredTeam] = useState(FILTER_TEAMS.ALL_TEMS);
 
   useEffect(() => {
     console.log("filteredMonth", filteredMonth);
@@ -492,7 +492,7 @@ export default function DaiziProd({}) {
       it.date_time.startsWith(filteredMonth)
     );
 
-    if (filteredTeam !== FILTER_TEAMS.ALL) {
+    if (filteredTeam !== FILTER_TEAMS.ALL_TEMS) {
       filtereds = filtereds.filter((t) => t.team === filteredTeam);
     }
 
@@ -532,12 +532,16 @@ export default function DaiziProd({}) {
 
   return (
     <div>
-      <div>PRODUCTION</div>
-
       {loading ? (
         <Loading isLoading={true} />
       ) : (
         <>
+          <div className=" text-xl mb-2 border-b   ">
+            {GetTransForTokensArray(
+              LANG_TOKENS.PRODUCTION_BAGS_MANAGEMENT,
+              user.lang
+            )}
+          </div>
           <ShengyuStock
             shengYuStock={stockShengYU}
             stock32Unsufficient={stock32Unsufficient}
@@ -549,7 +553,7 @@ export default function DaiziProd({}) {
 
       {!showInput && (
         <button className="btn btn-primary" onClick={(e) => setShowInput(true)}>
-          Add
+          {GetTransForTokensArray(LANG_TOKENS.SEND_REPPORT, user.lang)}
         </button>
       )}
       {error ? (
