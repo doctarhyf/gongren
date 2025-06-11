@@ -27,7 +27,7 @@ function TableProduction({ trans, totals }) {
   const [, , user] = useContext(UserContext);
 
   return (
-    <table class="table-auto">
+    <table class="table-auto w-full">
       <thead className="p1 border border-gray-900 dark:border-white p-1 ">
         <tr>
           {[
@@ -54,7 +54,7 @@ function TableProduction({ trans, totals }) {
       <tbody>
         <tr>
           <td className="p1 border border-gray-900 dark:border-white p-1 ">
-            TOTAL
+            {GetTransForTokensArray(LANG_TOKENS.TOTAL, user.lang)}
           </td>
           <td className="p1 border border-gray-900 dark:border-white p-1 "></td>
           <td className="p1 border border-gray-900 dark:border-white p-1 ">
@@ -73,9 +73,6 @@ function TableProduction({ trans, totals }) {
           <td className="p1 border border-gray-900 dark:border-white p-1 "></td>
           <td className="p1 border border-gray-900 dark:border-white p-1 "></td>
           <td className="p1 border border-gray-900 dark:border-white p-1 "></td>
-          {/* <td className="p1 border border-gray-900 dark:border-white p-1 ">
-          {item.date_time}
-        </td> */}
         </tr>
         {trans.map((item) => (
           <tr key={item.id}>
@@ -109,9 +106,6 @@ function TableProduction({ trans, totals }) {
             <td className="p1 border border-gray-900 dark:border-white p-1 ">
               {item.rest42}
             </td>
-            {/* <td className="p1 border border-gray-900 dark:border-white p-1 ">
-          {item.date_time}
-        </td> */}
           </tr>
         ))}
       </tbody>

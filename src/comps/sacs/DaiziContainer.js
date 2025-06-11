@@ -113,7 +113,7 @@ function TableContainer({ trans, onAdd }) {
         />
       </div>
       {trans.length > 0 ? (
-        <table class="table-auto">
+        <table class="table-auto w-full">
           <thead className="p1 border border-gray-900 dark:border-white p-1 ">
             <tr>
               <th className="p1 border border-gray-900 dark:border-white p-1 ">
