@@ -79,7 +79,7 @@ function TableProduction({ trans, totals }) {
           <td className="p1 border border-gray-900 dark:border-white p-1 "></td>
         </tr>
         {trans.map((item) => (
-          <tr key={item.id}>
+          <tr key={item.id} className=" hover:bg-slate-700 cursor-pointer ">
             <td className="p1 border border-gray-900 dark:border-white p-1 ">
               {formatCreatedAt(item.date_time)}
             </td>
@@ -160,7 +160,7 @@ function TableInput({
     const rest = { rest32: rest32, rest42: rest42 };
     const prodDataUpdate = { ...data, ...tonnage };
 
-    console.log("pd", prodDataUpdate);
+    //console.log("pd", prodDataUpdate);
     onDaiziProdChange(prodDataUpdate);
   }, [data]);
 
@@ -350,6 +350,19 @@ export default function DaiziProd({}) {
     loadData();
   }, []);
 
+  function getCurrentMonthTrans(trans) {
+    const y = new Date().getFullYear();
+    const m = (new Date().getMonth() + 1).toString().padStart(2, "0");
+    console.log("month ==> ", m);
+    const filter = `${y}-${m}`;
+    //console.log("ft ==>", filter);
+    const filtereds = trans.filter((it) => it.date_time.startsWith(filter));
+
+    //console.log("fz ==> ", filtereds);
+
+    return filtereds;
+  }
+
   async function loadData() {
     setLoading(true);
     setrdk(Math.random());
@@ -360,15 +373,16 @@ export default function DaiziProd({}) {
       true
     );
 
-    // console.log(trans);
+    // //console.log(trans);
 
     setTrans(trans);
-    setFilteredTeam(FILTER_TEAMS.ALL_TEMS);
-    //settransf(trans);
-    console.log("prods => ", trans);
+    settransf(getCurrentMonthTrans(trans));
+    setFilteredTeam(FILTER_TEAMS.ALL_TEAMS);
+
+    //console.log("prods => ", trans);
     const rest = await SB.LoadLastItem(TABLES_NAMES.DAIZI_SHENGYU);
 
-    console.log("stock shengyu ", rest);
+    //console.log("stock shengyu ", rest);
     if (rest) {
       const { s32, s42 } = rest;
       const ssy = { s32: s32, s42: s42 };
@@ -379,7 +393,7 @@ export default function DaiziProd({}) {
       const msg =
         "No bags for production, please remove bags from container first";
       seterror(msg);
-      console.log(msg);
+      //console.log(msg);
       setLoading(false);
     }
   }
@@ -436,15 +450,15 @@ export default function DaiziProd({}) {
       key_dzsc: key_dzsc,
     };
 
-    console.log("finalDataDzsy", finalDataDzsy);
-    console.log("finalDataDzsc", finalDataDzsc);
+    //console.log("finalDataDzsy", finalDataDzsy);
+    //console.log("finalDataDzsc", finalDataDzsc);
 
     const res_sc = SB.InsertItem(TABLES_NAMES.DAIZI_SHENGCHAN, finalDataDzsc);
     const res_sy = SB.InsertItem(TABLES_NAMES.DAIZI_SHENGYU, finalDataDzsy);
 
     const res = await Promise.all([res_sc, res_sy]); //nnn
 
-    console.log("res all => ", res);
+    //console.log("res all => ", res);
 
     setLoading(false);
   }
@@ -461,15 +475,15 @@ export default function DaiziProd({}) {
     y: 2025,
     m: new Date().getMonth(),
   });
-  const [filteredTeam, setFilteredTeam] = useState(FILTER_TEAMS.ALL_TEMS);
+  const [filteredTeam, setFilteredTeam] = useState(FILTER_TEAMS.ALL_TEAMS);
 
   useEffect(() => {
-    console.log("filteredMonth", filteredMonth);
+    //console.log("filteredMonth", filteredMonth);
     let filtereds = trans.filter((it) =>
       it.date_time.startsWith(filteredMonth)
     );
 
-    if (filteredTeam !== FILTER_TEAMS.ALL_TEMS) {
+    if (filteredTeam !== FILTER_TEAMS.ALL_TEAMS) {
       filtereds = filtereds.filter((t) => t.team === filteredTeam);
     }
 
@@ -504,7 +518,7 @@ export default function DaiziProd({}) {
     let df = `${d.y}-${parseInt(d.m).toString().padStart(2, "0")}`;
     setFilteredMonth(df);
     setFilteredTeam(d.team);
-    console.log(d, df);
+    //console.log(d, df);
   }
 
   return (

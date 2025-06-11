@@ -890,7 +890,7 @@ export function HUDGestionSacs() {
                   .map(
                     (it, i) =>
                       i < 5 && (
-                        <tr>
+                        <tr className="   ">
                           <td className=" border p-1  ">{i + 1}</td>
                           <td className=" border p-1  ">
                             {it.date_time.replace("T", " ")}

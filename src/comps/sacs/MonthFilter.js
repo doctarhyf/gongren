@@ -10,7 +10,7 @@ export const FILTER_CONTAINER_IN_OUT = {
 };
 
 export const FILTER_TEAMS = {
-  ALL_TEMS: "ALL TEAMS",
+  ALL_TEAMS: "ALL TEAMS",
   A: "A",
   B: "B",
   C: "C",
@@ -23,9 +23,9 @@ export default function MonthFilter({
 }) {
   const [, , user] = useContext(UserContext);
   const [y, sety] = useState(new Date().getFullYear());
-  const [m, setm] = useState(new Date().getMonth());
+  const [m, setm] = useState(new Date().getMonth() + 1);
   const [inOut, setInOut] = useState(FILTER_CONTAINER_IN_OUT.IN_OUT);
-  const [team, setTeam] = useState(FILTER_TEAMS.ALL_TEMS);
+  const [team, setTeam] = useState(FILTER_TEAMS.ALL_TEAMS);
 
   useEffect(() => {
     const data = {
@@ -35,7 +35,7 @@ export default function MonthFilter({
       team: team,
     };
 
-    console.log(data);
+    //console.log(data);
     onMonthFiltered(data);
   }, [y, m, inOut, team]);
 

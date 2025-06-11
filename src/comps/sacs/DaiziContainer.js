@@ -37,11 +37,11 @@ function TableContainer({ trans, onAdd }) {
   }
 
   function onPrint(loads) {
-    //console.log(loads);
+    ////console.log(loads);
     //return;
-    console.log("loads => ", loads);
+    //console.log("loads => ", loads);
     loads = transformDataForPrint(loads);
-    console.log("loads => ", loads);
+    //console.log("loads => ", loads);
     const doc = new jsPDF({ orientation: "landscape" });
     const FONT_SIZE = 9;
     const PW = 297;
@@ -171,7 +171,7 @@ function TableContainer({ trans, onAdd }) {
             </tr>
 
             {trans.map((item) => (
-              <tr key={item.id}>
+              <tr key={item.id} className="hover:bg-slate-700 cursor-pointer">
                 <td className="p1 border border-gray-900 dark:border-white p-1 ">
                   {item.id}
                 </td>
@@ -245,7 +245,7 @@ function TableInput({
       ...data,
     };
 
-    console.log("final data", finalData);
+    //console.log("final data", finalData);
 
     if (isNaN(data.s32)) {
       finalData.s32 = 0;
@@ -429,7 +429,7 @@ export default function DaiziContainer({
   containerStock,
 }) {
   const [, , user] = useContext(UserContext);
-  const [filteredTeam, setFilteredTeam] = useState(FILTER_TEAMS.ALL_TEMS);
+  const [filteredTeam, setFilteredTeam] = useState(FILTER_TEAMS.ALL_TEAMS);
   const [filterInOut, setFilterInOut] = useState();
   const [trans, setTrans] = useState([]);
   const [transf, settransf] = useState([]);
@@ -448,7 +448,7 @@ export default function DaiziContainer({
   useEffect(() => {
     let filtereds = trans.filter((it) => !it.created_at.indexOf(filteredMonth));
 
-    if (filteredTeam !== FILTER_TEAMS.ALL_TEMS) {
+    if (filteredTeam !== FILTER_TEAMS.ALL_TEAMS) {
       filtereds = filtereds.filter((t) => t.team === filteredTeam);
     }
 
@@ -469,10 +469,10 @@ export default function DaiziContainer({
     if (fetchedTrans) {
       setTrans(fetchedTrans);
       settransf(fetchedTrans);
-      console.log("Transactions loaded:", fetchedTrans);
+      //console.log("Transactions loaded:", fetchedTrans);
       setLoading(false);
     } else {
-      console.error("Failed to load transactions");
+      //console.error("Failed to load transactions");
       setLoading(false);
     }
   }
@@ -480,7 +480,7 @@ export default function DaiziContainer({
   const stockInsufficient = stock32Unsufficient || stock42Unsufficient;
 
   function onMonthFiltered(d) {
-    console.log(d);
+    //console.log(d);
 
     let df = `${d.y}-${parseInt(d.m).toString().padStart(2, "0")}`;
     setFilteredMonth(df);
