@@ -115,6 +115,19 @@ export function FrenchDate(date) {
   return formattedDateTime;
 }
 
+export function GetCurrentMonthTrans(trans) {
+  const y = new Date().getFullYear();
+  const m = (new Date().getMonth() + 1).toString().padStart(2, "0");
+  console.log("month ==> ", m);
+  const filter = `${y}-${m}`;
+  //console.log("ft ==>", filter);
+  const filtereds = trans.filter((it) => it.date_time.startsWith(filter));
+
+  //console.log("fz ==> ", filtereds);
+
+  return filtereds;
+}
+
 export function GetMonthNumDays(year, month) {
   const date = new Date();
   const today = date.getDate();

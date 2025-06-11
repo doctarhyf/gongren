@@ -6,6 +6,7 @@ import {
   formatCreatedAt,
   formatDateForDatetimeLocal,
   formatFrenchDate,
+  GetCurrentMonthTrans,
 } from "../../helpers/func";
 import { DAIZI_FUZEREN, EQUIPES, EQUIPES_CHARGEMENT } from "../../helpers/flow";
 import ButtonPrint from "../ButtonPrint";
@@ -423,19 +424,6 @@ export default function DaiziProd({}) {
     loadData();
   }, []);
 
-  function getCurrentMonthTrans(trans) {
-    const y = new Date().getFullYear();
-    const m = (new Date().getMonth() + 1).toString().padStart(2, "0");
-    console.log("month ==> ", m);
-    const filter = `${y}-${m}`;
-    //console.log("ft ==>", filter);
-    const filtereds = trans.filter((it) => it.date_time.startsWith(filter));
-
-    //console.log("fz ==> ", filtereds);
-
-    return filtereds;
-  }
-
   async function loadData() {
     setLoading(true);
     setrdk(Math.random());
@@ -449,7 +437,7 @@ export default function DaiziProd({}) {
     // //console.log(trans);
 
     setTrans(trans);
-    settransf(getCurrentMonthTrans(trans));
+    settransf(GetCurrentMonthTrans(trans));
     setFilteredTeam(FILTER_TEAMS.ALL_TEAMS);
 
     //console.log("prods => ", trans);
