@@ -364,14 +364,14 @@ export const MAIN_MENU = [
   {
     name: "Dico",
     path: "/dico",
-    el: Dico,
+    el: Test, // Dico,
     access_code: ACCESS_CODES.PAGE_DICO,
     trad: LANG_TOKENS.DICO,
   },
   {
     name: "Sacs",
     path: "/sacs",
-    el: Test, //Daizi,
+    el: Daizi,
     access_code: ACCESS_CODES.PAGE_SACS,
     trad: LANG_TOKENS.BAGS,
   },
