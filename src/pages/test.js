@@ -18,7 +18,7 @@ export default function Test() {
     setLoading(true);
     const response = await ai.models.generateContent({
       model: "gemini-2.0-flash",
-      contents: `If ${word} is in chinese, translate it to french, and if it's in french give me chinese translation. put the translation in brackets []`,
+      contents: `If ${word} is in chinese, translate it to french, and if it's in french give me chinese translation. give back the response in csv format, easily parsable`,
     });
     console.log(response.text);
 
