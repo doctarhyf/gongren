@@ -32,42 +32,42 @@ function AudioRecPlay({ onAudioRecUploadSuccess, audioType }) {
     seterrors([]);
 
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-      console.log("getUserMedia supported! ");
+      //console.log("getUserMedia supported! ");
 
       try {
         stream = await navigator.mediaDevices.getUserMedia({
           audio: true,
         });
-        console.log("Stream ok : ", stream);
+        //console.log("Stream ok : ", stream);
 
         mediaRecorder = new MediaRecorder(stream);
 
-        console.log("mediaRecorder: ", mediaRecorder);
+        //console.log("mediaRecorder: ", mediaRecorder);
 
         setupMediRecorderListenenrs();
 
-        console.log("starting rec ...");
+        //console.log("starting rec ...");
         setrecording(true);
-        console.log(chunks);
+        //console.log(chunks);
         mediaRecorder.start();
       } catch (e) {
         seterrors({ ...errors, [e.code]: e });
-        console.table(e);
+        //console.table(e);
       }
     } else {
-      console.log("getUserMedia not supported on your browser!");
+      //console.log("getUserMedia not supported on your browser!");
     }
   }
 
   function stopRecording() {
-    console.log("stopping rec ...");
+    //console.log("stopping rec ...");
     setrecording(false);
-    console.log(chunks);
+    //console.log(chunks);
     mediaRecorder.stop();
   }
 
   function setupMediRecorderListenenrs() {
-    console.log("setupMediRecorderListenenrs", mediaRecorder);
+    //console.log("setupMediRecorderListenenrs", mediaRecorder);
     mediaRecorder.ondataavailable = (e) => {
       chunks.push(e.data);
     };
@@ -78,7 +78,7 @@ function AudioRecPlay({ onAudioRecUploadSuccess, audioType }) {
       const audioURL = window.URL.createObjectURL(blob);
       audio.current.src = audioURL;
 
-      console.log("recorder stopped : ", audioURL, "\nBlob :", blob);
+      //console.log("recorder stopped : ", audioURL, "\nBlob :", blob);
 
       setAudioRecorded(true);
       uploadAudioData(blob, audioURL);
@@ -86,12 +86,12 @@ function AudioRecPlay({ onAudioRecUploadSuccess, audioType }) {
   }
 
   async function uploadAudioData(blob, audioURL) {
-    console.log("uploading ....");
+    //console.log("uploading ....");
     const splits = audioURL.split("/");
     const fileName = audioFileName || splits[splits.length - 1];
     setaudioFileName(fileName);
 
-    console.log("upd => ", fileName);
+    //console.log("upd => ", fileName);
     setuploading(true);
     const { data, error } = await supabase.storage
       .from("dico") // Replace with your bucket name
@@ -101,7 +101,7 @@ function AudioRecPlay({ onAudioRecUploadSuccess, audioType }) {
       //onImageUploadError(error);
       setuploading(false);
       if (error.statusCode === "409") {
-        console.log("This file exists!, will be deleted");
+        //console.log("This file exists!, will be deleted");
 
         replaceFile(blob, fileName, audioURL);
       }
@@ -111,17 +111,17 @@ function AudioRecPlay({ onAudioRecUploadSuccess, audioType }) {
 
     setuploading(false);
     onAudioRecUploadSuccess(data);
-    console.log(data);
+    //console.log(data);
   }
 
   async function replaceFile(blob, fileName, audioURL) {
-    console.log("replacing file ...");
+    //console.log("replacing file ...");
     const { data, error } = await supabase.storage
       .from("dico") // Replace with your actual storage bucket name
       .remove([fileName]);
-    console.log(data, error);
+    //console.log(data, error);
     if (data.length === 1) {
-      console.log('file : " ', fileName, ' " deleted! reuploading ... ');
+      //console.log('file : " ', fileName, ' " deleted! reuploading ... ');
       uploadAudioData(blob, audioURL);
     }
   }
@@ -196,7 +196,7 @@ export default function FormNewWord({
   }
 
   async function onSaveNewWord() {
-    console.log(word);
+    // //console.log(word);
     setLoading(true);
 
     if (upd) {
@@ -204,12 +204,12 @@ export default function FormNewWord({
         TABLES_NAMES.DICO,
         word,
         (s) => {
-          console.log(s);
+          //console.log(s);
           setLoading(false);
           onWordUpdateSuccess(s);
         },
         (e) => {
-          console.log(e);
+          //console.log(e);
           setLoading(false);
           onWordUpdateError(e);
         }
@@ -227,18 +227,18 @@ export default function FormNewWord({
   }
 
   function onImageUploadSuccsess(res, new_file_name) {
-    console.log("onImageUploadSuccsess", res);
+    //console.log("onImageUploadSuccsess", res);
 
     setword((old) => ({ ...old, pics: ["dico/" + new_file_name] }));
-    console.log(word);
+    //console.log(word);
   }
 
   function onImageUploadError(e) {
-    console.log("onImageUploadError", e);
+    //console.log("onImageUploadError", e);
   }
 
   function onImageUploadStart(file) {
-    console.log("onImageUploadStart", file);
+    //console.log("onImageUploadStart", file);
   }
 
   function onTypePy(py) {
@@ -248,7 +248,7 @@ export default function FormNewWord({
 
   const [recordedAudioPath, setRecordedAudioPath] = useState(null);
   async function onAudioRecUploadSuccess(res) {
-    console.log("onAudioRecUploadSuccess => ", res);
+    //console.log("onAudioRecUploadSuccess => ", res);
 
     if (res && res.path) {
       setRecordedAudioPath(res.path);
@@ -258,7 +258,7 @@ export default function FormNewWord({
       .from("dico") // Replace with your actual storage bucket name
       .getPublicUrl(res.path);
 
-    console.log("fpath", data);
+    //console.log("fpath", data);
 
     const fpath = data.publicUrl;
 
@@ -266,9 +266,9 @@ export default function FormNewWord({
   }
 
   async function onCancelForm(path) {
-    console.log("onCancel(), deleteing ... ", path);
+    //console.log("onCancel(), deleteing ... ", path);
     const res = await supabase.storage.from("dico").remove([path]);
-    console.log("deleted ... ", path, "\nres : ", res);
+    //console.log("deleted ... ", path, "\nres : ", res);
     onCancel();
   }
 
@@ -287,6 +287,9 @@ export default function FormNewWord({
             setpyfocused(false);
           }}
         />
+
+        <div>word ...</div>
+
         <input
           className={CLASS_INPUT_TEXT}
           name="py"

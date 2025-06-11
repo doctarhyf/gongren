@@ -11,6 +11,10 @@ export const LANG_TOKENS = {
     "生产袋子管理",
     "GESTION DES SACS DE PRODUCTION",
   ],
+  BONUS: ["BONUS", "奖金", "BONUS"],
+  TOT_BY_TEAM: ["VOIR TOTAL PAR ÉQ.", "按团队查看总数", "SEE TOTAL BY TEAM"],
+  DAILY_DATA: ["DONNÉES JOURN", "每日数据", "DAILY DATA"],
+
   CONTAINER_BAGS_MANAGEMENT: [
     "CONTAINER BAGS MANAGEMENT",
     "集装箱袋子管理",
@@ -43,6 +47,16 @@ export const LANG_TOKENS = {
     "集装无袋。",
     ,
     "Le conteneur est vide.",
+  ],
+  LOADING_REP_ALL_TEAMS: [
+    "RAPPORT CHARGEMENT, TOUTES LES ÉQUIPES",
+    "装载报告，所有团队",
+    "LOADING REPORT, ALL TEAMS",
+  ],
+  LOADING_REP_FOR_TEAM: [
+    `RAPPORT CHARGEMENT, ÉQUIPE %t`,
+    `装载报告，第%t组`,
+    `LOADING REPORT, TEAM %t`,
   ],
   janvier: ["January", "一月", "Janvier"],
   CUSTOM_TITLE: ["CUSTOM TITLE", "自定义标题", "TITRE PERSONALISE"],

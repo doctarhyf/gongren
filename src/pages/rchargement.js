@@ -218,7 +218,7 @@ export default function RapportChargement() {
       return loads;
     }
 
-    console.log("selloads => ", loads);
+    //console.log("selloads => ", loads);
 
     if (loads.length === 0) return [];
     let filteredloads = loads.filter((ld) =>
@@ -345,7 +345,7 @@ export default function RapportChargement() {
       //console.log("totals => ", totals);
       const [year, month, day] = loads[0].meta.date.split("/");
       printTotalsTable(totals, year, month);
-      console.log("printing totals", loads);
+      //console.log("printing totals", loads);
       return;
     }
 
@@ -457,9 +457,9 @@ export default function RapportChargement() {
     const frenchdate = formatFrenchDate(date);
     const filename = `PRIME_DU_${frenchdate}.pdf`;
 
-    console.log("print cur_load: \n", cur_load);
+    //console.log("print cur_load: \n", cur_load);
 
-    console.log(filteredloads);
+    //console.log(filteredloads);
     // return;
     printDailyRepport(filteredloads, date, filename);
   }
@@ -538,7 +538,7 @@ export default function RapportChargement() {
             {!adding && (
               <ActionButton
                 icon={reload}
-                title={GetTransForTokensArray(LANG_TOKENS.REFRESH, user.lang)} //{LANG_TOKENS.REFRESH[GetLangIndexByLangCode(user.lang)]}
+                title={GetTransForTokensArray(LANG_TOKENS.REFRESH, user.lang)}
                 onClick={(e) => loadData()}
               />
             )}
@@ -618,8 +618,14 @@ export default function RapportChargement() {
                         icon={eye}
                         title={
                           showTotalsByTeam
-                            ? "DONNEES JOURN."
-                            : "VOIR TOTAL PAR EQ."
+                            ? GetTransForTokensArray(
+                                LANG_TOKENS.DAILY_DATA,
+                                user.lang
+                              )
+                            : GetTransForTokensArray(
+                                LANG_TOKENS.TOT_BY_TEAM,
+                                user.lang
+                              )
                           /* LANG_TOKENS.PRINT_REPPORT[
                         GetLangIndexByLangCode(user.lang)
                       ] */
@@ -665,13 +671,16 @@ export default function RapportChargement() {
                     )}
 
                     <div className=" text-center text-2xl p-3 font-bold text-slate-700 dark:text-slate-200">
-                      RAPPORT CHARGEMENT,{" "}
                       {team === "ALL"
-                        ? "TOUTES LES EQUIPES"
-                        : `EQUIPE ${team} `}{" "}
-                      {
-                        //, ${date.y && date.y}.${date.m && parseInt(date.m) + 2}`}
-                      }
+                        ? GetTransForTokensArray(
+                            LANG_TOKENS.LOADING_REP_ALL_TEAMS,
+                            user.lang
+                          )
+                        : GetTransForTokensArray(
+                            LANG_TOKENS.LOADING_REP_FOR_TEAM,
+                            user.lang,
+                            { t: team }
+                          )}
                     </div>
                     <table class="table-auto mx-auto">
                       <thead>
@@ -715,7 +724,11 @@ export default function RapportChargement() {
                           </th>
                           {UserHasAccessCode(user, ACCESS_CODES.BONUS_ROW) && (
                             <th className="border border-slate-500 p-1">
-                              BNS ( {PRIME_MIN} )T
+                              {GetTransForTokensArray(
+                                LANG_TOKENS.BONUS,
+                                user.lang
+                              )}{" "}
+                              ( {PRIME_MIN} )T
                             </th>
                           )}
                           <th className="border border-slate-500 p-1">ACT</th>
