@@ -167,11 +167,11 @@ export default function Home() {
           />
         )}
 
+        <HUDCurrentTeam />
+
         {/*  <HUDSacsCalc /> */}
         {/*  <HUDCalculsBons /> */}
         <HUDAgents />
-
-        <HUDCurrentTeam />
 
         {(UserHasAccessCode(user, ACCESS_CODES.ROOT) ||
           user.poste === "INT") && <HUDOpsLogs />}

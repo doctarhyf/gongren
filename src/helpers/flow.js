@@ -15,6 +15,7 @@ import SuiviCamions from "../pages/suivicamions";
 import Notifications from "../pages/notifications";
 import { LANG_TOKENS } from "./lang_strings";
 import Daizi from "../pages/daizi";
+import Test from "../pages/test";
 
 export const LANG_COOKIE_KEY = "gongren_lang";
 
@@ -370,7 +371,7 @@ export const MAIN_MENU = [
   {
     name: "Sacs",
     path: "/sacs",
-    el: Daizi,
+    el: Test, //Daizi,
     access_code: ACCESS_CODES.PAGE_SACS,
     trad: LANG_TOKENS.BAGS,
   },

@@ -325,10 +325,6 @@ export default function FormNewWord({
             setAudioType(AUDIO_TYPE.LAT);
           }}
         />
-        {/* <AudioRecPlay
-          onAudioRecUploadSuccess={onAudioRecUploadSuccess}
-          audioType={AUDIO_TYPE.LAT}
-        /> */}
 
         <input
           className={CLASS_INPUT_TEXT}
