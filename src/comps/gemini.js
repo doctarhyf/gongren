@@ -14,13 +14,14 @@ export default function Gemini() {
   const [word, setword] = useState("");
   const [loading, setLoading] = useState(false);
   const [, , user] = useContext(UserContext);
+  const [genImg, setGenImg] = useState(false);
 
   async function loadGem(word) {
     setLoading(true);
     try {
       const response = await ai.models.generateContent({
         model: "gemini-2.0-flash",
-        contents: `${word}`,
+        contents: `is this " ${word} " chinese? if yes, translate it to french, if its latin translate it to chinse.`,
         /*  config: {
         responseMimeType: "application/json",
         responseSchema: {
@@ -29,7 +30,7 @@ export default function Gemini() {
       }, */
       });
 
-      console.log(response.text);
+      // console.log(response.text);
 
       setGemRes(response.text);
     } catch (e) {
@@ -69,11 +70,16 @@ export default function Gemini() {
           }}
         />
       </div>
+      <div>
+        <input
+          value={genImg}
+          onChange={(e) => setGenImg(e.target.checked)}
+          type="checkbox"
+        />
+        Gen Image{" "}
+      </div>
       <div className="   ">{gemRes}</div>
-      {/* <button className={CLASS_BTN} onClick={(e) => loadGem(word)}>
-        {GetTransForTokensArray(LANG_TOKENS.TRANSLATE, user.lang)}
-      </button>
-      */}
+
       <Loading isLoading={loading} />
     </div>
   );
