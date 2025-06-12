@@ -5,11 +5,9 @@ import Loading from "./Loading";
 import { GetTransForTokensArray, LANG_TOKENS } from "../helpers/lang_strings";
 import { UserContext } from "../App";
 
-const API_KEY = "AIzaSyDjLd-iW3ZqbmLuvSlVFiDlTNMgrR0RmMA";
+const GEMINI_API_KEY = process.env.REACT_APP_GEMINI_API_KEY;
 
-const ai = new GoogleGenAI({ apiKey: API_KEY });
-
-//await main();
+const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
 
 export default function Gemini() {
   const [gemRes, setGemRes] = useState("N/A");
@@ -21,7 +19,7 @@ export default function Gemini() {
     setLoading(true);
     const response = await ai.models.generateContent({
       model: "gemini-2.0-flash",
-      contents: `If ${word} is in chinese, translate it to french, and if it's in french give me chinese translation. repond me in french on chinese`,
+      contents: `If ${word} is in chinese, translate it to french, and if it's in french give me chinese translation. respond me in french if the word is in chinese, and in chinese if the word is in french`,
     });
     console.log(response.text);
 
@@ -48,7 +46,7 @@ export default function Gemini() {
       <button className={CLASS_BTN} onClick={(e) => loadGem(word)}>
         {GetTransForTokensArray(LANG_TOKENS.TRANSLATE, user.lang)}
       </button>
-      <div className="  italic bg-gradient-to-br from-white to-slate-200 p-2 rounded-md shadow-md border-slate-400  text-ellipsis  ">
+      <div className="  italic bg-gradient-to-br text-black from-white to-slate-200 p-2 rounded-md shadow-md border-slate-400  text-ellipsis  ">
         Result: {gemRes.replace("[", "").replace("]", "").replace("\n", "")}
       </div>
       <Loading isLoading={loading} />
