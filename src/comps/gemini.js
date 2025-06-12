@@ -48,7 +48,7 @@ export default function Gemini() {
       <button className={CLASS_BTN} onClick={(e) => loadGem(word)}>
         {GetTransForTokensArray(LANG_TOKENS.TRANSLATE, user.lang)}
       </button>
-      <div>
+      <div className="  italic bg-gradient-to-br from-white to-slate-200 p-2 rounded-md shadow-md border-slate-400  text-ellipsis  ">
         Result: {gemRes.replace("[", "").replace("]", "").replace("\n", "")}
       </div>
       <Loading isLoading={loading} />
