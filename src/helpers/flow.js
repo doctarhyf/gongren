@@ -15,7 +15,7 @@ import SuiviCamions from "../pages/suivicamions";
 import Notifications from "../pages/notifications";
 import { LANG_TOKENS } from "./lang_strings";
 import Daizi from "../pages/daizi";
-import Test from "../pages/test";
+import Gemini from "../comps/gemini";
 
 export const LANG_COOKIE_KEY = "gongren_lang";
 
@@ -364,7 +364,7 @@ export const MAIN_MENU = [
   {
     name: "Dico",
     path: "/dico",
-    el: Test, // Dico,
+    el: Dico,
     access_code: ACCESS_CODES.PAGE_DICO,
     trad: LANG_TOKENS.DICO,
   },

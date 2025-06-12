@@ -138,6 +138,7 @@ export default function WordsList({ onSelectWord, onPrintWords }) {
       <ButtonPrint onClick={(e) => onPrintWords(words)} />
       <input
         type="search"
+        placeholder="Search ..."
         value={q}
         onChange={onSearch}
         className={CLASS_INPUT_TEXT}

@@ -23,6 +23,8 @@ import WordsList from "../comps/WordsList";
 import WordCard from "../comps/WordCard";
 import { UserContext } from "../App";
 import ButtonPrint from "../comps/ButtonPrint";
+import { GetTransForTokensArray, LANG_TOKENS } from "../helpers/lang_strings";
+import Gemini from "../comps/gemini";
 
 const SBBukcet = () => {
   const [publicUrls, setPublicUrls] = useState([]);
@@ -183,6 +185,8 @@ export default function Dico() {
     <div className="md:flex gap-4 mt-4">
       {!showFormNewWord && (
         <div className={` ${selectedWord ? "hidden" : "block"} `}>
+          <Gemini />
+
           {true && (
             <>
               {UserHasAccessCode(user, ACCESS_CODES.ADD_DICO_NEW_WORD) && (
@@ -190,7 +194,7 @@ export default function Dico() {
                   onClick={(e) => setShowFomrNewWord(true)}
                   className={CLASS_BTN}
                 >
-                  ADD NEW WORD
+                  {GetTransForTokensArray(LANG_TOKENS.ADD_NEW_WORD, user.lang)}
                 </button>
               )}
             </>
