@@ -1,4 +1,4 @@
-import { GoogleGenAI } from "@google/genai";
+import { GoogleGenAI, Type } from "@google/genai";
 import { useContext, useEffect, useState } from "react";
 import { CLASS_BTN, CLASS_INPUT_TEXT } from "../helpers/flow";
 import Loading from "./Loading";
@@ -19,7 +19,13 @@ export default function Gemini() {
     setLoading(true);
     const response = await ai.models.generateContent({
       model: "gemini-2.0-flash",
-      contents: `If ${word} is in chinese, translate it to french, and if it's in french give me chinese translation. respond me in french if the word is in chinese, and in chinese if the word is in french`,
+      contents: `if ${word} is in chinese, translate it to french, if its in french translate it to chinese.`,
+      config: {
+        responseMimeType: "application/json",
+        responseSchema: {
+          type: Type.STRING,
+        },
+      },
     });
     console.log(response.text);
 
