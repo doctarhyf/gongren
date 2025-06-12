@@ -864,7 +864,7 @@ export function HUDGestionSacs() {
                       <span className=" font-bold  px-2 text-sm  ">
                         {`${s[0]} `}
                       </span>
-                      :<span className=" text-[16pt] "> {s[1]}</span>
+                      :<span className=" text-[16pt] "> {s[1]} 袋</span>
                     </div>
                   </div>
                 ))}

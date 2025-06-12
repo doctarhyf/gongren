@@ -630,11 +630,17 @@ export default function DaiziProd({}) {
           <div className="block md:hidden">form</div> */}
         </>
       ) : (
-        <TableProduction
-          trans={transf}
-          stockShengYu={stockShengYU}
-          totals={totals}
-        />
+        <div>
+          <div className=" text-3xl text-center  ">
+            {GetTransForTokensArray(LANG_TOKENS.RECORDS_TITLE_PROD, user.lang)}
+          </div>
+
+          <TableProduction
+            trans={transf}
+            stockShengYu={stockShengYU}
+            totals={totals}
+          />
+        </div>
       )}
     </div>
   );

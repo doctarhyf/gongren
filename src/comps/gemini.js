@@ -1,6 +1,6 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { useContext, useEffect, useState } from "react";
-import { CLASS_BTN, CLASS_INPUT_TEXT } from "../helpers/flow";
+import { CLASS_BTN, CLASS_INPUT_TEXT, LOGO } from "../helpers/flow";
 import Loading from "./Loading";
 import { GetTransForTokensArray, LANG_TOKENS } from "../helpers/lang_strings";
 import { UserContext } from "../App";
@@ -17,44 +17,63 @@ export default function Gemini() {
 
   async function loadGem(word) {
     setLoading(true);
-    const response = await ai.models.generateContent({
-      model: "gemini-2.0-flash",
-      contents: `if ${word} is in chinese, translate it to french, if its in french translate it to chinese.`,
-      config: {
+    try {
+      const response = await ai.models.generateContent({
+        model: "gemini-2.0-flash",
+        contents: `${word}`,
+        /*  config: {
         responseMimeType: "application/json",
         responseSchema: {
           type: Type.STRING,
         },
-      },
-    });
-    console.log(response.text);
+      }, */
+      });
 
-    setGemRes(response.text);
+      console.log(response.text);
+
+      setGemRes(response.text);
+    } catch (e) {
+      console.log(e);
+      setLoading(false);
+    }
 
     setLoading(false);
   }
 
   return (
-    <div className=" py-2 border-b mb-2  ">
-      <input
-        className={CLASS_INPUT_TEXT}
-        type="text"
-        placeholder="ex: 锤子..."
-        value={word}
-        onChange={(e) => setword(e.target.value)}
-        onKeyUp={(e) => {
-          if (e.key === "Enter") {
-            setGemRes("");
-            loadGem(word);
-          }
-        }}
-      />
-      <button className={CLASS_BTN} onClick={(e) => loadGem(word)}>
+    <div className=" container flex flex-col gap-4 justify-center items-center h-full min-h-40 ">
+      <image src={LOGO} width={200} height={100} />
+
+      <div className=" text-3xl font-thin  ">
+        BagTrack <b>AI</b>
+      </div>
+      <div className=" text-sm italic  ">
+        {GetTransForTokensArray(LANG_TOKENS.ASK_ME_ANYTHING, user.lang)}
+      </div>
+      <div></div>
+      <div className=" bg-white p-4 rounded-full w-[80%] flex justify-center  ">
+        <input
+          className="bg-transparent w-full text-black outline-none"
+          type="text"
+          placeholder={GetTransForTokensArray(
+            LANG_TOKENS.ASK_ME_ANYTHING,
+            user.lang
+          )}
+          value={word}
+          onChange={(e) => setword(e.target.value)}
+          onKeyUp={(e) => {
+            if (e.key === "Enter") {
+              setGemRes("");
+              loadGem(word);
+            }
+          }}
+        />
+      </div>
+      <div className="   ">{gemRes}</div>
+      {/* <button className={CLASS_BTN} onClick={(e) => loadGem(word)}>
         {GetTransForTokensArray(LANG_TOKENS.TRANSLATE, user.lang)}
       </button>
-      <div className="  italic bg-gradient-to-br text-black from-white to-slate-200 p-2 rounded-md shadow-md border-slate-400  text-ellipsis  ">
-        Result: {gemRes.replace("[", "").replace("]", "").replace("\n", "")}
-      </div>
+      */}
       <Loading isLoading={loading} />
     </div>
   );

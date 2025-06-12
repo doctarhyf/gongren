@@ -8,7 +8,7 @@ import {
   LANGS,
 } from "../helpers/lang_strings";
 import LanguageChooser from "./LanguageChooser";
-import userEvent from "@testing-library/user-event";
+
 import Christmas from "./Christmas";
 
 function MyForm({

@@ -181,6 +181,13 @@ export default function Dico() {
     setupd(undefined);
   }
 
+  if (true)
+    return (
+      <div>
+        <Gemini />
+      </div>
+    );
+
   return (
     <div className="md:flex gap-4 mt-4">
       {!showFormNewWord && (

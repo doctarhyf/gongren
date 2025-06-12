@@ -13,6 +13,21 @@ export const LANG_TOKENS = {
     "生产袋子管理",
     "GESTION DES SACS DE PRODUCTION",
   ],
+  ASK_ME_ANYTHING: [
+    "Ask me anything ...", // English
+    "问我任何事……", // Chinese (Simplified)
+    "Demande-moi n'importe quoi ...", // French
+  ],
+  RECORDS_TITLE_CONT: [
+    "Woven Bag Checkout and Usage Record - Cement Workshop", // English
+    "水泥车间编制袋出库领用记录表", // Chinese
+    "Fiche d’enregistrement de sortie et d’utilisation des sacs tissés – atelier de ciment", // French
+  ],
+  RECORDS_TITLE_PROD: [
+    "Woven Bag Usage Record - Cement Workshop", // English
+    "水泥车间编制袋领用记录表", // Chinese
+    "Fiche d’utilisation des sacs tissés – atelier de ciment", // French
+  ],
   BONUS: ["BONUS", "奖金", "BONUS"],
   TOT_BY_TEAM: ["VOIR TOTAL PAR ÉQ.", "按团队查看总数", "SEE TOTAL BY TEAM"],
   DAILY_DATA: ["DONNÉES JOURN", "每日数据", "DAILY DATA"],

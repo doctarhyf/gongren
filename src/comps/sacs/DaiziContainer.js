@@ -507,7 +507,12 @@ export default function DaiziContainer({
           containerStock={containerStock}
         />
       ) : (
-        <TableContainer trans={transf} onAdd={(e) => setInput(true)} />
+        <div>
+          <div className=" text-3xl text-center  ">
+            {GetTransForTokensArray(LANG_TOKENS.RECORDS_TITLE_CONT, user.lang)}
+          </div>
+          <TableContainer trans={transf} onAdd={(e) => setInput(true)} />
+        </div>
       )}{" "}
     </div>
   );
