@@ -59,6 +59,13 @@ function App() {
       return;
     }
 
+    const { data: settings, error: settingsError } = await supabase
+      .from(TABLES_NAMES.SETTINGS)
+      .select("*")
+      .single();
+
+    console.log("Site settings : ", settings, "\nError: ", settingsError);
+
     if (data.length === 1) {
       const nuser = { ...data[0] };
       nuser.lang = lang;
