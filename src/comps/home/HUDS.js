@@ -1131,7 +1131,7 @@ const ShiftTeamCard = () => {
   }, []);
 
   return (
-    <div className=" p-1 rounded-2xl w-full max-w-sm shadow-lg space-y-6">
+    <div className="  p-1 rounded-2xl w-full  shadow-lg space-y-6">
       <div className=" py-2 border-b border-teal-500 font-semibold flex items-center gap-2">
         <span role="img" aria-label="worker">
           👷‍♂️
