@@ -763,6 +763,81 @@ export function GetTodaysDateYMDObject() {
   return { y: y, m: m, d: d };
 }
 
+export function GetShiftProgress() {
+  const d = new Date();
+  const h = d.getHours();
+
+  const isDayShift = h > 7 && h < 17;
+
+  const progress = isDayShift ? dayShiftProgress() : nightShiftProgress();
+  console.log("Is Day Shift : ", isDayShift, " - Progress : ", progress);
+
+  return progress;
+}
+
+function dayShiftProgress() {
+  const start = new Date();
+  start.setHours(7, 0, 0, 0); // 07:00
+
+  const end = new Date();
+  end.setHours(17, 0, 0, 0); // 17:00
+
+  const now = new Date();
+
+  const total = end - start;
+  const elapsed = now - start;
+
+  let pct = (elapsed / total) * 100;
+
+  // Clamp the percentage between 0 and 100
+  pct = Math.max(0, Math.min(100, pct));
+
+  return pct.toFixed(2);
+}
+
+function nightShiftProgress() {
+  const now = new Date();
+
+  // Start: today at 17:00 (5:00 PM)
+  const start = new Date(now);
+  start.setHours(17, 0, 0, 0);
+
+  // End: tomorrow at 07:00 (7:00 AM)
+  const end = new Date(now);
+  end.setDate(end.getDate() + 1); // move to tomorrow
+  end.setHours(7, 0, 0, 0);
+
+  // If current time is before 5 PM, shift start and end to yesterday/today
+  if (now < start) {
+    start.setDate(start.getDate() - 1); // yesterday at 17:00
+    end.setDate(end.getDate() - 0); // today at 07:00
+  }
+
+  const total = end - start;
+  const elapsed = now - start;
+
+  let pct = (elapsed / total) * 100;
+
+  // Clamp between 0 and 100
+  pct = Math.max(0, Math.min(100, pct));
+
+  return pct.toFixed(2);
+}
+
+export function GetShiftEndTime() {
+  const d = new Date();
+  const h = d.getHours();
+
+  console.log("getHours() => ", d.getHours());
+
+  const dayEnd = { h: 17, str: "17:00" };
+  const nightEnd = { h: 7, str: "07:00" };
+
+  const isDayShift = h > 7 && h < 17;
+
+  return isDayShift ? dayEnd : nightEnd;
+}
+
 export function formatAsMoney(value, currency) {
   // Convert the input to a number if it's a string
   const number = typeof value === "string" ? parseFloat(value) : value;

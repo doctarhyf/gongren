@@ -17,6 +17,8 @@ import {
   FrenchDate,
   GetDateParts,
   GetMonthNumDays,
+  GetShiftEndTime,
+  GetShiftProgress,
   GroupBySectionAndEquipe,
   SortLoadsByShiftOfDay,
   UpdateOperationsLogs,
@@ -1085,6 +1087,10 @@ const ShiftTeamCard = () => {
   const m = (date.getMonth() + 1).toString().padStart(2, "0");
   const y = date.getFullYear();
   const d = date.getDate();
+  const [h, seth] = useState(0);
+  const [i, seti] = useState(0);
+
+  const [progress, setProgress] = useState(35);
 
   const teamData = {
     team: "B",
@@ -1094,6 +1100,25 @@ const ShiftTeamCard = () => {
     currentShiftTime: "07:00 – 17:00",
     shiftProgress: 20,
   };
+
+  function calculateTimeLeft() {
+    const date = new Date();
+    const h = date.getHours();
+    const m = date.getMinutes();
+
+    seth(h.toString().padStart(2, "0"));
+    seti(m.toString().padStart(2, "0"));
+
+    setProgress(GetShiftProgress());
+  }
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      calculateTimeLeft();
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
 
   return (
     <div className=" p-1 rounded-2xl w-full max-w-sm shadow-lg space-y-6">
@@ -1163,7 +1188,7 @@ const ShiftTeamCard = () => {
           <div>
             <div className="text-sm uppercase">Current Shift Time</div>
             <div className="ml-auto text-xl font-medium">
-              {teamData.currentShiftTime}
+              {`${h}:${i} - ${GetShiftEndTime().str}`}
             </div>
           </div>
         </div>
@@ -1180,15 +1205,13 @@ const ShiftTeamCard = () => {
               <path d="M4 4v5h.582M20 20v-5h-.581M4 20h16M4 4h16" />
             </svg>
             <div className="text-sm uppercase">Shift Progress</div>
-            <div className="ml-auto text-base font-medium">
-              {teamData.shiftProgress}%
-            </div>
+            <div className="ml-auto text-base font-medium">{progress}%</div>
           </div>
-          <div className="w-full h-2 bg-teal-900 rounded-full overflow-hidden">
-            <div
-              className={`h-full bg-teal-400 rounded-full w-[${teamData.shiftProgress}%]`}
-            />
-          </div>
+          <progress
+            className="progress  progress-success w-full "
+            value={progress}
+            max={100}
+          ></progress>
         </div>
       </div>
     </div>
