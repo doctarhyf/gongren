@@ -14,6 +14,8 @@ export const LANG_TOKENS = {
     "生产袋子管理",
     "GESTION DES SACS DE PRODUCTION",
   ],
+  s32: ["32.5N", "32.5N", "32.5N"],
+  s42: ["42.5N", "42.5N", "42.5N"],
   SUPERVISOR: ["SUPERVISOR", "班长", "SUPERVISEUR"],
   SQUAD_LEADER: ["SQUAD LEADER", "小班长", "CHEF D'EQUIPE"],
   AGENT_COUNT: ["Agent Count", "代理数量", "Nombre d'agents"],

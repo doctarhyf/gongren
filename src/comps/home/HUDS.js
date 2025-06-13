@@ -26,6 +26,7 @@ import {
 } from "../../helpers/func";
 
 import cont from "../../img/contf.png";
+import pkg from "../../img/pkg.png";
 
 import {
   GetTransForTokenName,
@@ -857,7 +858,7 @@ export function HUDGestionSacs() {
           <div>
             {[
               ["集装箱袋数", data.cont, cont],
-              ["剩余总量", data.prod, cont],
+              ["剩余总量", data.prod, pkg],
             ].map((stock, i) => (
               <div className=" border-b justify-between  border-b-white/10 py-2 flex  ">
                 <div>
@@ -868,16 +869,16 @@ export function HUDGestionSacs() {
                     <div className="  ">
                       <div>
                         <span className=" font-bold  px-2 text-sm  ">
-                          {`${s[0]} `}
+                          {`${GetTransForTokenName(s[0], user.lang)} `}
                         </span>
                         :<span className=" text-[16pt] "> {s[1]} 袋</span>
                       </div>
                     </div>
                   ))}
                 </div>
-                <div className=" bg-red-500">
+                {/* <div className=" bg-red-500">
                   <img src={stock[2]} width={120} height={40} alt="img" />
-                </div>
+                </div> */}
               </div>
             ))}
           </div>
