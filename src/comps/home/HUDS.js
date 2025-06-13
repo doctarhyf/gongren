@@ -24,6 +24,9 @@ import {
   UpdateOperationsLogs,
   formatAsMoney,
 } from "../../helpers/func";
+
+import cont from "../../img/contf.png";
+
 import {
   GetTransForTokenName,
   GetTransForTokensArray,
@@ -853,26 +856,32 @@ export function HUDGestionSacs() {
         <div className="">
           <div>
             {[
-              ["集装箱袋数", data.cont],
-              ["剩余总量", data.prod],
+              ["集装箱袋数", data.cont, cont],
+              ["剩余总量", data.prod, cont],
             ].map((stock, i) => (
-              <div className=" border-b border-b-white/10 py-2 ">
-                <div className=" bg-purple-950  px-2 py-1 w-fit rounded-md ">
-                  {stock[0]}
-                </div>
-                {Object.entries(stock[1]).map((s, i) => (
-                  <div className="  ">
-                    <div>
-                      <span className=" font-bold  px-2 text-sm  ">
-                        {`${s[0]} `}
-                      </span>
-                      :<span className=" text-[16pt] "> {s[1]} 袋</span>
-                    </div>
+              <div className=" border-b justify-between  border-b-white/10 py-2 flex  ">
+                <div>
+                  <div className=" bg-purple-950  px-2 py-1 w-fit rounded-md ">
+                    {stock[0]}
                   </div>
-                ))}
+                  {Object.entries(stock[1]).map((s, i) => (
+                    <div className="  ">
+                      <div>
+                        <span className=" font-bold  px-2 text-sm  ">
+                          {`${s[0]} `}
+                        </span>
+                        :<span className=" text-[16pt] "> {s[1]} 袋</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div className=" bg-red-500">
+                  <img src={stock[2]} width={120} height={40} alt="img" />
+                </div>
               </div>
             ))}
           </div>
+
           <div>
             <div className=" text-sm font-bold  my-2 ">
               {GetTransForTokensArray(LANG_TOKENS.LAST_5_RECORDS, user.lang)}
