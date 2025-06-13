@@ -513,3 +513,7 @@ export function getFrenchDayName(year, month, day, fullName) {
     ? "DIM"
     : dayName.charAt(0);
 }
+
+export const ROULEMENT = {
+  A: "",
+};

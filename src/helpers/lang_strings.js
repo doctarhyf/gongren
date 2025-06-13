@@ -1,6 +1,7 @@
 import france from "../img/france.png";
 import usa from "../img/usa.png";
 import china from "../img/china.png";
+import { SUPERVISORS } from "./flow";
 
 export const LANG_TOKENS = {
   "IN/OUT": ["IN/OUT", "进/出", "SORTIE/ENTREE"],
@@ -12,6 +13,20 @@ export const LANG_TOKENS = {
     "PRODUCTION BAGS MANAGEMENT",
     "生产袋子管理",
     "GESTION DES SACS DE PRODUCTION",
+  ],
+  SUPERVISOR: ["SUPERVISOR", "班长", "SUPERVISEUR"],
+  SQUAD_LEADER: ["SQUAD LEADER", "小班长", "CHEF D'EQUIPE"],
+  AGENT_COUNT: ["Agent Count", "代理数量", "Nombre d'agents"],
+  TEAM_ON_DUTY: ["Team on Duty", "值班团队", "ÉQUIPE EN POSTE"],
+  CURRENT_TEAM_INFO: [
+    "Information about the current team on duty",
+    "当前值班团队信息",
+    "Information sur l'équipe présentement en poste",
+  ],
+  CURRENT_SHIFT_TIME: [
+    "Current Shift Time",
+    "当前班次时间",
+    "Heure actuelle de l'équipe",
   ],
   ASK_ME_ANYTHING: [
     "Ask me anything ...", // English

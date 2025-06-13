@@ -1071,11 +1071,12 @@ export function HUDOpsLogs() {
 }
 
 export function HUDCurrentTeam() {
+  const [, , user] = useContext(UserContext);
   return (
     <Card
       id={8}
-      title={"EQUIPE EN POSTE"}
-      desc={"Information sur l'equipe presentement en poste"}
+      title={GetTransForTokensArray(LANG_TOKENS.TEAM_ON_DUTY, user.lang)}
+      desc={GetTransForTokensArray(LANG_TOKENS.CURRENT_TEAM_INFO, user.lang)}
     >
       <ShiftTeamCard />
     </Card>
@@ -1083,6 +1084,7 @@ export function HUDCurrentTeam() {
 }
 
 const ShiftTeamCard = () => {
+  const [, , user] = useContext(UserContext);
   const date = new Date();
   const m = (date.getMonth() + 1).toString().padStart(2, "0");
   const y = date.getFullYear();
@@ -1094,11 +1096,9 @@ const ShiftTeamCard = () => {
 
   const teamData = {
     team: "B",
-    supervisor: "NKULU MWENZE Christian 库鲁",
-    squadLeader: "KASONGO NUMBI Jina 奴婢",
+    supervisor: { name: "NKULU MWENZE Christian 库鲁", phone: "+243893092849" },
+    squadLeader: { name: "KASONGO NUMBI Jina 奴婢", phone: "+243893092849" },
     agentsCount: 14,
-    currentShiftTime: "07:00 – 17:00",
-    shiftProgress: 20,
   };
 
   function calculateTimeLeft() {
@@ -1126,7 +1126,9 @@ const ShiftTeamCard = () => {
         <span role="img" aria-label="worker">
           👷‍♂️
         </span>
-        <span>EQUIPE {teamData.team}</span>
+        <span>
+          {GetTransForTokensArray(LANG_TOKENS.EQ, user.lang)} {teamData.team}
+        </span>
         <span className="ml-auto text-sm">
           {y}年{m}月{d}日
         </span>
@@ -1139,8 +1141,11 @@ const ShiftTeamCard = () => {
           className="w-20 h-20 md:w-12 md:h-12 rounded-full border-2 border-teal-400 mb-2"
         />
         <div>
-          <div className="uppercase text-sm text-teal-300">Supervisor</div>
-          <div className="text-lg font-medium">{teamData.supervisor}</div>
+          <div className="uppercase text-sm text-teal-300">
+            {GetTransForTokensArray(LANG_TOKENS.SUPERVISOR, user.lang)}
+          </div>
+          <div className="text-lg font-medium">{teamData.supervisor.name}</div>
+          <div>{teamData.supervisor.phone}</div>
         </div>
       </div>
 
@@ -1151,8 +1156,11 @@ const ShiftTeamCard = () => {
           className=" w-20 h-20 md:w-12 md:h-12 rounded-full border-2 border-teal-400 mb-2"
         />
         <div>
-          <div className="uppercase text-sm text-teal-300">Squad Leader</div>
-          <div className="text-lg font-medium">{teamData.squadLeader}</div>
+          <div className="uppercase text-sm text-teal-300">
+            {GetTransForTokensArray(LANG_TOKENS.SQUAD_LEADER, user.lang)}
+          </div>
+          <div className="text-lg font-medium">{teamData.squadLeader.name}</div>
+          <div>{teamData.squadLeader.phone}</div>
         </div>
       </div>
 
@@ -1168,7 +1176,9 @@ const ShiftTeamCard = () => {
             <path d="M17 20h5v-2a4 4 0 00-5-4M9 20H4v-2a4 4 0 015-4m6-4a4 4 0 11-8 0 4 4 0 018 0z" />
           </svg>
           <div>
-            <div className="text-sm uppercase">Agent Count</div>
+            <div className="text-sm uppercase">
+              {GetTransForTokensArray(LANG_TOKENS.AGENTS_COUNT, user.lang)}
+            </div>
             <div className="ml-auto text-xl font-medium">
               {teamData.agentsCount}
             </div>
@@ -1186,7 +1196,12 @@ const ShiftTeamCard = () => {
             <path d="M12 6v6l4 2M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z" />
           </svg>
           <div>
-            <div className="text-sm uppercase">Current Shift Time</div>
+            <div className="text-sm uppercase">
+              {GetTransForTokensArray(
+                LANG_TOKENS.CURRENT_SHIFT_TIME,
+                user.lang
+              )}
+            </div>
             <div className="ml-auto text-xl font-medium">
               {`${h}:${i} - ${GetShiftEndTime().str}`}
             </div>

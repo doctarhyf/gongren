@@ -26,7 +26,7 @@ export function AddOneToRoulementCurMonth() {
   const date = new Date();
   const d = date.getDate();
   const add = d < 21 ? 0 : 1;
-  //console.log("addOne", add, d);
+  ////console.log("addOne", add, d);
   return add;
 }
 
@@ -118,12 +118,12 @@ export function FrenchDate(date) {
 export function GetCurrentMonthTrans(trans) {
   const y = new Date().getFullYear();
   const m = (new Date().getMonth() + 1).toString().padStart(2, "0");
-  console.log("month ==> ", m);
+  //console.log("month ==> ", m);
   const filter = `${y}-${m}`;
-  //console.log("ft ==>", filter);
+  ////console.log("ft ==>", filter);
   const filtereds = trans.filter((it) => it.date_time.startsWith(filter));
 
-  //console.log("fz ==> ", filtereds);
+  ////console.log("fz ==> ", filtereds);
 
   return filtereds;
 }
@@ -145,7 +145,7 @@ export function GetMonthNumDays(year, month) {
     current: count - remaining,
   };
 
-  console.log(res);
+  //console.log(res);
 
   return res;
 }
@@ -226,7 +226,7 @@ export const FFD = formatFrenchDate;
 export function getDaysInMonth(y, m, doNotAddOne) {
   if (doNotAddOne) m -= 1;
   const lastDayOfMonth = new Date(y, m + 1, 0).getDate();
-  ////console.log(new Date(y, m + 1, 0).toLocaleDateString());
+  //////console.log(new Date(y, m + 1, 0).toLocaleDateString());
   return lastDayOfMonth;
 }
 
@@ -421,10 +421,10 @@ export async function UpdateOperationsLogs(SB, user, LOG_OPERATION, desc) {
     op: LOG_OPERATION,
   };
 
-  //console.log("log data => ", data);
+  ////console.log("log data => ", data);
   const r = await SB.InsertItem(TABLES_NAMES.OPERATIONS_LOGS, data);
 
-  ////console.log("ops logs res => ", r);
+  //////console.log("ops logs res => ", r);
   return r;
 }
 
@@ -441,7 +441,7 @@ export function UserHasAccessCode(user, ACCESS_CODE) {
 export function UserHasAnyOfAccessCodes(user, ACCESS_CODE_ARRAY) {
   const access = ACCESS_CODE_ARRAY.map((it, i) => UserHasAccessCode(it));
 
-  //console.log(access);
+  ////console.log(access);
 }
 
 export function GroupBySectionAndEquipe(data) {
@@ -540,7 +540,7 @@ export function ParseDayRepport(day_data) {
     [y, m, d] = date_str.split("_");
   }
 
-  //console.log("ParseDayRepport", day_data);
+  ////console.log("ParseDayRepport", day_data);
 
   let repport = {
     type: "Journalier",
@@ -597,7 +597,7 @@ export function getRouelemtDaysLetters2(year, month) {
   let monthIndex = Number(month);
   const startDate = new Date(year, monthIndex, 21);
 
-  ////console.log("getRouelemtDaysLetters2", startDate.toISOString());
+  //////console.log("getRouelemtDaysLetters2", startDate.toISOString());
 
   const endDate = new Date(year, monthIndex + 1, monthIndex === 3 ? 21 : 20);
 
@@ -610,7 +610,7 @@ export function getRouelemtDaysLetters2(year, month) {
       .charAt(0)
       .toUpperCase();
     dayNames.push(dayName);
-    // //console.log(currentDate);
+    // ////console.log(currentDate);
     currentDate.setDate(currentDate.getDate() + 1);
   }
 
@@ -637,11 +637,11 @@ export function getRouelemtDaysLetters(year, monthIndex) {
       .charAt(0)
       .toUpperCase();
     dayNames.push(dayName);
-    // //console.log(currentDate);
+    // ////console.log(currentDate);
     currentDate.setDate(currentDate.getDate() + 1);
   }
 
-  ////console.log(startDate, endDate);
+  //////console.log(startDate, endDate);
 
   return dayNames;
 }
@@ -662,7 +662,7 @@ export function createHeaders(keys) {
 }
 
 export function ParseShiftRepport(shift_data) {
-  ////console.log("ssddtt => ", shift_data);
+  //////console.log("ssddtt => ", shift_data);
 
   const shift = shift_data[1];
   const [t, s, y, m, d] = shift.code.split("_");
@@ -770,7 +770,7 @@ export function GetShiftProgress() {
   const isDayShift = h > 7 && h < 17;
 
   const progress = isDayShift ? dayShiftProgress() : nightShiftProgress();
-  console.log("Is Day Shift : ", isDayShift, " - Progress : ", progress);
+  //console.log("Is Day Shift : ", isDayShift, " - Progress : ", progress);
 
   return progress;
 }
@@ -828,7 +828,7 @@ export function GetShiftEndTime() {
   const d = new Date();
   const h = d.getHours();
 
-  console.log("getHours() => ", d.getHours());
+  //console.log("getHours() => ", d.getHours());
 
   const dayEnd = { h: 17, str: "17:00" };
   const nightEnd = { h: 7, str: "07:00" };
@@ -978,7 +978,7 @@ export function calculateTotalsFromLoadsArray(loadsArray) {
     totalsData.TOTAL.bonus += new_bonus;
   });
 
-  //console.log("ttzc => ", totalsData);
+  ////console.log("ttzc => ", totalsData);
   return totalsData;
 }
 
@@ -1002,7 +1002,7 @@ export function CaclculateAllTeamsTotals(data, addSacsAdj) {
   };
 
   const entries = Object.entries(data);
-  //console.log("entr", entries);
+  ////console.log("entr", entries);
   const no_data = entries.length === 0;
 
   entries.forEach((d_entry, di) => {
@@ -1145,6 +1145,6 @@ export function SortLoadsByShiftOfDay(data, y, m) {
     sorted_loads[day] = [...old.sort(customSortShifts)];
   });
 
-  ////console.log("sorted => \n", sorted_loads);
+  //////console.log("sorted => \n", sorted_loads);
   return sorted_loads;
 }
