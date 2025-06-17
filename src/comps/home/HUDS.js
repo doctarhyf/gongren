@@ -801,12 +801,14 @@ export function HUDGestionSacs() {
 
   //const [stockCont, setStockCont] = useState([]);
   const [stockProd, setStockProd] = useState([]);
+  const [stockCont, setStockCont] = useState([]);
   async function loadData() {
     set_no_data(false);
     setloading(true);
     const stockCont = await SB.LoadAllItems(TABLES_NAMES.DAIZI_JIZHUANGXIANG);
     const stockProd = await SB.LoadAllItems(TABLES_NAMES.DAIZI_SHENGCHAN);
     setStockProd(stockProd);
+    setStockCont(stockCont);
 
     console.log(stockCont);
     console.log(stockProd);
@@ -890,14 +892,15 @@ export function HUDGestionSacs() {
             <table className="  text-xs w-full">
               <tr>
                 <td className=" border p-1  ">No</td>
-                <td className=" border p-1  ">Date</td>
+                <td className=" border p-1  ">日期</td>
                 <td className=" border p-1  ">32.5</td>
                 <td className=" border p-1  ">42.5</td>
-                <td className=" border p-1  ">T 32.5</td>
-                <td className=" border p-1  ">T 42.5</td>
+                <td className=" border p-1  ">班组</td>
+                <td className=" border p-1  ">负责人</td>
               </tr>
-              {stockProd &&
-                stockProd
+              {stockCont &&
+                stockCont
+                  .filter((it) => it.operation === "in")
                   .sort((a, b) => b.id - a.id)
                   .map(
                     (it, i) =>
@@ -907,10 +910,10 @@ export function HUDGestionSacs() {
                           <td className=" border p-1  ">
                             {it.date_time.replace("T", " ")}
                           </td>
-                          <td className=" border p-1  ">{it.used_32}</td>
-                          <td className=" border p-1  ">{it.used_42}</td>
-                          <td className=" border p-1  ">{it.t_32}</td>
-                          <td className=" border p-1  ">{it.t_42}</td>
+                          <td className=" border p-1  ">{it.s32}</td>
+                          <td className=" border p-1  ">{it.s42}</td>
+                          <td className=" border p-1  ">{it.team}</td>
+                          <td className=" border p-1  ">{it.fuzeren}</td>
                         </tr>
                       )
                   )}
