@@ -20,6 +20,7 @@ import {
   //CaclculateAllTeamsTotals,
   customSortShifts,
   formatFrenchDate,
+  GenerateExcelData,
   GetDateParts,
   ParseBaozhuang,
   printTotalsTable,
@@ -618,16 +619,25 @@ export default function RapportChargement() {
 
                   {!showTotalsByTeam && (
                     <>
-                      {/* <ActionButton
-                        icon={excel}
-                        title={"PRINT EXCEL"}
-                        onClick={(e) => onPrintExcel()}
-                      /> */}
-                      {/* <Excelexport
-                        excelData={JSON.parse(
-                          '[["nom", "age"],["Franvale", 32]]'
+                      <Excelexport
+                        excelData={GenerateExcelData(
+                          loadsf.map((it) => ({
+                            ...it,
+                            T: (parseFloat(it.sacs) / 20).toFixed(2),
+                          })),
+                          [
+                            "id",
+                            "retours",
+                            "ajouts",
+                            "created_at",
+                            "prob_machine",
+                            "prob_courant",
+                            "autre",
+                            "sacs_adj",
+                            "meta",
+                          ]
                         )}
-                      /> */}
+                      />
                     </>
                   )}
 
