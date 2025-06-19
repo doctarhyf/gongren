@@ -3,8 +3,8 @@ import { createClient } from "@supabase/supabase-js";
 const supabaseUrl = process.env.REACT_APP_SUPABASE_URL;
 const supabaseKey = process.env.REACT_APP_SUPABASE_KEY;
 
-console.log("supabaseUrl", supabaseUrl);
-console.log("supabaseKey", supabaseKey);
+///console.log("supabaseUrl", supabaseUrl);
+///console.log("supabaseKey", supabaseKey);
 
 export const supabase = createClient(supabaseUrl, supabaseKey);
 
@@ -28,5 +28,5 @@ export const TABLES_NAMES = {
   DAIZI_SHENGCHAN: "dzsc",
   DAIZI_JIZHUANGXIANG: "dzjzx",
   DAIZI_SHENGYU: "dzsy",
-  SETTINGS:'settings'
+  SETTINGS: "settings",
 };

@@ -4,7 +4,7 @@ export async function InsertItem(tableName, newData) {
   const { data, error } = await supabase.from(tableName).insert([newData]);
 
   if (error) {
-    console.log("insert error => ", error);
+    ///console.log("insert error => ", error);
     return error;
   }
   return data;
@@ -31,7 +31,7 @@ export async function UpdateRoulementForTeam(
         console.error(response.error);
         onError(response.error);
       } else {
-        console.log("Upsert successful:", response.data);
+        ///console.log("Upsert successful:", response.data);
         onSuccess(response.data);
       }
     })
@@ -61,7 +61,7 @@ export async function UpdateRoulement2(
       month_code: month_code,
       agent_id: month_code.split("_")[1],
     });
-    //console.log("should insert for ", month_code, roulemant_data);
+    /////console.log("should insert for ", month_code, roulemant_data);
   } else {
     const { data, error } = await supabase
       .from(TABLES_NAMES.AGENTS_RLD)
@@ -91,7 +91,7 @@ export async function UpsertItem(tablename, item, onConflict) {
     .single();
 
   if (error) {
-    //console.log(error);
+    /////console.log(error);
     return error;
   }
 
@@ -105,11 +105,11 @@ export async function UpdateRoulement(month_code, newData) {
     .select();
 
   if (error) {
-    console.log(error);
+    ///console.log(error);
     return error;
   }
 
-  console.log(data);
+  ///console.log(data);
   return data;
 }
 
@@ -125,14 +125,14 @@ export async function CountItemsInTableWithRowEqVal(
   rowName,
   rowVal
 ) {
-  //console.log("CountItemsInTableWithRowEqVal() ",` => counting from ${tableName} where ${rowName} === "${rowVal}" `);
+  /////console.log("CountItemsInTableWithRowEqVal() ",` => counting from ${tableName} where ${rowName} === "${rowVal}" `);
 
   let { data, error } = await supabase
     .from(tableName)
     .select("*")
     .eq(rowName, rowVal);
 
-  // console.log("da count => ", data);
+  // ///console.log("da count => ", data);
 
   if (error) return 0;
   return data.length;
@@ -166,7 +166,7 @@ export async function LoadAllItems2(tableName, onSuccess, onError, columns) {
   if (columns && columns.join && columns.length > 0)
     select = columns.join(", ");
 
-  //  console.log("LoadAllItems2 => ", "select : ", select);
+  //  ///console.log("LoadAllItems2 => ", "select : ", select);
 
   let { data, error } = await supabase.from(tableName).select(select);
 
@@ -226,7 +226,7 @@ export async function UpdateItem(table_name, upd_data, onSuccess, onError) {
     .eq("id", upd_data.id)
     .select();
 
-  //console.log("UpdateItem", data, error);
+  /////console.log("UpdateItem", data, error);
 
   if (data && data.length === 1 && error === null) {
     onSuccess && onSuccess(data);
@@ -254,7 +254,7 @@ export async function DeleteItem(table_name, item_data) {
 export async function RemoveFile(bucketName, path) {
   const { data, error } = await supabase.storage.from(bucketName).remove(path);
 
-  console.log(data);
+  ///console.log(data);
   if (error) return { error: true, ...error };
 
   return data;
@@ -279,7 +279,7 @@ export async function LoadLastItem(table_name) {
   if (error) {
     console.error("Error fetching the last record:", error);
   } else {
-    console.log("Last record:", data);
+    ///console.log("Last record:", data);
     return data;
   }
 }

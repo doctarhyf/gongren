@@ -26,6 +26,7 @@ function App() {
   const [lang, setlang] = useState("en-US");
   const [updatingPassword, setUpdatingPassword] = useState(false);
   const [uid, setuid] = useState(-1);
+  const [alreadyLoggedIn, setAlreadyLoggedIn] = useState(false);
 
   function showModalErrorMessage(msg) {
     console.error(msg);
@@ -36,7 +37,7 @@ function App() {
     seterror(msg);
   }
 
-  async function onLogin(matricule, pin, lang) {
+  async function onLogin(matricule, pin, lang, logoutlogin) {
     let error_message;
     setlang(lang);
     seterror(undefined);
@@ -59,15 +60,24 @@ function App() {
       return;
     }
 
+    /*  ///target
     const { data: settings, error: settingsError } = await supabase
       .from(TABLES_NAMES.SETTINGS)
       .select("*")
       .single();
 
-    console.log("Site settings : ", settings, "\nError: ", settingsError);
+    console.log("Site settings : ", settings, "\nError: ", settingsError); */
 
     if (data.length === 1) {
       const nuser = { ...data[0] };
+      if (nuser.logged_in && !logoutlogin) {
+        setAlreadyLoggedIn(true);
+        showModalErrorMessage(
+          "Sorry you are logged in somewhere else! Logout first, before loggin here!"
+        );
+
+        return;
+      }
       nuser.lang = lang;
       setuid(nuser.id);
 
@@ -141,7 +151,13 @@ function App() {
 
   async function onLogout() {
     const l = await UpdateOperationsLogs(SB, user, LOG_OPERATION.LOGOUT);
-    //console.log("res logout ", l);
+
+    const r = await SB.UpdateItem(TABLES_NAMES.AGENTS, {
+      ...user,
+      logged_in: false,
+    });
+    if (r.length === 1) setAlreadyLoggedIn(false);
+    console.log("res logout ", r);
     removeCookie("u", { path: "/" });
     setuser(undefined);
   }
@@ -222,7 +238,7 @@ function App() {
     />
   ) : (
     <>
-      <FormLogin onLogin={onLogin} />
+      <FormLogin onLogin={onLogin} alreadyLoggedIn={alreadyLoggedIn} />
 
       <dialog id="my_modal_1" className="modal modal-bottom sm:modal-middle">
         <div className="modal-box">

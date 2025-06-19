@@ -7,8 +7,14 @@ import {
   formatDateForDatetimeLocal,
   formatFrenchDate,
   GetCurrentMonthTrans,
+  UserHasAccessCode,
 } from "../../helpers/func";
-import { DAIZI_FUZEREN, EQUIPES, EQUIPES_CHARGEMENT } from "../../helpers/flow";
+import {
+  ACCESS_CODES,
+  DAIZI_FUZEREN,
+  EQUIPES,
+  EQUIPES_CHARGEMENT,
+} from "../../helpers/flow";
 import ButtonPrint from "../ButtonPrint";
 import {
   GetTransForTokensArray,
@@ -641,15 +647,19 @@ export default function DaiziProd({}) {
         </div>
       )}
 
-      {!showInput && (
-        <>
-          <ButtonPrint
-            title={GetTransForTokensArray(LANG_TOKENS.SEND_REPPORT, user.lang)}
-            icon={add}
-            onClick={(e) => setShowInput(true)}
-          />
-        </>
-      )}
+      {!showInput &&
+        UserHasAccessCode(user, ACCESS_CODES.CAN_UPDATE_PRODUCTION_BAGS) && (
+          <>
+            <ButtonPrint
+              title={GetTransForTokensArray(
+                LANG_TOKENS.SEND_REPPORT,
+                user.lang
+              )}
+              icon={add}
+              onClick={(e) => setShowInput(true)}
+            />
+          </>
+        )}
     </div>
   );
 }

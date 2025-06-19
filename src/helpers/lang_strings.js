@@ -182,6 +182,11 @@ export const LANG_TOKENS = {
   PIN: ["PIN", "密码", "Code PIN"],
   RE_PIN: ["RE-PIN", "第二次密码", "RE-PIN"],
   LOGIN: ["Login", "登录", "Connexion"],
+  LOGOUT_AND_LOGIN: [
+    "Logout elsewhere and Login",
+    "退出/登录",
+    "Se deconnecter partout",
+  ],
   CODE_AND_DESIGN: [
     "Code and design by ",
     "代码与设计：",

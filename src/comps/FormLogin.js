@@ -18,12 +18,13 @@ function MyForm({
   ref_pin,
   onBtnLogin,
   onLanguageChanged,
+  alreadyLoggedIn,
 }) {
   const location = window.location; //.pathname.split("/");
   const { host, pathname } = location;
-  console.log("location: ", location);
-  console.log("host: ", host);
-  console.log("pathname: ", pathname);
+  ///console.log("location: ", location);
+  ///console.log("host: ", host);
+  ///console.log("pathname: ", pathname);
   return (
     <div className="mx-auto   flex flex-col space-y-4    md:card md:bg-base-100 md:w-96 md:p-2 md:shadow-xl ">
       <img src={LOGO} width={200} className=" bg-white " />
@@ -46,12 +47,21 @@ function MyForm({
         }}
       />
       <div>
-        <button
-          onClick={(e) => onBtnLogin()}
-          className={` ${CLASS_BTN} mx-auto w-full`}
-        >
-          {GetTransForTokensArray(LANG_TOKENS.LOGIN, lang)}
-        </button>
+        {alreadyLoggedIn ? (
+          <button
+            onClick={(e) => onBtnLogin(true)}
+            className={` ${CLASS_BTN} mx-auto w-full`}
+          >
+            {GetTransForTokensArray(LANG_TOKENS.LOGOUT_AND_LOGIN, lang)}
+          </button>
+        ) : (
+          <button
+            onClick={(e) => onBtnLogin()}
+            className={` ${CLASS_BTN} mx-auto w-full`}
+          >
+            {GetTransForTokensArray(LANG_TOKENS.LOGIN, lang)}
+          </button>
+        )}
       </div>
       <dialog id="my_modal_5" className="modal modal-bottom sm:modal-middle">
         <div className="modal-box">
@@ -78,7 +88,7 @@ function MyForm({
   );
 }
 
-export default function FormLogin({ onLogin }) {
+export default function FormLogin({ onLogin, alreadyLoggedIn }) {
   const [langIdx, setLangIdx] = useState(0);
   const [lang, setLang] = useState(LANGS[0].code); // Default language
 
@@ -86,21 +96,16 @@ export default function FormLogin({ onLogin }) {
   const ref_pin = useRef();
 
   useEffect(() => {
-    // Load language from localStorage when the component mounts
     const savedLang = localStorage.getItem("lang");
 
-    //console.log("loaded lang: ", savedLang);
     if (savedLang) {
       setLang(savedLang);
       const idx = GetLangIndexByLangCode(savedLang);
       setLangIdx(idx);
-
-      //console.log("saveLang: ", savedLang);
-      //console.log("idx: ", idx);
     }
   }, []);
 
-  function onBtnLogin() {
+  function onBtnLogin(logoutLogin) {
     const mat = ref_mat.current.value;
     const pin = ref_pin.current.value;
 
@@ -110,9 +115,8 @@ export default function FormLogin({ onLogin }) {
     }
 
     const langCode = GetLangCodeByIndex(langIdx);
-    //console.log("lang code ", langCode);
 
-    onLogin(mat, pin, langCode);
+    onLogin(mat, pin, langCode, logoutLogin);
   }
 
   function onLanguageChanged(idx) {
@@ -130,6 +134,7 @@ export default function FormLogin({ onLogin }) {
         ref_pin={ref_pin}
         onBtnLogin={onBtnLogin}
         onLanguageChanged={onLanguageChanged}
+        alreadyLoggedIn={alreadyLoggedIn}
       />
 
       {/* <Christmas lang={lang} /> */}

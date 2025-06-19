@@ -6,8 +6,14 @@ import {
   formatCreatedAt,
   formatDateForDatetimeLocal,
   formatFrenchDate,
+  UserHasAccessCode,
 } from "../../helpers/func";
-import { CLASS_SELECT, DAIZI_FUZEREN, MONTHS } from "../../helpers/flow";
+import {
+  ACCESS_CODES,
+  CLASS_SELECT,
+  DAIZI_FUZEREN,
+  MONTHS,
+} from "../../helpers/flow";
 import ButtonPrint from "../ButtonPrint";
 import {
   GetTransForTokenName,
@@ -211,11 +217,13 @@ function TableContainer({ trans, onAdd }) {
         {/* <button className="btn btn-primary" onClick={onAdd}>
           {GetTransForTokensArray(LANG_TOKENS.DELIVER_BAGS, user.lang)}
         </button> */}
-        <ButtonPrint
-          title={GetTransForTokensArray(LANG_TOKENS.DELIVER_BAGS, user.lang)}
-          icon={add}
-          onClick={onAdd}
-        />
+        {UserHasAccessCode(user, ACCESS_CODES.CAN_UPDATE_CONTAINER_BAGS) && (
+          <ButtonPrint
+            title={GetTransForTokensArray(LANG_TOKENS.DELIVER_BAGS, user.lang)}
+            icon={add}
+            onClick={onAdd}
+          />
+        )}
         <ButtonPrint
           title={GetTransForTokensArray(LANG_TOKENS.PRINT, user.lang)}
           onClick={(e) => onPrint(trans)}
@@ -453,8 +461,6 @@ export default function DaiziContainer({
       filtereds = filtereds.filter((it) => it.operation === filterInOut);
     }
 
-    filtereds = filtereds.map((it) => it.date_time.startsWith(filteredMonth));
-
     settransf(filtereds);
   }, [filteredMonth, filteredTeam, filterInOut]);
 
@@ -467,7 +473,9 @@ export default function DaiziContainer({
     );
     if (fetchedTrans) {
       setTrans(fetchedTrans);
-      settransf(fetchedTrans);
+      settransf(
+        fetchedTrans.filter((it) => it.created_at.indexOf(filteredMonth))
+      );
       //console.log("Transactions loaded:", fetchedTrans);
       setLoading(false);
     } else {
