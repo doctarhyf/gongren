@@ -596,6 +596,29 @@ export default function DaiziProd({}) {
     doc.save(file_name);
   }
 
+  function PreCleanExcelData(data) {
+    /* 
+{
+    "id": 10,
+    "created_at": "2025-06-10T09:30:00.190243+00:00",
+    "team": "A",
+    "used_32": 0,
+    "used_42": 100,
+    "t_32": 0,
+    "t_42": 5,
+    "dech_32": 0,
+    "dech_42": 0,
+    "rest32": 0,
+    "rest42": 7900,
+    "date_time": "2025-06-10 08:29:44",
+    "key": "abe18cf1-2229-442a-98e0-8f98a147ed70"
+}
+*/
+
+    console.log(data[0]);
+    return data;
+  }
+
   return (
     <div>
       {loading ? (
@@ -677,7 +700,10 @@ export default function DaiziProd({}) {
             />
           )}
         <Excelexport
-          excelData={GenerateExcelData(trans, ["key", "created_at"])}
+          excelData={GenerateExcelData(PreCleanExcelData(trans), [
+            "key",
+            "created_at",
+          ])}
           fileName={title}
         />
         <ButtonPrint

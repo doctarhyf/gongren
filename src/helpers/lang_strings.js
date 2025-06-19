@@ -5,6 +5,7 @@ import { SUPERVISORS } from "./flow";
 
 export const LANG_TOKENS = {
   "IN/OUT": ["IN/OUT", "进/出", "SORTIE/ENTREE"],
+  HOURS: ["HOURS", "时间", "HEURES"],
   TRANSLATE: ["TRANSLATE", "翻译", "TRADUIRE"],
   ADD_NEW_WORD: ["ADD NEW WORD", "加薪的词语", "AJOUTER NOUVEAU MOT"],
   REMAINING: ["REMAINING", "剩余", "RESTANTS"],

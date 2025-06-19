@@ -493,15 +493,24 @@ export default function RapportChargement() {
   const [showTotalsByTeam, setShowTotalsByTeam] = useState(false);
 
   function prepareLoadsForExcel(loads) {
-    return loadsf.map((it) => ({
-      Date: `${it.code.split("_")[2]}-${parseInt(it.code.split("_")[3]) + 1}-${
-        it.code.split("_")[4]
-      }`,
-      Team: it.code.split("_")[0],
-      Shift: ` ${it.code.split("_")[1]} `,
-      Hours: SHIFT_HOURS_ZH[it.code.split("_")[1]][2],
-      Sacs: it.sacs,
-      T: (parseFloat(it.sacs) / 20).toFixed(2),
+    const date = GetTransForTokensArray(LANG_TOKENS.DATE, user.lang);
+    const team = GetTransForTokensArray(LANG_TOKENS.TEAM, user.lang);
+    const shift = GetTransForTokensArray(LANG_TOKENS.SHIFT, user.lang);
+    const hours = GetTransForTokensArray(LANG_TOKENS.HOURS, user.lang);
+    const sacs = GetTransForTokensArray(LANG_TOKENS.BAGS, user.lang);
+    const t = GetTransForTokensArray(LANG_TOKENS.T, user.lang);
+    const dechires = GetTransForTokensArray(LANG_TOKENS.TORN_BAGS, user.lang);
+
+    return loads.map((it) => ({
+      [date]: `${it.code.split("_")[2]}-${
+        parseInt(it.code.split("_")[3]) + 1
+      }-${it.code.split("_")[4]}`,
+      [team]: it.code.split("_")[0],
+      [shift]: ` ${it.code.split("_")[1]} `,
+      [hours]: SHIFT_HOURS_ZH[it.code.split("_")[1]][2],
+      [sacs]: it.sacs,
+      [t]: (parseFloat(it.sacs) / 20).toFixed(2),
+      [dechires]: it.dechires,
     }));
   }
 
