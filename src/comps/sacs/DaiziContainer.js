@@ -113,6 +113,53 @@ function TableContainer({ trans, onAdd, title }) {
     doc.save(file_name);
   }
 
+  function PreCleanExcelData(data) {
+    /*
+{
+    "id": 26,
+    "created_at": "2025-05-30T13:36:25.164133+00:00",
+    "date_time": "2025-05-30 15:36",
+    "operation": "out",
+    "s32": 0,
+    "s42": 90000,
+    "stock32": 0,
+    "stock42": 120000,
+    "fuzeren": "谭义勇",
+    "team": "A",
+    "stockRes": false,
+    "key": "622f4728-1a59-4d8a-af6a-ce47917a2e8f"
+}
+    */
+    console.log(data[0]);
+
+    const date_time = GetTransForTokensArray(LANG_TOKENS.DATE_TIME, user.lang);
+    const operation = GetTransForTokensArray(LANG_TOKENS["IN/OUT"], user.lang);
+    const s32 = GetTransForTokensArray(LANG_TOKENS.s32, user.lang);
+    const s42 = GetTransForTokensArray(LANG_TOKENS.s42, user.lang);
+    const stock32 = `${GetTransForTokensArray(
+      LANG_TOKENS.REMAINING,
+      user.lang
+    )}32.5N`;
+    const stock42 = `${GetTransForTokensArray(
+      LANG_TOKENS.REMAINING,
+      user.lang
+    )}42.5N`;
+    const team = GetTransForTokensArray(LANG_TOKENS.TEAM, user.lang);
+    const fuzeren = GetTransForTokensArray(LANG_TOKENS.FUZEREN, user.lang);
+
+    return data.map((it) => ({
+      ID: it.id,
+      [date_time]: it.date_time,
+      [operation]: GetTransForTokenName(it.operation.toUpperCase(), user.lang),
+      [s32]: it.s32,
+      [s42]: it.s42,
+      [stock32]: it.stock32,
+      [stock42]: it.stock32,
+      [team]: it.team,
+      [fuzeren]: it.fuzeren,
+    }));
+  }
+
   return (
     <div>
       {trans.length > 0 ? (
@@ -230,7 +277,7 @@ function TableContainer({ trans, onAdd, title }) {
         )}
 
         <Excelexport
-          excelData={GenerateExcelData(trans, [
+          excelData={GenerateExcelData(PreCleanExcelData(trans), [
             "key",
             "created_at",
             "stockRes",
