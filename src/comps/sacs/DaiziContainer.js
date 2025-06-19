@@ -213,7 +213,7 @@ function TableContainer({ trans, onAdd }) {
           {GetTransForTokensArray(LANG_TOKENS.CONATINER_IS_EMPTY, user.lang)}
         </div>
       )}
-      <div className=" flex gap-2 ">
+      <div className=" flex gap-2 justify-between ">
         {/* <button className="btn btn-primary" onClick={onAdd}>
           {GetTransForTokensArray(LANG_TOKENS.DELIVER_BAGS, user.lang)}
         </button> */}
@@ -485,10 +485,10 @@ export default function DaiziContainer({
   }
 
   const stockInsufficient = stock32Unsufficient || stock42Unsufficient;
-
+  const [d, setd] = useState({ y: "-", m: "-" });
   function onMonthFiltered(d) {
     //console.log(d);
-
+    setd(d);
     let df = `${d.y}-${parseInt(d.m).toString().padStart(2, "0")}`;
     setFilteredMonth(df);
     setFilterInOut(d.inOut);
@@ -527,8 +527,11 @@ export default function DaiziContainer({
         />
       ) : (
         <div>
-          <div className=" text-3xl text-center  ">
-            {GetTransForTokensArray(LANG_TOKENS.RECORDS_TITLE_CONT, user.lang)}
+          <div className=" text-3xl text-center my-4  ">
+            {GetTransForTokensArray(LANG_TOKENS.RECORDS_TITLE_CONT, user.lang, {
+              y: d.y,
+              m: d.m,
+            })}
           </div>
           <TableContainer trans={transf} onAdd={(e) => setInput(true)} />
         </div>

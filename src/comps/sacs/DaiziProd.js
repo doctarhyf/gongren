@@ -35,72 +35,6 @@ import add from "../../img/add.png";
 function TableProduction({ trans, totals }) {
   const [, , user] = useContext(UserContext);
 
-  function onPrint(loads) {
-    ////console.log(loads);
-    //return;
-    //console.log("loads => ", loads);
-    loads = transformDataForPrint(loads);
-    //console.log("loads => ", loads);
-    const doc = new jsPDF({ orientation: "landscape" });
-    const FONT_SIZE = 9;
-    const PW = 297;
-    const PH = 210;
-    let ty = -1;
-    let tm = -1;
-
-    doc.setFont("helvetica");
-    doc.setFontSize(FONT_SIZE);
-
-    let r = doc.addFont(
-      "fonts/DroidSansFallback.ttf",
-      "DroidSansFallback",
-      "normal"
-    );
-
-    const body = loads;
-
-    const defaultObject = {
-      id: 10,
-      created_at: "2025-06-10T09:30:00.190243+00:00",
-      team: "A",
-      used_32: 0,
-      used_42: 100,
-      t_32: 0,
-      t_42: 5,
-      dech_32: 0,
-      dech_42: 0,
-      rest32: 0,
-      rest42: 7900,
-      date_time: "2025-06-10 08:29:44",
-      key: "abe18cf1-2229-442a-98e0-8f98a147ed70",
-    };
-
-    var headers = createHeaders(Object.keys(defaultObject));
-
-    const tableConfig = {
-      printHeaders: true,
-      autoSize: true,
-      margins: 0,
-      fontSize: FONT_SIZE,
-      padding: 2.5,
-    };
-
-    // body.push(def);
-
-    doc.text(formatFrenchDate(new Date()), PW - 15, 10, { align: "right" });
-
-    const doc_title = `SACS CONTAINER`;
-    const file_name = `SACS_CONTAINER_${formatCreatedAt(
-      new Date().toISOString()
-    )}`;
-    doc.text(doc_title, 105, 20, {
-      align: "center",
-    });
-
-    doc.table(15, 25, body, headers, tableConfig);
-    doc.save(file_name);
-  }
-
   return (
     <div>
       <table class="table-auto w-full">
@@ -190,10 +124,6 @@ function TableProduction({ trans, totals }) {
           ))}
         </tbody>
       </table>
-      <ButtonPrint
-        title={GetTransForTokensArray(LANG_TOKENS.PRINT, user.lang)}
-        onClick={(e) => onPrint(trans)}
-      />
     </div>
   );
 }
@@ -582,11 +512,79 @@ export default function DaiziProd({}) {
     settransf(filtereds);
   }, [filteredMonth, filteredTeam]);
 
+  const [d, setd] = useState({ y: "-", m: "-" });
   function onMonthFiltered(d) {
+    setd(d);
     let df = `${d.y}-${parseInt(d.m).toString().padStart(2, "0")}`;
     setFilteredMonth(df);
     setFilteredTeam(d.team);
-    //console.log(d, df);
+    console.log(d, df);
+  }
+
+  function onPrint(loads) {
+    ////console.log(loads);
+    //return;
+    //console.log("loads => ", loads);
+    loads = transformDataForPrint(loads);
+    //console.log("loads => ", loads);
+    const doc = new jsPDF({ orientation: "landscape" });
+    const FONT_SIZE = 9;
+    const PW = 297;
+    const PH = 210;
+    let ty = -1;
+    let tm = -1;
+
+    doc.setFont("helvetica");
+    doc.setFontSize(FONT_SIZE);
+
+    let r = doc.addFont(
+      "fonts/DroidSansFallback.ttf",
+      "DroidSansFallback",
+      "normal"
+    );
+
+    const body = loads;
+
+    const defaultObject = {
+      id: 10,
+      created_at: "2025-06-10T09:30:00.190243+00:00",
+      team: "A",
+      used_32: 0,
+      used_42: 100,
+      t_32: 0,
+      t_42: 5,
+      dech_32: 0,
+      dech_42: 0,
+      rest32: 0,
+      rest42: 7900,
+      date_time: "2025-06-10 08:29:44",
+      key: "abe18cf1-2229-442a-98e0-8f98a147ed70",
+    };
+
+    var headers = createHeaders(Object.keys(defaultObject));
+
+    const tableConfig = {
+      printHeaders: true,
+      autoSize: true,
+      margins: 0,
+      fontSize: FONT_SIZE,
+      padding: 2.5,
+    };
+
+    // body.push(def);
+
+    doc.text(formatFrenchDate(new Date()), PW - 15, 10, { align: "right" });
+
+    const doc_title = `SACS CONTAINER`;
+    const file_name = `SACS_CONTAINER_${formatCreatedAt(
+      new Date().toISOString()
+    )}`;
+    doc.text(doc_title, 105, 20, {
+      align: "center",
+    });
+
+    doc.table(15, 25, body, headers, tableConfig);
+    doc.save(file_name);
   }
 
   return (
@@ -635,8 +633,11 @@ export default function DaiziProd({}) {
         </>
       ) : (
         <div>
-          <div className=" text-3xl text-center  ">
-            {GetTransForTokensArray(LANG_TOKENS.RECORDS_TITLE_PROD, user.lang)}
+          <div className=" text-3xl text-center my-4  ">
+            {GetTransForTokensArray(LANG_TOKENS.RECORDS_TITLE_PROD, user.lang, {
+              y: d.y,
+              m: d.m,
+            })}
           </div>
 
           <TableProduction
@@ -647,9 +648,9 @@ export default function DaiziProd({}) {
         </div>
       )}
 
-      {!showInput &&
-        UserHasAccessCode(user, ACCESS_CODES.CAN_UPDATE_PRODUCTION_BAGS) && (
-          <>
+      <div className=" flex gap-2 justify-between ">
+        {!showInput &&
+          UserHasAccessCode(user, ACCESS_CODES.CAN_UPDATE_PRODUCTION_BAGS) && (
             <ButtonPrint
               title={GetTransForTokensArray(
                 LANG_TOKENS.SEND_REPPORT,
@@ -658,8 +659,12 @@ export default function DaiziProd({}) {
               icon={add}
               onClick={(e) => setShowInput(true)}
             />
-          </>
-        )}
+          )}
+        <ButtonPrint
+          title={GetTransForTokensArray(LANG_TOKENS.PRINT, user.lang)}
+          onClick={(e) => onPrint(transf)}
+        />
+      </div>
     </div>
   );
 }
