@@ -9,6 +9,7 @@ export const LANG_TOKENS = {
   ADD_NEW_WORD: ["ADD NEW WORD", "加薪的词语", "AJOUTER NOUVEAU MOT"],
   REMAINING: ["REMAINING", "剩余", "RESTANTS"],
   LAST_5_RECORDS: ["Last 5 transfers", "最近5次转账", "5 derniers transferts"],
+  REST: ["REMAINING", "剩余", "RESTANTS"],
   PRODUCTION_BAGS_MANAGEMENT: [
     "PRODUCTION BAGS MANAGEMENT",
     "生产袋子管理",

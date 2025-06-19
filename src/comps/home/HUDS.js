@@ -642,7 +642,7 @@ export function HUDMonthProgress({ loads, date }) {
             </div>
 
             <div className="text-[16pt]   ">
-              REST :{" "}
+              {GetTransForTokensArray(LANG_TOKENS.REST, user.lang)} :{" "}
               {(
                 parseFloat(TONNAGE_MONTHLY_TARGET) - parseFloat(data.tonnage)
               ).toFixed(2)}{" "}

@@ -26,6 +26,8 @@ import MonthFilter, {
   FILTER_TEAMS,
 } from "./MonthFilter";
 
+import add from "../../img/add.png";
+
 function TableContainer({ trans, onAdd }) {
   const [, , user] = useContext(UserContext);
 
@@ -103,15 +105,6 @@ function TableContainer({ trans, onAdd }) {
 
   return (
     <div>
-      <div>
-        <button className="btn btn-primary" onClick={onAdd}>
-          {GetTransForTokensArray(LANG_TOKENS.DELIVER_BAGS, user.lang)}
-        </button>
-        <ButtonPrint
-          title={GetTransForTokensArray(LANG_TOKENS.PRINT, user.lang)}
-          onClick={(e) => onPrint(trans)}
-        />
-      </div>
       {trans.length > 0 ? (
         <table class="table-auto w-full">
           <thead className="p1 border border-gray-900 dark:border-white p-1 ">
@@ -214,6 +207,20 @@ function TableContainer({ trans, onAdd }) {
           {GetTransForTokensArray(LANG_TOKENS.CONATINER_IS_EMPTY, user.lang)}
         </div>
       )}
+      <div className=" flex gap-2 ">
+        {/* <button className="btn btn-primary" onClick={onAdd}>
+          {GetTransForTokensArray(LANG_TOKENS.DELIVER_BAGS, user.lang)}
+        </button> */}
+        <ButtonPrint
+          title={GetTransForTokensArray(LANG_TOKENS.DELIVER_BAGS, user.lang)}
+          icon={add}
+          onClick={onAdd}
+        />
+        <ButtonPrint
+          title={GetTransForTokensArray(LANG_TOKENS.PRINT, user.lang)}
+          onClick={(e) => onPrint(trans)}
+        />
+      </div>
     </div>
   );
 }
@@ -446,6 +453,8 @@ export default function DaiziContainer({
       filtereds = filtereds.filter((it) => it.operation === filterInOut);
     }
 
+    filtereds = filtereds.map((it) => it.date_time.startsWith(filteredMonth));
+
     settransf(filtereds);
   }, [filteredMonth, filteredTeam, filterInOut]);
 
@@ -488,12 +497,14 @@ export default function DaiziContainer({
           user.lang
         )}
       </div>
-      <ContainerStock
-        containerStock={containerStock}
-        stock32Unsufficient={stock32Unsufficient}
-        stock42Unsufficient={stock42Unsufficient}
-      />
-      <MonthFilter onMonthFiltered={onMonthFiltered} isContainer={true} />
+      <div className=" flex flex-col justify-center  items-center  ">
+        <ContainerStock
+          containerStock={containerStock}
+          stock32Unsufficient={stock32Unsufficient}
+          stock42Unsufficient={stock42Unsufficient}
+        />
+        <MonthFilter onMonthFiltered={onMonthFiltered} isContainer={true} />
+      </div>
       {input ? (
         <TableInput
           onCancel={(e) => {

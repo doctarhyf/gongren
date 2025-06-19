@@ -24,6 +24,8 @@ import ShengyuStock from "./ShengyuStock";
 import Loading from "../Loading";
 import MonthFilter, { FILTER_TEAMS } from "./MonthFilter";
 
+import add from "../../img/add.png";
+
 function TableProduction({ trans, totals }) {
   const [, , user] = useContext(UserContext);
 
@@ -95,11 +97,6 @@ function TableProduction({ trans, totals }) {
 
   return (
     <div>
-      <ButtonPrint
-        title={GetTransForTokensArray(LANG_TOKENS.PRINT, user.lang)}
-        onClick={(e) => onPrint(trans)}
-      />
-
       <table class="table-auto w-full">
         <thead className="p1 border border-gray-900 dark:border-white p-1 ">
           <tr>
@@ -187,6 +184,10 @@ function TableProduction({ trans, totals }) {
           ))}
         </tbody>
       </table>
+      <ButtonPrint
+        title={GetTransForTokensArray(LANG_TOKENS.PRINT, user.lang)}
+        onClick={(e) => onPrint(trans)}
+      />
     </div>
   );
 }
@@ -587,27 +588,27 @@ export default function DaiziProd({}) {
       {loading ? (
         <Loading isLoading={true} />
       ) : (
-        <>
+        <div className="   ">
           <div className=" text-xl mb-2 border-b   ">
             {GetTransForTokensArray(
               LANG_TOKENS.PRODUCTION_BAGS_MANAGEMENT,
               user.lang
             )}
           </div>
-          <ShengyuStock
-            shengYuStock={stockShengYU}
-            stock32Unsufficient={stock32Unsufficient}
-            stock42Unsufficient={stock42Unsufficient}
-          />
-          <MonthFilter onMonthFiltered={onMonthFiltered} isProduction={true} />
-        </>
+          <div className=" flex justify-center flex-col items-center ">
+            <ShengyuStock
+              shengYuStock={stockShengYU}
+              stock32Unsufficient={stock32Unsufficient}
+              stock42Unsufficient={stock42Unsufficient}
+            />
+            <MonthFilter
+              onMonthFiltered={onMonthFiltered}
+              isProduction={true}
+            />
+          </div>
+        </div>
       )}
 
-      {!showInput && (
-        <button className="btn btn-primary" onClick={(e) => setShowInput(true)}>
-          {GetTransForTokensArray(LANG_TOKENS.SEND_REPPORT, user.lang)}
-        </button>
-      )}
       {error ? (
         <>
           <div className=" bg-red-900 text-red-400 p-2 rounded-md text-sm ">
@@ -616,7 +617,6 @@ export default function DaiziProd({}) {
         </>
       ) : showInput ? (
         <>
-          {/* <div className=" hidden md:block "> */}
           <TableInput
             key={rdk} //clcllc
             stockShengYu={stockShengYU}
@@ -626,8 +626,6 @@ export default function DaiziProd({}) {
             stock32Unsufficient={stock32Unsufficient}
             stock42Unsufficient={stock42Unsufficient}
           />
-          {/*   </div>
-          <div className="block md:hidden">form</div> */}
         </>
       ) : (
         <div>
@@ -641,6 +639,16 @@ export default function DaiziProd({}) {
             totals={totals}
           />
         </div>
+      )}
+
+      {!showInput && (
+        <>
+          <ButtonPrint
+            title={GetTransForTokensArray(LANG_TOKENS.SEND_REPPORT, user.lang)}
+            icon={add}
+            onClick={(e) => setShowInput(true)}
+          />
+        </>
       )}
     </div>
   );
