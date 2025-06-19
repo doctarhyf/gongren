@@ -6,6 +6,9 @@ import {
   formatCreatedAt,
   formatDateForDatetimeLocal,
   formatFrenchDate,
+  GenerateExcelData,
+  objectsToArrays,
+  objectsToArraysWithHeaders,
   UserHasAccessCode,
 } from "../../helpers/func";
 import {
@@ -33,8 +36,9 @@ import MonthFilter, {
 } from "./MonthFilter";
 
 import add from "../../img/add.png";
+import Excelexport from "../Excelexport";
 
-function TableContainer({ trans, onAdd }) {
+function TableContainer({ trans, onAdd, title }) {
   const [, , user] = useContext(UserContext);
 
   const totals = { s32: 0, s42: 0 };
@@ -224,6 +228,16 @@ function TableContainer({ trans, onAdd }) {
             onClick={onAdd}
           />
         )}
+
+        <Excelexport
+          excelData={GenerateExcelData(trans, [
+            "key",
+            "created_at",
+            "stockRes",
+          ])}
+          fileName={title}
+        />
+
         <ButtonPrint
           title={GetTransForTokensArray(LANG_TOKENS.PRINT, user.lang)}
           onClick={(e) => onPrint(trans)}
@@ -486,6 +500,7 @@ export default function DaiziContainer({
 
   const stockInsufficient = stock32Unsufficient || stock42Unsufficient;
   const [d, setd] = useState({ y: "-", m: "-" });
+  const [title, setTitle] = useState();
   function onMonthFiltered(d) {
     //console.log(d);
     setd(d);
@@ -493,6 +508,12 @@ export default function DaiziContainer({
     setFilteredMonth(df);
     setFilterInOut(d.inOut);
     setFilteredTeam(d.team);
+    setTitle(
+      GetTransForTokensArray(LANG_TOKENS.RECORDS_TITLE_CONT, user.lang, {
+        y: d.y,
+        m: d.m,
+      })
+    );
   }
 
   return loading ? (
@@ -528,12 +549,21 @@ export default function DaiziContainer({
       ) : (
         <div>
           <div className=" text-3xl text-center my-4  ">
-            {GetTransForTokensArray(LANG_TOKENS.RECORDS_TITLE_CONT, user.lang, {
-              y: d.y,
-              m: d.m,
-            })}
+            {title ||
+              GetTransForTokensArray(
+                LANG_TOKENS.RECORDS_TITLE_CONT,
+                user.lang,
+                {
+                  y: d.y,
+                  m: d.m,
+                }
+              )}
           </div>
-          <TableContainer trans={transf} onAdd={(e) => setInput(true)} />
+          <TableContainer
+            trans={transf}
+            onAdd={(e) => setInput(true)}
+            title={title}
+          />
         </div>
       )}{" "}
     </div>

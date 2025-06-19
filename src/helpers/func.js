@@ -128,6 +128,43 @@ export function GetCurrentMonthTrans(trans) {
   return filtereds;
 }
 
+export function objectToArray(obj, omitKeys = []) {
+  return Object.entries(obj)
+    .filter(([key]) => !omitKeys.includes(key))
+    .map(([, value]) => value);
+}
+
+export function toCSV(data, omitKeys = []) {
+  if (!data || !data.length) return "";
+
+  const keys = Object.keys(data[0]).filter((k) => !omitKeys.includes(k));
+  const header = keys.join(",");
+  const rows = data.map((row) =>
+    keys.map((k) => JSON.stringify(row[k] ?? "")).join(",")
+  );
+  return [header, ...rows].join("\n");
+}
+
+export function GenerateExcelData(data, keysToOmit = [], keepHeaders = true) {
+  const d = objectsToArrays(data, keysToOmit, keepHeaders);
+
+  return JSON.parse(JSON.stringify(d));
+}
+
+export function objectsToArrays(
+  objArray,
+  omitKeys = [],
+  includeHeader = false
+) {
+  if (!Array.isArray(objArray) || objArray.length === 0) return [];
+
+  const keys = Object.keys(objArray[0]).filter((k) => !omitKeys.includes(k));
+
+  const data = objArray.map((obj) => keys.map((key) => obj[key]));
+
+  return includeHeader ? [keys, ...data] : data;
+}
+
 export function GetMonthNumDays(year, month) {
   const date = new Date();
   const today = date.getDate();

@@ -6,6 +6,7 @@ import {
   formatCreatedAt,
   formatDateForDatetimeLocal,
   formatFrenchDate,
+  GenerateExcelData,
   GetCurrentMonthTrans,
   UserHasAccessCode,
 } from "../../helpers/func";
@@ -31,6 +32,7 @@ import Loading from "../Loading";
 import MonthFilter, { FILTER_TEAMS } from "./MonthFilter";
 
 import add from "../../img/add.png";
+import Excelexport from "../Excelexport";
 
 function TableProduction({ trans, totals }) {
   const [, , user] = useContext(UserContext);
@@ -513,11 +515,18 @@ export default function DaiziProd({}) {
   }, [filteredMonth, filteredTeam]);
 
   const [d, setd] = useState({ y: "-", m: "-" });
+  const [title, setTitle] = useState();
   function onMonthFiltered(d) {
     setd(d);
     let df = `${d.y}-${parseInt(d.m).toString().padStart(2, "0")}`;
     setFilteredMonth(df);
     setFilteredTeam(d.team);
+    setTitle(
+      GetTransForTokensArray(LANG_TOKENS.RECORDS_TITLE_PROD, user.lang, {
+        y: d.y,
+        m: d.m,
+      })
+    );
     console.log(d, df);
   }
 
@@ -634,10 +643,15 @@ export default function DaiziProd({}) {
       ) : (
         <div>
           <div className=" text-3xl text-center my-4  ">
-            {GetTransForTokensArray(LANG_TOKENS.RECORDS_TITLE_PROD, user.lang, {
-              y: d.y,
-              m: d.m,
-            })}
+            {title ||
+              GetTransForTokensArray(
+                LANG_TOKENS.RECORDS_TITLE_PROD,
+                user.lang,
+                {
+                  y: d.y,
+                  m: d.m,
+                }
+              )}
           </div>
 
           <TableProduction
@@ -660,6 +674,10 @@ export default function DaiziProd({}) {
               onClick={(e) => setShowInput(true)}
             />
           )}
+        <Excelexport
+          excelData={GenerateExcelData(trans, ["key", "created_at"])}
+          fileName={title}
+        />
         <ButtonPrint
           title={GetTransForTokensArray(LANG_TOKENS.PRINT, user.lang)}
           onClick={(e) => onPrint(transf)}

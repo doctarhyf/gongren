@@ -45,6 +45,7 @@ import {
 } from "../helpers/lang_strings";
 import TableLoadsTotals from "../comps/TableLoadsTotal";
 import excel from "../img/excel.png";
+import Excelexport from "../comps/Excelexport";
 
 const TEAMS = ["A", "B", "C", "D"];
 
@@ -616,11 +617,18 @@ export default function RapportChargement() {
                   }
 
                   {!showTotalsByTeam && (
-                    <ActionButton
-                      icon={excel}
-                      title={"PRINT EXCEL"}
-                      onClick={(e) => onPrintExcel()}
-                    />
+                    <>
+                      {/* <ActionButton
+                        icon={excel}
+                        title={"PRINT EXCEL"}
+                        onClick={(e) => onPrintExcel()}
+                      /> */}
+                      {/* <Excelexport
+                        excelData={JSON.parse(
+                          '[["nom", "age"],["Franvale", 32]]'
+                        )}
+                      /> */}
+                    </>
                   )}
 
                   {

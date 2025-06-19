@@ -474,15 +474,6 @@ export default function BagsDataList({
       console.log("data is still null");
       return;
     }
-    /*
-            "日期",
-            "班组",
-            "产量(T)",
-            "设备原因",
-            "电气原因",
-            "停电原因",
-            "其它原因",
-            "备注"*/
 
     const days_entries = Object.entries(data);
 
@@ -580,7 +571,11 @@ export default function BagsDataList({
 
     final_data += "]";
 
-    return JSON.parse(final_data);
+    console.log("final data => ", final_data);
+
+    const json_final_data = JSON.parse(final_data);
+    console.log("json_final_data => ", json_final_data);
+    return json_final_data;
   }
 
   function printTotalsTable(totalData, y, m) {
