@@ -44,6 +44,7 @@ import {
   LANG_TOKENS,
 } from "../helpers/lang_strings";
 import TableLoadsTotals from "../comps/TableLoadsTotal";
+import excel from "../img/excel.png";
 
 const TEAMS = ["A", "B", "C", "D"];
 
@@ -489,6 +490,10 @@ export default function RapportChargement() {
   const [allTeamsTotals, setAllTeamsTotals] = useState([]);
   const [showTotalsByTeam, setShowTotalsByTeam] = useState(false);
 
+  function onPrintExcel() {
+    console.log("Print excel ...");
+  }
+
   return (
     <div className=" container  ">
       <div>
@@ -609,6 +614,14 @@ export default function RapportChargement() {
                       onClick={(e) => onPrint(loadsf, showTotalsByTeam)}
                     />
                   }
+
+                  {!showTotalsByTeam && (
+                    <ActionButton
+                      icon={excel}
+                      title={"PRINT EXCEL"}
+                      onClick={(e) => onPrintExcel()}
+                    />
+                  )}
 
                   {
                     // UserHasAccessCode(user, ACCESS_CODES.ROOT)
