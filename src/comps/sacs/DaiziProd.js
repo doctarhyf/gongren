@@ -654,11 +654,13 @@ export default function DaiziProd({}) {
               )}
           </div>
 
-          <TableProduction
-            trans={transf}
-            stockShengYu={stockShengYU}
-            totals={totals}
-          />
+          <div className=" overflow-auto  ">
+            <TableProduction
+              trans={transf}
+              stockShengYu={stockShengYU}
+              totals={totals}
+            />
+          </div>
         </div>
       )}
 

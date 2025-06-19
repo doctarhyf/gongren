@@ -13,7 +13,7 @@ export default function ContainerStock({
   const [, , user] = useContext(UserContext);
 
   return (
-    <div className=" p-2 border  bg-gradient-to-br from-amber-500 to-amber-700 text-amber-200  border-slate-600  rounded-md w-fit my-2 ">
+    <div className=" w-full text-center p-4 border  bg-gradient-to-br from-amber-500 to-amber-700 text-amber-200  border-slate-600  rounded-md md:w-fit my-2 ">
       <div className=" mb-2  shadow-md bosl text-xl font-bold  ">
         {GetTransForTokensArray(LANG_TOKENS.STOCK_CONTAINER, user.lang)}
       </div>

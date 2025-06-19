@@ -559,11 +559,13 @@ export default function DaiziContainer({
                 }
               )}
           </div>
-          <TableContainer
-            trans={transf}
-            onAdd={(e) => setInput(true)}
-            title={title}
-          />
+          <div className=" overflow-x-auto p-4   ">
+            <TableContainer
+              trans={transf}
+              onAdd={(e) => setInput(true)}
+              title={title}
+            />
+          </div>
         </div>
       )}{" "}
     </div>

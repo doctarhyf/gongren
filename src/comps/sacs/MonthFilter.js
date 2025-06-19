@@ -40,7 +40,7 @@ export default function MonthFilter({
   }, [y, m, inOut, team]);
 
   return (
-    <div className=" flex gap-2 my-4 ">
+    <div className=" flex flex-col md:flex-row gap-2 my-4 ">
       <select
         className={` ${CLASS_SELECT} `}
         value={y}

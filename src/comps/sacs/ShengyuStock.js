@@ -13,7 +13,7 @@ export default function ShengyuStock({
   const [, , user] = useContext(UserContext);
 
   return (
-    <div className=" p-2 border bg-gradient-to-br  from-emerald-500  to-emerald-700 text-emerald-200  border-slate-600  rounded-md w-fit my-2 ">
+    <div className=" p-4 w-full border bg-gradient-to-br  from-emerald-500  to-emerald-700 text-emerald-200  border-slate-600 text-center  rounded-md md:w-fit my-2 ">
       <div className=" mb-2  shadow-md bosl text-xl font-bold  ">
         {GetTransForTokensArray(
           LANG_TOKENS.STOCK_BAGS_REMAINING_PRODUCTION,
