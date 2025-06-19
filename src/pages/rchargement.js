@@ -492,7 +492,7 @@ export default function RapportChargement() {
   const [allTeamsTotals, setAllTeamsTotals] = useState([]);
   const [showTotalsByTeam, setShowTotalsByTeam] = useState(false);
 
-  function prepareLoadsForExcel(loads) {
+  function PreCleanExcelData(loads) {
     const date = GetTransForTokensArray(LANG_TOKENS.DATE, user.lang);
     const team = GetTransForTokensArray(LANG_TOKENS.TEAM, user.lang);
     const shift = GetTransForTokensArray(LANG_TOKENS.SHIFT, user.lang);
@@ -500,18 +500,35 @@ export default function RapportChargement() {
     const sacs = GetTransForTokensArray(LANG_TOKENS.BAGS, user.lang);
     const t = GetTransForTokensArray(LANG_TOKENS.T, user.lang);
     const dechires = GetTransForTokensArray(LANG_TOKENS.TORN_BAGS, user.lang);
+    const bonus = GetTransForTokensArray(LANG_TOKENS.BONUS, user.lang);
 
-    return loads.map((it) => ({
-      [date]: `${it.code.split("_")[2]}-${
-        parseInt(it.code.split("_")[3]) + 1
-      }-${it.code.split("_")[4]}`,
-      [team]: it.code.split("_")[0],
-      [shift]: ` ${it.code.split("_")[1]} `,
-      [hours]: SHIFT_HOURS_ZH[it.code.split("_")[1]][2],
-      [sacs]: it.sacs,
-      [t]: (parseFloat(it.sacs) / 20).toFixed(2),
-      [dechires]: it.dechires,
-    }));
+    console.log("ld[0] => ", loads[0]);
+
+    return loads.map((it) => {
+      const d = {
+        [date]: `${it.code.split("_")[2]}-${
+          parseInt(it.code.split("_")[3]) + 1
+        }-${it.code.split("_")[4]}`,
+        [team]: it.code.split("_")[0],
+        [shift]: `${SHIFT_HOURS_ZH[it.code.split("_")[1]][0]}/${
+          SHIFT_HOURS_ZH[it.code.split("_")[1]][1]
+        }`,
+        [hours]: SHIFT_HOURS_ZH[it.code.split("_")[1]][2],
+        [sacs]: it.sacs,
+        [t]: (parseFloat(it.sacs) / 20).toFixed(2),
+        [dechires]: it.dechires,
+      };
+
+      return UserHasAccessCode(user, ACCESS_CODES.BONUS_ROW)
+        ? {
+            ...d,
+            [bonus]:
+              parseFloat(it.sacs) / 20 < PRIME_MIN
+                ? 0
+                : (parseFloat(it.sacs) / 20 - PRIME_MIN).toFixed(2),
+          }
+        : d;
+    });
   }
 
   return (
@@ -639,7 +656,7 @@ export default function RapportChargement() {
                     <>
                       <Excelexport
                         excelData={GenerateExcelData(
-                          prepareLoadsForExcel(loadsf),
+                          PreCleanExcelData(loadsf),
                           [
                             "id",
                             "retours",
