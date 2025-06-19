@@ -492,8 +492,17 @@ export default function RapportChargement() {
   const [allTeamsTotals, setAllTeamsTotals] = useState([]);
   const [showTotalsByTeam, setShowTotalsByTeam] = useState(false);
 
-  function onPrintExcel() {
-    console.log("Print excel ...");
+  function prepareLoadsForExcel(loads) {
+    return loadsf.map((it) => ({
+      Date: `${it.code.split("_")[2]}-${parseInt(it.code.split("_")[3]) + 1}-${
+        it.code.split("_")[4]
+      }`,
+      Team: it.code.split("_")[0],
+      Shift: ` ${it.code.split("_")[1]} `,
+      Hours: SHIFT_HOURS_ZH[it.code.split("_")[1]][2],
+      Sacs: it.sacs,
+      T: (parseFloat(it.sacs) / 20).toFixed(2),
+    }));
   }
 
   return (
@@ -621,10 +630,7 @@ export default function RapportChargement() {
                     <>
                       <Excelexport
                         excelData={GenerateExcelData(
-                          loadsf.map((it) => ({
-                            ...it,
-                            T: (parseFloat(it.sacs) / 20).toFixed(2),
-                          })),
+                          prepareLoadsForExcel(loadsf),
                           [
                             "id",
                             "retours",
