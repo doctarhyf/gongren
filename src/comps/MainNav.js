@@ -42,7 +42,7 @@ function MainNav({ user, onMenuClick, curPage, onLogout }) {
         className="    p-1 cursor-pointer h-[30pt]   md:w-fit md:max-w-[120pt] flex justify-between md:justify-center items-center "
       >
         <img src={gck} height={"10pt"} className=" h-[32pt] md:h-fit  " />
-        <div className=" w-fit md:hidden   ml-auto  mb-2 ">
+        <div className=" w-fit bg   ml-auto  mb-2 ">
           <MenuIcon sethidden={sethidden} hidden={false} />
         </div>
       </div>
