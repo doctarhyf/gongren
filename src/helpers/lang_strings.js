@@ -114,10 +114,15 @@ export const LANG_TOKENS = {
     "Nouvelle année, nouvelles opportunités—affinons nos compétences, relevons les défis et construisons un avenir dont nous serons fiers. Les efforts que nous faisons aujourd'hui façonneront notre succès de demain. Faisons de 2025 notre année !",
   ],
   LOGIN_ERROR: ["LOGIN ERROR!", "登录错误！", "ERREUR DE CONNEXION!"],
-  MSG_NO_ACCESS: [
+  MSG_NO_ACCESS_: [
     "Sorry Mr. %a, you have no access to this platform.\n Please contact the administrator! @doctarhyf",
     " 对不起，%a先生，您没有权限访问这个平台。\n 请联系管理员！",
     "Désolé Monsieur %a, vous n'avez pas accès à cette plateforme. \nVeuillez contacter l'administrateur !",
+  ],
+  MSG_NO_ACCESS: [
+    "We inform you that your subscription to our VPS server BagTrack will expire on 23/06/2025. To avoid any service interruption, please renew your subscription before this date. After this deadline, your server may be suspended and the data it contains may be deleted after a certain period of time.",
+    "我们通知您，您在我们 VPS 服务器 BagTrack 上的订阅将于 2025 年 6 月 23 日到期。为避免服务中断，请在此日期之前续订您的订阅。逾期后，您的服务器可能会被暂停，其包含的数据可能会在一段时间后被删除。",
+    "Nous vous informons que votre abonnement à notre serveur VPS BagTrack arrivera à expiration le 23/06/2025. Afin d’éviter toute interruption de service, nous vous invitons à renouveler votre abonnement avant cette date. Passé ce délai, votre serveur pourrait être suspendu, et les données qu’il contient pourraient être supprimées après un certain temps.",
   ],
   CLEAR_CURRENT_TEAM: [
     "CLEAR CURRENT TEAM",

@@ -338,17 +338,7 @@ function TableInput({
 
   return (
     <div>
-      <div>
-        {!stockInsufficient && (
-          <button className="btn btn-primary" onClick={(e) => onSave(data)}>
-            {GetTransForTokensArray(LANG_TOKENS.SAVE, user.lang)}
-          </button>
-        )}
-        <button className="btn btn-secondary" onClick={onCancel}>
-          {GetTransForTokensArray(LANG_TOKENS.CANCEL, user.lang)}
-        </button>
-      </div>
-      <table class="table-auto">
+      <table class="table-auto w-full">
         <thead className="p1 border border-gray-900 dark:border-white p-1 ">
           <tr>
             <th className="p1 border border-gray-900 dark:border-white p-1 ">
@@ -481,6 +471,17 @@ function TableInput({
           </tr>
         </tbody>
       </table>
+
+      <div className=" flex justify-between my-4  ">
+        {!stockInsufficient && (
+          <button className="btn btn-primary" onClick={(e) => onSave(data)}>
+            {GetTransForTokensArray(LANG_TOKENS.SAVE, user.lang)}
+          </button>
+        )}
+        <button className="btn btn-secondary" onClick={onCancel}>
+          {GetTransForTokensArray(LANG_TOKENS.CANCEL, user.lang)}
+        </button>
+      </div>
     </div>
   );
 }
@@ -582,17 +583,19 @@ export default function DaiziContainer({
         <MonthFilter onMonthFiltered={onMonthFiltered} isContainer={true} />
       </div>
       {input ? (
-        <TableInput
-          onCancel={(e) => {
-            setInput(false);
-            resetStock();
-          }}
-          onSave={onSave}
-          onInputChage={onInputChage}
-          resetStock={resetStock}
-          stockInsufficient={stockInsufficient}
-          containerStock={containerStock}
-        />
+        <div className=" overflow-auto  ">
+          <TableInput
+            onCancel={(e) => {
+              setInput(false);
+              resetStock();
+            }}
+            onSave={onSave}
+            onInputChage={onInputChage}
+            resetStock={resetStock}
+            stockInsufficient={stockInsufficient}
+            containerStock={containerStock}
+          />
+        </div>
       ) : (
         <div>
           <div className=" text-3xl text-center my-4  ">

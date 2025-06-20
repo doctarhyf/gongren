@@ -179,20 +179,7 @@ function TableInput({
 
   return (
     <div>
-      <div>
-        <div>
-          {!stockInsufficient && (
-            <button className="btn btn-primary" onClick={(e) => onSave(data)}>
-              {GetTransForTokensArray(LANG_TOKENS.SAVE, user.lang)}
-            </button>
-          )}
-
-          <button className="btn btn-secondary" onClick={onCancel}>
-            {GetTransForTokensArray(LANG_TOKENS.CANCEL, user.lang)}
-          </button>
-        </div>
-      </div>
-      <table class="table-auto">
+      <table class="table-auto w-full">
         <thead className="p1 border border-gray-900 dark:border-white p-1 ">
           <tr>
             {[
@@ -336,6 +323,18 @@ function TableInput({
           </tr>
         </tbody>
       </table>
+
+      <div className=" my-4 flex justify-between ">
+        {!stockInsufficient && (
+          <button className="btn btn-primary" onClick={(e) => onSave(data)}>
+            {GetTransForTokensArray(LANG_TOKENS.SAVE, user.lang)}
+          </button>
+        )}
+
+        <button className="btn btn-secondary" onClick={onCancel}>
+          {GetTransForTokensArray(LANG_TOKENS.CANCEL, user.lang)}
+        </button>
+      </div>
     </div>
   );
 }
@@ -683,7 +682,7 @@ export default function DaiziProd({}) {
           </div>
         </>
       ) : showInput ? (
-        <>
+        <div className="  overflow-auto ">
           <TableInput
             key={rdk} //clcllc
             stockShengYu={stockShengYU}
@@ -693,7 +692,7 @@ export default function DaiziProd({}) {
             stock32Unsufficient={stock32Unsufficient}
             stock42Unsufficient={stock42Unsufficient}
           />
-        </>
+        </div>
       ) : (
         <div>
           <div className=" text-3xl text-center my-4  ">
@@ -737,10 +736,6 @@ export default function DaiziProd({}) {
           ])}
           fileName={title}
         />
-        {/*   <ButtonPrint
-          title={GetTransForTokensArray(LANG_TOKENS.PRINT, user.lang)}
-          onClick={(e) => onPrint(transf)}
-        /> */}
       </div>
     </div>
   );
