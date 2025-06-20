@@ -737,10 +737,10 @@ export default function DaiziProd({}) {
           ])}
           fileName={title}
         />
-        <ButtonPrint
+        {/*   <ButtonPrint
           title={GetTransForTokensArray(LANG_TOKENS.PRINT, user.lang)}
           onClick={(e) => onPrint(transf)}
-        />
+        /> */}
       </div>
     </div>
   );

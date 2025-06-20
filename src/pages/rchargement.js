@@ -203,6 +203,15 @@ export default function RapportChargement() {
     setloadsf(filterLoads(data, mcode, team));
     //console.log(data);
     setloading(false);
+    UpdateTitle();
+  }
+
+  function UpdateTitle() {
+    const { y, m } = date;
+    setTitle(
+      GetTransForTokensArray(LANG_TOKENS.LOADING_REPPORT) +
+        `${y}, ${parseInt(m) + 3}`
+    );
   }
 
   function filterLoads(loads, mcode, team) {
@@ -284,6 +293,8 @@ export default function RapportChargement() {
     const totals = calculateTotalsFromLoadsArray(curMLoads);
     //console.log("totals => ", totals);
     setAllTeamsTotals(totals);
+
+    UpdateTitle();
   }
 
   async function saveLoad(load) {
@@ -489,6 +500,7 @@ export default function RapportChargement() {
   }
 
   const [date, setdate] = useState({ y: new Date().year, m: new Date().month });
+  const [title, setTitle] = useState();
   const [allTeamsTotals, setAllTeamsTotals] = useState([]);
   const [showTotalsByTeam, setShowTotalsByTeam] = useState(false);
 
@@ -502,7 +514,7 @@ export default function RapportChargement() {
     const dechires = GetTransForTokensArray(LANG_TOKENS.TORN_BAGS, user.lang);
     const bonus = GetTransForTokensArray(LANG_TOKENS.BONUS, user.lang);
 
-    console.log("ld[0] => ", loads[0]);
+    ///console.log("ld[0] => ", loads[0]);
 
     return loads.map((it) => {
       const d = {
@@ -668,6 +680,10 @@ export default function RapportChargement() {
                             "sacs_adj",
                             "meta",
                           ]
+                        )}
+                        fileName={GetTransForTokensArray(
+                          LANG_TOKENS.LOADING_REPPORT,
+                          user.lang
                         )}
                       />
                     </>

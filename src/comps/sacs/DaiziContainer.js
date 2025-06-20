@@ -285,10 +285,10 @@ function TableContainer({ trans, onAdd, title }) {
           fileName={title}
         />
 
-        <ButtonPrint
+        {/*  <ButtonPrint
           title={GetTransForTokensArray(LANG_TOKENS.PRINT, user.lang)}
           onClick={(e) => onPrint(trans)}
-        />
+        /> */}
       </div>
     </div>
   );
