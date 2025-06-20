@@ -41,9 +41,9 @@ function MainNav({ user, onMenuClick, curPage, onLogout }) {
         onClick={(e) => sethidden(!hidden)}
         className="    p-1 cursor-pointer h-[30pt]   md:w-fit md:max-w-[120pt] flex justify-between md:justify-center items-center "
       >
-        <img src={gck} height={"10pt"} className=" h-[32pt] md:h-fit  " />
-        <div className=" w-fit bg   ml-auto  mb-2 ">
-          <MenuIcon sethidden={sethidden} hidden={false} />
+        <img src={gck} height={"10pt"} className=" h-[38pt] md:h-fit  " />
+        <div className=" w-fit md:hidden   ml-auto  mb-2 ">
+          <MenuIcon sethidden={sethidden} hidden={hidden} />
         </div>
       </div>
 
@@ -62,8 +62,11 @@ function MainNav({ user, onMenuClick, curPage, onLogout }) {
                       onMenuClick(menu_item);
                       sethidden(true);
                     }}
-                    className={` p-2 dark:text-black hover:bg-orange-500 hover:text-white rounded-md dark:hover:bg-black/50
-                ${curPage === menu_item.path && "  bg-white dark:bg-black/50 "}
+                    className={` p-2 dark:text-black hover:bg-orange-400 hover:text-white rounded-md dark:hover:bg-orange-400
+                ${
+                  curPage === menu_item.path &&
+                  " text-orange-100   bg-orange-500 "
+                }
 
               `}
                   >
@@ -87,9 +90,9 @@ function MainNav({ user, onMenuClick, curPage, onLogout }) {
         </div>
       </div>
 
-      <div className="  hidden md:block ">
+      {/*  <div className="  hidden md:block ">
         <MenuIcon sethidden={sethidden} hidden={hidden} />
-      </div>
+      </div> */}
     </section>
   );
 }

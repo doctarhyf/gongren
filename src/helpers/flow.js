@@ -300,20 +300,6 @@ export const MAIN_MENU = [
     trad: LANG_TOKENS.NOTIFICATIONS,
   }, */
   {
-    name: "Agents",
-    path: "/agents",
-    el: Agents,
-    access_code: ACCESS_CODES.PAGE_AGENTS,
-    trad: LANG_TOKENS.AGENTS,
-  },
-  {
-    name: "Chargement",
-    path: "/chargement",
-    el: Chargement,
-    access_code: ACCESS_CODES.PAGE_CHARGEMENT,
-    trad: LANG_TOKENS.CEMENT_LOADING,
-  },
-  {
     name: "Rapport Chargement",
     path: "/rchargement",
     el: RapportChargement,
@@ -321,12 +307,57 @@ export const MAIN_MENU = [
     trad: LANG_TOKENS.LOADING_REPPORT,
   },
   {
+    name: "Sacs",
+    path: "/sacs",
+    el: Daizi,
+    access_code: ACCESS_CODES.PAGE_SACS,
+    trad: LANG_TOKENS.BAGS,
+  },
+  {
+    name: "Agents",
+    path: "/agents",
+    el: Agents,
+    access_code: ACCESS_CODES.PAGE_AGENTS,
+    trad: LANG_TOKENS.AGENTS,
+  },
+
+  {
+    name: "Equipes",
+    path: "/equipes",
+    el: Equipes,
+    access_code: ACCESS_CODES.PAGE_EQUIPE,
+    trad: LANG_TOKENS.TEAM,
+  },
+
+  {
+    name: "Roulements",
+    path: "/roulements",
+    el: Roulements,
+    access_code: ACCESS_CODES.PAGE_ROULEMENT,
+    trad: LANG_TOKENS.ATTENDANCE,
+  },
+  {
+    name: "Listes",
+    path: "/listes",
+    el: Listes,
+    access_code: ACCESS_CODES.PAGE_LISTS,
+    trad: LANG_TOKENS.NAME_LISTS,
+  },
+  ,
+  /* {
+    name: "Chargement",
+    path: "/chargement",
+    el: Chargement,
+    access_code: ACCESS_CODES.PAGE_CHARGEMENT,
+    trad: LANG_TOKENS.CEMENT_LOADING,
+  }, */
+  /*  {
     name: "Suivi Camions",
     path: "/suivicamions",
     el: SuiviCamions,
     access_code: ACCESS_CODES.PAGE_SUIVI_CAMIONS,
     trad: LANG_TOKENS.TRUCKS_LOADING_TRACKING,
-  },
+  }, */
   /*  {
     name: "BIGBAG",
     path: "/bigbag",
@@ -340,20 +371,6 @@ export const MAIN_MENU = [
     el: JinChu,
     access_code: ACCESS_CODES.PAGE_JINCHU,
     trad: LANG_TOKENS.LOADING_STATS,
-  },
-  {
-    name: "Roulements",
-    path: "/roulements",
-    el: Roulements,
-    access_code: ACCESS_CODES.PAGE_ROULEMENT,
-    trad: LANG_TOKENS.ATTENDANCE,
-  },
-  {
-    name: "Equipes",
-    path: "/equipes",
-    el: Equipes,
-    access_code: ACCESS_CODES.PAGE_EQUIPE,
-    trad: LANG_TOKENS.TEAM,
   },
 
   {
@@ -369,21 +386,6 @@ export const MAIN_MENU = [
     el: Dico,
     access_code: ACCESS_CODES.PAGE_DICO,
     trad: LANG_TOKENS.DICO,
-  },
-  {
-    name: "Sacs",
-    path: "/sacs",
-    el: Daizi,
-    access_code: ACCESS_CODES.PAGE_SACS,
-    trad: LANG_TOKENS.BAGS,
-  },
-
-  {
-    name: "Listes",
-    path: "/listes",
-    el: Listes,
-    access_code: ACCESS_CODES.PAGE_LISTS,
-    trad: LANG_TOKENS.NAME_LISTS,
   },
 ];
 
