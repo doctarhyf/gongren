@@ -128,7 +128,7 @@ function TableContainer({ trans, onAdd, title }) {
     "team": "A",
     "stockRes": false,
     "key": "622f4728-1a59-4d8a-af6a-ce47917a2e8f"
-}
+} 
     */
     console.log(data[0]);
 
@@ -137,11 +137,11 @@ function TableContainer({ trans, onAdd, title }) {
     const s32 = GetTransForTokensArray(LANG_TOKENS.s32, user.lang);
     const s42 = GetTransForTokensArray(LANG_TOKENS.s42, user.lang);
     const stock32 = `${GetTransForTokensArray(
-      LANG_TOKENS.REMAINING,
+      LANG_TOKENS.STOCK,
       user.lang
     )}32.5N`;
     const stock42 = `${GetTransForTokensArray(
-      LANG_TOKENS.REMAINING,
+      LANG_TOKENS.STOCK,
       user.lang
     )}42.5N`;
     const team = GetTransForTokensArray(LANG_TOKENS.TEAM, user.lang);

@@ -611,12 +611,43 @@ export default function DaiziProd({}) {
     "rest32": 0,
     "rest42": 7900,
     "date_time": "2025-06-10 08:29:44",
-    "key": "abe18cf1-2229-442a-98e0-8f98a147ed70"
+    "key": "abe18cf1-2229-442a-98e0-8f98a147ed70" 
 }
 */
+    console.log("ag 0 => , ", data[0]);
 
-    console.log(data[0]);
-    return data;
+    const date_time = GetTransForTokensArray(LANG_TOKENS.DATE_TIME, user.lang);
+    const team = GetTransForTokensArray(LANG_TOKENS.TEAM, user.lang);
+    const used_32 = GetTransForTokensArray(LANG_TOKENS.BAGS_USED, user.lang, {
+      b: "32.5N",
+    });
+    const used_42 = GetTransForTokensArray(LANG_TOKENS.BAGS_USED, user.lang, {
+      b: "42.5N",
+    });
+    const t_32 = GetTransForTokensArray(LANG_TOKENS.T, user.lang) + " 32.5N";
+    const t_42 = GetTransForTokensArray(LANG_TOKENS.T, user.lang) + " 42.5N";
+    const dech_32 =
+      GetTransForTokensArray(LANG_TOKENS.TORN_BAGS, user.lang) + " 32.5N";
+    const dech_42 =
+      GetTransForTokensArray(LANG_TOKENS.TORN_BAGS, user.lang) + " 42.5N";
+    const rest32 =
+      GetTransForTokensArray(LANG_TOKENS.REMAINING, user.lang) + " 32.5N";
+    const rest42 =
+      GetTransForTokensArray(LANG_TOKENS.REMAINING, user.lang) + " 42.5N";
+
+    return data.map((it) => ({
+      ID: it.id,
+      [date_time]: it.date_time,
+      [team]: it.team,
+      [used_32]: it.used_32,
+      [used_42]: it.used_42,
+      [t_32]: it.t_32,
+      [t_42]: it.t_42,
+      [dech_32]: it.dech_32,
+      [dech_42]: it.dech_42,
+      [rest32]: it.rest32,
+      [rest42]: it.rest42,
+    }));
   }
 
   return (
