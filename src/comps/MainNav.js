@@ -21,7 +21,7 @@ function MenuIcon({ sethidden, hidden }) {
         stroke-width="2"
         stroke-linecap="round"
         stroke-linejoin="round"
-        class="feather feather-menu text-black dark:text-white  "
+        class="feather feather-menu text-orange-400  "
       >
         <line x1="3" y1="12" x2="21" y2="12"></line>
         <line x1="3" y1="6" x2="21" y2="6"></line>
@@ -43,7 +43,7 @@ function MainNav({ user, onMenuClick, curPage, onLogout }) {
       >
         <img src={gck} height={"10pt"} className=" h-[32pt] md:h-fit  " />
         <div className=" w-fit md:hidden   ml-auto  mb-2 ">
-          <MenuIcon sethidden={sethidden} hidden={hidden} />
+          <MenuIcon sethidden={sethidden} hidden={false} />
         </div>
       </div>
 
