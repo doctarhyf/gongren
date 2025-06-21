@@ -506,13 +506,14 @@ export default function DaiziContainer({
   stock42Unsufficient,
   onSave,
   containerStock,
-  transPandian,
 }) {
   const [, , user] = useContext(UserContext);
   const [filteredTeam, setFilteredTeam] = useState(FILTER_TEAMS.ALL_TEAMS);
   const [filterInOut, setFilterInOut] = useState(
     FILTER_CONTAINER_IN_OUT.IN_OUT
   );
+  const [transPandian, setTransPandian] = useState([]);
+  const [curmpandian, setcurmpandian] = useState({ s32: 0, s42: 0 });
   const [trans, setTrans] = useState([]);
   const [transf, settransf] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -559,15 +560,24 @@ export default function DaiziContainer({
 
     filtereds.sort((a, b) => new Date(a.date_time) - new Date(b.date_time));
 
-    let fd = CalculateTransactions(filtereds, transPandian);
+    let pandian = transPandian.find((it) => it.year_month === filteredMonth);
+    if (!pandian) {
+      pandian = { s32: 0, s42: 0 };
+    }
+
+    setcurmpandian({ ...pandian });
+
+    console.log("found pandian => ", pandian);
+
+    let fd = CalculateTransactions(filtereds, pandian);
     setTimeout(() => {
-      fd = CalculateTransactions(filtereds, transPandian);
+      fd = CalculateTransactions(filtereds, pandian);
     }, 1500);
     settransf(fd);
   }
 
   function CalculateTransactions(data, pd) {
-    const curMonthPandian = { s32: 60000, s42: 120000 };
+    const curMonthPandian = { ...pd };
     /*  if (pd.length === 0) {
     } */
 
@@ -618,6 +628,9 @@ export default function DaiziContainer({
       "created_at",
       true
     );
+    const tp = await SB.LoadAllItems(TABLES_NAMES.PANDIAN);
+    setTransPandian(tp);
+
     if (fetchedTrans) {
       setTrans(fetchedTrans);
       //filterData();
@@ -702,7 +715,7 @@ export default function DaiziContainer({
               trans={transf}
               onAdd={(e) => setInput(true)}
               title={title}
-              pandian={{ s32: 60000, s42: 120000 }}
+              pandian={curmpandian}
             />
           </div>
         </div>
