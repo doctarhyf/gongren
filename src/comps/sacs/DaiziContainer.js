@@ -559,8 +559,10 @@ export default function DaiziContainer({
 
     filtereds.sort((a, b) => new Date(a.date_time) - new Date(b.date_time));
 
-    const fd = CalculateTransactions(filtereds, transPandian);
-
+    let fd = CalculateTransactions(filtereds, transPandian);
+    setTimeout(() => {
+      fd = CalculateTransactions(filtereds, transPandian);
+    }, 1500);
     settransf(fd);
   }
 
