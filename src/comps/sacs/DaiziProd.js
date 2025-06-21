@@ -367,9 +367,9 @@ export default function DaiziProd({}) {
     setrdk(Math.random());
     seterror(null);
     const trans = await SB.LoadAllItems(
-      TABLES_NAMES.DAIZI_SHENGCHAN,
-      "created_at",
-      true
+      TABLES_NAMES.DAIZI_SHENGCHAN
+      //"created_at",
+      //true
     );
 
     // //console.log(trans);
@@ -457,7 +457,7 @@ export default function DaiziProd({}) {
 
     const res = await Promise.all([res_sc, res_sy]); //nnn
 
-    //console.log("res all => ", res);
+    showInput(false);
 
     setLoading(false);
   }
@@ -649,6 +649,8 @@ export default function DaiziProd({}) {
     }));
   }
 
+  const containerIsEmpty = trans.length === 0;
+
   return (
     <div>
       {loading ? (
@@ -675,13 +677,15 @@ export default function DaiziProd({}) {
         </div>
       )}
 
-      {error ? (
+      {error && (
         <>
           <div className=" bg-red-900 text-red-400 p-2 rounded-md text-sm ">
             {GetTransForTokensArray(LANG_TOKENS.NO_BAGS_AVAILABLE, user.lang)}
           </div>
         </>
-      ) : showInput ? (
+      )}
+
+      {showInput ? (
         <div className="  overflow-auto ">
           <TableInput
             key={rdk} //clcllc
@@ -729,13 +733,16 @@ export default function DaiziProd({}) {
               onClick={(e) => setShowInput(true)}
             />
           )}
-        <Excelexport
-          excelData={GenerateExcelData(PreCleanExcelData(trans), [
-            "key",
-            "created_at",
-          ])}
-          fileName={title}
-        />
+
+        {!containerIsEmpty && (
+          <Excelexport
+            excelData={GenerateExcelData(PreCleanExcelData(trans), [
+              "key",
+              "created_at",
+            ])}
+            fileName={title}
+          />
+        )}
       </div>
     </div>
   );

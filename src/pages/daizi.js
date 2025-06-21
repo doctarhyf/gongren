@@ -8,6 +8,7 @@ import { TABLES_NAMES } from "../helpers/sb.config";
 import Loading from "../comps/Loading";
 import { v4 as uuid } from "uuid";
 import { GetTransForTokensArray, LANG_TOKENS } from "../helpers/lang_strings";
+import DaiziPandian from "../comps/sacs/DaiziPandian";
 
 function PagesMenu({ setSelectedPage, selectedPage, pages, lang }) {
   return (
@@ -43,6 +44,7 @@ export default function Daizi() {
   const [stock32Unsufficient, setStock32Unsufficient] = useState(false);
   const [stock42Unsufficient, setStock42Unsufficient] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [transPandian, setTransPandian] = useState([]);
 
   useEffect(() => {
     loadData();
@@ -55,6 +57,10 @@ export default function Daizi() {
   async function loadData(reset) {
     setLoading(true);
     const last_rect = await SB.LoadLastItem(TABLES_NAMES.DAIZI_JIZHUANGXIANG);
+    const trans_pandian = await SB.LoadAllItems(TABLES_NAMES.PANDIAN);
+
+    console.log("dzpd ", trans_pandian);
+    setTransPandian(trans_pandian);
 
     //console.log("Last record loaded:", last_rect);
 
@@ -78,10 +84,6 @@ export default function Daizi() {
       setLoading(false);
     }
   }
-
-  useEffect(() => {
-    console.log("Container stock updated:", containerStock);
-  }, [containerStock]);
 
   function onInputChage(data) {
     setStock32Unsufficient(false);
@@ -166,6 +168,7 @@ export default function Daizi() {
           s32: news32,
           s42: news42,
           key_dzjzx: data.key,
+          date_time: data.date_time,
         };
 
         res_trans_dzsy = await SB.InsertItem(
@@ -178,6 +181,7 @@ export default function Daizi() {
           s32: data.s32,
           s42: data.s42,
           key_dzjzx: data.key,
+          date_time: data.date_time,
         };
 
         res_trans_dzsy = await SB.InsertItem(
@@ -210,6 +214,10 @@ export default function Daizi() {
           lang={user.lang}
         />
 
+        {SACS_SECTIONS.PANDIAN.label === selectedPage[1].label && (
+          <DaiziPandian />
+        )}
+
         {SACS_SECTIONS.CONTAINER.label === selectedPage[1].label && (
           <DaiziContainer
             key={rdk}
@@ -220,6 +228,7 @@ export default function Daizi() {
             stock32Unsufficient={stock32Unsufficient}
             stock42Unsufficient={stock42Unsufficient}
             onSave={onSave}
+            transPandian={transPandian}
           />
         )}
         {SACS_SECTIONS.PRODUCTION.label === selectedPage[1].label && (

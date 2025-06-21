@@ -29,4 +29,5 @@ export const TABLES_NAMES = {
   DAIZI_JIZHUANGXIANG: "dzjzx",
   DAIZI_SHENGYU: "dzsy",
   SETTINGS: "settings",
+  PANDIAN: "dzpandian",
 };

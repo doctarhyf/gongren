@@ -38,7 +38,7 @@ import MonthFilter, {
 import add from "../../img/add.png";
 import Excelexport from "../Excelexport";
 
-function TableContainer({ trans, onAdd, title }) {
+function TableContainer({ trans, onAdd, title, pandian }) {
   const [, , user] = useContext(UserContext);
 
   const totals = { s32: 0, s42: 0 };
@@ -130,7 +130,7 @@ function TableContainer({ trans, onAdd, title }) {
     "key": "622f4728-1a59-4d8a-af6a-ce47917a2e8f"
 } 
     */
-    console.log(data[0]);
+    ///  console.log(data[0]);
 
     const date_time = GetTransForTokensArray(LANG_TOKENS.DATE_TIME, user.lang);
     const operation = GetTransForTokensArray(LANG_TOKENS["IN/OUT"], user.lang);
@@ -160,9 +160,11 @@ function TableContainer({ trans, onAdd, title }) {
     }));
   }
 
+  const containerIsEmpty = trans.length === 0;
+
   return (
     <div>
-      {trans.length > 0 ? (
+      {!containerIsEmpty > 0 ? (
         <table class="table-auto w-full">
           <thead className="p1 border border-gray-900 dark:border-white p-1 ">
             <tr>
@@ -203,16 +205,16 @@ function TableContainer({ trans, onAdd, title }) {
           <tbody>
             <tr className=" font-bold bg-slate-700  ">
               <td className="p1 border border-gray-900 dark:border-white p-1 ">
-                {GetTransForTokensArray(LANG_TOKENS.TOTAL, user.lang)}
+                PANDIAN
               </td>
 
               <td className="p1 border border-gray-900 dark:border-white p-1 "></td>
               <td className="p1 border border-gray-900 dark:border-white p-1 "></td>
               <td className="p1 border border-gray-900 dark:border-white p-1 ">
-                {totals.s32}
+                {pandian.s32}
               </td>
               <td className="p1 border border-gray-900 dark:border-white p-1 ">
-                {totals.s42}
+                {pandian.s42}
               </td>
               <td className="p1 border border-gray-900 dark:border-white p-1 "></td>
               <td className="p1 border border-gray-900 dark:border-white p-1 "></td>
@@ -264,10 +266,8 @@ function TableContainer({ trans, onAdd, title }) {
           {GetTransForTokensArray(LANG_TOKENS.CONATINER_IS_EMPTY, user.lang)}
         </div>
       )}
+
       <div className=" flex gap-2 justify-between ">
-        {/* <button className="btn btn-primary" onClick={onAdd}>
-          {GetTransForTokensArray(LANG_TOKENS.DELIVER_BAGS, user.lang)}
-        </button> */}
         {UserHasAccessCode(user, ACCESS_CODES.CAN_UPDATE_CONTAINER_BAGS) && (
           <ButtonPrint
             title={GetTransForTokensArray(LANG_TOKENS.DELIVER_BAGS, user.lang)}
@@ -276,19 +276,16 @@ function TableContainer({ trans, onAdd, title }) {
           />
         )}
 
-        <Excelexport
-          excelData={GenerateExcelData(PreCleanExcelData(trans), [
-            "key",
-            "created_at",
-            "stockRes",
-          ])}
-          fileName={title}
-        />
-
-        {/*  <ButtonPrint
-          title={GetTransForTokensArray(LANG_TOKENS.PRINT, user.lang)}
-          onClick={(e) => onPrint(trans)}
-        /> */}
+        {!containerIsEmpty && (
+          <Excelexport
+            excelData={GenerateExcelData(PreCleanExcelData(trans), [
+              "key",
+              "created_at",
+              "stockRes",
+            ])}
+            fileName={title}
+          />
+        )}
       </div>
     </div>
   );
@@ -374,7 +371,22 @@ function TableInput({
         <tbody>
           <tr>
             <td className="p1 border border-gray-900 dark:border-white p-1 ">
-              {formatCreatedAt(new Date().toISOString())}
+              {/*  {formatCreatedAt(new Date().toISOString())} */}
+              <input
+                type="datetime-local"
+                value={
+                  data.date_time ||
+                  formatCreatedAt(
+                    new Date().toISOString().replace("T", " ").split(".")[0]
+                  )
+                }
+                onChange={(e) =>
+                  setData((prev) => ({
+                    ...prev,
+                    date_time: e.target.value.replace("T", " "),
+                  }))
+                }
+              />
             </td>
             <td className="p1 border border-gray-900 dark:border-white p-1 ">
               <select
@@ -494,26 +506,48 @@ export default function DaiziContainer({
   stock42Unsufficient,
   onSave,
   containerStock,
+  transPandian,
 }) {
   const [, , user] = useContext(UserContext);
   const [filteredTeam, setFilteredTeam] = useState(FILTER_TEAMS.ALL_TEAMS);
-  const [filterInOut, setFilterInOut] = useState();
+  const [filterInOut, setFilterInOut] = useState(
+    FILTER_CONTAINER_IN_OUT.IN_OUT
+  );
   const [trans, setTrans] = useState([]);
   const [transf, settransf] = useState([]);
   const [loading, setLoading] = useState(false);
   const [input, setInput] = useState(false);
   const [filteredMonth, setFilteredMonth] = useState({
     y: 2025,
-    m: new Date().getMonth(),
+    m: new Date().getMonth() + 1,
   });
 
   useEffect(() => {
-    // Load transactions or any other data needed
     loadData();
   }, []);
 
-  useEffect(() => {
-    let filtereds = trans.filter((it) => !it.created_at.indexOf(filteredMonth));
+  const defFData = {
+    ...filteredMonth,
+    team: FILTER_TEAMS.ALL_TEAMS,
+    inOut: FILTER_CONTAINER_IN_OUT.IN_OUT,
+  };
+
+  function filterData(fdata) {
+    if (!fdata) {
+      fdata = { ...defFData };
+    }
+
+    const { y, m, team, inOut } = fdata;
+
+    const filteredMonth = `${y}-${parseInt(m).toString().padStart(2, "0")}`;
+    console.log("fmm => ", filteredMonth);
+
+    const filteredTeam = team;
+    const filterInOut = inOut;
+
+    let filtereds = trans.filter((it) =>
+      it.date_time.startsWith(filteredMonth)
+    );
 
     if (filteredTeam !== FILTER_TEAMS.ALL_TEAMS) {
       filtereds = filtereds.filter((t) => t.team === filteredTeam);
@@ -523,25 +557,73 @@ export default function DaiziContainer({
       filtereds = filtereds.filter((it) => it.operation === filterInOut);
     }
 
-    settransf(filtereds);
-  }, [filteredMonth, filteredTeam, filterInOut]);
+    filtereds.sort((a, b) => new Date(a.date_time) - new Date(b.date_time));
+
+    const fd = CalculateTransactions(filtereds, transPandian);
+
+    settransf(fd);
+  }
+
+  function CalculateTransactions(data, pd) {
+    const curMonthPandian = { s32: 60000, s42: 120000 };
+    /*  if (pd.length === 0) {
+    } */
+
+    const finalArray = [];
+
+    data.forEach((curit, i) => {
+      const item = { ...curit };
+      const { operation, s32: currentS32, s42: currentS42 } = curit;
+
+      const isFirst = i === 0;
+      const isLast = i === data.length - 1;
+      const isIn = operation === "in" ? true : false;
+
+      if (isFirst) {
+        curit.stock32 = isIn
+          ? curMonthPandian.s32 + currentS32
+          : curMonthPandian.s32 - currentS32;
+        curit.stock42 = isIn
+          ? curMonthPandian.s42 + currentS42
+          : curMonthPandian.s42 - currentS42;
+        finalArray.push(item);
+      } else {
+        const previtem = finalArray[i - 1];
+
+        const { stock32: previousStock32, stock42: previousStock42 } = previtem;
+        const newStock32 = isIn
+          ? parseInt(previousStock32) + currentS32
+          : parseInt(previousStock32) - currentS32;
+
+        const newStock42 = isIn
+          ? parseInt(previousStock42) + currentS42
+          : parseInt(previousStock42) - currentS42;
+
+        item.stock32 = newStock32;
+        item.stock42 = newStock42;
+
+        finalArray.push(item);
+      }
+    });
+
+    return finalArray;
+  }
 
   async function loadData() {
     setLoading(true);
     const fetchedTrans = await SB.LoadAllItems(
       TABLES_NAMES.DAIZI_JIZHUANGXIANG,
       "created_at",
-      false
+      true
     );
     if (fetchedTrans) {
       setTrans(fetchedTrans);
-      settransf(
-        fetchedTrans.filter((it) => it.created_at.indexOf(filteredMonth))
-      );
-      //console.log("Transactions loaded:", fetchedTrans);
+      //filterData();
       setLoading(false);
     } else {
       //console.error("Failed to load transactions");
+
+      ///hhjhjh
       setLoading(false);
     }
   }
@@ -549,13 +631,17 @@ export default function DaiziContainer({
   const stockInsufficient = stock32Unsufficient || stock42Unsufficient;
   const [d, setd] = useState({ y: "-", m: "-" });
   const [title, setTitle] = useState();
+
   function onMonthFiltered(d) {
-    //console.log(d);
-    setd(d);
+    setd({ y: d.y, m: d.m });
     let df = `${d.y}-${parseInt(d.m).toString().padStart(2, "0")}`;
+
     setFilteredMonth(df);
     setFilterInOut(d.inOut);
     setFilteredTeam(d.team);
+
+    filterData(d);
+
     setTitle(
       GetTransForTokensArray(LANG_TOKENS.RECORDS_TITLE_CONT, user.lang, {
         y: d.y,
@@ -614,6 +700,7 @@ export default function DaiziContainer({
               trans={transf}
               onAdd={(e) => setInput(true)}
               title={title}
+              pandian={{ s32: 60000, s42: 120000 }}
             />
           </div>
         </div>

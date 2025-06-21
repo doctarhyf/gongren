@@ -195,6 +195,13 @@ export const SACS_SECTIONS = {
     "en-US": "Production",
     "fr-FR": "Production",
   },
+  PANDIAN: {
+    label: "Pandian",
+    access_code: ACCESS_CODES.TAB_SAC_PROD,
+    "zh-CN": "袋子盘点",
+    "en-US": "Stock Check",
+    "fr-FR": "Stock Check",
+  },
 
   /* CALCULATOR: {
     label: "Sacs Calculator",
