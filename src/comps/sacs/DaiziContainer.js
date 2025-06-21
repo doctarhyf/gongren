@@ -577,6 +577,8 @@ export default function DaiziContainer({
   }
 
   function CalculateTransactions(data, pd) {
+    setLoading(true);
+    console.log("calculating ...", Math.random());
     const curMonthPandian = { ...pd };
     /*  if (pd.length === 0) {
     } */
@@ -618,6 +620,7 @@ export default function DaiziContainer({
       }
     });
 
+    setLoading(false);
     return finalArray;
   }
 
@@ -656,6 +659,10 @@ export default function DaiziContainer({
     setFilteredTeam(d.team);
 
     filterData(d);
+
+    setTimeout(() => {
+      filterData(d);
+    }, 1600);
 
     setTitle(
       GetTransForTokensArray(LANG_TOKENS.RECORDS_TITLE_CONT, user.lang, {
