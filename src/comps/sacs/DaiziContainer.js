@@ -36,9 +36,10 @@ import MonthFilter, {
 } from "./MonthFilter";
 
 import add from "../../img/add.png";
+import del from "../../img/delete.png";
 import Excelexport from "../Excelexport";
 
-function TableContainer({ trans, onAdd, title, pandian }) {
+function TableContainer({ trans, onAdd, title, pandian, onDelete }) {
   const [, , user] = useContext(UserContext);
 
   const totals = { s32: 0, s42: 0 };
@@ -154,7 +155,7 @@ function TableContainer({ trans, onAdd, title, pandian }) {
       [s32]: it.s32,
       [s42]: it.s42,
       [stock32]: it.stock32,
-      [stock42]: it.stock32,
+      [stock42]: it.stock42,
       [team]: it.team,
       [fuzeren]: it.fuzeren,
     }));
@@ -200,6 +201,9 @@ function TableContainer({ trans, onAdd, title, pandian }) {
               <th className="p1 border border-gray-900 dark:border-white p-1 ">
                 {GetTransForTokensArray(LANG_TOKENS.TEAM, user.lang)}
               </th>
+              <th className="p1 border border-gray-900 dark:border-white p-1 ">
+                ACTION
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -216,6 +220,7 @@ function TableContainer({ trans, onAdd, title, pandian }) {
               <td className="p1 border border-gray-900 dark:border-white p-1 ">
                 {pandian.s42}
               </td>
+              <td className="p1 border border-gray-900 dark:border-white p-1 "></td>
               <td className="p1 border border-gray-900 dark:border-white p-1 "></td>
               <td className="p1 border border-gray-900 dark:border-white p-1 "></td>
               <td className="p1 border border-gray-900 dark:border-white p-1 "></td>
@@ -256,6 +261,16 @@ function TableContainer({ trans, onAdd, title, pandian }) {
                 </td>
                 <td className="p1 border border-gray-900 dark:border-white p-1 ">
                   {item.team}
+                </td>
+                <td className="p1 border border-gray-900 dark:border-white p-1 ">
+                  <ButtonPrint
+                    icon={del}
+                    onClick={(e) => onDelete(item)}
+                    title={GetTransForTokensArray(
+                      LANG_TOKENS.DELETE,
+                      user.lang
+                    )}
+                  />
                 </td>
               </tr>
             ))}
@@ -506,6 +521,7 @@ export default function DaiziContainer({
   stock42Unsufficient,
   onSave,
   containerStock,
+  updateContainerStock,
 }) {
   const [, , user] = useContext(UserContext);
   const [filteredTeam, setFilteredTeam] = useState(FILTER_TEAMS.ALL_TEAMS);
@@ -618,6 +634,11 @@ export default function DaiziContainer({
 
         finalArray.push(item);
       }
+
+      if (isLast) {
+        console.log("last item => ", item);
+        updateContainerStock(item);
+      }
     });
 
     setLoading(false);
@@ -672,6 +693,22 @@ export default function DaiziContainer({
     );
   }
 
+  async function onDelete(curit) {
+    console.log("deleting ", curit);
+    if (window.confirm("Sure you want to delete ?")) {
+      setLoading(true);
+      settransf([...transf.filter((it) => it.key !== curit.key)]);
+      const r = await SB.DeleteItem(TABLES_NAMES.DAIZI_JIZHUANGXIANG, curit);
+
+      loadData();
+      setTimeout(() => {
+        loadData();
+      }, 1500);
+
+      setLoading(false);
+    }
+  }
+
   return loading ? (
     <Loading isLoading={loading} />
   ) : (
@@ -723,6 +760,7 @@ export default function DaiziContainer({
               onAdd={(e) => setInput(true)}
               title={title}
               pandian={curmpandian}
+              onDelete={onDelete}
             />
           </div>
         </div>

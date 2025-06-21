@@ -204,6 +204,10 @@ export default function Daizi() {
     setrdk(Math.random());
   }
 
+  function updateContainerStock(lastItem) {
+    setContainerStock({ stock32: lastItem.stock32, stock42: lastItem.stock42 });
+  }
+
   return (
     <div className="container">
       <>
@@ -229,6 +233,7 @@ export default function Daizi() {
             stock42Unsufficient={stock42Unsufficient}
             onSave={onSave}
             transPandian={transPandian}
+            updateContainerStock={updateContainerStock}
           />
         )}
         {SACS_SECTIONS.PRODUCTION.label === selectedPage[1].label && (
