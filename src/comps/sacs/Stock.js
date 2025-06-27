@@ -9,27 +9,54 @@ import {
 export default function Stock({ id, stock, label, onResetStock }) {
   const [, , user] = useContext(UserContext);
 
+  let style1 = `from-amber-500 to-amber-700 text-amber-200 mx-auto  border-orange-600`;
+  let style2 = `border-orange-300`;
+  let style3 = `bg-orange-800`;
+  let style4 = `bg-orange-900`;
+
+  if (STOCK_TYPE.PRODUCTION === id) {
+    style1 = `from-emerald-500 to-emerald-700 text-emerald-200 mx-auto  border-emerald-600`;
+    style2 = `border-emerald-300`;
+    style3 = `bg-emerald-800`;
+    style4 = `bg-emerald-900`;
+  }
+
   return (
-    <div className=" py-4 border rounded-md p-1 bg-slate-200 shadow-md flex flex-col gap-2">
-      <div className=" font-bold  ">
+    <div
+      className={`w-fit px-4 p-4 border text-center   bg-gradient-to-br ${style1}  rounded-md my-2 `}
+    >
+      <div className={` font-bold text-3xl ${style2} py-2 mb-2 border-b  `}>
         {" "}
-        {GetTransForTokensArray(LANG_TOKENS.STOCK, user.lang)} {label}
+        {GetTransForTokensArray(LANG_TOKENS.STOCK_CONTAINER, user.lang)} {label}
       </div>
 
-      <div className=" flex flex-col ">
-        <div>
-          {" "}
-          <span className=" bg-green-500 text-white text-xs p-1 rounded-md font-bold  ">
-            32.5n
+      <div className=" flex flex-col gap-4 mt-2  ">
+        <div className="  flex items-center justify-between gap-2 ">
+          <span className={`  ${style3}   p-2 rounded-md font-bold  `}>
+            {GetTransForTokensArray(LANG_TOKENS.s32, user.lang)}
           </span>{" "}
-          :<span className="  text-4xl text-pretty  "> {stock.s32}</span>{" "}
+          :
+          <span className="  text-4xl text-pretty  ">
+            {" "}
+            {stock.s32}{" "}
+            <span className=" text-sm  ">
+              {" "}
+              {GetTransForTokensArray(LANG_TOKENS.BAGS, user.lang)}
+            </span>
+          </span>{" "}
         </div>
-        <div>
-          {" "}
-          <span className=" bg-black text-white text-xs p-1 rounded-md font-bold  ">
-            42.5n
+        <div className="  flex items-center justify-between gap-2 ">
+          <span className={`  ${style4}   p-2 rounded-md font-bold  `}>
+            {GetTransForTokensArray(LANG_TOKENS.s42, user.lang)}
           </span>{" "}
-          : <span className="  text-4xl text-pretty  ">{stock.s42}</span>{" "}
+          :{" "}
+          <span className="  text-4xl text-pretty  ">
+            {stock.s42}{" "}
+            <span className=" text-sm  ">
+              {" "}
+              {GetTransForTokensArray(LANG_TOKENS.BAGS, user.lang)}
+            </span>
+          </span>{" "}
         </div>
       </div>
 

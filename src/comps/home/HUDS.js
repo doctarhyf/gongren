@@ -1036,7 +1036,7 @@ export function HUDCalculsBons() {
   );
 }
 
-function OpsLogs({}) {
+/* function OpsLogs({}) {
   const [logs, setlogs] = useState([]);
   const [loading, setloading] = useState(false);
 
@@ -1046,8 +1046,8 @@ function OpsLogs({}) {
 
   async function loadData() {
     const a = await SB.LoadAllItems(TABLES_NAMES.OPERATIONS_LOGS);
-    setlogs(a.reverse().slice(0, 5));
-    //console.log("longs \n", a);
+    //setlogs(a.reverse().slice(0, 5));
+    console.log("longs \n", a);
   }
 
   return loading ? (
@@ -1081,7 +1081,7 @@ export function HUDOpsLogs() {
       <OpsLogs />
     </Card>
   );
-}
+} */
 
 export function HUDCurrentTeam() {
   const [, , user] = useContext(UserContext);

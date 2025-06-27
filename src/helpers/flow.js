@@ -180,6 +180,7 @@ export const SACS_SECTIONS = {
     "zh-CN": "集装箱",
     "en-US": "In/Out Container",
     "fr-FR": "Entree/Sortie Conteneur",
+    active: true,
   },
   /*  EXIT_CONTAINER: {
     label: "Sacs Exit Container",
@@ -194,6 +195,7 @@ export const SACS_SECTIONS = {
     "zh-CN": "生产",
     "en-US": "Production",
     "fr-FR": "Production",
+    active: true,
   },
   PANDIAN: {
     label: "Pandian",
@@ -201,6 +203,7 @@ export const SACS_SECTIONS = {
     "zh-CN": "袋子盘点",
     "en-US": "Stock Check",
     "fr-FR": "Stock Check",
+    active: false,
   },
 
   /* CALCULATOR: {
@@ -316,6 +319,13 @@ export const MAIN_MENU = [
   {
     name: "Sacs",
     path: "/sacs",
+    el: Sacs,
+    access_code: ACCESS_CODES.PAGE_SACS,
+    trad: LANG_TOKENS.BAGS,
+  },
+  {
+    name: "Sacs2",
+    path: "/sacs2",
     el: Daizi,
     access_code: ACCESS_CODES.PAGE_SACS,
     trad: LANG_TOKENS.BAGS,
