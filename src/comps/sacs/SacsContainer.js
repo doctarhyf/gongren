@@ -289,7 +289,12 @@ export default function SacsContainer({
             )}
             {!showInput &&
               trans.map((t, i) => (
-                <tr key={i} className={`  ${showInput ? "opacity-20" : ""}   `}>
+                <tr
+                  key={i}
+                  className={`  ${
+                    showInput ? "opacity-20" : ""
+                  } hover:bg-orange-900/20 cursor-pointer   `}
+                >
                   <td className="p1 border border-gray-900 dark:border-white p-1 ">
                     {t.team}
                   </td>

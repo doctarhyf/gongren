@@ -282,26 +282,34 @@ export default function SacsProduction({
               </span>
             </th>
             <th className="p1 border border-gray-900 dark:border-white p-1 ">
-              {GetTransForTokensArray(LANG_TOKENS.BAGS_USED, user.lang)}
+              {GetTransForTokensArray(LANG_TOKENS.BAGS_USED, user.lang, {
+                b: "",
+              })}
               <span className=" bg-green-500 text-white text-xs p-1 rounded-md font-bold  ">
                 32.5N
               </span>
             </th>
             <th className="p1 border border-gray-900 dark:border-white p-1 ">
-              {GetTransForTokensArray(LANG_TOKENS.BAGS_USED, user.lang)}
+              {GetTransForTokensArray(LANG_TOKENS.BAGS_USED, user.lang, {
+                b: "",
+              })}
               <span className=" bg-black text-white text-xs p-1 rounded-md font-bold  ">
                 42.5N
               </span>
             </th>
 
             <th className="p1 border border-gray-900 dark:border-white p-1 ">
-              {GetTransForTokensArray(LANG_TOKENS.BAGS_REMAINING, user.lang)}
+              {GetTransForTokensArray(LANG_TOKENS.BAGS_REMAINING, user.lang, {
+                b: "",
+              })}
               <span className=" bg-green-500 text-white text-xs p-1 rounded-md font-bold  ">
                 32.5N
               </span>
             </th>
             <th className="p1 border border-gray-900 dark:border-white p-1 ">
-              {GetTransForTokensArray(LANG_TOKENS.BAGS_REMAINING, user.lang)}
+              {GetTransForTokensArray(LANG_TOKENS.BAGS_REMAINING, user.lang, {
+                b: "",
+              })}
               <span className=" bg-black text-white text-xs p-1 rounded-md font-bold  ">
                 42.5N
               </span>
@@ -313,9 +321,9 @@ export default function SacsProduction({
           <tbody>
             {showInput && (
               <tr>
-                <td className="p1 border border-gray-900 dark:border-white p-1 ">
+                {/*   <td className="p1 border border-gray-900 dark:border-white p-1 ">
                   {-1}
-                </td>
+                </td> */}
 
                 <td className="p1 border border-gray-900 dark:border-white p-1 ">
                   <select
@@ -501,7 +509,7 @@ export default function SacsProduction({
                   
                   ${
                     (t.adj32 || 0) !== 0 || (t.adj42 || 0) !== 0
-                      ? "border-red-500 bg-red-100 border-2"
+                      ? "border-red-500 bg-red-800/20 border-2"
                       : ""
                   } 
                   
