@@ -77,7 +77,7 @@ export const CLASS_REPPORT_CARD = `border mt-2 rounded-md p-1 h-min bg-neutral-1
 export const CLASS_TD = `p-1 border border-neutral-300`;
 export const CLASS_TODAY = `bg-sky-500 text-white font-bold`;
 export const CLASS_BTN =
-  " p-1 disabled:text-neutral-400 disabled:cursor-default disabled:hover:bg-neutral-200 mx-1 hover:bg-orange-500 hover:text-white border border-orange-400    text-orange-400  cursor-pointer rounded-md";
+  " bg-orange-100 text-orange-800 dark:bg-transparent dark:text-orange-400 p-1 disabled:text-neutral-400 disabled:cursor-default disabled:hover:bg-neutral-200 mx-1 hover:bg-orange-500 hover:text-white border border-orange-400    text-orange-400  cursor-pointer rounded-md";
 
 export const CLASS_INPUT_TEXT =
   "p-1 border rounded-md outline-none hover:border-sky-500 focus:border-purple-500";
