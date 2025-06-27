@@ -133,7 +133,37 @@ export default function SacsContainer({
   }
 
   function TranslateColsData(data) {
-    return data;
+    const stock32 = GetTransForTokensArray(LANG_TOKENS.STOCK_TOTAL, user.lang, {
+      b: " 32.5N",
+    });
+    const stock42 = GetTransForTokensArray(LANG_TOKENS.STOCK_TOTAL, user.lang, {
+      b: "42.5N",
+    });
+    const team = GetTransForTokensArray(LANG_TOKENS.TEAM, user.lang);
+    const sortis32 = GetTransForTokensArray(LANG_TOKENS.BAGS_OUT, user.lang, {
+      b: " 32.5N",
+    });
+    const sortis42 = GetTransForTokensArray(LANG_TOKENS.BAGS_OUT, user.lang, {
+      b: " 42.5N",
+    });
+    const date_time = GetTransForTokensArray(LANG_TOKENS.DATE, user.lang);
+    const fuzeren = GetTransForTokensArray(LANG_TOKENS.FUZEREN, user.lang);
+
+    const fd = data.map((it) => {
+      const item = {
+        [stock32]: it.stock32,
+        [stock42]: it.stock42,
+        [team]: it.team,
+        [sortis32]: it.s32,
+        [sortis42]: it.s42,
+        [date_time]: it.date_time,
+        [fuzeren]: it.fuzeren,
+      };
+
+      return item;
+    });
+
+    return fd;
   }
 
   return (
@@ -154,7 +184,7 @@ export default function SacsContainer({
               )}
               onClick={(e) => setShowInput(true)}
             />
-            {/*  <ButtonPrint onClick={(e) => print(trans)} /> */}
+
             <Excelexport
               excelData={GenerateExcelData(TranslateColsData(trans))}
             />
@@ -179,10 +209,6 @@ export default function SacsContainer({
       <div className=" container  overflow-auto ">
         <table className=" table-auto w-full  ">
           <thead>
-            {/*  <th className="p1 border border-gray-900 dark:border-white p-1 ">
-              id
-            </th> */}
-            {/*   <th className="p1 border border-gray-900">Operation</th> */}
             <th className="p1 border border-gray-900 dark:border-white p-1 ">
               {GetTransForTokensArray(LANG_TOKENS.TEAM, user.lang)}
             </th>
@@ -214,8 +240,6 @@ export default function SacsContainer({
           <tbody>
             {showInput && (
               <tr>
-                {/*  <td className="p1 border border-gray-900">0</td> */}
-                {/*   <td className="p1 border border-gray-900">in</td> */}
                 <td className="p1 border border-gray-900">
                   <select
                     className=" border p-1 "
@@ -269,7 +293,6 @@ export default function SacsContainer({
                   />{" "}
                 </td>
                 <td className="p1 border border-gray-900">
-                  {/* new Date().toDateString() */}
                   <input
                     type="datetime-local"
                     value={data.date_time}
@@ -302,10 +325,6 @@ export default function SacsContainer({
             {!showInput &&
               trans.map((t, i) => (
                 <tr key={i} className={`  ${showInput ? "opacity-20" : ""}   `}>
-                  {/* <td className="p1 border border-gray-900 dark:border-white p-1 ">
-                    {i}
-                  </td> */}
-                  {/*  <td className="p1 border border-gray-900">{t.op}</td> */}
                   <td className="p1 border border-gray-900 dark:border-white p-1 ">
                     {t.team}
                   </td>
