@@ -82,72 +82,6 @@ export default function SacsContainer({
     });
   }
 
-  function repeatChar(char = "*", count = 15) {
-    return [...Array(count)].map((c, i) => char).join("");
-  }
-
-  function print(loads) {
-    //console.log(loads);
-    //return;
-    console.log("loads => ", loads);
-    loads = transformDataForPrint(loads);
-    console.log("loads => ", loads);
-    const doc = new jsPDF({ orientation: "landscape" });
-    const FONT_SIZE = 9;
-    const PW = 297;
-    const PH = 210;
-    let ty = -1;
-    let tm = -1;
-
-    doc.setFont("helvetica");
-    doc.setFontSize(FONT_SIZE);
-
-    let r = doc.addFont(
-      "fonts/DroidSansFallback.ttf",
-      "DroidSansFallback",
-      "normal"
-    );
-
-    const body = loads;
-
-    const defaultObject = {
-      id: "18",
-      created_at: "2025-04-09T08:07:50.009876+00:00",
-      op: "in",
-      s32: "0",
-      s42: "100",
-      team: "A",
-      stock32: "0",
-      stock42: "100",
-      stockres: "false",
-    };
-
-    var headers = createHeaders(Object.keys(defaultObject));
-
-    const tableConfig = {
-      printHeaders: true,
-      autoSize: true,
-      margins: 0,
-      fontSize: FONT_SIZE,
-      padding: 2.5,
-    };
-
-    // body.push(def);
-
-    doc.text(formatFrenchDate(new Date()), PW - 15, 10, { align: "right" });
-
-    const doc_title = `SACS CONTAINER`;
-    const file_name = `SACS_CONTAINER_${formatCreatedAt(
-      new Date().toISOString()
-    )}`;
-    doc.text(doc_title, 105, 20, {
-      align: "center",
-    });
-
-    doc.table(15, 25, body, headers, tableConfig);
-    doc.save(file_name);
-  }
-
   function TranslateColsData(data) {
     const stock32 = GetTransForTokensArray(LANG_TOKENS.STOCK_TOTAL, user.lang, {
       b: " 32.5N",
@@ -223,7 +157,7 @@ export default function SacsContainer({
         )}
       </div>
       <div className=" container  overflow-auto ">
-        <div className=" text-center p-2 text-3xl   ">{title}</div>
+        <div className=" text-center p-2 text-3xl my-4   ">{title}</div>
         <table className=" table-auto w-full  ">
           <thead>
             <th className="p1 border border-gray-900 dark:border-white p-1 ">

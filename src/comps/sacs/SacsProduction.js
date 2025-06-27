@@ -220,7 +220,7 @@ export default function SacsProduction({
         )}
       </div>
       <div className=" container  overflow-auto ">
-        <div className=" text-center p-2 text-3xl   ">{title}</div>
+        <div className=" text-center p-2 text-3xl m-4   ">{title}</div>
         <table className="table-auto w-full ">
           <thead>
             {/*  <th className="p1 border border-gray-900 dark:border-white p-1 ">
