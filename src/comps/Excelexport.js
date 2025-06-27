@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import * as FileSaver from "file-saver";
 import XLSX from "sheetjs-style";
 import ButtonPrint from "./ButtonPrint";
 import excel from "../img/excel.png";
+import { GetTransForTokensArray, LANG_TOKENS } from "../helpers/lang_strings";
+import { UserContext } from "../App";
 
 let sampleData = [
   {
@@ -55,8 +57,12 @@ let sampleData = [
 export default function Excelexport({
   excelData,
   fileName = "Excel Export",
-  title = "DOWLOAD EXCEL",
+  title,
 }) {
+  const [, , user] = useContext(UserContext);
+  title = !title
+    ? GetTransForTokensArray(LANG_TOKENS.DOWNLOAD_EXCEL, user.lang)
+    : title;
   const fileType =
     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
   const filexExtension = ".xlsx";

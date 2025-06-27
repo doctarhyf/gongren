@@ -6,7 +6,7 @@ export default function ButtonPrint({ onClick, title, icon }) {
   return (
     <button
       onClick={(e) => onClick && onClick()}
-      className={`${CLASS_BTN} flex text-sm my-2`}
+      className={`${CLASS_BTN} flex text-sm my-2 px-2 gap-2  border-orange-400  `}
     >
       <img src={icon || pdf} alt="pdf" width={20} height={30} />{" "}
       {title || "PRINT"}

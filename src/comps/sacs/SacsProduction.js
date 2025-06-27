@@ -11,6 +11,7 @@ import {
   formatDateForDatetimeLocal,
   formatDateTime,
   formatFrenchDate,
+  GenerateExcelData,
   printPDF1,
 } from "../../helpers/func";
 import { useReactToPrint } from "react-to-print";
@@ -20,6 +21,10 @@ import {
   LANG_TOKENS,
 } from "../../helpers/lang_strings";
 import { UserContext } from "../../App";
+import add from "../../img/add.png";
+import save from "../../img/save.png";
+import cancel from "../../img/eraser.png";
+import Excelexport from "../Excelexport";
 
 export default function SacsProduction({
   trans,
@@ -128,67 +133,85 @@ export default function SacsProduction({
     });
   }
 
-  function print(loads) {
-    console.log("loads => ", loads);
-    loads = transformData(loads);
-    console.log("loads => ", loads);
-    const doc = new jsPDF({ orientation: "landscape" });
-    const FONT_SIZE = 9;
-    const PW = 297;
-    let ty = -1;
-    let tm = -1;
+  function TranslateColsTitles(data) {
+    /*
+{
+    "id": 36,
+    "created_at": "2025-06-27T16:26:02.8285+00:00",
+    "team": "A",
+    "sortis32": 0,
+    "tonnage32": 0,
+    "sortis42": 0,
+    "tonnage42": 2075,
+    "dechires32": 0,
+    "dechires42": 0,
+    "utilises32": 0,
+    "utilises42": 41500,
+    "restants32": 0,
+    "restants42": 0,
+    "adj32": null,
+    "adj42": null,
+    "date_time": "2025-06-27T18:25"
+} */
 
-    doc.setFont("helvetica");
-    doc.setFontSize(FONT_SIZE);
-
-    let r = doc.addFont(
-      "fonts/DroidSansFallback.ttf",
-      "DroidSansFallback",
-      "normal"
+    const date_time = GetTransForTokensArray(LANG_TOKENS.DATE, user.lang);
+    const team = GetTransForTokensArray(LANG_TOKENS.TEAM, user.lang);
+    const sortis32 = GetTransForTokensArray(LANG_TOKENS.BAGS_USED, user.lang, {
+      b: "32.5N",
+    });
+    const sortis42 = GetTransForTokensArray(LANG_TOKENS.BAGS_USED, user.lang, {
+      b: "42.5N",
+    });
+    const t32 = GetTransForTokensArray(LANG_TOKENS.T) + " 32.5N";
+    const t42 = GetTransForTokensArray(LANG_TOKENS.T) + " 42.5N";
+    const dechires32 =
+      GetTransForTokensArray(LANG_TOKENS.TORN_BAGS, user.lang) + " 32.5N";
+    const dechires42 =
+      GetTransForTokensArray(LANG_TOKENS.TORN_BAGS, user.lang) + " 42.5N";
+    const utilises32 = GetTransForTokensArray(
+      LANG_TOKENS.BAGS_USED,
+      user.lang,
+      { b: " 32.5N" }
+    );
+    const utilises42 = GetTransForTokensArray(
+      LANG_TOKENS.BAGS_USED,
+      user.lang,
+      { b: " 42.5N" }
+    );
+    const restants32 = GetTransForTokensArray(
+      LANG_TOKENS.BAGS_REMAINING,
+      user.lang,
+      { b: " 32.5N" }
+    );
+    const restants42 = GetTransForTokensArray(
+      LANG_TOKENS.BAGS_REMAINING,
+      user.lang,
+      { b: " 42.5N" }
     );
 
-    //console.log(r);
+    const finalData = data.map((it) => {
+      const item = {
+        [team]: it.team,
+        [date_time]: it.date_time,
+        [sortis32]: it.sortis32,
+        [t32]: it.tonnage32,
+        [sortis42]: it.sortis42,
+        [t42]: it.tonnage42,
+        [dechires32]: it.dechires32,
+        [dechires42]: it.dechires42,
+        [utilises32]: it.utilises32,
+        [utilises42]: it.utilises42,
+        [restants32]: it.restants32,
+        [restants42]: it.restants42,
+        fuzeren: "",
+      };
 
-    const body = loads;
-
-    const def = {
-      id: "6",
-      created_at: "2025-04-09T08:08:40",
-      team: "A",
-      sortis32: "0",
-      tonnage32: "0",
-      sortis42: "40",
-      tonnage42: "0",
-      dechires32: "0",
-      dechires42: "20",
-      utilises32: "0",
-      utilises42: "0",
-      restants32: "0",
-      restants42: "20",
-    };
-
-    var headers = createHeaders(Object.keys(def));
-
-    const tableConfig = {
-      printHeaders: true,
-      autoSize: true,
-      margins: 0,
-      fontSize: FONT_SIZE,
-      padding: 2.5,
-    };
-
-    doc.text(formatFrenchDate(new Date()), PW - 15, 10, { align: "right" });
-
-    const doc_title = `SACS PRODUCTION`;
-    const file_name = `SACS_PRODUCTION_${formatCreatedAt(
-      new Date().toISOString()
-    )}`;
-    doc.text(doc_title, 105, 20, {
-      align: "center",
+      return item;
     });
 
-    doc.table(15, 25, body, headers, tableConfig);
-    doc.save(file_name);
+    console.log("fd : ", finalData);
+
+    return finalData;
   }
 
   return (
@@ -201,32 +224,40 @@ export default function SacsProduction({
       />
       <div>
         {!showInput && (
-          <div className=" flex my-2 ">
-            <button
+          <div className=" flex my-2 justify-between ">
+            <ButtonPrint
+              title={GetTransForTokensArray(
+                LANG_TOKENS.DELIVER_BAGS,
+                user.lang
+              )}
               onClick={(e) => setShowInput(true)}
-              className=" p-1 text-green-500 border rounded-md border-green-500 hover:text-white hover:bg-green-500 "
-            >
-              INSERT
-            </button>
-            <ButtonPrint onClick={(e) => print(trans)} />
+              icon={add}
+            />
+            {/*  <ButtonPrint onClick={(e) => print(trans)} /> */}
+            <Excelexport
+              excelData={GenerateExcelData(TranslateColsTitles(trans))}
+              fileName={GetTransForTokensArray(
+                LANG_TOKENS.PRODUCTION_BAGS_MANAGEMENT,
+                user.lang
+              )}
+            />
           </div>
         )}
 
         {showInput && (
-          <>
-            <button
+          <div className=" flex justify-between ">
+            <ButtonPrint
               onClick={onSaveTrans}
-              className=" p-1 text-sky-500 border rounded-md border-sky-500 hover:text-white hover:bg-sky-500 "
-            >
-              SAVE
-            </button>
-            <button
+              title={GetTransForTokensArray(LANG_TOKENS.SAVE, user.lang)}
+              icon={save}
+            />
+
+            <ButtonPrint
               onClick={(e) => setShowInput(false)}
-              className=" p-1 text-red-500 border rounded-md border-red-500 hover:text-white hover:bg-red-500 "
-            >
-              CANCEL
-            </button>
-          </>
+              icon={cancel}
+              title={GetTransForTokensArray(LANG_TOKENS.CANCEL, user.lang)}
+            />
+          </div>
         )}
       </div>
       <div className=" container  ">
