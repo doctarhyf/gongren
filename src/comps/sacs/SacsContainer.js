@@ -29,12 +29,14 @@ import save from "../../img/save.png";
 import cancel from "../../img/eraser.png";
 import Excelexport from "../Excelexport";
 import add from "../../img/add.png";
+import reload from "../../img/reload.png";
 
 export default function SacsContainer({
   trans,
   onAddTrans,
   stock,
   onResetStock,
+  onRecalculate,
 }) {
   const [, , user] = useContext(UserContext);
   const [showInput, setShowInput] = useState(false);
@@ -144,6 +146,12 @@ export default function SacsContainer({
 
             <Excelexport
               excelData={GenerateExcelData(TranslateColsData(trans))}
+            />
+
+            <ButtonPrint
+              icon={reload}
+              title={"RECALCULATE"}
+              onClick={(e) => onRecalculate(trans)}
             />
           </div>
         )}

@@ -218,7 +218,9 @@ export default function Sacs() {
     }
   };
 
-  //cool
+  function onRecalculate(data, type) {
+    console.log(data, type);
+  }
 
   return (
     <div>
@@ -236,6 +238,7 @@ export default function Sacs() {
                 stock={stock_prod}
                 setStock={set_stock_prod}
                 onResetStock={onResetStock}
+                onRecalculate={onRecalculate}
               />
             )}
             {/*  {SACS_SECTIONS.EXIT_CONTAINER.label === curtab[1].label && (
@@ -247,6 +250,7 @@ export default function Sacs() {
                 onAddTrans={onAddTrans}
                 stock={stock_cont}
                 onResetStock={onResetStock}
+                onRecalculate={onRecalculate}
               />
             )}
           </>

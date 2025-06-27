@@ -25,12 +25,14 @@ import add from "../../img/add.png";
 import save from "../../img/save.png";
 import cancel from "../../img/eraser.png";
 import Excelexport from "../Excelexport";
+import reload from "../../img/reload.png";
 
 export default function SacsProduction({
   trans,
   onAddTrans,
   stock,
   onResetStock,
+  onRecalculate,
 }) {
   const [, , user] = useContext(UserContext);
   const [adjust, set_adjust] = useState(0);
@@ -205,6 +207,11 @@ export default function SacsProduction({
                 LANG_TOKENS.PRODUCTION_BAGS_MANAGEMENT,
                 user.lang
               )}
+            />
+            <ButtonPrint
+              icon={reload}
+              title={"RECALCULATE"}
+              onClick={(e) => onRecalculate(trans)}
             />
           </div>
         )}
