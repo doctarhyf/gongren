@@ -5,6 +5,7 @@ import { SUPERVISORS } from "./flow";
 
 export const LANG_TOKENS = {
   "IN/OUT": ["IN/OUT", "进/出", "SORTIE/ENTREE"],
+  PRINT_TOTALS: ["PRINT TOTALS", "打印总数", "IMPRIMER TOTAL"],
   BAGS_OUT: ["BAGS OUT %b", "袋子出库数量%b", "SACS SORTIS %b"],
   BAGS_MANAGEMENT: ["BAGS MANAGEMENT", "编制袋管理", "GESTION DE SACS"],
   YES: ["YES", "是", "OUI"],

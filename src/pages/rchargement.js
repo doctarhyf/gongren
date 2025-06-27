@@ -47,6 +47,7 @@ import {
 import TableLoadsTotals from "../comps/TableLoadsTotal";
 import excel from "../img/excel.png";
 import Excelexport from "../comps/Excelexport";
+import ButtonPrint from "../comps/ButtonPrint";
 
 const TEAMS = ["A", "B", "C", "D"];
 
@@ -504,7 +505,7 @@ export default function RapportChargement() {
   const [allTeamsTotals, setAllTeamsTotals] = useState([]);
   const [showTotalsByTeam, setShowTotalsByTeam] = useState(false);
 
-  function PreCleanExcelData(loads) {
+  function TranslateColsTitles(loads) {
     const date = GetTransForTokensArray(LANG_TOKENS.DATE, user.lang);
     const team = GetTransForTokensArray(LANG_TOKENS.TEAM, user.lang);
     const shift = GetTransForTokensArray(LANG_TOKENS.SHIFT, user.lang);
@@ -582,7 +583,7 @@ export default function RapportChargement() {
           </div>
           <div className=" flex justify-between  sm:justify-center  gap-2 my-2   ">
             {!adding && UserHasAccessCode(user, ACCESS_CODES.ADD_NEW_LOAD) && (
-              <ActionButton
+              <ButtonPrint
                 icon={plus}
                 title={LANG_TOKENS.NEW[GetLangIndexByLangCode(user.lang)]}
                 onClick={onAddNewLoad}
@@ -590,7 +591,7 @@ export default function RapportChargement() {
             )}
 
             {!adding && (
-              <ActionButton
+              <ButtonPrint
                 icon={reload}
                 title={GetTransForTokensArray(LANG_TOKENS.REFRESH, user.lang)}
                 onClick={(e) => loadData()}
@@ -651,11 +652,14 @@ export default function RapportChargement() {
               <>
                 <div className=" flex justify-center py-2 space-x-2  ">
                   {
-                    <ActionButton
+                    <ButtonPrint
                       icon={pdf}
                       title={
                         showTotalsByTeam
-                          ? "PRINT TOTALS"
+                          ? GetTransForTokensArray(
+                              LANG_TOKENS.PRINT_TOTALS,
+                              user.lang
+                            )
                           : LANG_TOKENS.PRINT_REPPORT[
                               GetLangIndexByLangCode(user.lang)
                             ]
@@ -668,7 +672,7 @@ export default function RapportChargement() {
                     <>
                       <Excelexport
                         excelData={GenerateExcelData(
-                          PreCleanExcelData(loadsf),
+                          TranslateColsTitles(loadsf),
                           [
                             "id",
                             "retours",
@@ -693,7 +697,7 @@ export default function RapportChargement() {
                     // UserHasAccessCode(user, ACCESS_CODES.ROOT)
 
                     true && (
-                      <ActionButton
+                      <ButtonPrint
                         icon={eye}
                         title={
                           showTotalsByTeam

@@ -48,14 +48,20 @@ export default function SacsContainer({
     date_time: formatDateForDatetimeLocal(new Date()),
     fuzeren: "谭义勇",
   });
-  const date =
-    trans.length > 0
-      ? trans[0].date_time
-      : new Date().toISOString().slice(0, 16);
+
+  const dateFromRec = trans.length > 0;
+  const date = dateFromRec
+    ? trans[0].date_time
+    : new Date().toISOString().slice(0, 16);
   const d = {
     y: date.split("T")[0].split("-")[0],
     m: date.split("T")[0].split("-")[1],
   };
+
+  if (dateFromRec) {
+    d.m = (parseInt(d.m) + 1).toString().padStart(2, "0");
+  }
+
   const title = GetTransForTokensArray(
     LANG_TOKENS.RECORDS_TITLE_CONT,
     user.lang,

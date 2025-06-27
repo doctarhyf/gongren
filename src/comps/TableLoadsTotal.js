@@ -18,6 +18,7 @@ import { TABLES_NAMES } from "../helpers/sb.config";
 import { GetTransForTokensArray, LANG_TOKENS } from "../helpers/lang_strings";
 import ActionButton from "./ActionButton";
 import { printTeamMonthlyRepport } from "../helpers/funcs_print";
+import ButtonPrint from "./ButtonPrint";
 
 function AgentsByTeam({ agents_by_team, team }) {
   //const [agents_by_team, set_agents_by_team] = useState(undefined);
@@ -123,7 +124,7 @@ export default function TableLoadsTotals({
                         <div className=" flex justify-between">
                           <span>{td[1].bonus.toFixed(2)} </span>
                           <span className="  md:hidden inline-block ">
-                            <ActionButton
+                            <ButtonPrint
                               icon={pdf}
                               title={""}
                               onClick={(e) => {
@@ -144,7 +145,7 @@ export default function TableLoadsTotals({
                           {formatAsMoney((td[1].bonus * 1000).toFixed(2))}
                         </span>
                         <span>
-                          <ActionButton
+                          <ButtonPrint
                             icon={pdf}
                             title={""}
                             onClick={(e) => {
@@ -260,7 +261,14 @@ export default function TableLoadsTotals({
                           <span className=" font-black bg-emerald-950 p-1 mx-1 rounded-md  ">
                             {formatAsMoney((td[1].bonus * 1000).toFixed(2))}
                           </span>{" "}
-                          <span className="  opacity-50 "> - BONUS</span>
+                          <span className="  opacity-50 ">
+                            {" "}
+                            -{" "}
+                            {GetTransForTokensArray(
+                              LANG_TOKENS.BONUS,
+                              user.lang
+                            )}
+                          </span>
                         </div>
                       )}
                     </div>
