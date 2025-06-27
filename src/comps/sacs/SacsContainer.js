@@ -129,7 +129,7 @@ export default function SacsContainer({
       <Stock
         id={STOCK_TYPE.CONTAINER}
         stock={stock}
-        label={GetRandomArray(LANG_TOKENS.CONTAINER_REST, user.lang)}
+        label={GetTransForTokensArray(LANG_TOKENS.CONTAINER_REST, user.lang)}
       />
       <div>
         <div className=" text-center p-2 text-3xl my-4   ">{title}</div>

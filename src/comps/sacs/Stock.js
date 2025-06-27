@@ -27,7 +27,8 @@ export default function Stock({ id, stock, label, onResetStock }) {
     >
       <div className={` font-bold text-3xl ${style2} py-2 mb-2 border-b  `}>
         {" "}
-        {GetTransForTokensArray(LANG_TOKENS.STOCK_CONTAINER, user.lang)} {label}
+        {/*  {GetTransForTokensArray(LANG_TOKENS.STOCK_CONTAINER, user.lang)} */}
+        {label}
       </div>
 
       <div className=" flex flex-col gap-4 mt-2  ">
