@@ -48,6 +48,22 @@ export default function SacsContainer({
     date_time: formatDateForDatetimeLocal(new Date()),
     fuzeren: "谭义勇",
   });
+  const date =
+    trans.length > 0
+      ? trans[0].date_time
+      : new Date().toISOString().slice(0, 16);
+  const d = {
+    y: date.split("T")[0].split("-")[0],
+    m: date.split("T")[0].split("-")[1],
+  };
+  const title = GetTransForTokensArray(
+    LANG_TOKENS.RECORDS_TITLE_PROD,
+    user.lang,
+    {
+      y: d.y,
+      m: d.m,
+    }
+  );
 
   function onSaveTrans() {
     if (data.s32 === undefined || data.s42 === undefined) {
@@ -175,7 +191,7 @@ export default function SacsContainer({
       />
       <div>
         {!showInput && (
-          <div className=" flex justify-between ">
+          <div className=" flex  flex-col items-center md:flex-row md:justify-center  ">
             <ButtonPrint
               icon={add}
               title={GetTransForTokensArray(
@@ -192,7 +208,7 @@ export default function SacsContainer({
         )}
 
         {showInput && (
-          <div className=" flex justify-between  ">
+          <div className=" flex  flex-col items-center md:flex-row md:justify-center   ">
             <ButtonPrint
               onClick={onSaveTrans}
               title={GetTransForTokensArray(LANG_TOKENS.SAVE, user.lang)}
@@ -207,6 +223,7 @@ export default function SacsContainer({
         )}
       </div>
       <div className=" container  overflow-auto ">
+        <div className=" text-center p-2 text-3xl   ">{title}</div>
         <table className=" table-auto w-full  ">
           <thead>
             <th className="p1 border border-gray-900 dark:border-white p-1 ">

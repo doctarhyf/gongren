@@ -51,6 +51,23 @@ export default function SacsProduction({
 
   const [restants, set_restants] = useState({ s32: 0, s42: 0 });
 
+  const date =
+    trans.length > 0
+      ? trans[0].date_time
+      : new Date().toISOString().slice(0, 16);
+  const d = {
+    y: date.split("T")[0].split("-")[0],
+    m: date.split("T")[0].split("-")[1],
+  };
+  const title = GetTransForTokensArray(
+    LANG_TOKENS.RECORDS_TITLE_CONT,
+    user.lang,
+    {
+      y: d.y,
+      m: d.m,
+    }
+  );
+
   useEffect(() => {
     const trouves32 = stock.s32;
     const trouves42 = stock.s42;
@@ -134,26 +151,6 @@ export default function SacsProduction({
   }
 
   function TranslateColsTitles(data) {
-    /*
-{
-    "id": 36,
-    "created_at": "2025-06-27T16:26:02.8285+00:00",
-    "team": "A",
-    "sortis32": 0,
-    "tonnage32": 0,
-    "sortis42": 0,
-    "tonnage42": 2075,
-    "dechires32": 0,
-    "dechires42": 0,
-    "utilises32": 0,
-    "utilises42": 41500,
-    "restants32": 0,
-    "restants42": 0,
-    "adj32": null,
-    "adj42": null,
-    "date_time": "2025-06-27T18:25"
-} */
-
     const date_time = GetTransForTokensArray(LANG_TOKENS.DATE, user.lang);
     const team = GetTransForTokensArray(LANG_TOKENS.TEAM, user.lang);
     const sortis32 = GetTransForTokensArray(LANG_TOKENS.BAGS_USED, user.lang, {
@@ -224,7 +221,7 @@ export default function SacsProduction({
       />
       <div>
         {!showInput && (
-          <div className=" flex my-2 justify-between ">
+          <div className=" flex  flex-col items-center md:flex-row md:justify-center  ">
             <ButtonPrint
               title={GetTransForTokensArray(
                 LANG_TOKENS.DELIVER_BAGS,
@@ -245,7 +242,7 @@ export default function SacsProduction({
         )}
 
         {showInput && (
-          <div className=" flex justify-between ">
+          <div className=" flex  flex-col items-center md:flex-row md:justify-center ">
             <ButtonPrint
               onClick={onSaveTrans}
               title={GetTransForTokensArray(LANG_TOKENS.SAVE, user.lang)}
@@ -260,7 +257,8 @@ export default function SacsProduction({
           </div>
         )}
       </div>
-      <div className=" container  ">
+      <div className=" container  overflow-auto ">
+        <div className=" text-center p-2 text-3xl   ">{title}</div>
         <table className="table-auto w-full ">
           <thead>
             {/*  <th className="p1 border border-gray-900 dark:border-white p-1 ">
