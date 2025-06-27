@@ -174,7 +174,7 @@ export default function SacsProduction({
   }
 
   return (
-    <div>
+    <div className=" pb-8 ">
       <Stock
         id={STOCK_TYPE.PRODUCTION}
         stock={stock}
