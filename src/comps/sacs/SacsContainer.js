@@ -12,15 +12,23 @@ import {
   formatDateForDatetimeLocal,
   formatDateTime,
   formatFrenchDate,
+  GenerateExcelData,
 } from "../../helpers/func";
 import jsPDF from "jspdf";
-import { LANG_TOKENS } from "../../helpers/lang_strings";
+import {
+  GetTransForTokensArray,
+  LANG_TOKENS,
+} from "../../helpers/lang_strings";
 import {
   createHeaders,
   GetRandomArray,
   transformDataForPrint,
 } from "../../helpers/funcs_print";
 import { UserContext } from "../../App";
+import save from "../../img/save.png";
+import cancel from "../../img/eraser.png";
+import Excelexport from "../Excelexport";
+import add from "../../img/add.png";
 
 export default function SacsContainer({
   trans,
@@ -124,6 +132,10 @@ export default function SacsContainer({
     doc.save(file_name);
   }
 
+  function TranslateColsData(data) {
+    return data;
+  }
+
   return (
     <div>
       <Stock
@@ -133,70 +145,76 @@ export default function SacsContainer({
       />
       <div>
         {!showInput && (
-          <div className=" flex ">
-            <button
+          <div className=" flex justify-between ">
+            <ButtonPrint
+              icon={add}
+              title={GetTransForTokensArray(
+                LANG_TOKENS.DELIVER_BAGS,
+                user.lang
+              )}
               onClick={(e) => setShowInput(true)}
-              className=" p-1 text-green-500 border rounded-md border-green-500 hover:text-white hover:bg-green-500 "
-            >
-              INSERT
-            </button>
-            <ButtonPrint onClick={(e) => print(trans)} />
+            />
+            {/*  <ButtonPrint onClick={(e) => print(trans)} /> */}
+            <Excelexport
+              excelData={GenerateExcelData(TranslateColsData(trans))}
+            />
           </div>
         )}
 
         {showInput && (
-          <>
-            <button
+          <div className=" flex justify-between  ">
+            <ButtonPrint
               onClick={onSaveTrans}
-              className=" p-1 text-sky-500 border rounded-md border-sky-500 hover:text-white hover:bg-sky-500 "
-            >
-              SAVE
-            </button>
-            <button
+              title={GetTransForTokensArray(LANG_TOKENS.SAVE, user.lang)}
+              icon={save}
+            />
+            <ButtonPrint
               onClick={(e) => setShowInput(false)}
-              className=" p-1 text-red-500 border rounded-md border-red-500 hover:text-white hover:bg-red-500 "
-            >
-              CANCEL
-            </button>
-          </>
+              title={GetTransForTokensArray(LANG_TOKENS.CANCEL, user.lang)}
+              icon={cancel}
+            />
+          </div>
         )}
       </div>
-      <div className=" container  ">
-        <table>
+      <div className=" container  overflow-auto ">
+        <table className=" table-auto w-full  ">
           <thead>
-            <th className="p1 border border-gray-900 dark:border-white p-1 ">
+            {/*  <th className="p1 border border-gray-900 dark:border-white p-1 ">
               id
-            </th>
+            </th> */}
             {/*   <th className="p1 border border-gray-900">Operation</th> */}
             <th className="p1 border border-gray-900 dark:border-white p-1 ">
-              Equipe
+              {GetTransForTokensArray(LANG_TOKENS.TEAM, user.lang)}
             </th>
             <th className="p1 border border-gray-900 dark:border-white p-1 ">
-              32.5
+              {GetTransForTokensArray(LANG_TOKENS.DELIVERED_BAGS, user.lang) +
+                " 32.5N"}
             </th>
             <th className="p1 border border-gray-900 dark:border-white p-1 ">
-              42.5
+              {GetTransForTokensArray(LANG_TOKENS.DELIVERED_BAGS, user.lang) +
+                " 42.5N"}
             </th>
             <th className="p1 border border-gray-900 dark:border-white p-1 ">
-              Stock 32.5
+              {GetTransForTokensArray(LANG_TOKENS.STOCK, user.lang) + " 32.5N"}
             </th>
             <th className="p1 border border-gray-900 dark:border-white p-1 ">
-              Stock 42.5
+              {GetTransForTokensArray(LANG_TOKENS.STOCK, user.lang) + " 42.5N"}
             </th>
             <th className="p1 border border-gray-900 dark:border-white p-1 ">
-              Stock Reset
+              {GetTransForTokensArray(LANG_TOKENS.PANDIAN, user.lang)}
             </th>
             <th className="p1 border border-gray-900 dark:border-white p-1 ">
-              Date
+              {GetTransForTokensArray(LANG_TOKENS.DATE, user.lang) + " 32.5N"}
             </th>
             <th className="p1 border border-gray-900 dark:border-white p-1 ">
-              Fuzeren
+              {GetTransForTokensArray(LANG_TOKENS.FUZEREN, user.lang) +
+                " 32.5N"}
             </th>
           </thead>
           <tbody>
             {showInput && (
               <tr>
-                <td className="p1 border border-gray-900">0</td>
+                {/*  <td className="p1 border border-gray-900">0</td> */}
                 {/*   <td className="p1 border border-gray-900">in</td> */}
                 <td className="p1 border border-gray-900">
                   <select
@@ -284,9 +302,9 @@ export default function SacsContainer({
             {!showInput &&
               trans.map((t, i) => (
                 <tr key={i} className={`  ${showInput ? "opacity-20" : ""}   `}>
-                  <td className="p1 border border-gray-900 dark:border-white p-1 ">
+                  {/* <td className="p1 border border-gray-900 dark:border-white p-1 ">
                     {i}
-                  </td>
+                  </td> */}
                   {/*  <td className="p1 border border-gray-900">{t.op}</td> */}
                   <td className="p1 border border-gray-900 dark:border-white p-1 ">
                     {t.team}
@@ -304,13 +322,15 @@ export default function SacsContainer({
                     {t.stock42}
                   </td>
                   <td className="p1 border border-gray-900 dark:border-white p-1 ">
-                    {t.stockres ? "yes" : "no"}
+                    {t.stockres
+                      ? GetTransForTokensArray(LANG_TOKENS.YES, user.lang)
+                      : GetTransForTokensArray(LANG_TOKENS.NO, user.lang)}
                   </td>
                   <td className="p1 border border-gray-900 dark:border-white p-1 ">
                     {formatDateTime(t.date_time)}
                   </td>
                   <td className="p1 border border-gray-900 dark:border-white p-1 ">
-                    {t.fuzeren}
+                    {GetTransForTokensArray(LANG_TOKENS.FUZEREN, user.lang)}
                   </td>
                 </tr>
               ))}
