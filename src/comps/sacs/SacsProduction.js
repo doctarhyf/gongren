@@ -263,79 +263,79 @@ export default function SacsProduction({
       <div className=" container  ">
         <table className="table-auto w-full ">
           <thead>
-            <th className="p1 border border-gray-900 dark:border-white p-1 ">
+            {/*  <th className="p1 border border-gray-900 dark:border-white p-1 ">
               id
+            </th> */}
+            <th className="p1 border border-gray-900 dark:border-white p-1 ">
+              {GetTransForTokensArray(LANG_TOKENS.TEAM, user.lang)}
             </th>
             <th className="p1 border border-gray-900 dark:border-white p-1 ">
-              Equipe
+              {GetTransForTokensArray(LANG_TOKENS.DATE, user.lang)}
             </th>
             <th className="p1 border border-gray-900 dark:border-white p-1 ">
-              Date
-            </th>
-            <th className="p1 border border-gray-900 dark:border-white p-1 ">
-              Sacs Sortis{" "}
+              {GetTransForTokensArray(LANG_TOKENS.DELIVERED_BAGS, user.lang)}
               <span className=" bg-green-500 text-white text-xs p-1 rounded-md font-bold  ">
-                32.5n
+                32.5N
               </span>
             </th>
             <th className="p1 border border-gray-900 dark:border-white p-1 ">
-              Tonnage{" "}
+              {GetTransForTokensArray(LANG_TOKENS.T, user.lang)}
               <span className=" bg-green-500 text-white text-xs p-1 rounded-md font-bold  ">
-                32.5n
+                32.5N
               </span>
             </th>
             <th className="p1 border border-gray-900 dark:border-white p-1 ">
-              Sacs Sortis{" "}
+              {GetTransForTokensArray(LANG_TOKENS.DELIVERED_BAGS, user.lang)}
               <span className=" bg-black text-white text-xs p-1 rounded-md font-bold  ">
-                42.5n
+                42.5N
               </span>
             </th>
             <th className="p1 border border-gray-900 dark:border-white p-1 ">
-              Tonnage{" "}
+              {GetTransForTokensArray(LANG_TOKENS.T, user.lang)}
               <span className=" bg-black text-white text-xs p-1 rounded-md font-bold  ">
-                42.5n
+                42.5N
               </span>
             </th>
 
             <th className="p1 border border-gray-900 dark:border-white p-1 ">
-              Sacs Dechires{" "}
+              {GetTransForTokensArray(LANG_TOKENS.TORN_BAGS, user.lang)}
               <span className=" bg-green-500 text-white text-xs p-1 rounded-md font-bold  ">
-                32.5n
+                32.5N
               </span>
             </th>
             <th className="p1 border border-gray-900 dark:border-white p-1 ">
-              Sacs Dechires{" "}
+              {GetTransForTokensArray(LANG_TOKENS.TORN_BAGS, user.lang)}
               <span className=" bg-black text-white text-xs p-1 rounded-md font-bold  ">
-                42.5n
+                42.5N
               </span>
             </th>
             <th className="p1 border border-gray-900 dark:border-white p-1 ">
-              Sacs Utilises{" "}
+              {GetTransForTokensArray(LANG_TOKENS.BAGS_USED, user.lang)}
               <span className=" bg-green-500 text-white text-xs p-1 rounded-md font-bold  ">
-                32.5n
+                32.5N
               </span>
             </th>
             <th className="p1 border border-gray-900 dark:border-white p-1 ">
-              Sacs Utilises{" "}
+              {GetTransForTokensArray(LANG_TOKENS.BAGS_USED, user.lang)}
               <span className=" bg-black text-white text-xs p-1 rounded-md font-bold  ">
-                42.5n
+                42.5N
               </span>
             </th>
 
             <th className="p1 border border-gray-900 dark:border-white p-1 ">
-              Sacs Restants{" "}
+              {GetTransForTokensArray(LANG_TOKENS.BAGS_REMAINING, user.lang)}
               <span className=" bg-green-500 text-white text-xs p-1 rounded-md font-bold  ">
-                32.5n
+                32.5N
               </span>
             </th>
             <th className="p1 border border-gray-900 dark:border-white p-1 ">
-              Sacs Restants{" "}
+              {GetTransForTokensArray(LANG_TOKENS.BAGS_REMAINING, user.lang)}
               <span className=" bg-black text-white text-xs p-1 rounded-md font-bold  ">
-                42.5
+                42.5N
               </span>
             </th>
             <th className="p1 border border-gray-900 dark:border-white p-1 ">
-              Ajust (Sacs Perdus )
+              {GetTransForTokensArray(LANG_TOKENS.PANDIAN, user.lang)}
             </th>
           </thead>
           <tbody>
@@ -535,9 +535,9 @@ export default function SacsProduction({
                   
                   `}
                 >
-                  <td className="p1 border border-gray-900 dark:border-white p-1 ">
+                  {/*  <td className="p1 border border-gray-900 dark:border-white p-1 ">
                     {i}
-                  </td>
+                  </td> */}
 
                   <td className="p1 border border-gray-900 dark:border-white p-1 ">
                     {t.team}
