@@ -182,6 +182,7 @@ export default function SacsProduction({
         onResetStock={onResetStock}
       />
       <div>
+        <div className=" text-center p-2 text-3xl m-4   ">{title}</div>
         {!showInput && (
           <div className=" flex  flex-col items-center md:flex-row md:justify-center  ">
             <ButtonPrint
@@ -220,7 +221,6 @@ export default function SacsProduction({
         )}
       </div>
       <div className=" container  overflow-auto ">
-        <div className=" text-center p-2 text-3xl m-4   ">{title}</div>
         <table className="table-auto w-full ">
           <thead>
             {/*  <th className="p1 border border-gray-900 dark:border-white p-1 ">
