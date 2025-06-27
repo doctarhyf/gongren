@@ -7,7 +7,7 @@ export const LANG_TOKENS = {
   "IN/OUT": ["IN/OUT", "进/出", "SORTIE/ENTREE"],
   PRINT_TOTALS: ["PRINT TOTALS", "打印总数", "IMPRIMER TOTAL"],
   BAGS_OUT: ["BAGS OUT %b", "袋子出库数量%b", "SACS SORTIS %b"],
-  BAGS_MANAGEMENT: ["BAGS MANAGEMENT", "编制袋管理", "GESTION DE SACS"],
+  BAGS_MANAGEMENT: ["Bags Mangement", "编制袋管理", "Gestion de sacs"],
   YES: ["YES", "是", "OUI"],
   STOCK_TOTAL: ["STOCK TOTAL %b", "袋子库房总数%b", "STOCK TOTAL %b"],
   NO: ["NO", "否", "NON"],
@@ -229,7 +229,7 @@ export const LANG_TOKENS = {
     "Les deux mots de passe ne sont pas les mêmes, assurez-vous que les deux mots de passe correspondent !", // French
   ],
   CHOOSE_LANG: ["Choose language", "选择语言", "Choisissez la langue"],
-  HOME: ["HOME", "主页", "ACCUEIL"],
+  HOME: ["Home", "主页", "Acceuil"],
   LOADING_TRACKING: ["Load Tracking", "卡车装载监控", "Suivi de chargement"],
   HUD_TITLE_LOADING_TRACKING: [
     "LOADING TRACKING %y/%m",
