@@ -125,7 +125,7 @@ export default function SacsContainer({
   }
 
   return (
-    <div className=" pb-8  ">
+    <div className=" pb-8    ">
       <Stock
         id={STOCK_TYPE.CONTAINER}
         stock={stock}
@@ -171,7 +171,7 @@ export default function SacsContainer({
           </div>
         )}
       </div>
-      <div className=" container  overflow-auto ">
+      <div className=" container  overflow-auto  mx-auto ">
         <table className=" table-auto w-full  ">
           <thead>
             <th className="p1 border border-gray-900 dark:border-white p-1 ">
