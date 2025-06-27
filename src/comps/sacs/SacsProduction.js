@@ -60,7 +60,7 @@ export default function SacsProduction({
     m: date.split("T")[0].split("-")[1],
   };
   const title = GetTransForTokensArray(
-    LANG_TOKENS.RECORDS_TITLE_CONT,
+    LANG_TOKENS.RECORDS_TITLE_PROD,
     user.lang,
     {
       y: d.y,
@@ -109,44 +109,6 @@ export default function SacsProduction({
       dechires42: 0,
       utilises32: 0,
       utilises42: 0,
-    });
-  }
-
-  function repeatChar(char = "*", count = 15) {
-    return [...Array(count)].map((c, i) => char).join("");
-  }
-
-  function createHeaders(keys) {
-    var result = [];
-    for (var i = 0; i < keys.length; i += 1) {
-      result.push({
-        id: keys[i],
-        name: keys[i],
-        prompt: keys[i],
-        width: 80,
-        align: "center",
-        padding: 0,
-      });
-    }
-    return result;
-  }
-
-  function transformData(dataArray) {
-    return dataArray.map((obj) => {
-      // Destructure to remove adj32 and adj42
-      const { adj32, adj42, ...rest } = obj;
-
-      // Convert all remaining values to strings
-      const stringified = {};
-      for (let key in rest) {
-        if (key === "created_at") {
-          stringified[key] = formatCreatedAt(rest[key]);
-        } else {
-          stringified[key] = String(rest[key]);
-        }
-      }
-
-      return stringified;
     });
   }
 

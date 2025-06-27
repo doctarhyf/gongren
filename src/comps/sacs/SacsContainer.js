@@ -57,7 +57,7 @@ export default function SacsContainer({
     m: date.split("T")[0].split("-")[1],
   };
   const title = GetTransForTokensArray(
-    LANG_TOKENS.RECORDS_TITLE_PROD,
+    LANG_TOKENS.RECORDS_TITLE_CONT,
     user.lang,
     {
       y: d.y,
