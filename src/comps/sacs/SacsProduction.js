@@ -21,7 +21,7 @@ import {
   LANG_TOKENS,
 } from "../../helpers/lang_strings";
 import { UserContext } from "../../App";
-import add from "../../img/add.png";
+import add from "../../img/delivery.png";
 import save from "../../img/save.png";
 import cancel from "../../img/eraser.png";
 import Excelexport from "../Excelexport";
@@ -194,7 +194,7 @@ export default function SacsProduction({
           <div className=" flex  flex-col items-center md:flex-row md:justify-center  ">
             <ButtonPrint
               title={GetTransForTokensArray(
-                LANG_TOKENS.DELIVER_BAGS,
+                LANG_TOKENS.SEND_REPPORT,
                 user.lang
               )}
               onClick={(e) => setShowInput(true)}
