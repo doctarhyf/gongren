@@ -181,7 +181,7 @@ export default function Dico() {
     setupd(undefined);
   }
 
-  if (true)
+  if (false)
     return (
       <div>
         <Gemini />
@@ -189,38 +189,48 @@ export default function Dico() {
     );
 
   return (
-    <div className="md:flex gap-4 mt-4">
+    <div className="md:flex flex justify-center mx-auto  gap-4 mt-4">
       {!showFormNewWord && (
-        <div className={` ${selectedWord ? "hidden" : "block"} `}>
-          <Gemini />
+        <div
+          className={` flex justify-start ${
+            selectedWord ? "hidden" : "block"
+          } `}
+        >
+          <div>
+            {true && (
+              <>
+                {UserHasAccessCode(user, ACCESS_CODES.ADD_DICO_NEW_WORD) && (
+                  <button
+                    onClick={(e) => setShowFomrNewWord(true)}
+                    className={CLASS_BTN}
+                  >
+                    {GetTransForTokensArray(
+                      LANG_TOKENS.ADD_NEW_WORD,
+                      user.lang
+                    )}
+                  </button>
+                )}
+              </>
+            )}
+            <button
+              onClick={(e) => {
+                setShowFomrNewWord(true);
+                init();
+              }}
+              className={CLASS_BTN}
+            >
+              RELOAD
+            </button>
 
-          {true && (
-            <>
-              {UserHasAccessCode(user, ACCESS_CODES.ADD_DICO_NEW_WORD) && (
-                <button
-                  onClick={(e) => setShowFomrNewWord(true)}
-                  className={CLASS_BTN}
-                >
-                  {GetTransForTokensArray(LANG_TOKENS.ADD_NEW_WORD, user.lang)}
-                </button>
-              )}
-            </>
-          )}
-          <button
-            onClick={(e) => {
-              setShowFomrNewWord(true);
-              init();
-            }}
-            className={CLASS_BTN}
-          >
-            RELOAD
-          </button>
-
-          <WordsList
-            onPrintWords={onPrintWords}
-            key={rdk}
-            onSelectWord={onSelectWord}
-          />
+            <WordsList
+              onPrintWords={onPrintWords}
+              key={rdk}
+              onSelectWord={onSelectWord}
+            />
+          </div>
+          <div className=" self-start  ">
+            <Gemini />
+          </div>
         </div>
       )}
       {showFormNewWord && (
@@ -252,11 +262,11 @@ export default function Dico() {
           onOkay={onOkay}
         />
       )}
-      {!showFormNewWord && (
+      {/*  {!showFormNewWord && (
         <div className=" hidden md:block ">
           <ItemNotSelected show={selectedWord} message={"Selected a word"} />
         </div>
-      )}
+      )} */}
     </div>
   );
 }
