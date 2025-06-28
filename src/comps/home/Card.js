@@ -10,6 +10,7 @@ const COLORS = [
   " bg-amber-700 text-amber-300 border-amber-300 p-2 rounded-md w-full md:w-64 ",
   " bg-emerald-700 text-emerald-300 border-emerald-300 p-2 rounded-md w-full md:w-64 ",
   "bg-teal-700 text-teal-300 border-teal-300 p-2 rounded-md w-full md:w-64",
+  "bg-slate-700 text-slate-300 border-slate-300 p-2 rounded-md w-full md:w-64",
 ];
 
 const Card = ({ id, title, desc, children, wfull }) => {

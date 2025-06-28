@@ -9,6 +9,7 @@ import {
   POSTES,
   PRIME_MIN,
   SECTIONS,
+  STOCK_TYPE,
   TONNAGE_MONTHLY_TARGET,
 } from "../../helpers/flow";
 import {
@@ -48,6 +49,7 @@ import { uploadPhoto } from "../../helpers/image_upload.mjs";
 import ActionButton from "../ActionButton";
 import print from "../../img/printer.png";
 import { printAgentInfo } from "../../helpers/print";
+import Stock from "../sacs/Stock";
 function AgentStats({ agentsGrouped }) {
   const [, , user] = useContext(UserContext);
   return (
@@ -787,8 +789,11 @@ export function HUDSacsCalc({}) {
 }
 
 export function HUDGestionSacs() {
+  const [, , user] = useContext(UserContext);
   const [loading, setloading] = useState(false);
   const [no_data, set_no_data] = useState(false);
+  const [stock_cont, set_stock_cont] = useState({ s32: 0, s42: 0 });
+  const [stock_prod, set_stock_prod] = useState({ s32: 0, s42: 0 });
 
   const [data, setdata] = useState({
     cont: { s32: 0, s42: 0 },
@@ -800,7 +805,7 @@ export function HUDGestionSacs() {
   }, []);
 
   //const [stockCont, setStockCont] = useState([]);
-  const [stockProd, setStockProd] = useState([]);
+  /* const [stockProd, setStockProd] = useState([]);
   const [stockCont, setStockCont] = useState([]);
   async function loadData() {
     set_no_data(false);
@@ -838,13 +843,42 @@ export function HUDGestionSacs() {
     });
 
     setloading(false);
-  }
+  } */
 
-  const [, , user] = useContext(UserContext);
+  async function loadData() {
+    setloading(true);
+    const sacs_cont = await SB.LoadAllItems(TABLES_NAMES.SACS_CONTAINER);
+    // set_trans_cont(sacs_cont);
+    // console.log("sacs cont", sacs_cont);
+
+    const sacs_exit_cont = await SB.LoadAllItems(
+      TABLES_NAMES.SACS_EXIT_CONTAINER
+    );
+    // set_trans_exit_cont(sacs_exit_cont);
+    // console.log("sacs exit cont", sacs_exit_cont);
+
+    let last_rec = sacs_cont[sacs_cont.length - 1];
+
+    if (last_rec) {
+      set_stock_cont({ s32: last_rec.stock32, s42: last_rec.stock42 });
+    }
+
+    const sacs_prod = await SB.LoadAllItems(TABLES_NAMES.SACS_PRODUCTION);
+    //set_trans_prod(sacs_prod);
+    //console.log("sacs prod", sacs_prod);
+
+    last_rec = sacs_prod[sacs_prod.length - 1];
+
+    if (last_rec) {
+      set_stock_prod({ s32: last_rec.restants32, s42: last_rec.restants42 });
+    }
+
+    setloading(false);
+  }
 
   return (
     <Card
-      id={3}
+      id={9}
       title={GetTransForTokensArray(
         LANG_TOKENS.CONTAINER_BAGS_MANAGEMENT,
         user.lang
@@ -856,69 +890,82 @@ export function HUDGestionSacs() {
       ) : no_data ? (
         <div>No data</div>
       ) : (
-        <div className="">
-          <div>
-            {[
-              ["集装箱袋数", data.cont, cont],
-              ["剩余总量", data.prod, pkg],
-            ].map((stock, i) => (
-              <div className=" border-b justify-between  border-b-white/10 py-2 flex  ">
-                <div>
-                  <div className=" bg-purple-950  px-2 py-1 w-fit rounded-md ">
-                    {stock[0]}
-                  </div>
-                  {Object.entries(stock[1]).map((s, i) => (
-                    <div className="  ">
-                      <div>
-                        <span className=" font-bold  px-2 text-sm  ">
-                          {`${GetTransForTokenName(s[0], user.lang)} `}
-                        </span>
-                        :<span className=" text-[16pt] "> {s[1]} 袋</span>
-                      </div>
+        <div>
+          <Stock
+            id={STOCK_TYPE.CONTAINER}
+            stock={stock_cont}
+            label={GetTransForTokensArray(
+              LANG_TOKENS.CONTAINER_REST,
+              user.lang
+            )}
+          />
+          <Stock
+            id={STOCK_TYPE.PRODUCTION}
+            stock={stock_prod}
+            label={GetTransForTokensArray(LANG_TOKENS.PROD_REST, user.lang)}
+            onResetStock={(e) => null}
+          />
+          {/*  <div className="">
+            <div>
+              {[
+                ["集装箱袋数", data.cont, cont],
+                ["剩余总量", data.prod, pkg],
+              ].map((stock, i) => (
+                <div className=" border-b justify-between  border-b-white/10 py-2 flex  ">
+                  <div>
+                    <div className=" bg-purple-950  px-2 py-1 w-fit rounded-md ">
+                      {stock[0]}
                     </div>
-                  ))}
+                    {Object.entries(stock[1]).map((s, i) => (
+                      <div className="  ">
+                        <div>
+                          <span className=" font-bold  px-2 text-sm  ">
+                            {`${GetTransForTokenName(s[0], user.lang)} `}
+                          </span>
+                          :<span className=" text-[16pt] "> {s[1]} 袋</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-                {/* <div className=" bg-red-500">
-                  <img src={stock[2]} width={120} height={40} alt="img" />
-                </div> */}
-              </div>
-            ))}
-          </div>
-
-          <div>
-            <div className=" text-sm font-bold  my-2 ">
-              {GetTransForTokensArray(LANG_TOKENS.LAST_5_RECORDS, user.lang)}
+              ))}
             </div>
-            <table className="  text-xs w-full">
-              <tr>
-                <td className=" border p-1  ">No</td>
-                <td className=" border p-1  ">日期</td>
-                <td className=" border p-1  ">32.5</td>
-                <td className=" border p-1  ">42.5</td>
-                <td className=" border p-1  ">班组</td>
-                <td className=" border p-1  ">负责人</td>
-              </tr>
-              {stockCont &&
-                stockCont
-                  .filter((it) => it.operation === "in")
-                  .sort((a, b) => b.id - a.id)
-                  .map(
-                    (it, i) =>
-                      i < 5 && (
-                        <tr className="   ">
-                          <td className=" border p-1  ">{i + 1}</td>
-                          <td className=" border p-1  ">
-                            {it.date_time.replace("T", " ")}
-                          </td>
-                          <td className=" border p-1  ">{it.s32}</td>
-                          <td className=" border p-1  ">{it.s42}</td>
-                          <td className=" border p-1  ">{it.team}</td>
-                          <td className=" border p-1  ">{it.fuzeren}</td>
-                        </tr>
-                      )
-                  )}
-            </table>
-          </div>
+
+            <div>
+              <div className=" text-sm font-bold  my-2 ">
+                {GetTransForTokensArray(LANG_TOKENS.LAST_5_RECORDS, user.lang)}
+              </div>
+              <table className="  text-xs w-full">
+                <tr>
+                  <td className=" border p-1  ">No</td>
+                  <td className=" border p-1  ">日期</td>
+                  <td className=" border p-1  ">32.5</td>
+                  <td className=" border p-1  ">42.5</td>
+                  <td className=" border p-1  ">班组</td>
+                  <td className=" border p-1  ">负责人</td>
+                </tr>
+                {stockCont &&
+                  stockCont
+                    .filter((it) => it.operation === "in")
+                    .sort((a, b) => b.id - a.id)
+                    .map(
+                      (it, i) =>
+                        i < 5 && (
+                          <tr className="   ">
+                            <td className=" border p-1  ">{i + 1}</td>
+                            <td className=" border p-1  ">
+                              {it.date_time.replace("T", " ")}
+                            </td>
+                            <td className=" border p-1  ">{it.s32}</td>
+                            <td className=" border p-1  ">{it.s42}</td>
+                            <td className=" border p-1  ">{it.team}</td>
+                            <td className=" border p-1  ">{it.fuzeren}</td>
+                          </tr>
+                        )
+                    )}
+              </table>
+            </div>
+          </div> */}
         </div>
       )}
     </Card>
