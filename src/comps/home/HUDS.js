@@ -804,58 +804,13 @@ export function HUDGestionSacs() {
     loadData();
   }, []);
 
-  //const [stockCont, setStockCont] = useState([]);
-  /* const [stockProd, setStockProd] = useState([]);
-  const [stockCont, setStockCont] = useState([]);
-  async function loadData() {
-    set_no_data(false);
-    setloading(true);
-    const stockCont = await SB.LoadAllItems(TABLES_NAMES.DAIZI_JIZHUANGXIANG);
-    const stockProd = await SB.LoadAllItems(TABLES_NAMES.DAIZI_SHENGCHAN);
-    setStockProd(stockProd);
-    setStockCont(stockCont);
-
-    console.log(stockCont);
-    console.log(stockProd);
-
-    const stockContLen = stockCont.length;
-    const stockProdLen = stockProd.length;
-
-    // console.log("stockContLen", stockContLen, "stockProdLen", stockProdLen);
-
-    if (stockContLen === 0 || stockProdLen === 0) {
-      setloading(false);
-      set_no_data(true);
-      return;
-    }
-
-    const stockContLastEl = stockCont[stockContLen - 1];
-    const stockProdLastEl = stockProd[stockProdLen - 1];
-
-    const { stock32, stock42 } = stockContLastEl;
-    const { rest32, rest42 } = stockProdLastEl;
-
-    console.log(stockProdLastEl);
-
-    setdata({
-      cont: { s32: stock32, s42: stock42 },
-      prod: { s32: rest32, s42: rest42 },
-    });
-
-    setloading(false);
-  } */
-
   async function loadData() {
     setloading(true);
     const sacs_cont = await SB.LoadAllItems(TABLES_NAMES.SACS_CONTAINER);
-    // set_trans_cont(sacs_cont);
-    // console.log("sacs cont", sacs_cont);
 
     const sacs_exit_cont = await SB.LoadAllItems(
       TABLES_NAMES.SACS_EXIT_CONTAINER
     );
-    // set_trans_exit_cont(sacs_exit_cont);
-    // console.log("sacs exit cont", sacs_exit_cont);
 
     let last_rec = sacs_cont[sacs_cont.length - 1];
 
@@ -864,8 +819,6 @@ export function HUDGestionSacs() {
     }
 
     const sacs_prod = await SB.LoadAllItems(TABLES_NAMES.SACS_PRODUCTION);
-    //set_trans_prod(sacs_prod);
-    //console.log("sacs prod", sacs_prod);
 
     last_rec = sacs_prod[sacs_prod.length - 1];
 
