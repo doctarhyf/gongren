@@ -198,8 +198,7 @@ export default function SacsContainer({
               {GetTransForTokensArray(LANG_TOKENS.DATE, user.lang) + " 32.5N"}
             </th>
             <th className="p1 border border-gray-900 dark:border-white p-1 ">
-              {GetTransForTokensArray(LANG_TOKENS.FUZEREN, user.lang) +
-                " 32.5N"}
+              {GetTransForTokensArray(LANG_TOKENS.FUZEREN, user.lang)}
             </th>
           </thead>
           <tbody>
