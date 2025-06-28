@@ -174,39 +174,39 @@ export default function SacsContainer({
       <div className=" container  overflow-auto  mx-auto ">
         <table className=" table-auto w-full  ">
           <thead>
-            <th className="p1 border border-gray-900 dark:border-white p-1 ">
+            <th className=" border border-gray-900 dark:border-white p-2 ">
               {GetTransForTokensArray(LANG_TOKENS.TEAM, user.lang)}
             </th>
-            <th className="p1 border border-gray-900 dark:border-white p-1 ">
+            <th className=" border border-gray-900 dark:border-white p-2 ">
               {GetTransForTokensArray(LANG_TOKENS.DELIVERED_BAGS, user.lang) +
                 " 32.5N"}
             </th>
-            <th className="p1 border border-gray-900 dark:border-white p-1 ">
+            <th className=" border border-gray-900 dark:border-white p-2 ">
               {GetTransForTokensArray(LANG_TOKENS.DELIVERED_BAGS, user.lang) +
                 " 42.5N"}
             </th>
-            <th className="p1 border border-gray-900 dark:border-white p-1 ">
+            <th className=" border border-gray-900 dark:border-white p-2 ">
               {GetTransForTokensArray(LANG_TOKENS.STOCK, user.lang) + " 32.5N"}
             </th>
-            <th className="p1 border border-gray-900 dark:border-white p-1 ">
+            <th className=" border border-gray-900 dark:border-white p-2 ">
               {GetTransForTokensArray(LANG_TOKENS.STOCK, user.lang) + " 42.5N"}
             </th>
-            <th className="p1 border border-gray-900 dark:border-white p-1 ">
+            <th className=" border border-gray-900 dark:border-white p-2 ">
               {GetTransForTokensArray(LANG_TOKENS.PANDIAN, user.lang)}
             </th>
-            <th className="p1 border border-gray-900 dark:border-white p-1 ">
+            <th className=" border border-gray-900 dark:border-white p-2 ">
               {GetTransForTokensArray(LANG_TOKENS.DATE, user.lang) + " 32.5N"}
             </th>
-            <th className="p1 border border-gray-900 dark:border-white p-1 ">
+            <th className=" border border-gray-900 dark:border-white p-2 ">
               {GetTransForTokensArray(LANG_TOKENS.FUZEREN, user.lang)}
             </th>
           </thead>
           <tbody>
             {showInput && (
               <tr>
-                <td className="p1 border border-gray-900">
+                <td className=" border border-gray-900">
                   <select
-                    className=" border p-1 "
+                    className=" border p-2 "
                     value={data.team}
                     onChange={(e) =>
                       setdata((old) => ({ ...old, team: e.target.value }))
@@ -217,7 +217,7 @@ export default function SacsContainer({
                     ))}
                   </select>
                 </td>
-                <td className="p1 border border-gray-900">
+                <td className=" border border-gray-900">
                   <input
                     className=" w-16 "
                     value={data.s32}
@@ -230,7 +230,7 @@ export default function SacsContainer({
                     }
                   />
                 </td>
-                <td className="p1 border border-gray-900">
+                <td className=" border border-gray-900">
                   <input
                     className=" w-16"
                     value={data.s42}
@@ -244,9 +244,9 @@ export default function SacsContainer({
                   />
                 </td>
 
-                <td className="p1 border border-gray-900"> - </td>
-                <td className="p1 border border-gray-900"> - </td>
-                <td className="p1 border border-gray-900">
+                <td className=" border border-gray-900"> - </td>
+                <td className=" border border-gray-900"> - </td>
+                <td className=" border border-gray-900">
                   {" "}
                   <input
                     type="checkbox"
@@ -256,7 +256,7 @@ export default function SacsContainer({
                     }
                   />{" "}
                 </td>
-                <td className="p1 border border-gray-900">
+                <td className=" border border-gray-900">
                   <input
                     type="datetime-local"
                     value={data.date_time}
@@ -270,7 +270,7 @@ export default function SacsContainer({
                     }}
                   />
                 </td>
-                <td className="p1 border border-gray-900">
+                <td className=" border border-gray-900">
                   {
                     <select
                       value={data.fuzeren}
@@ -294,30 +294,30 @@ export default function SacsContainer({
                     showInput ? "opacity-20" : ""
                   } hover:bg-orange-900/20 cursor-pointer   `}
                 >
-                  <td className="p1 border border-gray-900 dark:border-white p-1 ">
+                  <td className=" border border-gray-900 dark:border-white p-2 ">
                     {t.team}
                   </td>
-                  <td className="p1 border border-gray-900 dark:border-white p-1 ">
+                  <td className=" border border-gray-900 dark:border-white p-2 ">
                     {t.s32}
                   </td>
-                  <td className="p1 border border-gray-900 dark:border-white p-1 ">
+                  <td className=" border border-gray-900 dark:border-white p-2 ">
                     {t.s42}
                   </td>
-                  <td className="p1 border border-gray-900 dark:border-white p-1 ">
+                  <td className=" border border-gray-900 dark:border-white p-2 ">
                     {t.stock32}
                   </td>
-                  <td className="p1 border border-gray-900 dark:border-white p-1 ">
+                  <td className=" border border-gray-900 dark:border-white p-2 ">
                     {t.stock42}
                   </td>
-                  <td className="p1 border border-gray-900 dark:border-white p-1 ">
+                  <td className=" border border-gray-900 dark:border-white p-2 ">
                     {t.stockres
                       ? GetTransForTokensArray(LANG_TOKENS.YES, user.lang)
                       : GetTransForTokensArray(LANG_TOKENS.NO, user.lang)}
                   </td>
-                  <td className="p1 border border-gray-900 dark:border-white p-1 ">
+                  <td className=" border border-gray-900 dark:border-white p-2 ">
                     {formatDateTime(t.date_time)}
                   </td>
-                  <td className="p1 border border-gray-900 dark:border-white p-1 ">
+                  <td className=" border border-gray-900 dark:border-white p-2 ">
                     {GetTransForTokensArray(LANG_TOKENS.FUZEREN, user.lang)}
                   </td>
                 </tr>
