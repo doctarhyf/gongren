@@ -210,7 +210,7 @@ export default function SacsProduction({
             />
             <ButtonPrint
               icon={reload}
-              title={GetTransForTokensArray(LANG_TOKENS.RELOAD)}
+              title={GetTransForTokensArray(LANG_TOKENS.RELOAD, user.lang)}
               onClick={onReload}
             />
           </div>

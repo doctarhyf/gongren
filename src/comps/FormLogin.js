@@ -26,7 +26,7 @@ function MyForm({
   ///console.log("host: ", host);
   ///console.log("pathname: ", pathname);
   return (
-    <div className="mx-auto   flex flex-col space-y-4    md:card md:bg-base-100 md:w-96 md:p-2 md:shadow-xl ">
+    <div className="mx-auto w-full dark:bg-transparent dark:from-transparent dark:border-transparent dark:to-transparent bg-gradient-to-br from-white to-black/5 border-slate-200 md:border   flex flex-col space-y-4    md:card md:bg-base-100 md:w-96 md:p-2 md:shadow-xl ">
       <img src={LOGO} width={200} className=" bg-white " />
       <div>{GetTransForTokensArray(LANG_TOKENS.EMPLOYE_ID, lang)}</div>
       <input
