@@ -32,7 +32,7 @@ export default function SacsProduction({
   onAddTrans,
   stock,
   onResetStock,
-  onRecalculate,
+  onReload,
 }) {
   const [, , user] = useContext(UserContext);
   const [adjust, set_adjust] = useState(0);
@@ -210,8 +210,8 @@ export default function SacsProduction({
             />
             <ButtonPrint
               icon={reload}
-              title={"RECALCULATE"}
-              onClick={(e) => onRecalculate(trans)}
+              title={GetTransForTokensArray(LANG_TOKENS.RELOAD)}
+              onClick={onReload}
             />
           </div>
         )}

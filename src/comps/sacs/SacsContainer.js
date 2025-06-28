@@ -36,7 +36,7 @@ export default function SacsContainer({
   onAddTrans,
   stock,
   onResetStock,
-  onRecalculate,
+  onReload,
 }) {
   const [, , user] = useContext(UserContext);
   const [showInput, setShowInput] = useState(false);
@@ -150,8 +150,8 @@ export default function SacsContainer({
 
             <ButtonPrint
               icon={reload}
-              title={"RECALCULATE"}
-              onClick={(e) => onRecalculate(trans)}
+              title={GetTransForTokensArray(LANG_TOKENS.RELOAD, user.lang)}
+              onClick={onReload}
             />
           </div>
         )}
