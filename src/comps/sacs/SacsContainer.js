@@ -206,7 +206,7 @@ export default function SacsContainer({
               {GetTransForTokensArray(LANG_TOKENS.PANDIAN, user.lang)}
             </th>
             <th className=" border border-gray-900 dark:border-white p-2 ">
-              {GetTransForTokensArray(LANG_TOKENS.DATE, user.lang) + " 32.5N"}
+              {GetTransForTokensArray(LANG_TOKENS.DATE, user.lang)}
             </th>
             <th className=" border border-gray-900 dark:border-white p-2 ">
               {GetTransForTokensArray(LANG_TOKENS.FUZEREN, user.lang)}
