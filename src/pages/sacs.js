@@ -1,42 +1,18 @@
-import React, {
-  createContext,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
-import autoTable from "jspdf-autotable";
-import jsPDF from "jspdf";
-import useDataLoader from "../hooks/useDataLoader";
-import { TABLES_NAMES } from "../helpers/sb.config";
-import {
-  CLASS_BTN,
-  CLASS_INPUT_TEXT,
-  CLASS_SELECT,
-  CLASS_TD,
-  STOCK_RESET_PWD,
-  STOCK_TYPE,
-  USER_LEVEL,
-  dateFormatter,
-} from "../helpers/flow";
-import { UserContext } from "../App";
-import ButtonPrint from "../comps/ButtonPrint";
-import { _, createHeaders, formatFrenchDate } from "../helpers/func";
-import * as SB from "../helpers/sb";
+import { useEffect, useState } from "react";
 import Loading from "../comps/Loading";
-import { doc } from "../helpers/funcs_print";
 import TabCont from "../comps/TabCont";
-import SacsCalc from "../comps/SacsCalc";
+import { STOCK_TYPE } from "../helpers/flow";
+import * as SB from "../helpers/sb";
+import { TABLES_NAMES } from "../helpers/sb.config";
 
-import {
-  SACS_SECTIONS,
-  TRANSACTION_TYPE,
-  SACS_CONTAINER_OPERATION_TYPE,
-} from "../helpers/flow";
-import Stock from "../comps/sacs/Stock";
-import SacsProduction from "../comps/sacs/SacsProduction";
 import SacsContainer from "../comps/sacs/SacsContainer";
 import SacsExitContainer from "../comps/sacs/SacsExitContainer";
+import SacsProduction from "../comps/sacs/SacsProduction";
+import {
+  SACS_CONTAINER_OPERATION_TYPE,
+  SACS_SECTIONS,
+  TRANSACTION_TYPE,
+} from "../helpers/flow";
 
 const SAVING_TO_SB = true;
 
@@ -60,7 +36,11 @@ export default function Sacs() {
 
   async function loadData() {
     setloading(true);
-    const sacs_cont = await SB.LoadAllItems(TABLES_NAMES.SACS_CONTAINER);
+    const sacs_cont = await SB.LoadAllItems(
+      TABLES_NAMES.SUIVI_SACS_CONTAINER,
+      "created_at",
+      true
+    );
     set_trans_cont(sacs_cont);
     console.log("sacs cont", sacs_cont);
 
@@ -74,9 +54,20 @@ export default function Sacs() {
 
     if (last_rec) {
       set_stock_cont({ s32: last_rec.stock32, s42: last_rec.stock42 });
+
+      /*  let stc = { s32: 0, s42: 0 };
+    let sc = await SB.LoadLastItem(TABLES_NAMES.SACS_STOCK_CONTAINER);
+    if (sc !== undefined) {
+      set_stock_cont(stc);
+      console.log("STC => ", stc);
+    } */
     }
 
-    const sacs_prod = await SB.LoadAllItems(TABLES_NAMES.SACS_PRODUCTION);
+    const sacs_prod = await SB.LoadAllItems(
+      TABLES_NAMES.SACS_PRODUCTION,
+      "created_at",
+      true
+    );
     set_trans_prod(sacs_prod);
     console.log("sacs prod", sacs_prod);
 
@@ -111,7 +102,7 @@ export default function Sacs() {
       const new_trans_cont = { ...data, stock32: news32, stock42: news42 };
       set_trans_cont((old) => [...old, new_trans_cont]);
       const pr_trans_cont = SB.InsertItem(
-        TABLES_NAMES.SACS_CONTAINER,
+        TABLES_NAMES.SUIVI_SACS_CONTAINER,
         new_trans_cont
       );
 
@@ -167,15 +158,60 @@ export default function Sacs() {
         new_stock_prod
       );
 
-      console.log("data", data);
-      console.log("stock_cont", stock_cont);
-
       const { sortis32, sortis42 } = data;
       const { s32, s42 } = stock_cont;
 
       const new_stock_container = { s32: s32 - sortis32, s42: s42 - sortis42 };
 
-      console.log("news", new_stock_container);
+      //////////////////////////////////// suivi sacs cont
+
+      /*  const new_trans_cont = {
+        ...data,
+        stock32: new_stock_container.s32,
+        stock42: new_stock_container.s42,
+      }; */
+
+      /*
+{
+    "team": "A",
+    "sortis32": 0,
+    "tonnage32": 0,
+    "sortis42": 5000,
+    "tonnage42": 0,
+    "dechires32": 0,
+    "dechires42": 0,
+    "utilises32": 0,
+    "utilises42": 0,
+    "date_time": "2025-07-04T23:48",
+    "restants32": 0,
+    "restants42": 205042,
+    "stock32": 0,
+    "stock42": 155000
+}
+      */
+
+      const suivi = {
+        op: SACS_CONTAINER_OPERATION_TYPE.OUT,
+        s32: data.sortis32,
+        s42: data.sortis42,
+        team: data.team,
+        stock32: new_stock_container.s32,
+        stock42: new_stock_container.s42,
+        stockres: false,
+        date_time: data.date_time,
+        fuzeren: "fuzeren",
+      };
+
+      console.log("new stock container => ", suivi);
+
+      //return;
+
+      /////////////////////////////////////
+      // set_trans_cont((old) => [...old, new_trans_cont]);
+      const pr_trans_cont = SB.InsertItem(
+        TABLES_NAMES.SUIVI_SACS_CONTAINER,
+        suivi
+      );
 
       set_stock_cont(new_stock_container);
 
@@ -189,10 +225,9 @@ export default function Sacs() {
         pr_trans_prod,
         pr_stock_prod,
         pr_stock_cont,
+        pr_trans_cont,
       ]);
       const success = res.every((el) => el === null);
-
-      //console.log("res prod insert", res);
 
       setloading(false);
 
@@ -200,7 +235,6 @@ export default function Sacs() {
         alert("Data saved!");
         console.log(res);
       } else {
-        //console.log(res);
         alert(`Error saving data! \n ${JSON.stringify(res)}`);
       }
     }
@@ -241,9 +275,9 @@ export default function Sacs() {
                 onReload={onReload}
               />
             )}
-            {/*  {SACS_SECTIONS.EXIT_CONTAINER.label === curtab[1].label && (
+            {SACS_SECTIONS.EXIT_CONTAINER.label === curtab[1].label && (
               <SacsExitContainer trans={trans_exit_cont} />
-            )} */}
+            )}
             {SACS_SECTIONS.CONTAINER.label === curtab[1].label && (
               <SacsContainer
                 trans={trans_cont}

@@ -182,13 +182,14 @@ export const SACS_SECTIONS = {
     "fr-FR": "Gestions Sacs Conteneur",
     active: true,
   },
-  /*  EXIT_CONTAINER: {
+  EXIT_CONTAINER: {
     label: "Sacs Exit Container",
     access_code: ACCESS_CODES.TAB_EXIT_CONTAINER,
     "zh-CN": "出口集装箱",
     "en-US": "Exit Container",
     "fr-FR": "Sortie Conteneur",
-  }, */
+    active: false,
+  },
   PRODUCTION: {
     label: "Production",
     access_code: ACCESS_CODES.TAB_SAC_PROD,

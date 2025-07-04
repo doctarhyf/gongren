@@ -38,6 +38,8 @@ export const LANG_TOKENS = {
     "当前值班团队信息",
     "Information sur l'équipe présentement en poste",
   ],
+  BAGS_OUT: ["BAGS OUT", "袋子出库", "SORTIE SACS"],
+  BAGS_IN: ["BAGS IN", "袋子进库", "ENTREE SACS"],
   CURRENT_SHIFT_TIME: [
     "Current Shift Time",
     "当前班次时间",

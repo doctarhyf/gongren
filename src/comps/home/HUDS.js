@@ -806,7 +806,7 @@ export function HUDGestionSacs() {
 
   async function loadData() {
     setloading(true);
-    const sacs_cont = await SB.LoadAllItems(TABLES_NAMES.SACS_CONTAINER);
+    const sacs_cont = await SB.LoadAllItems(TABLES_NAMES.SUIVI_SACS_CONTAINER);
 
     const sacs_exit_cont = await SB.LoadAllItems(
       TABLES_NAMES.SACS_EXIT_CONTAINER

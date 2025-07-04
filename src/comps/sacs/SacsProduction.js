@@ -1,31 +1,22 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { UserContext } from "../../App";
+import { STOCK_TYPE } from "../../helpers/flow";
 import {
-  SACS_CONTAINER_OPERATION_TYPE,
-  STOCK_TYPE,
-  TRANSACTION_TYPE,
-} from "../../helpers/flow";
-import Stock from "./Stock";
-import ButtonPrint from "../ButtonPrint";
-import {
-  formatCreatedAt,
   formatDateForDatetimeLocal,
   formatDateTime,
-  formatFrenchDate,
   GenerateExcelData,
-  printPDF1,
 } from "../../helpers/func";
-import { useReactToPrint } from "react-to-print";
-import jsPDF from "jspdf";
 import {
   GetTransForTokensArray,
   LANG_TOKENS,
 } from "../../helpers/lang_strings";
-import { UserContext } from "../../App";
 import add from "../../img/delivery.png";
-import save from "../../img/save.png";
 import cancel from "../../img/eraser.png";
-import Excelexport from "../Excelexport";
 import reload from "../../img/reload.png";
+import save from "../../img/save.png";
+import ButtonPrint from "../ButtonPrint";
+import Excelexport from "../Excelexport";
+import Stock from "./Stock";
 
 export default function SacsProduction({
   trans,
@@ -50,7 +41,7 @@ export default function SacsProduction({
     utilises42: 0,
     date_time: formatDateForDatetimeLocal(new Date()),
   });
-
+  const [rdk, setrdk] = useState(0);
   const [restants, set_restants] = useState({ s32: 0, s42: 0 });
 
   const datefrec = trans.length > 0;
@@ -117,6 +108,7 @@ export default function SacsProduction({
       utilises32: 0,
       utilises42: 0,
     });
+    setrdk(Math.random());
   }
 
   function TranslateColsTitles(data) {
@@ -183,6 +175,7 @@ export default function SacsProduction({
   return (
     <div className=" pb-8 ">
       <Stock
+        key={rdk}
         id={STOCK_TYPE.PRODUCTION}
         stock={stock}
         label={GetTransForTokensArray(LANG_TOKENS.PROD_REST, user.lang)}
@@ -200,7 +193,6 @@ export default function SacsProduction({
               onClick={(e) => setShowInput(true)}
               icon={add}
             />
-            {/*  <ButtonPrint onClick={(e) => print(trans)} /> */}
             <Excelexport
               excelData={GenerateExcelData(TranslateColsTitles(trans))}
               fileName={GetTransForTokensArray(
@@ -235,9 +227,6 @@ export default function SacsProduction({
       <div className=" container  overflow-auto mx-auto ">
         <table className="table-auto w-full  ">
           <thead>
-            {/*  <th className="p1 border border-gray-900 dark:border-white p-1 ">
-              id
-            </th> */}
             <th className="p1 border border-gray-900 dark:border-white p-1 ">
               {GetTransForTokensArray(LANG_TOKENS.TEAM, user.lang)}
             </th>

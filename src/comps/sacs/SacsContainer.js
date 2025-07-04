@@ -1,35 +1,27 @@
 import { useContext, useState } from "react";
+import { UserContext } from "../../App";
 import {
   DAIZI_FUZEREN,
   SACS_CONTAINER_OPERATION_TYPE,
   STOCK_TYPE,
   TRANSACTION_TYPE,
 } from "../../helpers/flow";
-import Stock from "./Stock";
-import ButtonPrint from "../ButtonPrint";
 import {
-  formatCreatedAt,
   formatDateForDatetimeLocal,
   formatDateTime,
-  formatFrenchDate,
   GenerateExcelData,
 } from "../../helpers/func";
-import jsPDF from "jspdf";
 import {
   GetTransForTokensArray,
   LANG_TOKENS,
 } from "../../helpers/lang_strings";
-import {
-  createHeaders,
-  GetRandomArray,
-  transformDataForPrint,
-} from "../../helpers/funcs_print";
-import { UserContext } from "../../App";
-import save from "../../img/save.png";
-import cancel from "../../img/eraser.png";
-import Excelexport from "../Excelexport";
 import add from "../../img/add.png";
+import cancel from "../../img/eraser.png";
 import reload from "../../img/reload.png";
+import save from "../../img/save.png";
+import ButtonPrint from "../ButtonPrint";
+import Excelexport from "../Excelexport";
+import Stock from "./Stock";
 
 export default function SacsContainer({
   trans,
@@ -38,6 +30,7 @@ export default function SacsContainer({
   onResetStock,
   onReload,
 }) {
+  const [rdk, setrdk] = useState(0);
   const [, , user] = useContext(UserContext);
   const [showInput, setShowInput] = useState(false);
   const [data, setdata] = useState({
@@ -73,7 +66,7 @@ export default function SacsContainer({
     }
   );
 
-  function onSaveTrans() {
+  function onSaveTrans(op) {
     if (data.s32 === undefined || data.s42 === undefined) {
       alert("Please input sacs amount!");
       return;
@@ -84,10 +77,11 @@ export default function SacsContainer({
     setdata({
       //id: 0,
       team: "A",
-      op: SACS_CONTAINER_OPERATION_TYPE.IN,
+      op: op,
       s32: 0,
       s42: 0,
     });
+    setrdk(Math.random());
   }
 
   function TranslateColsData(data) {
@@ -127,6 +121,7 @@ export default function SacsContainer({
   return (
     <div className=" pb-8    ">
       <Stock
+        key={rdk}
         id={STOCK_TYPE.CONTAINER}
         stock={stock}
         label={GetTransForTokensArray(LANG_TOKENS.CONTAINER_REST, user.lang)}
@@ -163,6 +158,17 @@ export default function SacsContainer({
               title={GetTransForTokensArray(LANG_TOKENS.SAVE, user.lang)}
               icon={save}
             />
+            {/*  <ButtonPrint
+              icon={enter}
+              title={GetTransForTokensArray(LANG_TOKENS.BAGS_IN)}
+              onClick={(e) => onSaveTrans(SACS_CONTAINER_OPERATION_TYPE.IN)}
+            />
+
+            <ButtonPrint
+              icon={exit}
+              title={GetTransForTokensArray(LANG_TOKENS.BAGS_OUT)}
+              onClick={(e) => onSaveTrans(SACS_CONTAINER_OPERATION_TYPE.OUT)}
+            /> */}
             <ButtonPrint
               onClick={(e) => setShowInput(false)}
               title={GetTransForTokensArray(LANG_TOKENS.CANCEL, user.lang)}
@@ -177,6 +183,11 @@ export default function SacsContainer({
             <th className=" border border-gray-900 dark:border-white p-2 ">
               {GetTransForTokensArray(LANG_TOKENS.TEAM, user.lang)}
             </th>
+            {!showInput && (
+              <th className=" border border-gray-900 dark:border-white p-2 ">
+                {GetTransForTokensArray(LANG_TOKENS.OPE, user.lang)}
+              </th>
+            )}
             <th className=" border border-gray-900 dark:border-white p-2 ">
               {GetTransForTokensArray(LANG_TOKENS.DELIVERED_BAGS, user.lang) +
                 " 32.5N"}
@@ -296,6 +307,9 @@ export default function SacsContainer({
                 >
                   <td className=" border border-gray-900 dark:border-white p-2 ">
                     {t.team}
+                  </td>
+                  <td className=" border border-gray-900 dark:border-white p-2 ">
+                    {t.op}
                   </td>
                   <td className=" border border-gray-900 dark:border-white p-2 ">
                     {t.s32}
