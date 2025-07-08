@@ -12,7 +12,7 @@ import LanguageChooser from "./LanguageChooser";
 import Christmas from "./Christmas";
 import Loading from "./Loading";
 
-const SERVER_LOCKED = true;
+const SERVER_LOCKED = false;
 
 function MyForm({
   lang,
