@@ -10,6 +10,9 @@ import {
 import LanguageChooser from "./LanguageChooser";
 
 import Christmas from "./Christmas";
+import Loading from "./Loading";
+
+const SERVER_LOCKED = true;
 
 function MyForm({
   lang,
@@ -61,6 +64,16 @@ function MyForm({
           >
             {GetTransForTokensArray(LANG_TOKENS.LOGIN, lang)}
           </button>
+        )}
+
+        {SERVER_LOCKED && (
+          <div className=" text-center p-2 text-sm  my-2 border border-emerald-700 bg-emerald-900 text-emerald-400 rounded-md  ">
+            {GetTransForTokensArray(LANG_TOKENS.SERVER_RESTART_MESSAGE, lang)}{" "}
+            <span>
+              {" "}
+              <Loading isLoading={true} />
+            </span>
+          </div>
         )}
       </div>
       <dialog id="my_modal_5" className="modal modal-bottom sm:modal-middle">

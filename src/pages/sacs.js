@@ -163,33 +163,6 @@ export default function Sacs() {
 
       const new_stock_container = { s32: s32 - sortis32, s42: s42 - sortis42 };
 
-      //////////////////////////////////// suivi sacs cont
-
-      /*  const new_trans_cont = {
-        ...data,
-        stock32: new_stock_container.s32,
-        stock42: new_stock_container.s42,
-      }; */
-
-      /*
-{
-    "team": "A",
-    "sortis32": 0,
-    "tonnage32": 0,
-    "sortis42": 5000,
-    "tonnage42": 0,
-    "dechires32": 0,
-    "dechires42": 0,
-    "utilises32": 0,
-    "utilises42": 0,
-    "date_time": "2025-07-04T23:48",
-    "restants32": 0,
-    "restants42": 205042,
-    "stock32": 0,
-    "stock42": 155000
-}
-      */
-
       const suivi = {
         op: SACS_CONTAINER_OPERATION_TYPE.OUT,
         s32: data.sortis32,
@@ -202,12 +175,8 @@ export default function Sacs() {
         fuzeren: "fuzeren",
       };
 
-      console.log("new stock container => ", suivi);
+      //console.log("new stock container => ", suivi);
 
-      //return;
-
-      /////////////////////////////////////
-      // set_trans_cont((old) => [...old, new_trans_cont]);
       const pr_trans_cont = SB.InsertItem(
         TABLES_NAMES.SUIVI_SACS_CONTAINER,
         suivi
