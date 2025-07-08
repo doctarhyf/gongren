@@ -7,8 +7,8 @@ export const LANG_TOKENS = {
   "IN/OUT": ["IN/OUT", "进/出", "SORTIE/ENTREE"],
   SERVER_RESTART_MESSAGE: [
     "The new subscription is being activated, the server will be operational shortly.",
-    "Le nouvel abonnement est en cours d'activation, le serveur sera opérationnel incessamment.",
     "新订阅正在激活中，服务器将很快恢复运行。",
+    "Le nouvel abonnement est en cours d'activation, le serveur sera opérationnel incessamment.",
   ],
   RELOAD: ["REFRESH", "刷新", "ACTUALISER"],
   PRINT_TOTALS: ["PRINT TOTALS", "打印总数", "IMPRIMER TOTAL"],
