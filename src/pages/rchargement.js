@@ -581,7 +581,7 @@ export default function RapportChargement() {
               </div>
             )}
           </div>
-          <div className=" flex justify-between  sm:justify-center  gap-2 my-2   ">
+          <div className=" flex flex-col md:flex-row justify-between  sm:justify-center  gap-2 my-2   ">
             {!adding && UserHasAccessCode(user, ACCESS_CODES.ADD_NEW_LOAD) && (
               <ButtonPrint
                 icon={plus}
@@ -650,7 +650,7 @@ export default function RapportChargement() {
               />
             ) : (
               <>
-                <div className=" flex justify-center py-2 space-x-2  ">
+                <div className=" flex flex-col md:flex-row justify-center py-2 space-x-2  ">
                   {
                     <ButtonPrint
                       icon={pdf}

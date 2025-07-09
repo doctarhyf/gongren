@@ -155,7 +155,9 @@ export default function Home() {
 
       <div className=" container flex gap-4 my-4 flex-col md:flex-row flex-wrap ">
         <HUDMonthProgress loads={loads} date={date} />
-        <HUDGestionSacs />
+        {UserHasAccessCode(user, ACCESS_CODES.PREVIEW_BAGS_MANAGEMENT) && (
+          <HUDGestionSacs />
+        )}
 
         {(UserHasAccessCode(user, ACCESS_CODES.CAN_SEE_HOME_PAGE_BONUS_HUD) ||
           user.poste === "INT") && (
