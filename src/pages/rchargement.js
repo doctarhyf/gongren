@@ -650,7 +650,7 @@ export default function RapportChargement() {
               />
             ) : (
               <>
-                <div className=" flex flex-col md:flex-row justify-center py-2 space-x-2  ">
+                <div className=" flex flex-col md:flex-row items-center md:items-baseline  justify-center py-2 space-x-2  ">
                   {
                     <ButtonPrint
                       icon={pdf}
@@ -693,34 +693,28 @@ export default function RapportChargement() {
                     </>
                   )}
 
-                  {
-                    // UserHasAccessCode(user, ACCESS_CODES.ROOT)
-
-                    true && (
-                      <ButtonPrint
-                        icon={eye}
-                        title={
-                          showTotalsByTeam
-                            ? GetTransForTokensArray(
-                                LANG_TOKENS.DAILY_DATA,
-                                user.lang
-                              )
-                            : GetTransForTokensArray(
-                                LANG_TOKENS.TOT_BY_TEAM,
-                                user.lang
-                              )
-                          /* LANG_TOKENS.PRINT_REPPORT[
+                  <ButtonPrint
+                    icon={eye}
+                    title={
+                      showTotalsByTeam
+                        ? GetTransForTokensArray(
+                            LANG_TOKENS.DAILY_DATA,
+                            user.lang
+                          )
+                        : GetTransForTokensArray(
+                            LANG_TOKENS.TOT_BY_TEAM,
+                            user.lang
+                          )
+                      /* LANG_TOKENS.PRINT_REPPORT[
                         GetLangIndexByLangCode(user.lang)
                       ] */
-                        }
-                        onClick={(e) =>
-                          showTotalsByTeam
-                            ? setShowTotalsByTeam(false)
-                            : setShowTotalsByTeam(true)
-                        }
-                      />
-                    )
-                  }
+                    }
+                    onClick={(e) =>
+                      showTotalsByTeam
+                        ? setShowTotalsByTeam(false)
+                        : setShowTotalsByTeam(true)
+                    }
+                  />
                 </div>
 
                 {showTotalsByTeam ? (

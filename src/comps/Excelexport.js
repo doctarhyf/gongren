@@ -78,7 +78,7 @@ export default function Excelexport({
   };
 
   return (
-    <div className=" w-full ">
+    <div className="  ">
       <div className={` ${excelData ? "block" : "hidden"} `}>
         <ButtonPrint
           icon={excel_icon}
