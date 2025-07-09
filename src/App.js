@@ -125,11 +125,13 @@ function App() {
             console.error("Error updating lang", e)
       );
 
-      const upd = await SB.InsertItem(TABLES_NAMES.OPERATIONS_LOGS, {
-        matricule: nuser.matricule,
+      const matricule = `${nuser.matricule}, (${nuser.prenom} ${nuser.nom})`;
+
+      const log = await SB.InsertItem(TABLES_NAMES.OPERATIONS_LOGS, {
+        matricule: matricule,
         session: nuser.session,
       });
-      console.log("upd => ", upd);
+      console.log("upd => ", log);
 
       setCookie("u", nuser, {
         expires: new Date(new Date().getTime() + 3600 * 10 * 10), //Expires after 10 minuties of inactivity

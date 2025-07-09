@@ -1255,16 +1255,17 @@ export function HUDOpsLogs() {
   }, []);
 
   async function loadData() {
-    const d = await SB.LoadLastItems(TABLES_NAMES.OPERATIONS_LOGS, 8);
+    const d = await SB.LoadLastItems(TABLES_NAMES.OPERATIONS_LOGS, 10);
 
     setlogs(d);
   }
 
   return (
-    <Card id={5} title={"Users Logs"} desc={"Users login and logouts logs"}>
+    <Card id={9} title={"Users Logs"} desc={"Users login and logouts logs"}>
       <table class="table-auto w-full text-sm ">
         <thead>
           <tr>
+            <th className=" p-1 border  border-white/20  ">No</th>
             <th className=" p-1 border  border-white/20  ">Date</th>
             <th className=" p-1 border  border-white/20  ">Matricule</th>
             <th className=" p-1 border  border-white/20  ">Logged In</th>
@@ -1276,8 +1277,9 @@ export function HUDOpsLogs() {
               <td colSpan={3}>No Logos</td>
             </tr>
           ) : (
-            logs.map((it) => (
+            logs.map((it, i) => (
               <tr>
+                <td className=" p-1 border  border-white/20  ">{i + 1}</td>
                 <td className=" p-1 border  border-white/20  ">
                   {formatCreatedAt(it.created_at)}
                 </td>
@@ -1285,7 +1287,15 @@ export function HUDOpsLogs() {
                   {it.matricule}
                 </td>
                 <td className=" p-1 border  border-white/20  ">
-                  {it.logged_out ? "true" : "false"}
+                  {it.logged_out ? (
+                    <span className=" bg-emerald-900 border-emerald-500 text-emerald-500 text-xs p-1 rounded-md  ">
+                      TRUE
+                    </span>
+                  ) : (
+                    <span className=" bg-red-900 border-red-500 text-red-500  p-1 text-xs rounded-md  ">
+                      FALSE
+                    </span>
+                  )}
                 </td>
               </tr>
             ))
