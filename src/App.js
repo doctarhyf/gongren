@@ -5,12 +5,17 @@ import FormLogin from "./comps/FormLogin";
 import Loading from "./comps/Loading";
 import GongRen from "./GongRen";
 import { ACCESS_CODES, CLASS_BTN, LOG_OPERATION } from "./helpers/flow";
-import { UpdateOperationsLogs, UserHasAccessCode } from "./helpers/func";
+import {
+  updateLoggedOut,
+  UpdateOperationsLogs,
+  UserHasAccessCode,
+} from "./helpers/func";
 import * as SB from "./helpers/sb";
 import { supabase, TABLES_NAMES } from "./helpers/sb.config";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { GetTransForTokensArray, LANG_TOKENS } from "./helpers/lang_strings";
 import FormPasswordUpdate from "./comps/FormPasswordUpdate";
+import { v4 as uuidv4 } from "uuid";
 
 export const UserContext = createContext();
 const queryClient = new QueryClient();
@@ -60,16 +65,9 @@ function App() {
       return;
     }
 
-    /*  ///target
-    const { data: settings, error: settingsError } = await supabase
-      .from(TABLES_NAMES.SETTINGS)
-      .select("*")
-      .single();
-
-    console.log("Site settings : ", settings, "\nError: ", settingsError); */
-
     if (data.length === 1) {
       const nuser = { ...data[0] };
+      nuser.session = uuidv4();
       if (nuser.logged_in && !logoutlogin) {
         setAlreadyLoggedIn(true);
         showModalErrorMessage(
@@ -126,7 +124,13 @@ function App() {
           (e) =>
             console.error("Error updating lang", e)
       );
-      //console.log("res log login ", l);
+
+      const upd = await SB.InsertItem(TABLES_NAMES.OPERATIONS_LOGS, {
+        matricule: nuser.matricule,
+        session: nuser.session,
+      });
+      console.log("upd => ", upd);
+
       setCookie("u", nuser, {
         expires: new Date(new Date().getTime() + 3600 * 10 * 10), //Expires after 10 minuties of inactivity
       });
@@ -150,7 +154,11 @@ function App() {
   }
 
   async function onLogout() {
-    const l = await UpdateOperationsLogs(SB, user, LOG_OPERATION.LOGOUT);
+    // const l = await UpdateOperationsLogs(SB, user, LOG_OPERATION.LOGOUT);
+
+    const loutres = await updateLoggedOut(supabase, user.session);
+
+    console.log("log out res => ", loutres);
 
     const r = await SB.UpdateItem(TABLES_NAMES.AGENTS, {
       ...user,
@@ -225,7 +233,7 @@ function App() {
               </button>
             </div>
           </div>
-          <GongRen user={user} onLogout={onLogout} />
+          <GongRen user={user} onLogout={(e) => onLogout(user)} />
         </div>
       </UserContext.Provider>
     </QueryClientProvider>

@@ -11,7 +11,7 @@ import {
   HUDGreetings,
   HUDMonthProgress,
   HUDMyTeam,
-  // HUDOpsLogs,
+  HUDOpsLogs,
   HUDSacsCalc,
 } from "../comps/home/HUDS";
 import { ACCESS_CODES, POSTES } from "../helpers/flow";
@@ -175,8 +175,8 @@ export default function Home() {
         {/*  <HUDCalculsBons /> */}
         <HUDAgents />
 
-        {/*  {(UserHasAccessCode(user, ACCESS_CODES.ROOT) ||
-          user.poste === "INT") && <HUDOpsLogs />} */}
+        {(UserHasAccessCode(user, ACCESS_CODES.ROOT) ||
+          user.poste === "INT") && <HUDOpsLogs />}
       </div>
       {/* {isSup && <HUDMyTeam user={user} />} */}
       <HUDGreetings user={user} />

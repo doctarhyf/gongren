@@ -24,6 +24,7 @@ import {
   SortLoadsByShiftOfDay,
   UpdateOperationsLogs,
   formatAsMoney,
+  formatCreatedAt,
 } from "../../helpers/func";
 
 import cont from "../../img/contf.png";
@@ -1245,3 +1246,52 @@ const ShiftTeamCard = () => {
     </div>
   );
 };
+
+export function HUDOpsLogs() {
+  const [logs, setlogs] = useState([]);
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  async function loadData() {
+    const d = await SB.LoadLastItems(TABLES_NAMES.OPERATIONS_LOGS, 8);
+
+    setlogs(d);
+  }
+
+  return (
+    <Card id={5} title={"Users Logs"} desc={"Users login and logouts logs"}>
+      <table class="table-auto w-full text-sm ">
+        <thead>
+          <tr>
+            <th className=" p-1 border  border-white/20  ">Date</th>
+            <th className=" p-1 border  border-white/20  ">Matricule</th>
+            <th className=" p-1 border  border-white/20  ">Logged In</th>
+          </tr>
+        </thead>
+        <tbody>
+          {logs.length === 0 ? (
+            <tr>
+              <td colSpan={3}>No Logos</td>
+            </tr>
+          ) : (
+            logs.map((it) => (
+              <tr>
+                <td className=" p-1 border  border-white/20  ">
+                  {formatCreatedAt(it.created_at)}
+                </td>
+                <td className=" p-1 border  border-white/20  ">
+                  {it.matricule}
+                </td>
+                <td className=" p-1 border  border-white/20  ">
+                  {it.logged_out ? "true" : "false"}
+                </td>
+              </tr>
+            ))
+          )}
+        </tbody>
+      </table>
+    </Card>
+  );
+}

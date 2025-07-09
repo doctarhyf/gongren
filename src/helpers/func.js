@@ -444,6 +444,21 @@ export function printPDF1(agents, customTitle) {
   doc.save(`${section}_${equipe}.pdf`);
 }
 
+export async function updateLoggedOut(supabase, sessionId) {
+  const { data, error } = await supabase
+    .from("logs")
+    .update({ logged_out: new Date().toISOString() }) // or use null/true/false depending on your schema
+    .eq("session", sessionId);
+
+  if (error) {
+    console.error("Error updating logged_out:", error);
+    return error;
+  }
+
+  console.log("Update successful:", data);
+  return data;
+}
+
 export async function UpdateOperationsLogs(SB, user, LOG_OPERATION, desc) {
   console.warn("UpdateOperationsLogs", arguments);
   // return;

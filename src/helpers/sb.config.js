@@ -21,7 +21,7 @@ export const TABLES_NAMES = {
   SACS_PRODUCTION: "sacs_prod",
   SACS_STOCK_CONTAINER: "sacs_stock_cont",
   SACS_STOCK_PRODUCTION: "sacs_stock_prod",
-  OPERATIONS_LOGS: "ops_logs",
+  OPERATIONS_LOGS: "logs",
   BIGBAG: "bigbag",
   NOTIFICATIONS: "notifications",
   CUSTOM_AGENTS_LISTS: "custom_agents_lists",

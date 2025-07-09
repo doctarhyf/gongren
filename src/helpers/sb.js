@@ -283,3 +283,19 @@ export async function LoadLastItem(table_name) {
     return data;
   }
 }
+
+export async function LoadLastItems(table_name, limit = 1) {
+  const { data, error } = await supabase
+    .from(table_name)
+    .select("*")
+    .order("id", { ascending: false }) // or use 'created_at'
+    .limit(limit);
+  //.single(); // returns a single object instead of an array
+
+  if (error) {
+    console.error("Error fetching the last record:", error);
+  } else {
+    ///console.log("Last record:", data);
+    return data;
+  }
+}
