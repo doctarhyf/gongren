@@ -1265,10 +1265,10 @@ export function HUDOpsLogs() {
       <table class="table-auto w-full text-sm ">
         <thead>
           <tr>
-            <th className=" p-1 border  border-white/20  ">No</th>
-            <th className=" p-1 border  border-white/20  ">Date</th>
-            <th className=" p-1 border  border-white/20  ">Matricule</th>
-            <th className=" p-1 border  border-white/20  ">Logged In</th>
+            <th className=" p-2 border  border-white/20  ">No</th>
+            <th className=" p-2 border  border-white/20  ">Date</th>
+            <th className=" p-2 border  border-white/20  ">Matricule</th>
+            <th className=" p-2 border  border-white/20  ">Status</th>
           </tr>
         </thead>
         <tbody>
@@ -1279,21 +1279,21 @@ export function HUDOpsLogs() {
           ) : (
             logs.map((it, i) => (
               <tr>
-                <td className=" p-1 border  border-white/20  ">{i + 1}</td>
-                <td className=" p-1 border  border-white/20  ">
+                <td className=" p-2 border  border-white/20  ">{i + 1}</td>
+                <td className=" p-2 border  border-white/20  ">
                   {formatCreatedAt(it.created_at)}
                 </td>
-                <td className=" p-1 border  border-white/20  ">
+                <td className=" p-2 border  border-white/20  ">
                   {it.matricule}
                 </td>
-                <td className=" p-1 border  border-white/20  ">
+                <td className=" p-2 border text-xs  border-white/20  ">
                   {it.logged_out ? (
-                    <span className=" bg-emerald-900 border-emerald-500 text-emerald-500 text-xs p-1 rounded-md  ">
-                      TRUE
+                    <span className=" bg-red-900 border-red-500 text-red-500  text-xs p-1 rounded-md  ">
+                      LOGGED OUT
                     </span>
                   ) : (
-                    <span className=" bg-red-900 border-red-500 text-red-500  p-1 text-xs rounded-md  ">
-                      FALSE
+                    <span className=" bg-emerald-900 border-emerald-500 text-emerald-500   p-1 text-xs rounded-md  ">
+                      LOGGED IN
                     </span>
                   )}
                 </td>
