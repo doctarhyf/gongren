@@ -355,6 +355,7 @@ export default function RapportChargement() {
   }
 
   function onPrint(loads, printTotals) {
+    //
     if (printTotals) {
       const totals = calculateTotalsFromLoadsArray(loads);
       //console.log("totals => ", totals);

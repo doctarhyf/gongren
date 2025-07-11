@@ -91,7 +91,7 @@ export default function TableLoadsTotals({
           <tr className="  w-full  ">
             <td className={CLASS_TD}>EQ. 班组</td>
             {!columnsToHide.includes(COLUMNS_TO_HIDE.SACS) && (
-              <td className={CLASS_TD}>SAC 袋袋数</td>
+              <td className={CLASS_TD}>SACS 袋袋数</td>
             )}
             {!columnsToHide.includes(COLUMNS_TO_HIDE.TONNAGE) && (
               <td className={CLASS_TD}>T 吨</td>

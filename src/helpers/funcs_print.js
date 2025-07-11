@@ -1394,10 +1394,9 @@ export function printTeamMonthlyRepport(data, date) {
     35 + offsety
   );
 
-  // Subtitle (Chinese date)
   doc.setFontSize(11);
   doc.setFont("Helvetica", "normal");
-  //doc.text("B班2025年4月3日至4月30日部分生产技术报告", 10, 50 + offsety);
+
   drawChineseEnglishTextLine(
     doc,
     10,
@@ -1405,24 +1404,6 @@ export function printTeamMonthlyRepport(data, date) {
     18,
     `${y}年${m}月${team}组生产报告`
   );
-  //const lat_font_name = "helvetica";
-  //const zh_font_name = "DroidSansFallback";
-
-  // doc.setFont(zh_font_name, "normal");
-
-  /*  autoTable(doc, {
-    startY: 60 + offsety,
-    head: [["TOTAL PARTIEL 阶段总计", ""]],
-    body: [
-      [`- Sacs Utilisés / 使用水泥袋`, `${sacs} pièces / 个`],
-      ["- Tonnage / 吨位", `${tonnage} T / 吨`],
-      ["- Camions chargés / 装载卡车数", `${camions} camions / 辆`],
-      ["- Sacs Déchirés / 破损水泥袋", `${dechires} pièces / 个`],
-    ],
-    styles: { fontSize: 10 },
-    theme: "grid",
-    headStyles: { fillColor: [220, 220, 220] },
-  }); */
 
   const spacing = 8;
   const starty = 70;
