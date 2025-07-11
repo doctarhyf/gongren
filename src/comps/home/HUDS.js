@@ -1265,10 +1265,14 @@ export function HUDOpsLogs() {
       <table class="table-auto w-full text-sm ">
         <thead>
           <tr>
-            <th className=" p-2 border  border-white/20  ">No</th>
+            <th className=" p-2 border  border-white/2  hidden sm:table-cell   ">
+              No
+            </th>
             <th className=" p-2 border  border-white/20  ">Date</th>
             <th className=" p-2 border  border-white/20  ">Matricule</th>
-            <th className=" p-2 border  border-white/20  ">Status</th>
+            <th className=" p-2 border  border-white/20 hidden sm:table-cell  ">
+              Status
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -1279,14 +1283,16 @@ export function HUDOpsLogs() {
           ) : (
             logs.map((it, i) => (
               <tr>
-                <td className=" p-2 border  border-white/20  ">{i + 1}</td>
+                <td className=" p-2 border  border-white/20 hidden sm:table-cell  ">
+                  {i + 1}
+                </td>
                 <td className=" p-2 border  border-white/20  ">
                   {formatCreatedAt(it.created_at)}
                 </td>
                 <td className=" p-2 border  border-white/20  ">
                   {it.matricule}
                 </td>
-                <td className=" p-2 border text-xs  border-white/20  ">
+                <td className=" p-2 border text-xs  border-white/20 hidden sm:table-cell  ">
                   {it.logged_out ? (
                     <span className=" bg-red-900 border-red-500 text-red-500  text-xs p-1 rounded-md  ">
                       LOGGED OUT
