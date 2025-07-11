@@ -1265,7 +1265,7 @@ export function HUDOpsLogs() {
       <table class="table-auto w-full text-sm ">
         <thead>
           <tr>
-            <th className=" p-2 border  border-white/2  hidden sm:table-cell   ">
+            <th className=" p-2 border  border-white/20  hidden sm:table-cell   ">
               No
             </th>
             <th className=" p-2 border  border-white/20  ">Date</th>
