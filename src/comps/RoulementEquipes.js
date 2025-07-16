@@ -117,7 +117,8 @@ export default function RoulementEquipes() {
     setl(false);
   }
 
-  function prepareExcel(arr, y, m) {
+  function prepareExcel(a, y, m) {
+    const arr = [...a];
     const dl = dates.map((it, i) => DAYS[it.getDay()]);
     const dt = dates.map((it, i) => it.getDate());
 
