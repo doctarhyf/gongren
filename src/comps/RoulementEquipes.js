@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getFrenchDayName, MONTHS } from "../helpers/flow";
 import { getDayName } from "../helpers/funcs_print";
+import ButtonPrint from "./ButtonPrint";
 
 const DAYS = ["D", "L", "M", "M", "J", "V", "S"];
 
@@ -11,7 +12,7 @@ export default function RoulementEquipes() {
   const [y, sety] = useState(new Date().getFullYear());
   const [m, setm] = useState(new Date().getMonth());
   const SHIFTS = ["M", "N", "R"];
-  const TEAMS = ["A", "B", "C"];
+  const TEAMS = ["-", "A", "B", "C"];
   const [datastr, setdatastr] = useState(
     "AABBCCAABBCCAABBCCAABBCCAABBCC|CCAABBCCAABBCCAABBCCAABBCCAABB|BBCCAABBCCAABBCCAABBCCAABBCCAA"
   );
@@ -54,13 +55,19 @@ export default function RoulementEquipes() {
       //d.setMonth(d.getMonth() + 1);
       d.setDate(d.getDate() + i);
       dates.push(d);
-      console.log("i : ", i, " : ", d.toISOString(), " => ", d.getDay());
+      //console.log("i : ", i, " : ", d.toISOString(), " => ", d.getDay());
     });
 
     setdates(dates);
+    const defdt = new Array(TEAMS.slice(-3).length)
+      .fill(0)
+      .map((it) => new Array(dayscount).fill("-"));
 
-    console.log("cur date => ", d);
-    console.log("days => ", dayscount);
+    console.log(defdt);
+    setdataarr(defdt);
+
+    //console.log("cur date => ", d);
+    //console.log("days => ", dayscount);
   }, [y, m]);
 
   function onch(val, r, c) {
@@ -69,6 +76,11 @@ export default function RoulementEquipes() {
     a[r][c] = val;
 
     setdataarr(a);
+  }
+
+  function onSave(arr, y, m) {
+    console.log(arr2str(arr));
+    console.log(y, " - ", m);
   }
 
   return (
@@ -107,12 +119,6 @@ export default function RoulementEquipes() {
           <thead>
             <tr>
               <td className=" table-cell p-1 border"></td>
-              {new Array(curmndays).fill(0).map((it, i) => (
-                <td className=" table-cell p-1 border">{i + 1}</td>
-              ))}
-            </tr>
-            <tr>
-              <td className=" table-cell p-1 border"></td>
               {dates.map((it, i) => (
                 <td className=" table-cell p-1 border">{DAYS[it.getDay()]}</td>
               ))}
@@ -136,7 +142,9 @@ export default function RoulementEquipes() {
                         value={dataarr[irow][icol]}
                       >
                         {TEAMS.map((teams, iteams) => (
-                          <option selected={teams === dataarr[irow][icol]}>
+                          <option
+                            selected={teams === dataarr[irow][icol] || "-"}
+                          >
                             {teams}
                           </option>
                         ))}
@@ -150,6 +158,8 @@ export default function RoulementEquipes() {
             ))}
           </tbody>
         </table>
+
+        <ButtonPrint onClick={(e) => onSave(dataarr, y, m)} title={"SAVE"} />
       </div>
     </div>
   );
