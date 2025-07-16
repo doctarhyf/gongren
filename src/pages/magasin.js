@@ -66,8 +66,6 @@ export default function Magasin() {
     };
   }
 
-  if (true) return <RoulementEquipes />;
-
   return (
     <div>
       <div>
