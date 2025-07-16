@@ -214,7 +214,7 @@ export default function RoulementEquipes() {
                 <td className={`  table-cell p-1 border`}>{SHIFTS[irow]}</td>
                 {row.map((col, icol) => (
                   <td
-                    className={` ${
+                    className={` hover:bg-slate-700 hover:text-white ${
                       todayidx &&
                       icol === todayidx &&
                       "bg-sky-500 text-sky-900 font-bold"
@@ -235,7 +235,7 @@ export default function RoulementEquipes() {
                       </select>
                     ) : SUPERVISORS[col] ? (
                       <div
-                        className="tooltip cursor-pointer"
+                        className="tooltip cursor-pointer "
                         data-tip={`${`${SUPERVISORS[col].nom} - ${SUPERVISORS[col].zh}`}   `}
                       >
                         <span>{col}</span>
