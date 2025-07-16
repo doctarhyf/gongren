@@ -154,7 +154,6 @@ export default function RoulementEquipes() {
 
       <div>
         <input
-          className=" checkbox  "
           type="checkbox"
           value={edit}
           onChange={(e) => setedit(e.target.checked)}
