@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { MONTHS } from "../helpers/flow";
+import { MONTHS, SUPERVISORS } from "../helpers/flow";
 import ButtonPrint from "./ButtonPrint";
 import Loading from "./Loading";
 import * as SB from "../helpers/sb";
@@ -220,22 +220,43 @@ export default function RoulementEquipes() {
                       "bg-sky-500 text-sky-900 font-bold"
                     }     table-cell p-1 border`}
                   >
-                    {edit ? (
-                      <select
-                        onChange={(e) => onChange(e.target.value, irow, icol)}
-                        value={dataArray[irow][icol]}
+                    {
+                      edit ? (
+                        <select
+                          onChange={(e) => onChange(e.target.value, irow, icol)}
+                          value={dataArray[irow][icol]}
+                        >
+                          {TEAMS.map((teams, iteams) => (
+                            <option
+                              selected={teams === dataArray[irow][icol] || "-"}
+                            >
+                              {teams}
+                            </option>
+                          ))}
+                        </select>
+                      ) : SUPERVISORS[col] ? (
+                        <div
+                          className="tooltip cursor-pointer"
+                          data-tip={`${`${SUPERVISORS[col].nom} - ${SUPERVISORS[col].zh}`}   `}
+                        >
+                          <span>{col}</span>
+                        </div>
+                      ) : (
+                        col
+                      )
+                      /*  (
+                      <div
+                        className="tooltip cursor-pointer"
+                        data-tip={`${
+                          SUPERVISORS[col]
+                            ? `${SUPERVISORS[col].nom} - ${SUPERVISORS[col].zh}`
+                            : ""
+                        }   `}
                       >
-                        {TEAMS.map((teams, iteams) => (
-                          <option
-                            selected={teams === dataArray[irow][icol] || "-"}
-                          >
-                            {teams}
-                          </option>
-                        ))}
-                      </select>
-                    ) : (
-                      col
-                    )}
+                        <span>{col}</span>
+                      </div>
+                    ) */
+                    }
                   </td>
                 ))}
               </tr>
