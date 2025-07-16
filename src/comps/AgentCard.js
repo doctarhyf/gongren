@@ -8,7 +8,12 @@ import {
   SECTIONS,
   USER_LEVEL,
 } from "../helpers/flow";
-import { FFD, formatFrenchDate, UserHasAccessCode } from "../helpers/func";
+import {
+  FFD,
+  formatDateForDatetimeLocal,
+  formatFrenchDate,
+  UserHasAccessCode,
+} from "../helpers/func";
 import FormAddAgent from "./FormAddAgent";
 import * as SB from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
@@ -222,44 +227,26 @@ export default function AgentCard({
                           <td className="text-sky-500 p-1 font-bold ">
                             {agent_data[0] === "created_at" &&
                               formatFrenchDate(agent_data[1])}
-                            {agent_data[0] !== "created_at" && agent_data[1]}
+                            {agent_data[0] === "expires" &&
+                              formatDateForDatetimeLocal(
+                                new Date(agent_data[1])
+                              )}
+                            {agent_data[0] !== "created_at" &&
+                              agent_data[0] !== "expires" &&
+                              agent_data[1]}
                           </td>
+                          {/*  
+                          
+                          
+                            {agent_data[0] !== "created_at" && agent_data[1]}
+
+                          
+                          */}
                         </tr>
                       )
                     )}
                   </tbody>
                 ))}
-
-              {agentCardEditMode && (
-                <tbody>
-                  {[
-                    ["contrat", agent.contrat, CONTRATS],
-                    ["equipe", agent.equipe, EQUIPES],
-                    ["mingzi", agent.mingzi],
-                    ["nom", agent.nom],
-                    ["poste", agent.poste, POSTE],
-
-                    ["postnom", agent.postnom],
-                    ["prenom", agent.prenom],
-                    ["section", agent.section, SECTIONS],
-                    ["phone", agent.phone],
-                    ["matricule", agent.matricule],
-                  ].map((agent_data, i) => (
-                    <tr key={i}>
-                      <td align="right" className="text-neutral-400 text-sm">
-                        {agent_data[0]}
-                      </td>
-                      <td className=" ">
-                        <input
-                          className=" outline-none border border-sky-500  rounded-md "
-                          type="text"
-                          defaultValue={agent_data[1]}
-                        />
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              )}
             </table>
           </div>
           <div className="flex justify-center items-center text-center ">

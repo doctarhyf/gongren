@@ -415,6 +415,7 @@ export const LANG_TOKENS = {
   equipe: ["TEAM", "班组", "EQUIPE"],
   mingzi: ["CHINESE NAME", "中名", "NOM"],
   nationalite: ["NATIONALITY", "国籍", "NATIONALITE"],
+  expires: ["EXPIRATION DATE", "到期日期", "DATE D'EXPIRATION"],
   nom: ["NAME", "姓名", "NOM"],
   poste: ["POSITION", "岗位", "POSTE"],
   postnom: ["SURNAME", "姓氏", "POSTNOM"],

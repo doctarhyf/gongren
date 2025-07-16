@@ -804,7 +804,9 @@ export function formatDateForDatetimeLocal(date = new Date()) {
   const hours = pad(date.getHours());
   const minutes = pad(date.getMinutes());
 
-  return `${year}-${month}-${day}T${hours}:${minutes}`;
+  const formatted = `${year}-${month}-${day}T${hours}:${minutes}`;
+  console.log("formatted : ", formatted);
+  return formatted;
 }
 
 export function GetTodaysDateYMDObject() {
@@ -1217,3 +1219,25 @@ export function isToday(date) {
 
   return yes;
 }
+
+export function supabaseTime2LocalTime(date) {
+  //  const date = new Date(date); //row.created_at);
+
+  const options = {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    timeZone: "Africa/Lubumbashi", // Force your timezone
+  };
+
+  const localTime = date.toLocaleString("fr-FR", options);
+  console.log(localTime);
+  return localTime;
+}
+
+const st2lt = supabaseTime2LocalTime;
+
+export { st2lt };

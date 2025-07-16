@@ -17,10 +17,12 @@ import {
   GetTransForTokensArray,
   LANG_TOKENS,
 } from "../helpers/lang_strings";
+import { formatDateForDatetimeLocal, st2lt } from "../helpers/func";
 
 const DATA_TYPE_TEXT_INPUT = 2;
 const DATA_TYPE_SELECT = 3;
 const DATA_TYPE_NOT_MUTABLE = 4;
+const DATA_TYPE_DATE = 5;
 
 export default function FormAddAgent({
   onFormSave,
@@ -65,6 +67,7 @@ export default function FormAddAgent({
   const ref_phone = useRef();
   const ref_matricule = useRef();
   const ref_pin = useRef();
+  const ref_expires = useRef();
   const ref_chef_deq = useRef();
   const ref_list_priority = useRef();
   const ref_tenue = useRef();
@@ -95,6 +98,7 @@ export default function FormAddAgent({
       phone: _(ref_phone),
       matricule: _(ref_matricule),
       pin: _(ref_pin),
+      expires: new Date(_(ref_expires)).toISOString(),
       list_priority: _(ref_list_priority),
       tenue: _(ref_tenue),
       active: _(ref_active),
@@ -288,7 +292,8 @@ export default function FormAddAgent({
 
         [ref_matricule, "matricule", agent.matricule],
         [ref_pin, "pin", agent.pin],
-        [ref_nationalite, "nationalite", agent.nationalite, NATIONALITIES],
+        [ref_expires, "expires", agent.expires, null, null, null],
+        [(ref_nationalite, "nationalite", agent.nationalite, NATIONALITIES)],
         [ref_phone, "phone", agent.phone],
         [ref_list_priority, "liste priority", agent.list_priority || 100],
         [ref_tenue, "tenue", agent.tenue],
@@ -328,6 +333,20 @@ export default function FormAddAgent({
             )}
             {agent_data.length - 1 == DATA_TYPE_NOT_MUTABLE && (
               <div>{agent_data[2]}</div>
+            )}
+
+            {agent_data.length - 1 === DATA_TYPE_DATE && (
+              <>
+                <input
+                  ref={agent_data[0]}
+                  className=" outline-none border border-sky-500  rounded-md "
+                  type="datetime-local"
+                  defaultValue={
+                    agent_data[2] &&
+                    formatDateForDatetimeLocal(new Date(agent_data[2]))
+                  }
+                />
+              </>
             )}
           </td>
         </tr>
