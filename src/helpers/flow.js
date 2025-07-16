@@ -1,22 +1,14 @@
-import Home from "../pages/home";
 import Agents from "../pages/agents";
-import Roulements from "../pages/roulements";
-import Equipes from "../pages/equipes";
-import Sections from "../pages/sections";
-import Listes from "../pages/listes";
-import Chargement from "../pages/chargement";
-import RapportChargement from "../pages/rchargement";
-import Magasin from "../pages/magasin";
 import Dico from "../pages/dico";
-import Sacs from "../pages/sacs";
+import Equipes from "../pages/equipes";
+import Home from "../pages/home";
 import JinChu from "../pages/jinchu";
-import { Bigbag } from "../pages/bigbag";
-import SuiviCamions from "../pages/suivicamions";
-import Notifications from "../pages/notifications";
+import Listes from "../pages/listes";
+import Magasin from "../pages/magasin";
+import RapportChargement from "../pages/rchargement";
+import Roulements from "../pages/roulements";
+import Sacs from "../pages/sacs";
 import { LANG_TOKENS } from "./lang_strings";
-import Daizi from "../pages/daizi";
-import Gemini from "../comps/gemini";
-import SubscriptionPage from "../pages/subs";
 
 export const LANG_COOKIE_KEY = "gongren_lang";
 
