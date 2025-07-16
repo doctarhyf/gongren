@@ -5,12 +5,14 @@ import Loading from "./Loading";
 import * as SB from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
 import Excelexport from "./Excelexport";
+import { isToday } from "../helpers/func";
 const DAYS = ["D", "L", "M", "M", "J", "V", "S"];
 
 export default function RoulementEquipes() {
   const [curmndays, setcurmndays] = useState(30);
   const [l, setl] = useState(false);
   const [dates, setdates] = useState(new Array(curmndays).fill(new Date()));
+  const [todayidx, setTodayIndex] = useState(null);
   const [y, sety] = useState(new Date().getFullYear());
   const [m, setm] = useState(new Date().getMonth());
   const SHIFTS = ["M", "N", "R"];
@@ -19,7 +21,7 @@ export default function RoulementEquipes() {
     "AABBCCAABBCCAABBCCAABBCCAABBCC|CCAABBCCAABBCCAABBCCAABBCCAABB|BBCCAABBCCAABBCCAABBCCAABBCCAA"
   );
   const [edit, setedit] = useState(false);
-  const [dataarr, setdataarr] = useState([[], [], []]);
+  const [dataArray, setDataArray] = useState([[], [], []]);
 
   function str2arr(ttstr) {
     const d = ttstr.split("|");
@@ -27,28 +29,30 @@ export default function RoulementEquipes() {
 
     d.forEach((it, i) => dt.push(it.split("")));
 
-    console.log(dt);
+    //console.log(dt);
     return dt;
   }
 
   function arr2str(a) {
     const str = a.join("|").replaceAll(",", "");
-    console.log("str");
+    //console.log("str");
     return str;
   }
 
   useEffect(() => {
-    console.log("daarr => ", dataarr);
-    console.log("str ", arr2str(dataarr));
-  }, [dataarr]);
+    //console.log("daarr => ", dataArray);
+    //console.log("str ", arr2str(dataArray));
+  }, [dataArray]);
 
   useEffect(() => {
-    setdataarr(str2arr(datastr));
+    setDataArray(str2arr(datastr));
   }, []);
 
   useEffect(() => {
+    let todayIdx = null;
     setedit(false);
     const d = new Date(y, m);
+
     const dayscount = new Date(y, m + 1, 0).getDate();
     setcurmndays(dayscount);
 
@@ -58,23 +62,39 @@ export default function RoulementEquipes() {
       //d.setMonth(d.getMonth() + 1);
       d.setDate(d.getDate() + i);
       dates.push(d);
-      //console.log("i : ", i, " : ", d.toISOString(), " => ", d.getDay());
+      ////console.log("i : ", i, " : ", d.toISOString(), " => ", d.getDay());
     });
 
+    const today = new Date();
+    today.setMonth(today.getMonth() - 1);
+
+    if (
+      today.getFullYear() === d.getFullYear() &&
+      today.getMonth() === d.getMonth()
+    ) {
+      todayIdx = dates.findIndex((dt) => dt.getDate() === today.getDate());
+    }
+
+    setTodayIndex(todayIdx);
+
+    console.log("Today Index: ", todayIdx);
+
     setdates(dates);
-    defDates(y, m);
+    setDefaultData(y, m);
     loadData();
   }, [y, m]);
 
-  function defDates(y, m) {
+  function setDefaultData(y, m) {
     const dayscount = new Date(y, m + 1, 0).getDate();
-    const defdt = new Array(TEAMS.slice(-3).length)
+    const defaultData = new Array(TEAMS.slice(-3).length)
       .fill(0)
       .map((it) => new Array(dayscount).fill("-"));
-    setdataarr(defdt);
+    setDataArray(defaultData);
   }
+
   async function loadData() {
     setl(true);
+
     const code = `${y}-${m.toString().padStart(2, 0)}`;
     const d = await SB.LoadItemWithColNameEqColVal(
       TABLES_NAMES.TIME_TABLE,
@@ -83,22 +103,21 @@ export default function RoulementEquipes() {
     );
 
     if (!!d) {
-      setdataarr(str2arr(d.tt));
+      setDataArray(str2arr(d.tt));
     } else {
-      defDates(y, m);
+      setDefaultData(y, m);
     }
 
-    console.log("d => ", d);
     setl(false);
   }
 
   function onChange(val, r, c) {
-    // console.log(val, r, c);
+    // //console.log(val, r, c);
 
-    const a = [...dataarr];
+    const a = [...dataArray];
     a[r][c] = val;
 
-    setdataarr(a);
+    setDataArray(a);
   }
 
   async function onSave(arr, y, m) {
@@ -113,7 +132,7 @@ export default function RoulementEquipes() {
       "code"
     );
 
-    console.log("res => ", r);
+    //console.log("res => ", r);
     setl(false);
   }
 
@@ -124,7 +143,7 @@ export default function RoulementEquipes() {
 
     arr.unshift(dt);
     arr.unshift(dl);
-    console.log(arr);
+    //console.log(arr);
 
     return arr;
   }
@@ -165,32 +184,50 @@ export default function RoulementEquipes() {
         <table>
           <thead>
             <tr>
-              <td className=" table-cell p-1 border"></td>
+              <td className={`  table-cell p-1 border`}></td>
               {dates.map((it, i) => (
-                <td className=" table-cell p-1 border">{DAYS[it.getDay()]}</td>
+                <td
+                  className={` table-cell p-1 border  ${
+                    isToday(it) && " bg-sky-500 text-sky-900 font-bold  "
+                  }   `}
+                >
+                  {DAYS[it.getDay()]}
+                </td>
               ))}
             </tr>
             <tr>
               <td className=" table-cell p-1 border"></td>
               {dates.map((it, i) => (
-                <td className=" table-cell p-1 border">{it.getDate()}</td>
+                <td
+                  className={` table-cell p-1 border   ${
+                    isToday(it) && " bg-sky-500 text-sky-900 font-bold  "
+                  }`}
+                >
+                  {it.getDate()}
+                </td>
               ))}
             </tr>
           </thead>
           <tbody>
-            {dataarr.map((row, irow) => (
+            {dataArray.map((row, irow) => (
               <tr>
-                <td className=" table-cell p-1 border">{SHIFTS[irow]}</td>
+                <td className={`  table-cell p-1 border`}>{SHIFTS[irow]}</td>
                 {row.map((col, icol) => (
-                  <td className=" table-cell p-1 border">
+                  <td
+                    className={` ${
+                      todayidx &&
+                      icol === todayidx &&
+                      "bg-sky-500 text-sky-900 font-bold"
+                    }     table-cell p-1 border`}
+                  >
                     {edit ? (
                       <select
                         onChange={(e) => onChange(e.target.value, irow, icol)}
-                        value={dataarr[irow][icol]}
+                        value={dataArray[irow][icol]}
                       >
                         {TEAMS.map((teams, iteams) => (
                           <option
-                            selected={teams === dataarr[irow][icol] || "-"}
+                            selected={teams === dataArray[irow][icol] || "-"}
                           >
                             {teams}
                           </option>
@@ -207,9 +244,12 @@ export default function RoulementEquipes() {
         </table>
 
         <div className=" my-2 flex justify-between ">
-          <ButtonPrint onClick={(e) => onSave(dataarr, y, m)} title={"SAVE"} />
+          <ButtonPrint
+            onClick={(e) => onSave(dataArray, y, m)}
+            title={"SAVE"}
+          />
 
-          <Excelexport excelData={prepareExcel(dataarr)} title={"PRINT"} />
+          <Excelexport excelData={prepareExcel(dataArray)} title={"PRINT"} />
         </div>
       </div>
     </div>

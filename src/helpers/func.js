@@ -1200,3 +1200,20 @@ export function SortLoadsByShiftOfDay(data, y, m) {
   //////console.log("sorted => \n", sorted_loads);
   return sorted_loads;
 }
+
+export function isToday(date) {
+  const today = new Date();
+  const yes =
+    date.getDate() === today.getDate() &&
+    date.getMonth() === today.getMonth() &&
+    date.getFullYear() === today.getFullYear();
+
+  /*  if (setTodayIndex) {
+    setTodayIndex(null);
+    if (yes) {
+      setTodayIndex(i);
+    }
+  } */
+
+  return yes;
+}
