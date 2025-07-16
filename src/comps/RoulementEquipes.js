@@ -4,6 +4,7 @@ import ButtonPrint from "./ButtonPrint";
 import Loading from "./Loading";
 import * as SB from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
+import Excelexport from "./Excelexport";
 const DAYS = ["D", "L", "M", "M", "J", "V", "S"];
 
 export default function RoulementEquipes() {
@@ -116,8 +117,15 @@ export default function RoulementEquipes() {
     setl(false);
   }
 
-  function onPrint(arr, y, m) {
+  function prepareExcel(arr, y, m) {
+    const dl = dates.map((it, i) => DAYS[it.getDay()]);
+    const dt = dates.map((it, i) => it.getDate());
+
+    arr.unshift(dt);
+    arr.unshift(dl);
     console.log(arr);
+
+    return arr;
   }
 
   return (
@@ -198,8 +206,11 @@ export default function RoulementEquipes() {
           </tbody>
         </table>
 
-        <ButtonPrint onClick={(e) => onSave(dataarr, y, m)} title={"SAVE"} />
-        <ButtonPrint onClick={(e) => onPrint(dataarr, y, m)} title={"PRINT"} />
+        <div className=" my-2 flex justify-between ">
+          <ButtonPrint onClick={(e) => onSave(dataarr, y, m)} title={"SAVE"} />
+
+          <Excelexport excelData={prepareExcel(dataarr)} title={"PRINT"} />
+        </div>
       </div>
     </div>
   );
