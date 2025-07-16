@@ -235,13 +235,6 @@ export default function AgentCard({
                               agent_data[0] !== "expires" &&
                               agent_data[1]}
                           </td>
-                          {/*  
-                          
-                          
-                            {agent_data[0] !== "created_at" && agent_data[1]}
-
-                          
-                          */}
                         </tr>
                       )
                     )}

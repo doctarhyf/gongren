@@ -6,6 +6,7 @@ import Loading from "./comps/Loading";
 import GongRen from "./GongRen";
 import { ACCESS_CODES, CLASS_BTN, LOG_OPERATION } from "./helpers/flow";
 import {
+  formatDateForDatetimeLocal,
   updateLoggedOut,
   UpdateOperationsLogs,
   UserHasAccessCode,
@@ -106,6 +107,26 @@ function App() {
         //document.getElementById("my_modal_1").showModal();
         seterror(error_message);
         showModalErrorMessage(error_message);
+        return;
+      }
+
+      //check expires
+      const expires = new Date(nuser.expires);
+      const now = new Date();
+      const expired = now > expires || !nuser.expires;
+
+      if (
+        !UserHasAccessCode(nuser, ACCESS_CODES.ACCOUNT_CAN_NOT_EXPIRE) &&
+        expired
+      ) {
+        alert(
+          GetTransForTokensArray(
+            LANG_TOKENS.SUBSCRIPTION_INACTIVE_MESSAGE,
+            lang
+          )
+          //formatDateForDatetimeLocal(new Date(expires.toISOString()))
+        );
+        setloading(false);
         return;
       }
 

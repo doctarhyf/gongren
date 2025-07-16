@@ -306,6 +306,16 @@ export const LANG_TOKENS = {
     "请毫无错误地插入所有数据，拜托！您的奖金取决于此！",
     "Veuillez insérer toutes les données sans erreurs, s'il vous plaît! Votre bonus en dépend!",
   ],
+  SUBSCRIPTION_INACTIVE_MESSAGE: [
+    // English
+    "Your subscription is inactive. Please contact Bagtrack customer service for renewal (+243 893 092 849, +243 820 875 353) email: drrhyf@gmail.com",
+
+    // Chinese (Simplified)
+    "您的订阅已失效。请联系 Bagtrack 客服以续订 (+243 893 092 849, +243 820 875 353) 邮箱: drrhyf@gmail.com",
+
+    // French
+    "Votre abonnement est inactif. Veuillez contacter le service client Bagtrack pour le réabonnement (+243 893 092 849, +243 820 875 353) email : drrhyf@gmail.com",
+  ],
   CUSTOM_LIST: ["CUSTOM LIST", "自定义名单", "LISTE PERSONNALISÉE"],
   TEAM_STATS: ["TEAM STATS", "班组统计", "STATISTIQUES D'ÉQUIPE"],
   TEAM_FILTER: ["TEAM FILTERS", "班组筛选器", "FILTRES D'ÉQUIPE"],
@@ -415,7 +425,11 @@ export const LANG_TOKENS = {
   equipe: ["TEAM", "班组", "EQUIPE"],
   mingzi: ["CHINESE NAME", "中名", "NOM"],
   nationalite: ["NATIONALITY", "国籍", "NATIONALITE"],
-  expires: ["EXPIRATION DATE", "到期日期", "DATE D'EXPIRATION"],
+  expires: [
+    "End of subscription", // English
+    "订阅结束", // Chinese (Simplified)
+    "Fin abonnement", // French
+  ],
   nom: ["NAME", "姓名", "NOM"],
   poste: ["POSITION", "岗位", "POSTE"],
   postnom: ["SURNAME", "姓氏", "POSTNOM"],
