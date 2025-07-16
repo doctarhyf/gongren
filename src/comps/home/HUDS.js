@@ -1,6 +1,7 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { UserContext } from "../../App";
 import {
+  ACCESS_CODES,
   CARDS_BG_COLORS,
   COLUMNS_TO_HIDE,
   EQUIPES_NAMES,
@@ -23,6 +24,7 @@ import {
   GroupBySectionAndEquipe,
   SortLoadsByShiftOfDay,
   UpdateOperationsLogs,
+  UserHasAccessCode,
   formatAsMoney,
   formatCreatedAt,
   formatDateForDatetimeLocal,
@@ -195,7 +197,11 @@ function AgentCardMini({
               <span className=" text-white/50  ">
                 {GetTransForTokensArray(LANG_TOKENS.expires, user.lang)}:
               </span>{" "}
-              {agent.expires ? (
+              {UserHasAccessCode(user, ACCESS_CODES.ACCOUNT_CAN_NOT_EXPIRE) ? (
+                <span className=" bg-green-950 text-green-500 border-green-500 px-2 rounded-md p-1  ">
+                  LIFE TIME, NO EXPIRATION
+                </span>
+              ) : agent.expires ? (
                 <span className=" bg-green-950 text-green-500 border-green-500 px-2 rounded-md p-1  ">
                   {" "}
                   {formatDateForDatetimeLocal(agent.expires).replace("T", " ")}
