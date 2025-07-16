@@ -25,6 +25,7 @@ import {
   UpdateOperationsLogs,
   formatAsMoney,
   formatCreatedAt,
+  formatDateForDatetimeLocal,
 } from "../../helpers/func";
 
 import cont from "../../img/contf.png";
@@ -120,6 +121,8 @@ function AgentCardMini({
       alert("Error printing ... please select an agent!");
   }
 
+  console.log("AGG ", agent);
+
   return (
     <div>
       <div className="flex gap-1 md:text-center md:justify-center">
@@ -187,6 +190,23 @@ function AgentCardMini({
               {agent.phone}
             </div>
           )}
+          {
+            <div>
+              <span className=" text-white/50  ">
+                {GetTransForTokensArray(LANG_TOKENS.expires, user.lang)}:
+              </span>{" "}
+              {agent.expires ? (
+                <span className=" bg-green-950 text-green-500 border-green-500 px-2 rounded-md p-1  ">
+                  {" "}
+                  {formatDateForDatetimeLocal(agent.expires).replace("T", " ")}
+                </span>
+              ) : (
+                <span className=" bg-red-950 text-red-500 border-red-500 px-2 rounded-md text-xs p-1  ">
+                  EXPIRED
+                </span>
+              )}
+            </div>
+          }
           {moreInfo &&
             moreInfo.map((it, i) => (
               <div>

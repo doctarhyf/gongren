@@ -795,7 +795,13 @@ export function GetDatesPartsFromShiftCode(shift_code) {
   return { y: Number(y), m: Number(m), d: Number(d) };
 }
 
+export function isDate(obj) {
+  const isdate = obj instanceof Date && !isNaN(obj.valueOf());
+  return isdate ? obj : new Date(obj);
+}
+
 export function formatDateForDatetimeLocal(date = new Date()) {
+  date = isDate(date);
   const pad = (num) => String(num).padStart(2, "0");
 
   const year = date.getFullYear();
