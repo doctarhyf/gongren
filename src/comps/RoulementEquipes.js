@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
-import { getFrenchDayName, MONTHS } from "../helpers/flow";
-import { getDayName } from "../helpers/funcs_print";
+import { MONTHS } from "../helpers/flow";
 import ButtonPrint from "./ButtonPrint";
-
+import Loading from "./Loading";
+import * as SB from "../helpers/sb";
+import { TABLES_NAMES } from "../helpers/sb.config";
 const DAYS = ["D", "L", "M", "M", "J", "V", "S"];
 
 export default function RoulementEquipes() {
   const [curmndays, setcurmndays] = useState(30);
-
+  const [l, setl] = useState(false);
   const [dates, setdates] = useState(new Array(curmndays).fill(new Date()));
   const [y, sety] = useState(new Date().getFullYear());
   const [m, setm] = useState(new Date().getMonth());
@@ -45,6 +46,7 @@ export default function RoulementEquipes() {
   }, []);
 
   useEffect(() => {
+    setedit(false);
     const d = new Date(y, m);
     const dayscount = new Date(y, m + 1, 0).getDate();
     setcurmndays(dayscount);
@@ -59,35 +61,71 @@ export default function RoulementEquipes() {
     });
 
     setdates(dates);
+    defDates(y, m);
+    loadData();
+  }, [y, m]);
+
+  function defDates(y, m) {
+    const dayscount = new Date(y, m + 1, 0).getDate();
     const defdt = new Array(TEAMS.slice(-3).length)
       .fill(0)
       .map((it) => new Array(dayscount).fill("-"));
-
-    console.log(defdt);
     setdataarr(defdt);
+  }
+  async function loadData() {
+    setl(true);
+    const code = `${y}-${m.toString().padStart(2, 0)}`;
+    const d = await SB.LoadItemWithColNameEqColVal(
+      TABLES_NAMES.TIME_TABLE,
+      "code",
+      code
+    );
 
-    //console.log("cur date => ", d);
-    //console.log("days => ", dayscount);
-  }, [y, m]);
+    if (!!d) {
+      setdataarr(str2arr(d.tt));
+    } else {
+      defDates(y, m);
+    }
 
-  function onch(val, r, c) {
-    console.log(val, r, c);
+    console.log("d => ", d);
+    setl(false);
+  }
+
+  function onChange(val, r, c) {
+    // console.log(val, r, c);
+
     const a = [...dataarr];
     a[r][c] = val;
 
     setdataarr(a);
   }
 
-  function onSave(arr, y, m) {
-    console.log(arr2str(arr));
-    console.log(y, " - ", m);
+  async function onSave(arr, y, m) {
+    setedit(false);
+    const tt = arr2str(arr);
+    const code = `${y}-${m.toString().padStart(2, 0)}`;
+
+    setl(true);
+    const r = await SB.UpsertItem(
+      TABLES_NAMES.TIME_TABLE,
+      { tt, code },
+      "code"
+    );
+
+    console.log("res => ", r);
+    setl(false);
+  }
+
+  function onPrint(arr, y, m) {
+    console.log(arr);
   }
 
   return (
     <div>
       <div className=" text-3xl font-thin text-center p-4  ">
-        Roulement {MONTHS[m]}- {y}
+        ROULEMENT {MONTHS[m]}- {y}
       </div>
+      <Loading isLoading={l} />
 
       <div className=" flex gap-2  ">
         <select value={y} onChange={(e) => sety(parseInt(e.target.value))}>
@@ -107,6 +145,7 @@ export default function RoulementEquipes() {
 
       <div>
         <input
+          className=" checkbox  "
           type="checkbox"
           value={edit}
           onChange={(e) => setedit(e.target.checked)}
@@ -138,7 +177,7 @@ export default function RoulementEquipes() {
                   <td className=" table-cell p-1 border">
                     {edit ? (
                       <select
-                        onChange={(e) => onch(e.target.value, irow, icol)}
+                        onChange={(e) => onChange(e.target.value, irow, icol)}
                         value={dataarr[irow][icol]}
                       >
                         {TEAMS.map((teams, iteams) => (
@@ -160,6 +199,7 @@ export default function RoulementEquipes() {
         </table>
 
         <ButtonPrint onClick={(e) => onSave(dataarr, y, m)} title={"SAVE"} />
+        <ButtonPrint onClick={(e) => onPrint(dataarr, y, m)} title={"PRINT"} />
       </div>
     </div>
   );

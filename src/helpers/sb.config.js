@@ -30,4 +30,5 @@ export const TABLES_NAMES = {
   DAIZI_SHENGYU: "dzsy",
   SETTINGS: "settings",
   PANDIAN: "dzpandian",
+  TIME_TABLE: "timetable",
 };
