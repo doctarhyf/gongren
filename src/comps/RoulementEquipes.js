@@ -161,7 +161,7 @@ export default function RoulementEquipes() {
         EDIT
       </div>
 
-      <div>
+      <div className=" overflow-auto   ">
         <table>
           <thead>
             <tr>

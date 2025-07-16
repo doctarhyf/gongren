@@ -16,6 +16,7 @@ import Notifications from "../pages/notifications";
 import { LANG_TOKENS } from "./lang_strings";
 import Daizi from "../pages/daizi";
 import Gemini from "../comps/gemini";
+import SubscriptionPage from "../pages/subs";
 
 export const LANG_COOKIE_KEY = "gongren_lang";
 
@@ -304,6 +305,7 @@ export const MAIN_MENU = [
     access_code: ACCESS_CODES.PAGE_HOME,
     trad: LANG_TOKENS.HOME,
   },
+
   /*  {
     name: "Notifications",
     path: "/notifications",
