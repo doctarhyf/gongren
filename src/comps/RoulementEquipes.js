@@ -1,15 +1,21 @@
 import { useEffect, useState } from "react";
+import { getFrenchDayName, MONTHS } from "../helpers/flow";
+import { getDayName } from "../helpers/funcs_print";
+
+const DAYS = ["D", "L", "M", "M", "J", "V", "S"];
 
 export default function RoulementEquipes() {
-  const [numDays, setNumDays] = useState(30);
-  const [daysl, setdaysl] = useState(new Array(numDays).fill("L"));
-  const [dates, setdates] = useState(new Array(numDays).fill(0));
+  const [curmndays, setcurmndays] = useState(30);
+
+  const [dates, setdates] = useState(new Array(curmndays).fill(new Date()));
+  const [y, sety] = useState(new Date().getFullYear());
+  const [m, setm] = useState(new Date().getMonth());
   const SHIFTS = ["M", "N", "R"];
   const TEAMS = ["A", "B", "C"];
   const [datastr, setdatastr] = useState(
     "AABBCCAABBCCAABBCCAABBCCAABBCC|CCAABBCCAABBCCAABBCCAABBCCAABB|BBCCAABBCCAABBCCAABBCCAABBCCAA"
   );
-  const [edit, setedit] = useState(true);
+  const [edit, setedit] = useState(false);
   const [dataarr, setdataarr] = useState([[], [], []]);
 
   function str2arr(ttstr) {
@@ -37,6 +43,26 @@ export default function RoulementEquipes() {
     setdataarr(str2arr(datastr));
   }, []);
 
+  useEffect(() => {
+    const d = new Date(y, m);
+    const dayscount = new Date(y, m + 1, 0).getDate();
+    setcurmndays(dayscount);
+
+    const dates = [];
+    new Array(dayscount).fill(0).forEach((it, i) => {
+      let d = new Date(y, m, 21);
+      //d.setMonth(d.getMonth() + 1);
+      d.setDate(d.getDate() + i);
+      dates.push(d);
+      console.log("i : ", i, " : ", d.toISOString(), " => ", d.getDay());
+    });
+
+    setdates(dates);
+
+    console.log("cur date => ", d);
+    console.log("days => ", dayscount);
+  }, [y, m]);
+
   function onch(val, r, c) {
     console.log(val, r, c);
     const a = [...dataarr];
@@ -47,7 +73,25 @@ export default function RoulementEquipes() {
 
   return (
     <div>
-      <div>Roulement</div>
+      <div className=" text-3xl font-thin text-center p-4  ">
+        Roulement {MONTHS[m]}- {y}
+      </div>
+
+      <div className=" flex gap-2  ">
+        <select value={y} onChange={(e) => sety(parseInt(e.target.value))}>
+          {new Array(3).fill(0).map((it, i) => (
+            <option value={new Date().getFullYear() + i}>
+              {new Date().getFullYear() + i}
+            </option>
+          ))}
+        </select>
+        <select value={m} onChange={(e) => setm(parseInt(e.target.value))}>
+          {new Array(12).fill(0).map((it, i) => (
+            <option value={i}> {MONTHS[i]}</option>
+          ))}
+        </select>
+        <div>Num days: {curmndays}</div>
+      </div>
 
       <div>
         <input
@@ -63,14 +107,20 @@ export default function RoulementEquipes() {
           <thead>
             <tr>
               <td className=" table-cell p-1 border"></td>
-              {daysl.map((it, i) => (
-                <td className=" table-cell p-1 border">{it}</td>
+              {new Array(curmndays).fill(0).map((it, i) => (
+                <td className=" table-cell p-1 border">{i + 1}</td>
               ))}
             </tr>
             <tr>
               <td className=" table-cell p-1 border"></td>
               {dates.map((it, i) => (
-                <td className=" table-cell p-1 border">{it}</td>
+                <td className=" table-cell p-1 border">{DAYS[it.getDay()]}</td>
+              ))}
+            </tr>
+            <tr>
+              <td className=" table-cell p-1 border"></td>
+              {dates.map((it, i) => (
+                <td className=" table-cell p-1 border">{it.getDate()}</td>
               ))}
             </tr>
           </thead>
@@ -98,20 +148,6 @@ export default function RoulementEquipes() {
                 ))}
               </tr>
             ))}
-            {/*  {SHIFTS.map((sh, ish) => (
-              <tr>
-                <td className=" table-cell p-1 border">{sh}</td>
-                {dates.map((it, i) => (
-                  <td className=" table-cell p-1 border">
-                    <select>
-                      {TEAMS.map((t, it) => (
-                        <option>{t}</option>
-                      ))}
-                    </select>
-                  </td>
-                ))}
-              </tr>
-            ))} */}
           </tbody>
         </table>
       </div>
