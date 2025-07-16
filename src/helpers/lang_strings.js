@@ -306,6 +306,12 @@ export const LANG_TOKENS = {
     "请毫无错误地插入所有数据，拜托！您的奖金取决于此！",
     "Veuillez insérer toutes les données sans erreurs, s'il vous plaît! Votre bonus en dépend!",
   ],
+
+  LIFE_TIME_NO_EXPIRATION: [
+    "LIFE TIME, NO EXPIRATION", // English
+    "终身有效，无过期时间", // Chinese (Simplified)
+    "À VIE, SANS EXPIRATION", // French
+  ],
   SUBSCRIPTION_INACTIVE_MESSAGE: [
     // English
     "Your subscription is inactive. Please contact Bagtrack customer service for renewal (+243 893 092 849, +243 820 875 353) email: drrhyf@gmail.com",

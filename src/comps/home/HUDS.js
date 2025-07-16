@@ -199,7 +199,10 @@ function AgentCardMini({
               </span>{" "}
               {UserHasAccessCode(user, ACCESS_CODES.ACCOUNT_CAN_NOT_EXPIRE) ? (
                 <span className=" bg-green-950 text-green-500 border-green-500 px-2 rounded-md p-1  ">
-                  LIFE TIME, NO EXPIRATION
+                  {GetTransForTokensArray(
+                    LANG_TOKENS.LIFE_TIME_NO_EXPIRATION,
+                    user.lang
+                  )}
                 </span>
               ) : agent.expires ? (
                 <span className=" bg-green-950 text-green-500 border-green-500 px-2 rounded-md p-1  ">
