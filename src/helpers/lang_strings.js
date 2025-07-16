@@ -10,6 +10,7 @@ export const LANG_TOKENS = {
     "新订阅正在激活中，服务器将很快恢复运行。",
     "Le nouvel abonnement est en cours d'activation, le serveur sera opérationnel incessamment.",
   ],
+  SHOW_TIMETABLE: ["SHOW TIMETABLE", "显示考勤", "AFFICHER ROULEMENT"],
   RELOAD: ["REFRESH", "刷新", "ACTUALISER"],
   PRINT_TOTALS: ["PRINT TOTALS", "打印总数", "IMPRIMER TOTAL"],
   BAGS_OUT: ["BAGS OUT %b", "袋子出库数量%b", "SACS SORTIS %b"],

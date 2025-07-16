@@ -32,6 +32,7 @@ import { TABLES_NAMES } from "../helpers/sb.config";
 import eraser from "../img/eraser.png";
 import { printChart } from "../helpers/print_bz";
 import phone from "../img/phone.png";
+import RoulementEquipes from "../comps/RoulementEquipes";
 
 function AgentCard({ agent }) {
   const [showImage, , user] = useContext(UserContext);
@@ -240,6 +241,7 @@ export default function Equipes() {
   const [daysLetters, setDaysLetters] = useState([]);
   const [showTeamStats, setShowTeamStats] = useState(false);
   const [showMap, setShowMap] = useState(false);
+  const [showRoulement, setShowRoulement] = useState(false);
 
   const ref_equipe = useRef();
   const ref_section = useRef();
@@ -705,6 +707,22 @@ export default function Equipes() {
                 />
               </div>
 
+              {/*SHOW ROULEMENT*/}
+              <div>
+                <div>
+                  <input
+                    type="checkbox"
+                    className="toggle toggle-xs"
+                    defaultChecked={showRoulement}
+                    onChange={(e) => setShowRoulement(e.target.checked)}
+                  />
+                  {GetTransForTokensArray(
+                    LANG_TOKENS.SHOW_TIMETABLE,
+                    user.lang
+                  )}
+                </div>
+              </div>
+
               <div>
                 <div>
                   <div>
@@ -914,6 +932,10 @@ export default function Equipes() {
                     section={ref_section}
                     equipe={ref_equipe}
                   />
+                </div>
+              ) : showRoulement ? (
+                <div>
+                  <RoulementEquipes />
                 </div>
               ) : (
                 <div className=" p-2 overflow-x-auto   ">

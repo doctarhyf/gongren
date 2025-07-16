@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { CLASS_BTN } from "../helpers/flow";
+import RoulementEquipes from "../comps/RoulementEquipes";
 
 let chunks = [];
 let stream;
@@ -64,6 +65,8 @@ export default function Magasin() {
       console.log("recorder stopped : ", audioURL, "\nBlob :", blob);
     };
   }
+
+  if (true) return <RoulementEquipes />;
 
   return (
     <div>
