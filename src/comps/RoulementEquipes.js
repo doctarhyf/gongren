@@ -220,43 +220,29 @@ export default function RoulementEquipes() {
                       "bg-sky-500 text-sky-900 font-bold"
                     }     table-cell p-1 border`}
                   >
-                    {
-                      edit ? (
-                        <select
-                          onChange={(e) => onChange(e.target.value, irow, icol)}
-                          value={dataArray[irow][icol]}
-                        >
-                          {TEAMS.map((teams, iteams) => (
-                            <option
-                              selected={teams === dataArray[irow][icol] || "-"}
-                            >
-                              {teams}
-                            </option>
-                          ))}
-                        </select>
-                      ) : SUPERVISORS[col] ? (
-                        <div
-                          className="tooltip cursor-pointer"
-                          data-tip={`${`${SUPERVISORS[col].nom} - ${SUPERVISORS[col].zh}`}   `}
-                        >
-                          <span>{col}</span>
-                        </div>
-                      ) : (
-                        col
-                      )
-                      /*  (
+                    {edit ? (
+                      <select
+                        onChange={(e) => onChange(e.target.value, irow, icol)}
+                        value={dataArray[irow][icol]}
+                      >
+                        {TEAMS.map((teams, iteams) => (
+                          <option
+                            selected={teams === dataArray[irow][icol] || "-"}
+                          >
+                            {teams}
+                          </option>
+                        ))}
+                      </select>
+                    ) : SUPERVISORS[col] ? (
                       <div
                         className="tooltip cursor-pointer"
-                        data-tip={`${
-                          SUPERVISORS[col]
-                            ? `${SUPERVISORS[col].nom} - ${SUPERVISORS[col].zh}`
-                            : ""
-                        }   `}
+                        data-tip={`${`${SUPERVISORS[col].nom} - ${SUPERVISORS[col].zh}`}   `}
                       >
                         <span>{col}</span>
                       </div>
-                    ) */
-                    }
+                    ) : (
+                      col
+                    )}
                   </td>
                 ))}
               </tr>
