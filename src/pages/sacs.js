@@ -7,6 +7,7 @@ import {
   arrayToCSV,
   formatDateForDatetimeLocal,
   GetDefaultMonthFilter,
+  GetNow,
 } from "../helpers/func";
 import { GetTransForTokensArray, LANG_TOKENS } from "../helpers/lang_strings";
 import add from "../img/add.png";
@@ -131,9 +132,6 @@ const TEST_TRANS = [
   },
 ];
 
-/* const pandian.s32 = 0,
-  pandian.s42 = 2795; */
-
 function Container() {
   const [insert, setinsert] = useState(false);
   const [trans, settrans] = useState([...TEST_TRANS]);
@@ -202,7 +200,7 @@ function Container() {
   }
 
   function onInsertTrans() {
-    console.log("ntrans \n", newt);
+    // console.log("ntrans \n", newt);
     let updatedTrans = [...trans];
 
     const nt = { ...newt, key: uuidv4() };
@@ -216,7 +214,7 @@ function Container() {
     }));
 
     updatedTrans.sort((a, b) => a.ts - b.ts);
-
+    settrans(updatedTrans);
     calculateTrans(updatedTrans, pandian.s32, pandian.s42);
     setnewt(def);
     setinsert(false);
@@ -440,8 +438,8 @@ function Container() {
             <span>date-time</span>
             <input
               className={` ${CLASS_SELECT}  `}
-              defaultValue={formatDateForDatetimeLocal(new Date())}
-              value={newt.date_time}
+              //defaultValue={GetNow()}
+              value={newt.date_time || GetNow()}
               onChange={(e) =>
                 setnewt((old) => ({
                   ...old,
