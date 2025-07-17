@@ -85,7 +85,7 @@ const TEST_TRANS = [
     date_time: "2025-07-15T00:53:04.000Z",
     sortis32: 800,
     sortis42: 15500,
-    ut32: 0,
+    ut32: 800,
     ut42: 16995,
     dech32: 0,
     dech42: 60,
@@ -145,7 +145,7 @@ function Container() {
     calculateTrans(nt, pandian.s32, pandian.s42);
     // console.log("calculation ...", i);
     console.log("new pandian ", pandian);
-  }, [pandian, trans]);
+  }, [pandian]);
 
   /* async function loadData() {
     const d = SB.LoadAllItems(TABLES_NAMES.)
@@ -204,6 +204,7 @@ function Container() {
 
   function onRemove(it) {
     if (window.confirm("Are you sure?")) {
+      console.log("deleting", it);
       const t = trans.filter((curel) => curel.key !== it.key);
       calculateTrans(t, pandian.s32, pandian.s42);
     }
