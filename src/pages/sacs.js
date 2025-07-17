@@ -30,7 +30,10 @@ const HEADERS = [
   "ut42",
   "res32",
   "res42",
-  "ben",
+  "paper32",
+  "paper32",
+  "diff32",
+  "diff42",
   "gest",
   "act",
   // "key",
@@ -138,12 +141,17 @@ function Container() {
   const [loading, setloading] = useState(false);
   const [filter, setFilter] = useState(GetDefaultMonthFilter());
   const [pandian, setpandian] = useState({ s32: 0, s42: 2795 });
+  const [papers32, setpapers32] = useState({});
+  const [papers42, setpapers42] = useState({});
 
   useEffect(() => {
-    const nt = [...TEST_TRANS];
-    //settrans([]);
-    calculateTrans(nt, pandian.s32, pandian.s42);
-    // console.log("calculation ...", i);
+    console.log("papers32 => ", papers32);
+    console.log("papers42 => ", papers42);
+  }, [papers32, papers42]);
+
+  useEffect(() => {
+    calculateTrans(trans, pandian.s32, pandian.s42);
+
     console.log("new pandian ", pandian);
   }, [pandian]);
 
@@ -242,11 +250,6 @@ function Container() {
               onClick={(e) => onSave(trans)}
               title={GetTransForTokensArray(LANG_TOKENS.SAVE, user.lang)}
             />
-            <ButtonPrint
-              icon={add}
-              onClick={(e) => calculateTrans(trans, pandian.s32, pandian.s42)}
-              title={"RECALCULATE"}
-            />
           </div>
 
           <div className=" my-4 ">
@@ -305,7 +308,7 @@ function Container() {
             </thead>
             <tbody>
               {trans.map((r, i) => (
-                <tr>
+                <tr className={`  `}>
                   <td className="p-1 border table-cell">{i + 1}</td>
                   <td className="p-1 border table-cell">{r.team}</td>
                   <td className="p-1 border table-cell">
@@ -322,15 +325,48 @@ function Container() {
                   <td className="p-1 border table-cell">{r.ut42}</td>
                   <td className="p-1 border table-cell">{r.res32}</td>
                   <td className="p-1 border table-cell">{r.res42}</td>
-                  <td className="p-1 border table-cell">{}</td>
+                  <td className="p-1 border table-cell">
+                    <input
+                      value={papers32[r.key] || 0}
+                      onChange={(e) =>
+                        setpapers32((old) => ({
+                          ...old,
+                          [r.key]: parseInt(e.target.value),
+                        }))
+                      }
+                      type="number"
+                      oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                      min={0}
+                      className={` ${CLASS_INPUT_TEXT} w-16 `}
+                    />
+                  </td>
+                  <td className="p-1 border table-cell">
+                    <input
+                      value={papers42[r.key] || 0}
+                      onChange={(e) =>
+                        setpapers42((old) => ({
+                          ...old,
+                          [r.key]: parseInt(e.target.value),
+                        }))
+                      }
+                      type="number"
+                      oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                      min={0}
+                      className={` ${CLASS_INPUT_TEXT} w-16 `}
+                    />
+                  </td>
+                  <td className="p-1 border table-cell">
+                    {papers32[r.key] ? r.res32 - papers32[r.key] : -r.res32}
+                  </td>
+                  <td className="p-1 border table-cell">
+                    {" "}
+                    {papers42[r.key] ? r.res42 - papers42[r.key] : -r.res42}
+                  </td>
                   <td className="p-1 border table-cell">{r.gest}</td>
                   <td className="p-1 border table-cell">
                     <ButtonPrint
                       onClick={(e) => onRemove(r)}
-                      title={GetTransForTokensArray(
-                        LANG_TOKENS.DELETE,
-                        user.lang
-                      )}
+                      title={"DEL"}
                       icon={del}
                     />
                   </td>
