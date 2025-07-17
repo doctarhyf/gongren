@@ -811,7 +811,7 @@ export function formatDateForDatetimeLocal(date = new Date()) {
   const minutes = pad(date.getMinutes());
 
   const formatted = `${year}-${month}-${day}T${hours}:${minutes}`;
-  console.log("formatted : ", formatted);
+  //console.log("formatted : ", formatted);
   return formatted;
 }
 
