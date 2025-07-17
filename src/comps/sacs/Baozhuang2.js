@@ -335,7 +335,7 @@ export default function Boazhuang2({
       </div>
 
       <div className=" my-4 justify-between m-1 flex ">
-        {(UserHasAccessCode(user, ACCESS_CODES.ADD_NEW_LOAD) ||
+        {(UserHasAccessCode(user, ACCESS_CODES.SAVE_LOAD) ||
           UserHasAccessCode(user, ACCESS_CODES.UPDATE_LOAD) ||
           (user.poste === "SUP" && data.team === user.equipe)) && (
           <ActionButton
