@@ -152,7 +152,7 @@ function Container() {
   }, [papers32, papers42]);
 
   useEffect(() => {
-    calculateTrans(trans, pandian.s32, pandian.s42);
+    calculateTrans(transf, pandian.s32, pandian.s42);
 
     console.log("new pandian ", pandian);
   }, [pandian]);
@@ -198,7 +198,7 @@ function Container() {
       finaltrans.push(finalItem);
     });
 
-    settrans(finaltrans);
+    settransf(finaltrans);
   }
 
   function onInsertTrans() {
