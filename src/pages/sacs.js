@@ -171,6 +171,8 @@ function Container() {
           prevel.res42 + finalit.sortis42 - finalit.ut42 - finalit.dech42;
       }
 
+      finalit.prod32 = finalit.ut32 / 20;
+      finalit.prod42 = finalit.ut42 / 20;
       finaltrans.push(finalit);
     });
 
@@ -232,14 +234,9 @@ function Container() {
                   {formatDateForDatetimeLocal(r.date_time)}
                 </td>
                 <td className="p-1 border table-cell">{r.sortis32}</td>
-                <td className="p-1 border table-cell">
-                  {parseFloat(r.ut32) / 20}
-                </td>
+                <td className="p-1 border table-cell">{r.prod32}</td>
                 <td className="p-1 border table-cell">{r.sortis42}</td>
-                <td className="p-1 border table-cell">
-                  {" "}
-                  {parseFloat(r.ut42) / 20}
-                </td>
+                <td className="p-1 border table-cell"> {r.prod42}</td>
                 <td className="p-1 border table-cell">{r.dech32}</td>
                 <td className="p-1 border table-cell">{r.dech42}</td>
                 <td className="p-1 border table-cell">{r.ut32}</td>
