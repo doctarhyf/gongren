@@ -204,7 +204,6 @@ function Container() {
 
   function onRemove(it) {
     const t = trans.filter((curel) => curel.key !== it.key);
-
     calculateTrans(t);
   }
 
