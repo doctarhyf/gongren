@@ -1173,6 +1173,37 @@ export const CalculateYearTotal = (year_data, addSacsAdj) => {
   return total_data;
 };
 
+export function arrayToCSV(data) {
+  if (!data || !data.length) return "";
+
+  const headers = Object.keys(data[0]);
+  const rows = data.map((row) =>
+    headers
+      .map(
+        (fieldName) => JSON.stringify(row[fieldName] ?? "") // handle nulls and escape
+      )
+      .join(",")
+  );
+
+  return [headers.join(","), ...rows].join("\n");
+}
+
+export function csvToArray(csvText) {
+  const [headerLine, ...lines] = csvText
+    .split("\n")
+    .filter((line) => line.trim());
+  const headers = headerLine.split(",").map((h) => h.trim());
+
+  return lines.map((line) => {
+    const values = line.split(",").map((v) => JSON.parse(v));
+    const obj = {};
+    headers.forEach((header, i) => {
+      obj[header] = values[i];
+    });
+    return obj;
+  });
+}
+
 export function GetDefaultMonthFilter() {
   const d = new Date();
   const m = (d.getMonth() + 1).toString().padStart(2, "0");

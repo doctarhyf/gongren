@@ -4,6 +4,7 @@ import { UserContext } from "../App";
 import ButtonPrint from "../comps/ButtonPrint";
 import { CLASS_INPUT_TEXT, CLASS_SELECT } from "../helpers/flow";
 import {
+  arrayToCSV,
   formatDateForDatetimeLocal,
   GetDefaultMonthFilter,
 } from "../helpers/func";
@@ -55,7 +56,7 @@ const def = {
 const TEST_TRANS = [
   {
     team: "A",
-    date_time: "2025-07-14T00:52:10.000Z",
+    date_time: "2025-05-14T00:52:10.000Z",
     sortis32: 0,
     sortis42: 10000,
     ut32: 0,
@@ -70,7 +71,7 @@ const TEST_TRANS = [
   },
   {
     team: "C",
-    date_time: "2025-07-14T00:52:41.000Z",
+    date_time: "2025-05-14T00:52:41.000Z",
     sortis32: 0,
     sortis42: 16500,
     ut32: 0,
@@ -85,7 +86,7 @@ const TEST_TRANS = [
   },
   {
     team: "B",
-    date_time: "2025-07-15T00:53:04.000Z",
+    date_time: "2025-06-15T00:53:04.000Z",
     sortis32: 800,
     sortis42: 15500,
     ut32: 800,
@@ -100,7 +101,7 @@ const TEST_TRANS = [
   },
   {
     team: "A",
-    date_time: "2025-07-15T00:53:48.000Z",
+    date_time: "2025-06-15T00:53:48.000Z",
     sortis32: 0,
     sortis42: 22375,
     ut32: 0,
@@ -136,6 +137,7 @@ const TEST_TRANS = [
 function Container() {
   const [insert, setinsert] = useState(false);
   const [trans, settrans] = useState([...TEST_TRANS]);
+  const [transf, settransf] = useState([]);
   const [, , user] = useContext(UserContext);
   const [newt, setnewt] = useState(def);
   const [loading, setloading] = useState(false);
@@ -158,6 +160,16 @@ function Container() {
   /* async function loadData() {
     const d = SB.LoadAllItems(TABLES_NAMES.)
   } */
+
+  useEffect(() => {
+    const filtered = trans.filter((item) =>
+      filter ? item.date_time.startsWith(filter) : true
+    );
+
+    console.log("filter : ", filter);
+
+    settransf([...filtered]);
+  }, [filter]);
 
   function calculateTrans(trans, pandian32, pandian42) {
     const finaltrans = [];
@@ -223,7 +235,7 @@ function Container() {
   }
 
   function onSave(data) {
-    console.log(data);
+    console.log(arrayToCSV(data));
   }
 
   return (
@@ -252,44 +264,57 @@ function Container() {
             />
           </div>
 
-          <div className=" my-4 ">
-            <div>PANDIAN | {filter}</div>
-            <div className="flex gap-4 justify-center">
-              <div>
-                <div>s32</div>
-                <input
-                  className={` w-16 ${CLASS_INPUT_TEXT} `}
-                  type="number"
-                  oninput="this.value = this.value.replace(/[^0-9]/g, '')"
-                  step={1}
-                  min={0}
-                  value={pandian.s32}
-                  onChange={(e) =>
-                    setpandian((old) => ({
-                      ...old,
-                      s32: parseInt(e.target.value),
-                    }))
-                  }
-                />
-              </div>
+          <div className=" flex gap-4 justify-center items-center   ">
+            <div className=" my-4 ">
+              <div>PANDIAN | {filter}</div>
+              <div className="flex gap-4 justify-center">
+                <div>
+                  <div>s32</div>
+                  <input
+                    className={` w-16 ${CLASS_INPUT_TEXT} `}
+                    type="number"
+                    oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                    step={1}
+                    min={0}
+                    value={pandian.s32}
+                    onChange={(e) =>
+                      setpandian((old) => ({
+                        ...old,
+                        s32: parseInt(e.target.value),
+                      }))
+                    }
+                  />
+                </div>
 
-              <div>
-                <div>s32</div>
-                <input
-                  className={` w-16 ${CLASS_INPUT_TEXT} `}
-                  type="number"
-                  step={1}
-                  oninput="this.value = this.value.replace(/[^0-9]/g, '')"
-                  min={0}
-                  value={pandian.s42}
-                  onChange={(e) =>
-                    setpandian((old) => ({
-                      ...old,
-                      s42: parseInt(e.target.value),
-                    }))
-                  }
-                />{" "}
+                <div>
+                  <div>s32</div>
+                  <input
+                    className={` w-16 ${CLASS_INPUT_TEXT} `}
+                    type="number"
+                    step={1}
+                    oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                    min={0}
+                    value={pandian.s42}
+                    onChange={(e) =>
+                      setpandian((old) => ({
+                        ...old,
+                        s42: parseInt(e.target.value),
+                      }))
+                    }
+                  />{" "}
+                </div>
               </div>
+            </div>
+
+            <div className="   flex justify-between  flex-col   ">
+              <div>Filter</div>
+
+              <input
+                type="month"
+                value={filter}
+                onChange={(e) => setFilter(e.target.value)}
+                className={`${CLASS_INPUT_TEXT}   border rounded p-2 w-fit mb-4`}
+              />
             </div>
           </div>
         </div>
@@ -307,72 +332,80 @@ function Container() {
               </tr>
             </thead>
             <tbody>
-              {trans.map((r, i) => (
-                <tr className={`  `}>
-                  <td className="p-1 border table-cell">{i + 1}</td>
-                  <td className="p-1 border table-cell">{r.team}</td>
-                  <td className="p-1 border table-cell">
-                    {" "}
-                    {formatDateForDatetimeLocal(r.date_time)}
+              {transf.length > 0 ? (
+                transf.map((r, i) => (
+                  <tr className={`  `}>
+                    <td className="p-1 border table-cell">{i + 1}</td>
+                    <td className="p-1 border table-cell">{r.team}</td>
+                    <td className="p-1 border table-cell">
+                      {" "}
+                      {formatDateForDatetimeLocal(r.date_time)}
+                    </td>
+                    <td className="p-1 border table-cell">{r.sortis32}</td>
+                    <td className="p-1 border table-cell">{r.prod32}</td>
+                    <td className="p-1 border table-cell">{r.sortis42}</td>
+                    <td className="p-1 border table-cell"> {r.prod42}</td>
+                    <td className="p-1 border table-cell">{r.dech32}</td>
+                    <td className="p-1 border table-cell">{r.dech42}</td>
+                    <td className="p-1 border table-cell">{r.ut32}</td>
+                    <td className="p-1 border table-cell">{r.ut42}</td>
+                    <td className="p-1 border table-cell">{r.res32}</td>
+                    <td className="p-1 border table-cell">{r.res42}</td>
+                    <td className="p-1 border table-cell">
+                      <input
+                        value={papers32[r.key] || 0}
+                        onChange={(e) =>
+                          setpapers32((old) => ({
+                            ...old,
+                            [r.key]: parseInt(e.target.value),
+                          }))
+                        }
+                        type="number"
+                        oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                        min={0}
+                        className={` ${CLASS_INPUT_TEXT} w-16 `}
+                      />
+                    </td>
+                    <td className="p-1 border table-cell">
+                      <input
+                        value={papers42[r.key] || 0}
+                        onChange={(e) =>
+                          setpapers42((old) => ({
+                            ...old,
+                            [r.key]: parseInt(e.target.value),
+                          }))
+                        }
+                        type="number"
+                        oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                        min={0}
+                        className={` ${CLASS_INPUT_TEXT} w-16 `}
+                      />
+                    </td>
+                    <td className="p-1 border table-cell">
+                      {papers32[r.key] ? r.res32 - papers32[r.key] : -r.res32}
+                    </td>
+                    <td className="p-1 border table-cell">
+                      {" "}
+                      {papers42[r.key] ? r.res42 - papers42[r.key] : -r.res42}
+                    </td>
+                    <td className="p-1 border table-cell">{r.gest}</td>
+                    <td className="p-1 border table-cell">
+                      <ButtonPrint
+                        onClick={(e) => onRemove(r)}
+                        title={"DEL"}
+                        icon={del}
+                      />
+                    </td>
+                    {/*  <td className="p-1 border table-cell">{r.key}</td> */}
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td className=" p-2 border   " colSpan={HEADERS.length}>
+                    <span className="text-gray-500">No items for {filter}</span>
                   </td>
-                  <td className="p-1 border table-cell">{r.sortis32}</td>
-                  <td className="p-1 border table-cell">{r.prod32}</td>
-                  <td className="p-1 border table-cell">{r.sortis42}</td>
-                  <td className="p-1 border table-cell"> {r.prod42}</td>
-                  <td className="p-1 border table-cell">{r.dech32}</td>
-                  <td className="p-1 border table-cell">{r.dech42}</td>
-                  <td className="p-1 border table-cell">{r.ut32}</td>
-                  <td className="p-1 border table-cell">{r.ut42}</td>
-                  <td className="p-1 border table-cell">{r.res32}</td>
-                  <td className="p-1 border table-cell">{r.res42}</td>
-                  <td className="p-1 border table-cell">
-                    <input
-                      value={papers32[r.key] || 0}
-                      onChange={(e) =>
-                        setpapers32((old) => ({
-                          ...old,
-                          [r.key]: parseInt(e.target.value),
-                        }))
-                      }
-                      type="number"
-                      oninput="this.value = this.value.replace(/[^0-9]/g, '')"
-                      min={0}
-                      className={` ${CLASS_INPUT_TEXT} w-16 `}
-                    />
-                  </td>
-                  <td className="p-1 border table-cell">
-                    <input
-                      value={papers42[r.key] || 0}
-                      onChange={(e) =>
-                        setpapers42((old) => ({
-                          ...old,
-                          [r.key]: parseInt(e.target.value),
-                        }))
-                      }
-                      type="number"
-                      oninput="this.value = this.value.replace(/[^0-9]/g, '')"
-                      min={0}
-                      className={` ${CLASS_INPUT_TEXT} w-16 `}
-                    />
-                  </td>
-                  <td className="p-1 border table-cell">
-                    {papers32[r.key] ? r.res32 - papers32[r.key] : -r.res32}
-                  </td>
-                  <td className="p-1 border table-cell">
-                    {" "}
-                    {papers42[r.key] ? r.res42 - papers42[r.key] : -r.res42}
-                  </td>
-                  <td className="p-1 border table-cell">{r.gest}</td>
-                  <td className="p-1 border table-cell">
-                    <ButtonPrint
-                      onClick={(e) => onRemove(r)}
-                      title={"DEL"}
-                      icon={del}
-                    />
-                  </td>
-                  {/*  <td className="p-1 border table-cell">{r.key}</td> */}
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
         </div>
