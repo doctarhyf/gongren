@@ -1,6 +1,20 @@
-import { useEffect, useState } from "react";
-import { formatDateForDatetimeLocal } from "../helpers/func";
+import { useContext, useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
+import { UserContext } from "../App";
+import ButtonPrint from "../comps/ButtonPrint";
+import { CLASS_INPUT_TEXT, CLASS_SELECT } from "../helpers/flow";
+import {
+  formatDateForDatetimeLocal,
+  GetDefaultMonthFilter,
+} from "../helpers/func";
+import { GetTransForTokensArray, LANG_TOKENS } from "../helpers/lang_strings";
+import add from "../img/add.png";
+import save from "../img/save.png";
+import cancel from "../img/eraser.png";
+import del from "../img/delete.png";
+import Excelexport from "../comps/Excelexport";
+import * as SB from "../helpers/sb";
+import { TABLES_NAMES } from "../helpers/sb.config";
 
 const HEADERS = [
   "id",
@@ -19,7 +33,7 @@ const HEADERS = [
   "ben",
   "gest",
   "act",
-  "key",
+  // "key",
 ];
 
 const def = {
@@ -113,70 +127,57 @@ const TEST_TRANS = [
   },
 ];
 
-const TROUVE_32 = 0,
-  TROUVE_42 = 2795;
+/* const pandian.s32 = 0,
+  pandian.s42 = 2795; */
 
 function Container() {
   const [insert, setinsert] = useState(false);
   const [trans, settrans] = useState([...TEST_TRANS]);
-  // const [transfinal, settransfinal] = useState([]);
+  const [, , user] = useContext(UserContext);
   const [newt, setnewt] = useState(def);
+  const [loading, setloading] = useState(false);
+  const [filter, setFilter] = useState(GetDefaultMonthFilter());
+  const [pandian, setpandian] = useState({ s32: 0, s42: 2795 });
 
   useEffect(() => {
-    calculateTrans(trans);
-  }, []);
+    const nt = [...TEST_TRANS];
+    //settrans([]);
+    calculateTrans(nt, pandian.s32, pandian.s42);
+    // console.log("calculation ...", i);
+    console.log("new pandian ", pandian);
+  }, [pandian, trans]);
 
-  function calculateTrans(trans) {
-    /*  trans = trans.map((it) => ({
-      ...it,
-      ts: new Date(it.date_time).getTime(),
-    }));
+  /* async function loadData() {
+    const d = SB.LoadAllItems(TABLES_NAMES.)
+  } */
 
-    trans.sort((a, b) => a.ts - b.ts); */
+  function calculateTrans(trans, pandian32, pandian42) {
+    const finaltrans = [];
 
-    let finaltrans = [];
     trans.forEach((it, i) => {
-      const fel = i === 0;
-      const lel = i === trans.length - 1;
-      const curel = { ...it };
-      const prevel = fel ? undefined : trans[i - 1];
-      const nextel = lel ? undefined : trans[i + 1];
+      const firstElement = i === 0;
 
-      /*
-{
-    "team": "A",
-    "date_time": "2025-07-17T00:31:40.547Z",
-    "sortis32": 0,
-    "sortis42": 0,
-    "ut32": 0,
-    "ut42": 0,
-    "dech32": 0,
-    "dech42": 0,
-    "gest": "tan",
-    "key": "64871a08-1925-4f60-862b-0b6c5b365bd6"
-}
+      const prevItem = firstElement ? null : finaltrans[i - 1];
 
-      */
+      const res32 = firstElement
+        ? pandian32
+        : prevItem.res32 + it.sortis32 - it.ut32 - it.dech32;
 
-      const finalit = { ...curel };
+      const res42 = firstElement
+        ? pandian42
+        : prevItem.res42 + it.sortis42 - it.ut42 - it.dech42;
 
-      //if its the first element
-      if (fel) {
-        finalit.res32 = TROUVE_32;
-        finalit.res42 = TROUVE_42;
-      } else {
-        finalit.res32 =
-          prevel.res32 + finalit.sortis32 - finalit.ut32 - finalit.dech32;
-        finalit.res42 =
-          prevel.res42 + finalit.sortis42 - finalit.ut42 - finalit.dech42;
-      }
+      const finalItem = {
+        ...it,
+        res32,
+        res42,
+        prod32: it.ut32 / 20,
+        prod42: it.ut42 / 20,
+      };
 
-      finalit.prod32 = finalit.ut32 / 20;
-      finalit.prod42 = finalit.ut42 / 20;
-      finaltrans.push(finalit);
+      finaltrans.push(finalItem);
     });
 
-    console.log("fintrans\n", finaltrans);
     settrans(finaltrans);
   }
 
@@ -196,211 +197,327 @@ function Container() {
 
     updatedTrans.sort((a, b) => a.ts - b.ts);
 
-    calculateTrans(updatedTrans);
+    calculateTrans(updatedTrans, pandian.s32, pandian.s42);
     setnewt(def);
+    setinsert(false);
   }
 
-  function onCancel() {}
-
   function onRemove(it) {
-    const t = trans.filter((curel) => curel.key !== it.key);
-    calculateTrans(t);
+    if (window.confirm("Are you sure?")) {
+      const t = trans.filter((curel) => curel.key !== it.key);
+      calculateTrans(t, pandian.s32, pandian.s42);
+    }
+  }
+
+  function prepareExecelData(data) {
+    return data;
+  }
+
+  function onSave(data) {
+    console.log(data);
   }
 
   return (
-    <div className="container">
-      <div>CONTAINER</div>
+    <div className="container text-center">
+      <div className=" text-3xl text-orange-500">
+        {GetTransForTokensArray(
+          LANG_TOKENS.PRODUCTION_BAGS_MANAGEMENT,
+          user.lang
+        )}
+      </div>
 
-      <button onClick={(e) => setinsert(true)}>INSERT</button>
-      {/* <button onClick={(e) => calculateTrans()}>RECALCULATE</button> */}
+      {!insert && (
+        <div>
+          <div className=" flex flex-col md:flex-row justify-center md:gap-4 ">
+            <ButtonPrint
+              icon={add}
+              onClick={(e) => setinsert(true)}
+              title={GetTransForTokensArray(LANG_TOKENS.NEW, user.lang)}
+            />
 
-      <div className=" overflow-auto ">
-        <table>
-          <thead>
-            <tr>
-              {HEADERS.map((it) => (
-                <td className="p-1 border">{it}</td>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {trans.map((r, i) => (
+            <Excelexport excelData={prepareExecelData(trans)} />
+            <ButtonPrint
+              icon={save}
+              onClick={(e) => onSave(trans)}
+              title={GetTransForTokensArray(LANG_TOKENS.SAVE, user.lang)}
+            />
+            <ButtonPrint
+              icon={add}
+              onClick={(e) => calculateTrans(trans, pandian.s32, pandian.s42)}
+              title={"RECALCULATE"}
+            />
+          </div>
+
+          <div className=" my-4 ">
+            <div>PANDIAN | {filter}</div>
+            <div className="flex gap-4 justify-center">
+              <div>
+                <div>s32</div>
+                <input
+                  className={` w-16 ${CLASS_INPUT_TEXT} `}
+                  type="number"
+                  oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                  step={1}
+                  min={0}
+                  value={pandian.s32}
+                  onChange={(e) =>
+                    setpandian((old) => ({
+                      ...old,
+                      s32: parseInt(e.target.value),
+                    }))
+                  }
+                />
+              </div>
+
+              <div>
+                <div>s32</div>
+                <input
+                  className={` w-16 ${CLASS_INPUT_TEXT} `}
+                  type="number"
+                  step={1}
+                  oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                  min={0}
+                  value={pandian.s42}
+                  onChange={(e) =>
+                    setpandian((old) => ({
+                      ...old,
+                      s42: parseInt(e.target.value),
+                    }))
+                  }
+                />{" "}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* RECORDS TABLE */}
+      {!insert && (
+        <div className=" overflow-auto ">
+          <table className=" w-full mx-auto ">
+            <thead>
               <tr>
-                <td className="p-1 border table-cell">{i + 1}</td>
-                <td className="p-1 border table-cell">{r.team}</td>
-                <td className="p-1 border table-cell">
-                  {" "}
-                  {formatDateForDatetimeLocal(r.date_time)}
-                </td>
-                <td className="p-1 border table-cell">{r.sortis32}</td>
-                <td className="p-1 border table-cell">{r.prod32}</td>
-                <td className="p-1 border table-cell">{r.sortis42}</td>
-                <td className="p-1 border table-cell"> {r.prod42}</td>
-                <td className="p-1 border table-cell">{r.dech32}</td>
-                <td className="p-1 border table-cell">{r.dech42}</td>
-                <td className="p-1 border table-cell">{r.ut32}</td>
-                <td className="p-1 border table-cell">{r.ut42}</td>
-                <td className="p-1 border table-cell">{r.res32}</td>
-                <td className="p-1 border table-cell">{r.res42}</td>
-                <td className="p-1 border table-cell">{}</td>
-                <td className="p-1 border table-cell">{r.gest}</td>
-                <td className="p-1 border table-cell">
-                  <button onClick={(e) => onRemove(r)}>DEL</button>
-                </td>
-                <td className="p-1 border table-cell">{r.key}</td>
+                {HEADERS.map((it) => (
+                  <td className="p-1 border">{it}</td>
+                ))}
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {trans.map((r, i) => (
+                <tr>
+                  <td className="p-1 border table-cell">{i + 1}</td>
+                  <td className="p-1 border table-cell">{r.team}</td>
+                  <td className="p-1 border table-cell">
+                    {" "}
+                    {formatDateForDatetimeLocal(r.date_time)}
+                  </td>
+                  <td className="p-1 border table-cell">{r.sortis32}</td>
+                  <td className="p-1 border table-cell">{r.prod32}</td>
+                  <td className="p-1 border table-cell">{r.sortis42}</td>
+                  <td className="p-1 border table-cell"> {r.prod42}</td>
+                  <td className="p-1 border table-cell">{r.dech32}</td>
+                  <td className="p-1 border table-cell">{r.dech42}</td>
+                  <td className="p-1 border table-cell">{r.ut32}</td>
+                  <td className="p-1 border table-cell">{r.ut42}</td>
+                  <td className="p-1 border table-cell">{r.res32}</td>
+                  <td className="p-1 border table-cell">{r.res42}</td>
+                  <td className="p-1 border table-cell">{}</td>
+                  <td className="p-1 border table-cell">{r.gest}</td>
+                  <td className="p-1 border table-cell">
+                    <ButtonPrint
+                      onClick={(e) => onRemove(r)}
+                      title={GetTransForTokensArray(
+                        LANG_TOKENS.DELETE,
+                        user.lang
+                      )}
+                      icon={del}
+                    />
+                  </td>
+                  {/*  <td className="p-1 border table-cell">{r.key}</td> */}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
 
-      <div className=" bg-black flex gap-2 flex-col ">
-        <div>FORM INPUT</div>
-        <div>
-          <span>team</span>
-          <select
-            value={newt.team}
-            onChange={(e) =>
-              setnewt((old) => ({
-                ...old,
-                team: e.target.value,
-              }))
-            }
-          >
-            {["A", "B", "C"].map((it) => (
-              <option value={it}>{it}</option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <span>date-time</span>
-          <input
-            defaultValue={formatDateForDatetimeLocal(new Date())}
-            value={newt.date_time}
-            onChange={(e) =>
-              setnewt((old) => ({
-                ...old,
-                date_time: e.target.value,
-              }))
-            }
-            step="1"
-            type="datetime-local"
-          />
-        </div>
-        <div>
-          <span>sortis32</span>
-          <input
-            value={newt.sortis32}
-            onChange={(e) =>
-              setnewt((old) => ({
-                ...old,
-                sortis32: parseInt(e.target.value),
-              }))
-            }
-            step="1"
-            oninput="this.value = this.value.replace(/[^0-9]/g, '')"
-            type="number"
-          />
-        </div>
-        <div>
-          <span>sortis42</span>
-          <input
-            value={newt.sortis42}
-            onChange={(e) =>
-              setnewt((old) => ({
-                ...old,
-                sortis42: parseInt(e.target.value),
-              }))
-            }
-            step="1"
-            oninput="this.value = this.value.replace(/[^0-9]/g, '')"
-            type="number"
-          />
-        </div>
+      {/* SHOW INSERT FORM */}
+      {insert && (
+        <div className=" mx-auto shadow-lg bg-gradient-to-b from-slate-700 to-slate-800 flex gap-2 flex-col my-4 md:w-fit w-full p-4 rounded-lg ">
+          <div className=" text-xl text-center my-4 border-b border-dashed border-slate-400 pb-4  ">
+            Input New Data
+          </div>
 
-        <div>
-          <span>dech32</span>
-          <input
-            value={newt.dech32}
-            onChange={(e) =>
-              setnewt((old) => ({
-                ...old,
-                dech32: parseInt(e.target.value),
-              }))
-            }
-            step="1"
-            oninput="this.value = this.value.replace(/[^0-9]/g, '')"
-            type="number"
-          />
-        </div>
-        <div>
-          <span>dech42</span>
-          <input
-            value={newt.dech42}
-            onChange={(e) =>
-              setnewt((old) => ({
-                ...old,
-                dech42: parseInt(e.target.value),
-              }))
-            }
-            step="1"
-            oninput="this.value = this.value.replace(/[^0-9]/g, '')"
-            type="number"
-          />
-        </div>
+          <div className=" flex  justify-between ">
+            <span>team</span>
+            <select
+              className={` ${CLASS_SELECT}  `}
+              value={newt.team}
+              onChange={(e) =>
+                setnewt((old) => ({
+                  ...old,
+                  team: e.target.value,
+                }))
+              }
+            >
+              {["A", "B", "C"].map((it) => (
+                <option value={it}>{it}</option>
+              ))}
+            </select>
+          </div>
 
-        <div>
-          <span>ut32</span>
-          <input
-            value={newt.ut32}
-            onChange={(e) =>
-              setnewt((old) => ({
-                ...old,
-                ut32: parseInt(e.target.value),
-              }))
-            }
-            step="1"
-            oninput="this.value = this.value.replace(/[^0-9]/g, '')"
-            type="number"
-          />
-        </div>
-        <div>
-          <span>ut42</span>
-          <input
-            value={newt.ut42}
-            onChange={(e) =>
-              setnewt((old) => ({
-                ...old,
-                ut42: parseInt(e.target.value),
-              }))
-            }
-            step="1"
-            oninput="this.value = this.value.replace(/[^0-9]/g, '')"
-            type="number"
-          />
-        </div>
+          <div className=" flex  justify-between ">
+            <span>date-time</span>
+            <input
+              className={` ${CLASS_SELECT}  `}
+              defaultValue={formatDateForDatetimeLocal(new Date())}
+              value={newt.date_time}
+              onChange={(e) =>
+                setnewt((old) => ({
+                  ...old,
+                  date_time: e.target.value,
+                }))
+              }
+              step="1"
+              type="datetime-local"
+            />
+          </div>
 
-        <div>
-          <span>team</span>
-          <select
-            value={newt.gest}
-            onChange={(e) =>
-              setnewt((old) => ({
-                ...old,
-                gest: e.target.value,
-              }))
-            }
-          >
-            {["tan", "zhao", "wang gang"].map((it) => (
-              <option value={it}>{it}</option>
-            ))}
-          </select>
+          <div className=" flex  justify-between ">
+            <span>sortis32</span>
+            <input
+              className={` ${CLASS_INPUT_TEXT} `}
+              value={newt.sortis32}
+              onChange={(e) =>
+                setnewt((old) => ({
+                  ...old,
+                  sortis32: parseInt(e.target.value),
+                }))
+              }
+              step="1"
+              oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+              type="number"
+            />
+          </div>
+
+          <div className=" flex  justify-between ">
+            <span>sortis42</span>
+            <input
+              className={` ${CLASS_INPUT_TEXT} `}
+              value={newt.sortis42}
+              onChange={(e) =>
+                setnewt((old) => ({
+                  ...old,
+                  sortis42: parseInt(e.target.value),
+                }))
+              }
+              step="1"
+              oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+              type="number"
+            />
+          </div>
+
+          <div className=" flex  justify-between ">
+            <span>dech32</span>
+            <input
+              className={` ${CLASS_INPUT_TEXT} `}
+              value={newt.dech32}
+              onChange={(e) =>
+                setnewt((old) => ({
+                  ...old,
+                  dech32: parseInt(e.target.value),
+                }))
+              }
+              step="1"
+              oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+              type="number"
+            />
+          </div>
+
+          <div className=" flex  justify-between ">
+            <span>dech42</span>
+            <input
+              className={` ${CLASS_INPUT_TEXT} `}
+              value={newt.dech42}
+              onChange={(e) =>
+                setnewt((old) => ({
+                  ...old,
+                  dech42: parseInt(e.target.value),
+                }))
+              }
+              step="1"
+              oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+              type="number"
+            />
+          </div>
+
+          <div className=" flex  justify-between ">
+            <span>ut32</span>
+            <input
+              className={` ${CLASS_INPUT_TEXT} `}
+              value={newt.ut32}
+              onChange={(e) =>
+                setnewt((old) => ({
+                  ...old,
+                  ut32: parseInt(e.target.value),
+                }))
+              }
+              step="1"
+              oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+              type="number"
+            />
+          </div>
+
+          <div className=" flex  justify-between ">
+            <span>ut42</span>
+            <input
+              className={` ${CLASS_INPUT_TEXT} `}
+              value={newt.ut42}
+              onChange={(e) =>
+                setnewt((old) => ({
+                  ...old,
+                  ut42: parseInt(e.target.value),
+                }))
+              }
+              step="1"
+              oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+              type="number"
+            />
+          </div>
+
+          <div className=" flex  justify-between ">
+            <span>team</span>
+            <select
+              className={` ${CLASS_SELECT}  `}
+              value={newt.gest}
+              onChange={(e) =>
+                setnewt((old) => ({
+                  ...old,
+                  gest: e.target.value,
+                }))
+              }
+            >
+              {["tan", "zhao", "wang gang"].map((it) => (
+                <option value={it}>{it}</option>
+              ))}
+            </select>
+          </div>
+
+          <div className=" border-dashed border-slate-400 border-t pt-4 mt-4 flex  justify-between flex-col md:flex-row ">
+            <ButtonPrint
+              icon={save}
+              onClick={onInsertTrans}
+              title={GetTransForTokensArray(LANG_TOKENS.SAVE, user.lang)}
+            />
+
+            <ButtonPrint
+              icon={cancel}
+              onClick={(e) => setinsert(false)}
+              title={GetTransForTokensArray(LANG_TOKENS.CANCEL, user.lang)}
+            />
+          </div>
         </div>
-        <div>
-          <button onClick={onInsertTrans}>SAVE</button>
-          <button onClick={onCancel}>CANCEL</button>
-        </div>
-      </div>
+      )}
     </div>
   );
 }

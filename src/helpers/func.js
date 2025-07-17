@@ -1173,6 +1173,14 @@ export const CalculateYearTotal = (year_data, addSacsAdj) => {
   return total_data;
 };
 
+export function GetDefaultMonthFilter() {
+  const d = new Date();
+  const m = (d.getMonth() + 1).toString().padStart(2, "0");
+  const y = d.getFullYear();
+
+  return `${y}-${m}`;
+}
+
 export const customSortShifts = (a, b) => {
   const codeA = a.code.charAt(2);
   const codeB = b.code.charAt(2);
