@@ -164,9 +164,7 @@ function Container() {
       filter ? item.date_time.startsWith(filter) : true
     );
 
-    console.log("filter : ", filter);
-
-    settransf([...filtered]);
+    calculateTrans(filtered, pandian.s32, pandian.s42);
   }, [filter]);
 
   function calculateTrans(trans, pandian32, pandian42) {
