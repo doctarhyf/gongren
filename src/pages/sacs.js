@@ -132,7 +132,7 @@ const TEST_TRANS = [
   },
 ];
 
-function Container() {
+function BagsManProduction() {
   const [insert, setinsert] = useState(false);
   const [trans, settrans] = useState([...TEST_TRANS]);
   const [transf, settransf] = useState([]);
@@ -330,7 +330,13 @@ function Container() {
             <tbody>
               {transf.length > 0 ? (
                 transf.map((r, i) => (
-                  <tr className={`  `}>
+                  <tr
+                    className={` ${
+                      (r.res42 - papers42[r.key] > 0 ||
+                        r.res42 - papers42[r.key] < 0) &&
+                      "bg-red-900 text-red-300 font-bold border border-red-700"
+                    } `}
+                  >
                     <td className="p-1 border table-cell">{i + 1}</td>
                     <td className="p-1 border table-cell">{r.team}</td>
                     <td className="p-1 border table-cell">
@@ -591,9 +597,8 @@ function Container() {
 export default function Sacs() {
   return (
     <div>
-      <div>Sacs</div>
       <div>
-        <Container />
+        <BagsManProduction />
       </div>
     </div>
   );
