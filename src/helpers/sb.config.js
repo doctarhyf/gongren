@@ -31,4 +31,5 @@ export const TABLES_NAMES = {
   SETTINGS: "settings",
   PANDIAN: "dzpandian",
   TIME_TABLE: "timetable",
+  BAGS_MAN_PROD: "sacs_production",
 };

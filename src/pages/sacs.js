@@ -5,6 +5,7 @@ import ButtonPrint from "../comps/ButtonPrint";
 import { CLASS_INPUT_TEXT, CLASS_SELECT } from "../helpers/flow";
 import {
   arrayToCSV,
+  csvToArray,
   formatDateForDatetimeLocal,
   GetDefaultMonthFilter,
   GetNow,
@@ -17,6 +18,7 @@ import del from "../img/delete.png";
 import Excelexport from "../comps/Excelexport";
 import * as SB from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
+import Loading from "../comps/Loading";
 
 const HEADERS = [
   "id",
@@ -55,7 +57,7 @@ const def = {
 };
 
 const TEST_TRANS = [
-  {
+  /* {
     team: "A",
     date_time: "2025-05-14T00:52:10.000Z",
     sortis32: 0,
@@ -129,12 +131,12 @@ const TEST_TRANS = [
     ts: 1752627268000,
     res32: 0,
     res42: 22283,
-  },
+  }, */
 ];
 
 function BagsManProduction() {
   const [insert, setinsert] = useState(false);
-  const [trans, settrans] = useState([...TEST_TRANS]);
+  const [trans, settrans] = useState([]); //...TEST_TRANS]);
   const [transf, settransf] = useState([]);
   const [, , user] = useContext(UserContext);
   const [newt, setnewt] = useState(def);
@@ -143,6 +145,10 @@ function BagsManProduction() {
   const [pandian, setpandian] = useState({ s32: 0, s42: 2795 });
   const [papers32, setpapers32] = useState({});
   const [papers42, setpapers42] = useState({});
+
+  useEffect(() => {
+    loadData();
+  }, []);
 
   useEffect(() => {
     console.log("papers32 => ", papers32);
@@ -155,11 +161,20 @@ function BagsManProduction() {
     console.log("new pandian ", pandian);
   }, [pandian]);
 
-  /* async function loadData() {
-    const d = SB.LoadAllItems(TABLES_NAMES.)
-  } */
+  async function loadData() {
+    setloading(true);
+    const datacsv = await SB.LoadAllItems(TABLES_NAMES.BAGS_MAN_PROD);
+    const dataobj = datacsv.map((it) => csvToArray(it.csv)).flat();
+
+    settrans(dataobj);
+    console.log("datacsv : ", datacsv);
+    console.log("dataobj : ", dataobj);
+    calculateTrans(dataobj, pandian.s32, pandian.s42);
+    setloading(false);
+  }
 
   useEffect(() => {
+    if (trans.length === 0) return;
     const filtered = trans.filter((item) =>
       filter ? item.date_time.startsWith(filter) : true
     );
@@ -230,8 +245,29 @@ function BagsManProduction() {
     return data;
   }
 
-  function onSave(data) {
-    console.log(arrayToCSV(data));
+  async function onSave(data) {
+    setloading(true);
+
+    const csv = arrayToCSV(data);
+    const fdata = { csv, filter };
+
+    if (!filter) {
+      alert("Filter cant be empty!");
+      setloading(false);
+      return;
+    }
+
+    const r = await SB.UpsertItem(TABLES_NAMES.BAGS_MAN_PROD, fdata, "filter");
+    console.log(filter, csv);
+    console.log("res => ", r);
+
+    if (!r.code) {
+      alert("Data saved succsses!");
+    } else {
+      alert("ERROR: \n" + JSON.stringify(r));
+    }
+
+    setloading(false);
   }
 
   return (
@@ -243,6 +279,8 @@ function BagsManProduction() {
         )}
       </div>
 
+      <Loading isLoading={loading} />
+
       {!insert && (
         <div>
           <div className=" flex flex-col md:flex-row justify-center md:gap-4 ">
@@ -252,10 +290,10 @@ function BagsManProduction() {
               title={GetTransForTokensArray(LANG_TOKENS.NEW, user.lang)}
             />
 
-            <Excelexport excelData={prepareExecelData(trans)} />
+            <Excelexport excelData={prepareExecelData(transf)} />
             <ButtonPrint
               icon={save}
-              onClick={(e) => onSave(trans)}
+              onClick={(e) => onSave(transf)}
               title={GetTransForTokensArray(LANG_TOKENS.SAVE, user.lang)}
             />
           </div>
@@ -443,7 +481,9 @@ function BagsManProduction() {
             <input
               className={` ${CLASS_SELECT}  `}
               //defaultValue={GetNow()}
-              value={newt.date_time || GetNow()}
+              value={
+                new Date(newt.date_time).toISOString().split(".")[0] || GetNow()
+              }
               onChange={(e) =>
                 setnewt((old) => ({
                   ...old,
