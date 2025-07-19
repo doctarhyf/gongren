@@ -346,7 +346,7 @@ function BagsManProduction() {
               </div>
             </div>
 
-            <div className="   flex justify-between  flex-col   ">
+            <div className="   flex justify-between  flex-col border-4 border-transparent animate-blink p-4   ">
               <div>Filter</div>
 
               <input
@@ -355,6 +355,9 @@ function BagsManProduction() {
                 onChange={(e) => setFilter(e.target.value)}
                 className={`${CLASS_INPUT_TEXT}   border rounded p-2 w-fit mb-4`}
               />
+              <div className=" text-red-500 italic text-sm p-1 text-center  animate-blink2  ">
+                Please select the month
+              </div>
             </div>
           </div>
         </div>
