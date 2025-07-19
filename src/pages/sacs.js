@@ -295,7 +295,7 @@ function BagsManProduction() {
               fileName={`${GetTransForTokensArray(
                 LANG_TOKENS.PRODUCTION_BAGS_MANAGEMENT,
                 user.lang
-              )}_${filter.replace("-", "_")}`}
+              )}_${filter ? filter.replace("-", "_") : "all"}`}
             />
             <ButtonPrint
               icon={save}
