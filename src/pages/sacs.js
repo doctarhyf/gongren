@@ -141,7 +141,7 @@ function BagsManProduction() {
   const [, , user] = useContext(UserContext);
   const [newt, setnewt] = useState(def);
   const [loading, setloading] = useState(false);
-  const [filter, setFilter] = useState(GetDefaultMonthFilter());
+  const [filter, setFilter] = useState(undefined);
   const [pandian, setpandian] = useState({ s32: 0, s42: 2795 });
   const [papers32, setpapers32] = useState({});
   const [papers42, setpapers42] = useState({});
@@ -290,7 +290,13 @@ function BagsManProduction() {
               title={GetTransForTokensArray(LANG_TOKENS.NEW, user.lang)}
             />
 
-            <Excelexport excelData={prepareExecelData(transf)} />
+            <Excelexport
+              excelData={prepareExecelData(transf)}
+              fileName={`${GetTransForTokensArray(
+                LANG_TOKENS.PRODUCTION_BAGS_MANAGEMENT,
+                user.lang
+              )}_${filter.replace("-", "_")}`}
+            />
             <ButtonPrint
               icon={save}
               onClick={(e) => onSave(transf)}
