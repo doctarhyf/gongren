@@ -469,7 +469,13 @@ function BagsManProduction() {
               ) : (
                 <tr>
                   <td className=" p-2 border   " colSpan={HEADERS.length}>
-                    <span className="text-gray-500">No items for {filter}</span>
+                    <span className="text-gray-500">
+                      {GetTransForTokensArray(
+                        LANG_TOKENS.NO_RECORDS,
+                        user.lang
+                      )}{" "}
+                      | {filter}
+                    </span>
                   </td>
                 </tr>
               )}

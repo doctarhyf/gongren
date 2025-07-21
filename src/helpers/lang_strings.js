@@ -10,7 +10,11 @@ export const LANG_TOKENS = {
     "请选择月份",
     "Veuillez sélectionner le mois",
   ],
-
+  NO_RECORDS: [
+    "No records for selected month", // English
+    "所选月份无记录", // Chinese
+    "Aucun enregistrement pour le mois sélectionné", // French
+  ],
   "IN/OUT": ["IN/OUT", "进/出", "SORTIE/ENTREE"],
   SERVER_RESTART_MESSAGE: [
     "The new subscription is being activated, the server will be operational shortly.",
