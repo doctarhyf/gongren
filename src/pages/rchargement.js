@@ -603,7 +603,7 @@ export default function RapportChargement() {
       )}
 
       <div>
-        {adding && (
+        {/*  {adding && (
           <div role="alert" className="alert my-4 alert-warning">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -626,7 +626,7 @@ export default function RapportChargement() {
             </span>
           </div>
         )}
-
+ */}
         {baozhuangrep ? (
           <div>
             <Boazhuang2

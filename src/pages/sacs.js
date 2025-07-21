@@ -10,7 +10,11 @@ import {
   GetDefaultMonthFilter,
   GetNow,
 } from "../helpers/func";
-import { GetTransForTokensArray, LANG_TOKENS } from "../helpers/lang_strings";
+import {
+  GetTransForTokenName,
+  GetTransForTokensArray,
+  LANG_TOKENS,
+} from "../helpers/lang_strings";
 import add from "../img/add.png";
 import save from "../img/save.png";
 import cancel from "../img/eraser.png";
@@ -388,7 +392,9 @@ function BagsManProduction() {
             <thead>
               <tr>
                 {HEADERS.map((it) => (
-                  <td className="p-1 border">{it}</td>
+                  <td className="p-1 border">
+                    {GetTransForTokenName(it.toUpperCase(), user.id)}
+                  </td>
                 ))}
               </tr>
             </thead>
