@@ -4,6 +4,13 @@ import china from "../img/china.png";
 import { SUPERVISORS } from "./flow";
 
 export const LANG_TOKENS = {
+  FILTER: ["Filter", "筛选", "Filtrer"],
+  PLEASE_SELECT_MONTH: [
+    "Please select the month",
+    "请选择月份",
+    "Veuillez sélectionner le mois",
+  ],
+
   "IN/OUT": ["IN/OUT", "进/出", "SORTIE/ENTREE"],
   SERVER_RESTART_MESSAGE: [
     "The new subscription is being activated, the server will be operational shortly.",
@@ -567,3 +574,18 @@ HUD_TITLE_LOADING_TRACKING: [
 }
 
 export const GTFT = GetTransForTokensArray;
+
+export const MOIS = [
+  ["January", "一月", "Janvier"],
+  ["February", "二月", "Février"],
+  ["March", "三月", "Mars"],
+  ["April", "四月", "Avril"],
+  ["May", "五月", "Mai"],
+  ["June", "六月", "Juin"],
+  ["July", "七月", "Juillet"],
+  ["August", "八月", "Août"],
+  ["September", "九月", "Septembre"],
+  ["October", "十月", "Octobre"],
+  ["November", "十一月", "Novembre"],
+  ["December", "十二月", "Décembre"],
+];

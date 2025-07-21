@@ -145,6 +145,7 @@ function BagsManProduction() {
   const [pandian, setpandian] = useState({ s32: 0, s42: 2795 });
   const [papers32, setpapers32] = useState({});
   const [papers42, setpapers42] = useState({});
+  const [saved, setsaved] = useState(false);
 
   useEffect(() => {
     loadData();
@@ -231,6 +232,7 @@ function BagsManProduction() {
     calculateTrans(updatedTrans, pandian.s32, pandian.s42);
     setnewt(def);
     setinsert(false);
+    setsaved(false);
   }
 
   function onRemove(it) {
@@ -238,6 +240,7 @@ function BagsManProduction() {
       console.log("deleting", it);
       const t = trans.filter((curel) => curel.key !== it.key);
       calculateTrans(t, pandian.s32, pandian.s42);
+      setsaved(false);
     }
   }
 
@@ -263,6 +266,7 @@ function BagsManProduction() {
 
     if (!r.code) {
       alert("Data saved succsses!");
+      setsaved(true);
     } else {
       alert("ERROR: \n" + JSON.stringify(r));
     }
@@ -297,11 +301,16 @@ function BagsManProduction() {
                 user.lang
               )}_${filter ? filter.replace("-", "_") : "all"}`}
             />
-            <ButtonPrint
-              icon={save}
-              onClick={(e) => onSave(transf)}
-              title={GetTransForTokensArray(LANG_TOKENS.SAVE, user.lang)}
-            />
+            <div className=" justify-center flex items-center ">
+              <ButtonPrint
+                icon={save}
+                onClick={(e) => onSave(transf)}
+                title={GetTransForTokensArray(LANG_TOKENS.SAVE, user.lang)}
+              />
+              {!saved && (
+                <span className=" bg-red-500 border-red-800 w-2 h-2 rounded-full mx-2 " />
+              )}
+            </div>
           </div>
 
           <div className=" flex gap-4 justify-center items-center   ">
@@ -346,8 +355,12 @@ function BagsManProduction() {
               </div>
             </div>
 
-            <div className="   flex justify-between  flex-col border-4 border-transparent animate-blink p-4   ">
-              <div>Filter</div>
+            <div
+              className={`   flex justify-between  flex-col border-4 border-transparent ${
+                filter ? "" : "  animate-blink"
+              } p-4   `}
+            >
+              <div>{GetTransForTokensArray(LANG_TOKENS.FILTER, user.lang)}</div>
 
               <input
                 type="month"
@@ -355,9 +368,14 @@ function BagsManProduction() {
                 onChange={(e) => setFilter(e.target.value)}
                 className={`${CLASS_INPUT_TEXT}   border rounded p-2 w-fit mb-4`}
               />
-              <div className=" text-red-500 italic text-sm p-1 text-center  animate-blink2  ">
-                Please select the month
-              </div>
+              {!filter && (
+                <div className=" text-red-500 italic text-sm p-1 text-center  animate-blink2  ">
+                  {GetTransForTokensArray(
+                    LANG_TOKENS.PLEASE_SELECT_MONTH,
+                    user.lang
+                  )}
+                </div>
+              )}
             </div>
           </div>
         </div>
