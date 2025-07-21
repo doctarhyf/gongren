@@ -557,27 +557,31 @@ export default function RapportChargement() {
       {!baozhuangrep && (
         <>
           <div className=" md:flex items-center md:justify-center  ">
-            <DateSelector onDateSelected={onDateSelected} />
+            {!adding && <DateSelector onDateSelected={onDateSelected} />}
             {!showTotalsByTeam && (
               <div className="flex md:-mt-3 items-center gap-2  w-fit ml-11 ">
-                <div className=" text-sm font-bold">
-                  {" "}
-                  {LANG_TOKENS.TEAM[GetLangIndexByLangCode(user.lang)]} :{" "}
-                </div>
+                {!adding && (
+                  <div className=" text-sm font-bold">
+                    {" "}
+                    {LANG_TOKENS.TEAM[GetLangIndexByLangCode(user.lang)]} :{" "}
+                  </div>
+                )}
 
                 {user.is_exp === "OUI" ? (
                   <span> {user.equipe} </span>
                 ) : (
-                  <select
-                    className={CLASS_SELECT}
-                    onChange={(e) => setteam(e.target.value)}
-                  >
-                    {["A", "B", "C", "ALL"].map((op) => (
-                      <option selected={op === team} value={op}>
-                        {op}
-                      </option>
-                    ))}
-                  </select>
+                  !adding && (
+                    <select
+                      className={CLASS_SELECT}
+                      onChange={(e) => setteam(e.target.value)}
+                    >
+                      {["A", "B", "C", "ALL"].map((op) => (
+                        <option selected={op === team} value={op}>
+                          {op}
+                        </option>
+                      ))}
+                    </select>
+                  )
                 )}
               </div>
             )}
