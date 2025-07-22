@@ -888,7 +888,9 @@ function BagsManagementContainer() {
     return d;
   }
 
-  async function onSave() {}
+  async function onSave() {
+    alert("Not yet impl!");
+  }
 
   return (
     <div className="container text-center">
