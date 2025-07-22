@@ -44,6 +44,11 @@ export const LANG_TOKENS = {
     "生产袋子管理",
     "GESTION DES SACS DE PRODUCTION",
   ],
+  CONTAINER_BAGS_MANAGEMENT: [
+    "CONTAINER BAGS MANAGEMENT",
+    "集装箱袋子管理",
+    "GESTION DES SACS DU CONTENEUR",
+  ],
   s32: ["32.5N", "32.5N", "32.5N"],
   s42: ["42.5N", "42.5N", "42.5N"],
   SUPERVISOR: ["SUPERVISOR", "班长", "SUPERVISEUR"],
@@ -306,6 +311,11 @@ export const LANG_TOKENS = {
     "CALCUL DE SACS DECHIRES/RESTANTS",
   ],
   TORN_B: ["T.B.", "破袋", "DECH."],
+  ADD_NEW_RECORD: [
+    "Add New Record", // English
+    "添加新记录", // Chinese
+    "Ajouter un nouvel enregistrement", // French
+  ],
   T: ["T", "吨", "T"],
   DATE: ["Date", "日期", "Date"],
   DATE_TIME: ["DATE-TIME", "日期/时间", "DATE-HEURE"],
