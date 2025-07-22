@@ -26,10 +26,11 @@ export const TABLES_NAMES = {
   NOTIFICATIONS: "notifications",
   CUSTOM_AGENTS_LISTS: "custom_agents_lists",
   DAIZI_SHENGCHAN: "dzsc",
-  DAIZI_JIZHUANGXIANG: "dzjzx",
+  //DAIZI_JIZHUANGXIANG: "dzjzx",
   DAIZI_SHENGYU: "dzsy",
   SETTINGS: "settings",
   PANDIAN: "dzpandian",
   TIME_TABLE: "timetable",
-  BAGS_MAN_PROD: "sacs_production",
+  BAGS_MANAGEMENT_PRODUCTION: "bm_production",
+  BAGS_MANAGEMENT_CONTAINER: "bm_container",
 };

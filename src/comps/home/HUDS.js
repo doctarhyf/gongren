@@ -55,6 +55,7 @@ import ActionButton from "../ActionButton";
 import print from "../../img/printer.png";
 import { printAgentInfo } from "../../helpers/print";
 import Stock from "../sacs/Stock";
+
 function AgentStats({ agentsGrouped }) {
   const [, , user] = useContext(UserContext);
   return (
@@ -889,67 +890,6 @@ export function HUDGestionSacs() {
             label={GetTransForTokensArray(LANG_TOKENS.PROD_REST, user.lang)}
             onResetStock={(e) => null}
           />
-          {/*  <div className="">
-            <div>
-              {[
-                ["集装箱袋数", data.cont, cont],
-                ["剩余总量", data.prod, pkg],
-              ].map((stock, i) => (
-                <div className=" border-b justify-between  border-b-white/10 py-2 flex  ">
-                  <div>
-                    <div className=" bg-purple-950  px-2 py-1 w-fit rounded-md ">
-                      {stock[0]}
-                    </div>
-                    {Object.entries(stock[1]).map((s, i) => (
-                      <div className="  ">
-                        <div>
-                          <span className=" font-bold  px-2 text-sm  ">
-                            {`${GetTransForTokenName(s[0], user.lang)} `}
-                          </span>
-                          :<span className=" text-[16pt] "> {s[1]} 袋</span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div>
-              <div className=" text-sm font-bold  my-2 ">
-                {GetTransForTokensArray(LANG_TOKENS.LAST_5_RECORDS, user.lang)}
-              </div>
-              <table className="  text-xs w-full">
-                <tr>
-                  <td className=" border p-1  ">No</td>
-                  <td className=" border p-1  ">日期</td>
-                  <td className=" border p-1  ">32.5</td>
-                  <td className=" border p-1  ">42.5</td>
-                  <td className=" border p-1  ">班组</td>
-                  <td className=" border p-1  ">负责人</td>
-                </tr>
-                {stockCont &&
-                  stockCont
-                    .filter((it) => it.operation === "in")
-                    .sort((a, b) => b.id - a.id)
-                    .map(
-                      (it, i) =>
-                        i < 5 && (
-                          <tr className="   ">
-                            <td className=" border p-1  ">{i + 1}</td>
-                            <td className=" border p-1  ">
-                              {it.date_time.replace("T", " ")}
-                            </td>
-                            <td className=" border p-1  ">{it.s32}</td>
-                            <td className=" border p-1  ">{it.s42}</td>
-                            <td className=" border p-1  ">{it.team}</td>
-                            <td className=" border p-1  ">{it.fuzeren}</td>
-                          </tr>
-                        )
-                    )}
-              </table>
-            </div>
-          </div> */}
         </div>
       )}
     </Card>

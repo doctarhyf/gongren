@@ -169,7 +169,9 @@ function BagsManProduction() {
 
   async function loadData() {
     setloading(true);
-    const datacsv = await SB.LoadAllItems(TABLES_NAMES.BAGS_MAN_PROD);
+    const datacsv = await SB.LoadAllItems(
+      TABLES_NAMES.BAGS_MANAGEMENT_PRODUCTION
+    );
     const dataobj = datacsv.map((it) => csvToArray(it.csv)).flat();
 
     settrans(dataobj);
@@ -265,7 +267,11 @@ function BagsManProduction() {
       return;
     }
 
-    const r = await SB.UpsertItem(TABLES_NAMES.BAGS_MAN_PROD, fdata, "filter");
+    const r = await SB.UpsertItem(
+      TABLES_NAMES.BAGS_MANAGEMENT_PRODUCTION,
+      fdata,
+      "filter"
+    );
     console.log(filter, csv);
     console.log("res => ", r);
 
