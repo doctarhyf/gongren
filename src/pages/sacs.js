@@ -26,6 +26,18 @@ import { TABLES_NAMES } from "../helpers/sb.config";
 import Loading from "../comps/Loading";
 
 function BagsManagementProduction() {
+  const def = {
+    team: "A",
+    date_time: new Date().toISOString(),
+    sortis32: 0,
+    sortis42: 0,
+    ut32: 0,
+    ut42: 0,
+    dech32: 0,
+    dech42: 0,
+    gest: "tan",
+    key: uuidv4(),
+  };
   const [insert, setinsert] = useState(false);
   const [trans, settrans] = useState([]); //...TEST_TRANS]);
   const [transf, settransf] = useState([]);
@@ -60,19 +72,6 @@ function BagsManagementProduction() {
     "act",
     // "key",
   ];
-
-  const def = {
-    team: "A",
-    date_time: new Date().toISOString(),
-    sortis32: 0,
-    sortis42: 0,
-    ut32: 0,
-    ut42: 0,
-    dech32: 0,
-    dech42: 0,
-    gest: "tan",
-    key: uuidv4(),
-  };
 
   const TEST_TRANS = [
     /* {
@@ -742,8 +741,14 @@ function BagsManagementContainer() {
     date_time: new Date().toISOString(),
   };
   const [loading, setloading] = useState(false);
-  const [newt, setnewt] = useState(def);
-  const [insert, setinsert] = useState(true);
+  const [newt, setnewt] = useState({
+    fuzeren: "tan",
+    s32: 0,
+    s42: 0,
+    team: "A",
+    date_time: new Date().toISOString(),
+  });
+  const [insert, setinsert] = useState(false);
   const [, , user] = useContext(UserContext);
   const [filter, setFilter] = useState();
   const [transf, settransf] = useState([]);
@@ -855,10 +860,12 @@ function BagsManagementContainer() {
   }, [filter]);
 
   async function loadData() {
+    setloading(true);
     const d = await SB.LoadAllItems(TABLES_NAMES.BAGS_MANAGEMENT_CONTAINER);
 
     settrans(d);
     settransf(d);
+    setloading(false);
   }
 
   async function onInsertTrans() {
@@ -1174,10 +1181,12 @@ export default function Sacs() {
   return (
     <div>
       <div className=" mx-auto  ">
-        <button className={CLASS_BTN} onClick={(e) => setshowcont(!showcont)}>
-          {" "}
-          CONTAINER/PRODUCTION{" "}
-        </button>
+        <div className=" flex justify-center p-4  ">
+          <button className={CLASS_BTN} onClick={(e) => setshowcont(!showcont)}>
+            {" "}
+            CONTAINER/PRODUCTION{" "}
+          </button>
+        </div>
         {!showcont ? <BagsManagementProduction /> : <BagsManagementContainer />}
       </div>
     </div>
