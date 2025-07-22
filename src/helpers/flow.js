@@ -35,20 +35,6 @@ export const STOCK_TYPE = {
   PRODUCTION: TRANSACTION_TYPE.PRODUCTION,
 };
 
-export const SUPERVISORS = {
-  A: { nom: "SERGE KAZALI", zh: "塞基尔" },
-  B: { nom: "NKULU MWENZE", zh: "库鲁" },
-  C: { nom: "MPOYO BUDIMBO", zh: "抱有" },
-  D: { nom: "AMEDEE KATANGA", zh: "噶当噶" },
-};
-
-export const SUPERVISORS_EMCO = {
-  A: { nom: "DIEM MUTUND", zh: "塞基尔" },
-  B: { nom: "OSE YAV", zh: "库鲁" },
-  C: { nom: "RACH ROMBO", zh: "抱有" },
-  D: { nom: "", zh: "噶当噶" },
-};
-
 export const STOCK_RESET_PWD = "1505";
 
 const MARG = 15;
@@ -535,4 +521,42 @@ export function getFrenchDayName(year, month, day, fullName) {
 
 export const ROULEMENT = {
   A: "",
+};
+
+export const SUPERVISORS = {
+  A: { nom: "SERGE KAZALI", zh: "塞基尔" },
+  B: { nom: "NKULU MWENZE", zh: "库鲁" },
+  C: { nom: "MPOYO BUDIMBO", zh: "抱有" },
+  D: { nom: "AMEDEE KATANGA", zh: "噶当噶" },
+};
+
+export const SUPERVISORS_EMCO = {
+  A: { nom: "DIEM MUTUND", zh: "塞基尔" },
+  B: { nom: "OSE YAV", zh: "库鲁" },
+  C: { nom: "RACH ROMBO", zh: "抱有" },
+  D: { nom: "", zh: "噶当噶" },
+};
+
+export const TEAMS_DATA = {
+  A: {
+    GCK: {
+      sup: { nom: "SERGE KAZALI", zh: "塞基尔", phone: "+243 974 912 085" },
+      deq: { nom: "MWEZ MBAY", zh: "木纹则", phone: "+243 895 879 177" },
+    },
+    EMCO: { nom: "DIEM MUTUND", zh: "那位", phone: "+243 " },
+  },
+  B: {
+    GCK: {
+      sup: { nom: "NKULU MWENZE", zh: "库鲁", phone: "+243 972 533 746" },
+      deq: { nom: "KASONGO NUMBI", zh: "奴婢", phone: "+243 992 200 133" },
+    },
+    EMCO: { nom: "OSE YAV", zh: "藕色", phone: "" },
+  },
+  C: {
+    GCK: {
+      sup: { nom: "MPOYO BUDIMBO", zh: "抱有", phone: "+243 991 871 802" },
+      deq: { nom: "NKOMBA MUJINGA", zh: "空吧", phone: "+243 970 838 762" },
+    },
+    EMCO: { nom: "RACH ROMBO", zh: "卡普他", phone: "" },
+  },
 };

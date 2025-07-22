@@ -30,9 +30,9 @@ export default function Stock({ id, stock: cool, label, onResetStock }) {
     loadData();
   }, []);
 
-  useEffect(() => {
+  /* useEffect(() => {
     console.log("new stock loaded = ", stock);
-  }, [stock]);
+  }, [stock]); */
 
   async function loadData() {
     setloading(true);

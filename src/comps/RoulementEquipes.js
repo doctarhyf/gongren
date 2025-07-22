@@ -124,15 +124,16 @@ export default function RoulementEquipes() {
     setedit(false);
     const tt = arr2str(arr);
     const code = `${y}-${m.toString().padStart(2, 0)}`;
+    const datesstr = dates.map((it) => it.getDate()).join(",");
 
     setl(true);
     const r = await SB.UpsertItem(
       TABLES_NAMES.TIME_TABLE,
-      { tt, code },
+      { tt, code, dates: datesstr },
       "code"
     );
 
-    //console.log("res => ", r);
+    setedit(false);
     setl(false);
   }
 
@@ -174,7 +175,7 @@ export default function RoulementEquipes() {
       <div>
         <input
           type="checkbox"
-          value={edit}
+          checked={edit}
           onChange={(e) => setedit(e.target.checked)}
         />
         EDIT
@@ -215,8 +216,7 @@ export default function RoulementEquipes() {
                 {row.map((col, icol) => (
                   <td
                     className={` hover:bg-slate-700 hover:text-white ${
-                      todayidx &&
-                      icol === todayidx &&
+                      isToday(dates[icol]) &&
                       "bg-sky-500 text-sky-900 font-bold"
                     }     table-cell p-1 border`}
                   >

@@ -11,6 +11,7 @@ import {
   PRIME_MIN,
   SECTIONS,
   STOCK_TYPE,
+  TEAMS_DATA,
   TONNAGE_MONTHLY_TARGET,
 } from "../../helpers/flow";
 import {
@@ -91,7 +92,7 @@ function AgentCardMini({
   const [loading, setloading] = useState(false);
 
   async function updatePoste(ag, new_poste) {
-    //console.log("new_poste => ", new_poste, ag);
+    ////console.log("new_poste => ", new_poste, ag);
     setloading(true);
     const upd = { id: ag.id, poste: new_poste };
     const r = await SB.UpdateItem(
@@ -99,7 +100,7 @@ function AgentCardMini({
       upd,
       async (s) => {
         setloading(false);
-        //console.log(s);
+        ////console.log(s);
         await UpdateOperationsLogs(
           SB,
           user,
@@ -108,7 +109,7 @@ function AgentCardMini({
         );
       },
       (e) => {
-        //console.log(e);
+        ////console.log(e);
         setloading(false);
       }
     );
@@ -118,12 +119,12 @@ function AgentCardMini({
 
   function onPrintAgentInfo(agent, lang) {
     //alert("Print");
-    //console.log(agent);
+    ////console.log(agent);
     if (!printAgentInfo(agent, lang))
       alert("Error printing ... please select an agent!");
   }
 
-  console.log("AGG ", agent);
+  //console.log("AGG ", agent);
 
   return (
     <div>
@@ -319,7 +320,7 @@ export function HUDProduction() {
       },
       (e) => {
         setloading(false);
-        //console.log(e);
+        ////console.log(e);
         alert(`Error \n ${JSON.stringify(e)}`);
       }
     );
@@ -372,15 +373,15 @@ export function HUDGreetings({ user }) {
         const splits = agent.photo.split("/");
         const old_fname = splits[splits.length - 1];
 
-        console.log("old fname => ", old_fname);
+        //console.log("old fname => ", old_fname);
 
         const r = await supabase.storage
           .from("agents_photos")
           .remove(old_fname);
 
-        console.log("Delete ", old_fname, " ==> ", r);
+        //console.log("Delete ", old_fname, " ==> ", r);
       } else {
-        console.log("no old photo");
+        //console.log("no old photo");
       }
 
       if (data && data.publicUrl) {
@@ -392,14 +393,14 @@ export function HUDGreetings({ user }) {
           (s) => {
             const { photo } = s[0];
             setSelectedImage(photo);
-            console.log("upd s => ", photo);
+            //console.log("upd s => ", photo);
           },
           (e) => {
             setSelectedImage(null);
-            console.log("upd e => ", e);
+            //console.log("upd e => ", e);
           }
         );
-        console.log(publicUrl);
+        //console.log(publicUrl);
         //alert(publicUrl);
       } else {
         alert(`error ...`);
@@ -455,7 +456,7 @@ export function HUDMyTeam({ user }) {
   }, []);
 
   async function loadData() {
-    //console.log("sup => ", user);
+    ////console.log("sup => ", user);
 
     let a = await SB.LoadAllItems(TABLES_NAMES.AGENTS);
     a = a.filter(
@@ -469,7 +470,7 @@ export function HUDMyTeam({ user }) {
 
     setagents(a);
     setagentr(a);
-    //console.log(`Agents ${user.section}, equipe ${a.equipe} => \n`, a);
+    ////console.log(`Agents ${user.section}, equipe ${a.equipe} => \n`, a);
   }
 
   useEffect(() => {
@@ -741,7 +742,7 @@ export function HUDBonus({ loads, agents, date, agents_by_team }) {
 
     const t_data = CaclculateAllTeamsTotals(sortedByShiftOfDay);
 
-    // console.table(t_data);
+    // //console.table(t_data);
 
     t_data.A.agents = agents.filter(
       (it) =>
@@ -760,7 +761,7 @@ export function HUDBonus({ loads, agents, date, agents_by_team }) {
         it.equipe === "D" && it.active === "OUI" && it.section === SECTIONS[1]
     ).length;
 
-    //console.log("new t_data", t_data);
+    ////console.log("new t_data", t_data);
 
     setTotalData(t_data);
 
@@ -969,7 +970,7 @@ export function HUDAgents() {
   }, []);
 
   useEffect(() => {
-    //console.log("q => ", q);
+    ////console.log("q => ", q);
   }, [q]);
 
   function loadData() {
@@ -986,18 +987,18 @@ export function HUDAgents() {
         setAgentsFiltered(agentsf);
         setAgentsGrouped(agentsg);
 
-        //console.log("agsf f", agentsf);
+        ////console.log("agsf f", agentsf);
       },
       (e) => {
         setloading(false);
-        //console.log(e);
+        ////console.log(e);
         alert(`Error \n ${JSON.stringify(e)}`);
       }
     );
   }
 
   function onAgentClick(ag) {
-    //console.log(ag);
+    ////console.log(ag);
     setSelectedAgent(ag);
   }
 
@@ -1066,67 +1067,65 @@ export function HUDCalculsBons() {
   );
 }
 
-/* function OpsLogs({}) {
-  const [logs, setlogs] = useState([]);
-  const [loading, setloading] = useState(false);
+export function HUDCurrentTeam() {
+  const [, , user] = useContext(UserContext);
+  const [curt, setcurt] = useState("A");
+  const [teamData, setTeamData] = useState(TEAMS_DATA.A);
 
   useEffect(() => {
     loadData();
   }, []);
 
   async function loadData() {
-    const a = await SB.LoadAllItems(TABLES_NAMES.OPERATIONS_LOGS);
-    //setlogs(a.reverse().slice(0, 5));
-    console.log("longs \n", a);
+    const date = new Date();
+    const m = date.getMonth();
+    const y = date.getFullYear();
+    const h = date.getHours();
+    const isMorningShift = h >= 7 && h < 17;
+
+    const day = date.getDate();
+
+    const code = `${y}-${m.toString().padStart(2, "0")}`;
+    const alltt = await SB.LoadAllItems(TABLES_NAMES.TIME_TABLE);
+    let curtt = {};
+    if (alltt.length > 0) {
+      curtt = alltt.find((it) => it.code === code);
+      if (curtt) {
+        const [M, N, R] = curtt.tt.split("|");
+        let dates = curtt.dates;
+
+        if (isMorningShift) {
+          dates = dates.split(",").map((it) => parseInt(it));
+          const idx = dates.indexOf(day);
+          const curt = M[idx];
+          const tdata = TEAMS_DATA[curt];
+
+          console.log("tdata => ", tdata);
+
+          if (["A", "B", "C"].includes(curt)) {
+            setTeamData(tdata);
+          }
+        } else {
+          console.log("Evening data => ", N);
+        }
+      }
+    }
   }
 
-  return loading ? (
-    <Loading isLoading={true} />
-  ) : (
-    <div>
-      {logs.map((lg, i) => (
-        <div className=" border-b border-white/15 ">
-          <div>
-            <div>
-              {i + 1}.{lg.mat} - {lg.op}
-            </div>{" "}
-            <div className="   block md:inline text-xs bg-white/20 p-1 rounded-md ">
-              {FrenchDate(new Date(lg.created_at))}
-            </div>
-          </div>
-          {lg.desc && (
-            <div className="  text-xs opacity-50 italic font-serif ">
-              {lg.desc}
-            </div>
-          )}
-        </div>
-      ))}
-    </div>
-  );
-}
+  // return <div>{JSON.stringify(teamData)}</div>;
 
-export function HUDOpsLogs() {
-  return (
-    <Card id={0} title={"OPERATIONS LOGS"} desc={"Logs des operations"}>
-      <OpsLogs />
-    </Card>
-  );
-} */
-
-export function HUDCurrentTeam() {
-  const [, , user] = useContext(UserContext);
   return (
     <Card
       id={8}
       title={GetTransForTokensArray(LANG_TOKENS.TEAM_ON_DUTY, user.lang)}
       desc={GetTransForTokensArray(LANG_TOKENS.CURRENT_TEAM_INFO, user.lang)}
     >
-      <ShiftTeamCard />
+      <ShiftTeamCard teamData={teamData} />
     </Card>
   );
 }
 
-const ShiftTeamCard = () => {
+const ShiftTeamCard = ({ teamData }) => {
   const [, , user] = useContext(UserContext);
   const date = new Date();
   const m = (date.getMonth() + 1).toString().padStart(2, "0");
@@ -1136,13 +1135,6 @@ const ShiftTeamCard = () => {
   const [i, seti] = useState(0);
 
   const [progress, setProgress] = useState(35);
-
-  const teamData = {
-    team: "B",
-    supervisor: { name: "NKULU MWENZE Christian 库鲁", phone: "+243893092849" },
-    squadLeader: { name: "KASONGO NUMBI Jina 奴婢", phone: "+243893092849" },
-    agentsCount: 14,
-  };
 
   function calculateTimeLeft() {
     const date = new Date();
@@ -1179,7 +1171,7 @@ const ShiftTeamCard = () => {
 
       <div className="flex gap-4   ">
         <img
-          src="https://ltvavdcgdrfqhlfpgkks.supabase.co/storage/v1/object/public/agents_photos/1732797003087.jpeg"
+          src="./worker.png"
           alt="Supervisor"
           className="w-20 h-20 md:w-12 md:h-12 rounded-full border-2 border-teal-400 mb-2"
         />
@@ -1187,14 +1179,16 @@ const ShiftTeamCard = () => {
           <div className="uppercase text-sm text-teal-300">
             {GetTransForTokensArray(LANG_TOKENS.SUPERVISOR, user.lang)}
           </div>
-          <div className="text-lg font-medium">{teamData.supervisor.name}</div>
-          <div>{teamData.supervisor.phone}</div>
+          <div className="text-lg font-medium">
+            {teamData.GCK.sup.nom} - {teamData.GCK.sup.zh}
+          </div>
+          <div>{teamData.GCK.sup.phone}</div>
         </div>
       </div>
 
       <div className="flex gap-4   ">
         <img
-          src="https://ltvavdcgdrfqhlfpgkks.supabase.co/storage/v1/object/public/agents_photos/1732797003087.jpeg"
+          src="./worker.png"
           alt="Squad Leader"
           className=" w-20 h-20 md:w-12 md:h-12 rounded-full border-2 border-teal-400 mb-2"
         />
@@ -1202,8 +1196,27 @@ const ShiftTeamCard = () => {
           <div className="uppercase text-sm text-teal-300">
             {GetTransForTokensArray(LANG_TOKENS.SQUAD_LEADER, user.lang)}
           </div>
-          <div className="text-lg font-medium">{teamData.squadLeader.name}</div>
-          <div>{teamData.squadLeader.phone}</div>
+          <div className="text-lg font-medium">
+            {teamData.GCK.deq.nom} - {teamData.GCK.deq.zh}
+          </div>
+          <div>{teamData.GCK.deq.phone}</div>
+        </div>
+      </div>
+
+      <div className="flex gap-4   ">
+        <img
+          src="./worker.png"
+          alt="Supervisor"
+          className="w-20 h-20 md:w-12 md:h-12 rounded-full border-2 border-teal-400 mb-2"
+        />
+        <div>
+          <div className="uppercase text-sm text-teal-300">
+            {GetTransForTokensArray(LANG_TOKENS.SUPERVISOR, user.lang)}
+          </div>
+          <div className="text-lg font-medium">
+            {teamData.EMCO.nom} - {teamData.EMCO.zh}
+          </div>
+          <div>{teamData.EMCO.phone}</div>
         </div>
       </div>
 
