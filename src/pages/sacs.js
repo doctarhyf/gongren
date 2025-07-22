@@ -285,7 +285,8 @@ function BagsManProduction() {
         {GetTransForTokensArray(
           LANG_TOKENS.PRODUCTION_BAGS_MANAGEMENT,
           user.lang
-        )}
+        )}{" "}
+        | {filter}
       </div>
 
       <Loading isLoading={loading} />
@@ -487,7 +488,7 @@ function BagsManProduction() {
                 </tr>
               )}
 
-              <tr>
+              <tr className=" font-bold bg-black ">
                 <td colSpan={3} className="p-1 border table-cell">
                   TOTAL
                 </td>
@@ -521,8 +522,14 @@ function BagsManProduction() {
                   {" "}
                   {calculateSum(transf, "ut42")}
                 </td>
-                <td className="p-1 border table-cell"></td>
-                <td className="p-1 border table-cell"></td>
+                <td className="p-1 border table-cell">
+                  {" "}
+                  {calculateSum(transf, "res32")}
+                </td>
+                <td className="p-1 border table-cell">
+                  {" "}
+                  {calculateSum(transf, "res42")}
+                </td>
                 <td className="p-1 border table-cell"></td>
                 <td className="p-1 border table-cell"></td>
                 <td className="p-1 border table-cell"></td>
