@@ -1201,7 +1201,13 @@ export default function Sacs() {
             SHOW CONTAINER/PRODUCTION{" "}
           </button>
         </div>
-        {!showcont ? <BagsManagementProduction /> : <BagsManagementContainer />}
+        <div className="  flex justify-center  ">
+          {!showcont ? (
+            <BagsManagementProduction />
+          ) : (
+            <BagsManagementContainer />
+          )}
+        </div>
       </div>
     </div>
   );
