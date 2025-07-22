@@ -5,6 +5,7 @@ import ButtonPrint from "../comps/ButtonPrint";
 import { CLASS_INPUT_TEXT, CLASS_SELECT } from "../helpers/flow";
 import {
   arrayToCSV,
+  calculateSum,
   csvToArray,
   formatDateForDatetimeLocal,
   GetDefaultMonthFilter,
@@ -485,6 +486,50 @@ function BagsManProduction() {
                   </td>
                 </tr>
               )}
+
+              <tr>
+                <td colSpan={3} className="p-1 border table-cell">
+                  TOTAL
+                </td>
+                {/*  <td className="p-1 border table-cell"></td>
+                <td className="p-1 border table-cell"></td> */}
+                <td className="p-1 border table-cell">
+                  {calculateSum(transf, "sortis32")}
+                </td>
+                <td className="p-1 border table-cell">
+                  {" "}
+                  {calculateSum(transf, "prod32")}
+                </td>
+                <td className="p-1 border table-cell">
+                  {calculateSum(transf, "sortis42")}
+                </td>
+                <td className="p-1 border table-cell">
+                  {" "}
+                  {calculateSum(transf, "prod42")}
+                </td>
+                <td className="p-1 border table-cell">
+                  {calculateSum(transf, "dech32")}
+                </td>
+                <td className="p-1 border table-cell">
+                  {calculateSum(transf, "dech42")}
+                </td>
+                <td className="p-1 border table-cell">
+                  {" "}
+                  {calculateSum(transf, "ut32")}
+                </td>
+                <td className="p-1 border table-cell">
+                  {" "}
+                  {calculateSum(transf, "ut42")}
+                </td>
+                <td className="p-1 border table-cell"></td>
+                <td className="p-1 border table-cell"></td>
+                <td className="p-1 border table-cell"></td>
+                <td className="p-1 border table-cell"></td>
+                <td className="p-1 border table-cell"></td>
+                <td className="p-1 border table-cell"></td>
+                <td className="p-1 border table-cell"></td>
+                <td className="p-1 border table-cell"></td>
+              </tr>
             </tbody>
           </table>
         </div>

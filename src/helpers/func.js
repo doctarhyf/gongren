@@ -1173,6 +1173,14 @@ export const CalculateYearTotal = (year_data, addSacsAdj) => {
   return total_data;
 };
 
+export function calculateSum(arr, prop) {
+  console.log(JSON.stringify(arr[0]), prop);
+
+  return arr.reduce((sum, obj) => {
+    return sum + (obj[prop] || 0); // Add the property value, or 0 if missing
+  }, 0);
+}
+
 export const GetNow = () => {
   const now = new Date();
   const year = now.getFullYear();
