@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { UserContext } from "../App";
 import ButtonPrint from "../comps/ButtonPrint";
-import { CLASS_INPUT_TEXT, CLASS_SELECT } from "../helpers/flow";
+import { CLASS_BTN, CLASS_INPUT_TEXT, CLASS_SELECT } from "../helpers/flow";
 import {
   arrayToCSV,
   calculateSum,
@@ -1169,11 +1169,16 @@ function BagsManagementContainer() {
 }
 
 export default function Sacs() {
+  const [showcont, setshowcont] = useState(false);
+
   return (
     <div>
       <div className=" mx-auto  ">
-        {/* <BagsManagementProduction /> */}
-        <BagsManagementContainer />
+        <button className={CLASS_BTN} onClick={(e) => setshowcont(!showcont)}>
+          {" "}
+          CONTAINER/PRODUCTION{" "}
+        </button>
+        {!showcont ? <BagsManagementProduction /> : <BagsManagementContainer />}
       </div>
     </div>
   );
