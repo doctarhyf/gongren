@@ -189,10 +189,14 @@ function BagsManagementProduction() {
     calculateTrans(filtered, pandian.s32, pandian.s42);
   }, [filter]);
 
-  function calculateTrans(trans, pandian32, pandian42) {
+  useEffect(() => {
+    console.log("transf : ", transf);
+  }, [transf]);
+
+  function calculateTrans(originalTrans, pandian32, pandian42) {
     const finaltrans = [];
 
-    trans.forEach((it, i) => {
+    originalTrans.forEach((it, i) => {
       const firstElement = i === 0;
 
       const prevItem = firstElement ? null : finaltrans[i - 1];
@@ -216,7 +220,7 @@ function BagsManagementProduction() {
       finaltrans.push(finalItem);
     });
 
-    settransf(finaltrans);
+    settransf([...finaltrans]);
   }
 
   function onInsertTrans() {
@@ -243,9 +247,15 @@ function BagsManagementProduction() {
 
   function onRemove(it) {
     if (window.confirm("Are you sure?")) {
-      console.log("deleting", it);
-      const t = trans.filter((curel) => curel.key !== it.key);
-      calculateTrans(t, pandian.s32, pandian.s42);
+      let updatedTrans = trans.filter((curit) => curit.key !== it.key);
+
+      // Update state
+      settrans(updatedTrans);
+
+      // Recalculate transformed data
+      calculateTrans(updatedTrans, pandian.s32, pandian.s42);
+
+      // Mark as not saved
       setsaved(false);
     }
   }
@@ -255,6 +265,10 @@ function BagsManagementProduction() {
   }
 
   async function onSave(data) {
+    if (filter === undefined) {
+      alert("Please select a filter before saving!");
+      return;
+    }
     setloading(true);
 
     const csv = arrayToCSV(data);
@@ -312,7 +326,7 @@ function BagsManagementProduction() {
                 user.lang
               )}_${filter ? filter.replace("-", "_") : "all"}`}
             />
-            {!!filter && (
+            {true && (
               <div className=" justify-center flex items-center ">
                 <ButtonPrint
                   icon={save}
@@ -1184,7 +1198,7 @@ export default function Sacs() {
         <div className=" flex justify-center p-4  ">
           <button className={CLASS_BTN} onClick={(e) => setshowcont(!showcont)}>
             {" "}
-            CONTAINER/PRODUCTION{" "}
+            SHOW CONTAINER/PRODUCTION{" "}
           </button>
         </div>
         {!showcont ? <BagsManagementProduction /> : <BagsManagementContainer />}
