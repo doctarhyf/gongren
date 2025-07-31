@@ -82,6 +82,11 @@ export default function FormAddAgent({
   async function saveAgentData() {
     //setloading(true);
 
+    if (!_(ref_expires)) {
+      alert("Please select an expiration date!");
+      return;
+    }
+
     let agent_data = {
       //id: _(ref_id),
       //created_at: _(ref_created_at),
@@ -98,7 +103,9 @@ export default function FormAddAgent({
       phone: _(ref_phone),
       matricule: _(ref_matricule),
       pin: _(ref_pin),
-      expires: new Date(_(ref_expires)).toISOString(),
+      expires: new Date(_(ref_expires))
+        ? new Date(_(ref_expires)).toISOString()
+        : new Date().toISOString(),
       list_priority: _(ref_list_priority),
       tenue: _(ref_tenue),
       active: _(ref_active),
