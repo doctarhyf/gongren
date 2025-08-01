@@ -559,4 +559,11 @@ export const TEAMS_DATA = {
     },
     EMCO: { nom: "RACH ROMBO", zh: "卡普他", phone: "" },
   },
+  X: {
+    GCK: {
+      sup: { nom: "-", zh: "-", phone: "-" },
+      deq: { nom: "-", zh: "-", phone: "-" },
+    },
+    EMCO: { nom: "-", zh: "-", phone: "-" },
+  },
 };

@@ -1010,7 +1010,7 @@ export function HUDCalculsBons() {
 export function HUDCurrentTeam() {
   const [, , user] = useContext(UserContext);
   const [curt, setcurt] = useState("A");
-  const [teamData, setTeamData] = useState(TEAMS_DATA.A);
+  const [teamData, setTeamData] = useState(TEAMS_DATA.X);
 
   useEffect(() => {
     loadData();
