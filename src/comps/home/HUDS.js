@@ -1010,13 +1010,15 @@ export function HUDCalculsBons() {
 export function HUDCurrentTeam() {
   const [, , user] = useContext(UserContext);
   const [curt, setcurt] = useState("A");
-  const [teamData, setTeamData] = useState(TEAMS_DATA.X);
+  const [teamData, setTeamData] = useState(TEAMS_DATA.A);
+  const [loading, setloading] = useState(false);
 
   useEffect(() => {
     loadData();
   }, []);
 
   async function loadData() {
+    setloading(true);
     const date = new Date();
     const m = date.getMonth();
     const y = date.getFullYear();
@@ -1027,6 +1029,9 @@ export function HUDCurrentTeam() {
 
     const code = `${y}-${m.toString().padStart(2, "0")}`;
     const alltt = await SB.LoadAllItems(TABLES_NAMES.TIME_TABLE);
+
+    console.log(alltt);
+
     let curtt = {};
     if (alltt.length > 0) {
       curtt = alltt.find((it) => it.code === code);
@@ -1044,11 +1049,19 @@ export function HUDCurrentTeam() {
 
           if (["A", "B", "C"].includes(curt)) {
             setTeamData(tdata);
+            setloading(false);
+          } else {
+            setloading(false);
           }
         } else {
           console.log("Evening data => ", N);
+          setloading(false);
         }
+      } else {
+        setloading(false);
       }
+    } else {
+      setloading(false);
     }
   }
 
@@ -1060,7 +1073,11 @@ export function HUDCurrentTeam() {
       title={GetTransForTokensArray(LANG_TOKENS.TEAM_ON_DUTY, user.lang)}
       desc={GetTransForTokensArray(LANG_TOKENS.CURRENT_TEAM_INFO, user.lang)}
     >
-      <ShiftTeamCard teamData={teamData} />
+      {loading ? (
+        <Loading isLoading={true} />
+      ) : (
+        <ShiftTeamCard teamData={teamData} />
+      )}
     </Card>
   );
 }
