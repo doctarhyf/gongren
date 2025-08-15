@@ -4,6 +4,10 @@ import * as SB from "../helpers/sb";
 import { TABLES_NAMES } from "../helpers/sb.config";
 import ActionButton from "../comps/ActionButton";
 import copy from "../img/copy.png";
+import TextField from "@mui/material/TextField";
+import Autocomplete from "@mui/material/Autocomplete";
+import Button from "@mui/material/Button";
+import Paper from "@mui/material/Paper";
 
 function ImageCompressor() {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -138,8 +142,8 @@ ${text_bigbag}`;
   }
 
   return (
-    <div>
-      <div className=" shadow-black/10 space-y-3  shadow-lg border border-gray-400 rounded-md p-2 max-w-fit mt-2 ">
+    <Paper elevation={3} sx={{ p: 2 }}>
+      <div className="">
         <div className=" space-x-2  ">
           <button
             className=" p-1 border bg-sky-500 hover:bg-sky-600 text-white rounded-md  "
@@ -232,7 +236,10 @@ ${text_bigbag}`;
               <input
                 value={data.charges_bigbag}
                 onChange={(e) =>
-                  setData({ ...data, charges_bigbag: parseInt(e.target.value) })
+                  setData({
+                    ...data,
+                    charges_bigbag: parseInt(e.target.value),
+                  })
                 }
                 type="number"
                 size={4}
@@ -265,6 +272,6 @@ ${text_bigbag}`;
         title="COPY"
         onClick={(e) => onCopy(data, showTonnage)}
       />
-    </div>
+    </Paper>
   );
 }
