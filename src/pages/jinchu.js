@@ -5,6 +5,8 @@ import copy from "../img/copy.png";
 import CloseIcon from "@mui/icons-material/Close";
 import IconButton from "@mui/material/IconButton";
 import Snackbar from "@mui/material/Snackbar";
+import TextField from "@mui/material/TextField";
+import Box from "@mui/material/Box";
 
 export default function JinChu() {
   const SHIFTS = ["MATIN/白班", "APREM/中班", "NUIT/夜班"];
@@ -21,6 +23,7 @@ export default function JinChu() {
     charges_bigbag: 0,
     noncharges_bigbag: 0,
   });
+  const [addTime, setAddTime] = useState(false);
 
   async function onCopy(data, show_tonnage, show_bigbag) {
     const {
@@ -39,14 +42,20 @@ export default function JinChu() {
     const i = now.getMinutes();
     const s = now.getSeconds();
 
-    const date = `${y}年${m}月${d}日 - ${h}H${i}`;
+    const date = `${y}年${m}月${d}日`;
+    const hr = `${h}H${i}`;
+    let final_ts = `${date}`;
+
+    if (addTime) {
+      final_ts = `${date} - ${hr}`;
+    }
     const text_tonnage = show_tonnage ? `Tonnage/已装吨位 : ${t}吨` : "";
     const text_bigbag = show_bigbag
       ? `Camions Chargés(BIG-BAG)/吨袋车满载: ${charges_bigbag}辆
 Camions NonChargés(BIG-BAG)/吨袋空车: ${noncharges_bigbag}辆`
       : "";
 
-    const final_text = `•${date}
+    const final_text = `•${final_ts}
 •${shift}
 ${text_tonnage}
  Camions en attente/等待装车 : ${park_int}辆
@@ -97,12 +106,20 @@ ${text_bigbag}`;
   );
 
   return (
-    <div>
-      <div className="">
+    <Box
+      component="form"
+      sx={{ "& > :not(style)": { m: 1, width: "25ch" } }}
+      noValidate
+      autoComplete="off"
+    >
+      <div>
         <div className=" space-x-2  ">
           <button
             className=" p-1 border bg-sky-500 hover:bg-sky-600 text-white rounded-md  "
-            onClick={() => setShowTonnage(!showTonnage)}
+            onClick={(e) => {
+              e.preventDefault();
+              setShowTonnage(!showTonnage);
+            }}
           >
             {showTonnage ? "Hide Tonnage" : "Show Tonnage"}
           </button>
@@ -127,62 +144,70 @@ ${text_bigbag}`;
             ))}
           </select>{" "}
         </div>
-        <div>
-          等待装车Camions en attente :{" "}
-          <input
-            value={data.park_int}
-            onChange={(e) =>
-              setData({ ...data, park_int: parseInt(e.target.value) })
-            }
-            type="number"
-            size={4}
-            className=" outline-none border-purple-500 border rounded-md mx-1 "
-          />
-          辆车
-        </div>
-        <div>
-          车已经装/Camions Chargés:{" "}
-          <input
-            value={data.charges}
-            onChange={(e) =>
-              setData({ ...data, charges: parseInt(e.target.value) })
-            }
-            type="number"
-            size={4}
-            className=" outline-none border-purple-500 border rounded-md mx-1 "
-          />
-          辆
-        </div>
+
+        <TextField
+          sx={{
+            "& .MuiOutlinedInput-root": {
+              "& fieldset": { borderColor: "green" }, // default border
+              "&:hover fieldset": { borderColor: "blue" }, // hover
+              "&.Mui-focused fieldset": { borderColor: "red" }, // focused
+            },
+            input: {
+              color: "darkblue", // text color
+              /*  backgroundColor: "#f5f5f5", */
+            },
+            label: {
+              color: "gray",
+            },
+            marginTop: 2,
+          }}
+          id="outlined-basic"
+          label=" 等待装车Camions en attente"
+          variant="outlined"
+          type="number"
+          value={data.park_int}
+          onChange={(e) =>
+            setData({ ...data, park_int: parseInt(e.target.value) })
+          }
+        />
+
+        <TextField
+          sx={{ marginTop: 2 }}
+          id="outlined-basic"
+          label="车已经装/Camions Chargés:"
+          variant="outlined"
+          type="number"
+          value={data.charges}
+          onChange={(e) =>
+            setData({ ...data, charges: parseInt(e.target.value) })
+          }
+        />
 
         {showTonnage && (
-          <div>
-            吨位/Tonnage:{" "}
-            <input
-              value={data.t}
-              onChange={(e) =>
-                setData({ ...data, t: parseFloat(e.target.value) })
-              }
-              type="number"
-              size={4}
-              className=" outline-none border-purple-500 border rounded-md mx-1 "
-            />
-            吨
-          </div>
+          <TextField
+            sx={{ marginTop: 2 }}
+            id="outlined-basic"
+            label=" 吨位/Tonnage:"
+            variant="outlined"
+            type="number"
+            value={data.t}
+            onChange={(e) =>
+              setData({ ...data, t: parseFloat(e.target.value) })
+            }
+          />
         )}
 
-        <div>
-          在车道装/En cours de changement:{" "}
-          <input
-            value={data.encours}
-            onChange={(e) =>
-              setData({ ...data, encours: parseInt(e.target.value) })
-            }
-            type="number"
-            size={4}
-            className=" outline-none border-purple-500 border rounded-md mx-1 "
-          />
-          辆车
-        </div>
+        <TextField
+          sx={{ marginTop: 2 }}
+          id="outlined-basic"
+          label=" 在车道装/En cours de changement:"
+          variant="outlined"
+          type="number"
+          value={data.encours}
+          onChange={(e) =>
+            setData({ ...data, encours: parseInt(e.target.value) })
+          }
+        />
 
         {showBigBag && (
           <>
@@ -235,6 +260,6 @@ ${text_bigbag}`;
         message={alertMsg}
         action={action}
       />
-    </div>
+    </Box>
   );
 }
