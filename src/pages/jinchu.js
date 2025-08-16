@@ -1,94 +1,15 @@
-import React, { useEffect, useState } from "react";
-import imageCompression from "browser-image-compression";
-import * as SB from "../helpers/sb";
-import { TABLES_NAMES } from "../helpers/sb.config";
+import Button from "@mui/material/Button";
+import { useState } from "react";
 import ActionButton from "../comps/ActionButton";
 import copy from "../img/copy.png";
-import TextField from "@mui/material/TextField";
-import Autocomplete from "@mui/material/Autocomplete";
-import Button from "@mui/material/Button";
-import Paper from "@mui/material/Paper";
-
-function ImageCompressor() {
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [compressedImage, setCompressedImage] = useState(null);
-
-  const handleImageUpload = async (event) => {
-    const imageFile = event.target.files[0];
-    if (imageFile) {
-      setSelectedImage(URL.createObjectURL(imageFile));
-
-      // Set options for compression
-      const options = {
-        maxSizeMB: 1, // Maximum size in MB
-        maxWidthOrHeight: 1920, // Maximum width or height
-        useWebWorker: true, // Use web workers for better performance
-      };
-
-      try {
-        const compressedFile = await imageCompression(imageFile, options);
-
-        setCompressedImage(URL.createObjectURL(compressedFile));
-      } catch (error) {
-        console.error("Error compressing image:", error);
-      }
-    }
-  };
-
-  return (
-    <div>
-      <h1>Image Compressor</h1>
-      <input type="file" accept="image/*" onChange={handleImageUpload} />
-      {selectedImage && (
-        <div>
-          <h2>Original Image:</h2>
-          <img
-            src={selectedImage}
-            alt="Original"
-            style={{ maxWidth: "100%" }}
-          />
-        </div>
-      )}
-      {compressedImage && (
-        <div>
-          <h2>Compressed Image:</h2>
-          <img
-            src={compressedImage}
-            alt="Compressed"
-            style={{ maxWidth: "100%" }}
-          />
-        </div>
-      )}
-    </div>
-  );
-}
-
-function OpsLogs({}) {
-  const [logs, setlogs] = useState([]);
-
-  useEffect(() => {
-    loadData();
-  }, []);
-
-  async function loadData() {
-    const a = await SB.LoadAllItems(TABLES_NAMES.OPERATIONS_LOGS);
-    setlogs(a.reverse());
-    console.log("longs \n", a);
-  }
-
-  return (
-    <div>
-      {logs.map((lg, i) => (
-        <div>
-          <span>{i + 1}.</span> <b>{lg.mat}</b>, {lg.op} on {lg.created_at}
-        </div>
-      ))}
-    </div>
-  );
-}
+import CloseIcon from "@mui/icons-material/Close";
+import IconButton from "@mui/material/IconButton";
+import Snackbar from "@mui/material/Snackbar";
 
 export default function JinChu() {
   const SHIFTS = ["MATIN/白班", "APREM/中班", "NUIT/夜班"];
+  const [open, setOpen] = useState(false);
+  const [alertMsg, setAlertMsg] = useState("");
   const [showTonnage, setShowTonnage] = useState(false);
   const [showBigBag, setShowBigBag] = useState(false);
   const [data, setData] = useState({
@@ -112,8 +33,13 @@ export default function JinChu() {
       noncharges_bigbag,
     } = data;
 
-    let [y, m, d] = new Date().toLocaleString("zh-CN").split(" ")[0].split("/");
-    const date = `${y}年${m}月${d}日`;
+    const now = new Date();
+    let [y, m, d] = now.toLocaleString("zh-CN").split(" ")[0].split("/");
+    const h = now.getHours();
+    const i = now.getMinutes();
+    const s = now.getSeconds();
+
+    const date = `${y}年${m}月${d}日 - ${h}H${i}`;
     const text_tonnage = show_tonnage ? `Tonnage/已装吨位 : ${t}吨` : "";
     const text_bigbag = show_bigbag
       ? `Camions Chargés(BIG-BAG)/吨袋车满载: ${charges_bigbag}辆
@@ -132,17 +58,46 @@ ${text_bigbag}`;
       .writeText(final_text)
       .then(() => {
         console.log("Text copied to clipboard");
-        alert("Text copied to clipboard");
+
+        const msg = "Text copied to clipboard";
+        setAlertMsg(msg);
+        setOpen(true);
         console.log(final_text);
       })
       .catch((err) => {
         console.error("Failed to copy text: ", err);
-        alert("Failed to copy text:!\n" + JSON.stringify(err));
+        const msg = "Failed to copy text:!\n" + JSON.stringify(err);
+        setAlertMsg(msg);
+        setOpen(true);
       });
   }
 
+  const handleClose = (e, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
+
+  const action = (
+    <>
+      <Button color="secondary" size="small" onClick={handleClose}>
+        OK
+      </Button>
+      <IconButton
+        size="small"
+        aria-label="close"
+        color="inherit"
+        onClick={handleClose}
+      >
+        <CloseIcon fontSize="small" />
+      </IconButton>
+    </>
+  );
+
   return (
-    <Paper elevation={3} sx={{ p: 2 }}>
+    <div>
       <div className="">
         <div className=" space-x-2  ">
           <button
@@ -272,6 +227,14 @@ ${text_bigbag}`;
         title="COPY"
         onClick={(e) => onCopy(data, showTonnage)}
       />
-    </Paper>
+
+      <Snackbar
+        open={open}
+        autoHideDuration={3000}
+        onClose={handleClose}
+        message={alertMsg}
+        action={action}
+      />
+    </div>
   );
 }
