@@ -148,12 +148,12 @@ ${text_bigbag}`;
         <TextField
           sx={{
             "& .MuiOutlinedInput-root": {
-              "& fieldset": { borderColor: "green" }, // default border
+              "& fieldset": { borderColor: "white", color: "white" }, // default border
               "&:hover fieldset": { borderColor: "blue" }, // hover
               "&.Mui-focused fieldset": { borderColor: "red" }, // focused
             },
             input: {
-              color: "darkblue", // text color
+              color: "white", // text color
               /*  backgroundColor: "#f5f5f5", */
             },
             label: {
