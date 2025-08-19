@@ -7,6 +7,11 @@ import IconButton from "@mui/material/IconButton";
 import Snackbar from "@mui/material/Snackbar";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
+import InputAdornment from "@mui/material/InputAdornment";
+import Paper from "@mui/material/Paper";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import Select from "@mui/material/Select";
 
 export default function JinChu() {
   const SHIFTS = ["MATIN/白班", "APREM/中班", "NUIT/夜班"];
@@ -112,146 +117,205 @@ ${text_bigbag}`;
       noValidate
       autoComplete="off"
     >
-      <div>
-        <div className=" space-x-2  ">
-          <button
-            className=" p-1 border bg-sky-500 hover:bg-sky-600 text-white rounded-md  "
-            onClick={(e) => {
-              e.preventDefault();
-              setShowTonnage(!showTonnage);
-            }}
-          >
-            {showTonnage ? "Hide Tonnage" : "Show Tonnage"}
-          </button>
-
-          <button
-            className=" p-1 border bg-sky-500 hover:bg-sky-600 text-white rounded-md  "
-            onClick={() => setShowBigBag(!showBigBag)}
-          >
-            {showBigBag ? "Hide BigBag" : "Show BigBag"}
-          </button>
-        </div>
-
+      <Paper
+        variant="outlinded"
+        elevation={3}
+        square={false}
+        sx={{ padding: 2 }}
+      >
         <div>
-          <span className=" text-black mx-1   ">•SHIFT:</span>
-          <select
-            value={data.shift}
-            onChange={(e) => setData({ ...data, shift: e.target.value })}
-            className=" border border-purple-500 rounded-md outline-none "
-          >
-            {SHIFTS.map((sh) => (
-              <option>{sh}</option>
-            ))}
-          </select>{" "}
-        </div>
+          <div className=" space-x-2  ">
+            <button
+              className=" p-1 border bg-sky-500 hover:bg-sky-600 text-white rounded-md  "
+              onClick={(e) => {
+                e.preventDefault();
+                setShowTonnage(!showTonnage);
+              }}
+            >
+              {showTonnage ? "Hide Tonnage" : "Show Tonnage"}
+            </button>
 
-        <TextField
-          sx={{
-            "& .MuiOutlinedInput-root": {
-              "& fieldset": { borderColor: "white", color: "white" }, // default border
-              "&:hover fieldset": { borderColor: "blue" }, // hover
-              "&.Mui-focused fieldset": { borderColor: "red" }, // focused
-            },
-            input: {
-              color: "white", // text color
-              /*  backgroundColor: "#f5f5f5", */
-            },
-            label: {
-              color: "gray",
-            },
-            marginTop: 2,
-          }}
-          id="outlined-basic"
-          label=" 等待装车Camions en attente"
-          variant="outlined"
-          type="number"
-          value={data.park_int}
-          onChange={(e) =>
-            setData({ ...data, park_int: parseInt(e.target.value) })
-          }
-        />
+            <button
+              className=" p-1 border bg-sky-500 hover:bg-sky-600 text-white rounded-md  "
+              onClick={(e) => {
+                e.preventDefault();
+                setShowBigBag(!showBigBag);
+              }}
+            >
+              {showBigBag ? "Hide BigBag" : "Show BigBag"}
+            </button>
+          </div>
 
-        <TextField
-          sx={{ marginTop: 2 }}
-          id="outlined-basic"
-          label="车已经装/Camions Chargés:"
-          variant="outlined"
-          type="number"
-          value={data.charges}
-          onChange={(e) =>
-            setData({ ...data, charges: parseInt(e.target.value) })
-          }
-        />
+          <div>
+            <span className=" text-black mx-1   ">•SHIFT:</span>
+            <select
+              value={data.shift}
+              onChange={(e) => setData({ ...data, shift: e.target.value })}
+              className=" border border-purple-500 rounded-md outline-none "
+            >
+              {SHIFTS.map((sh) => (
+                <option>{sh}</option>
+              ))}
+            </select>{" "}
+          </div>
 
-        {showTonnage && (
+          <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">Age</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={data.shift}
+              label="Age"
+              onChange={(e) => {
+                setData({ ...data, shift: e.target.value });
+                console.log("data.shift => ", data.shift);
+              }}
+            >
+              {SHIFTS.map((sh) => (
+                <option key={sh} value={sh}>
+                  {sh}
+                </option>
+              ))}
+            </Select>
+          </FormControl>
+
+          <TextField
+            sx={{
+              "& .MuiOutlinedInput-root": {
+                "& fieldset": { borderColor: "black", color: "black" }, // default border
+                "&:hover fieldset": { borderColor: "blue" }, // hover
+                "&.Mui-focused fieldset": { borderColor: "red" }, // focused
+              },
+              input: {
+                /*  color: "white", */
+                // text color
+                /*  backgroundColor: "#f5f5f5", */
+              },
+              label: {
+                color: "gray",
+              },
+              marginTop: 2,
+            }}
+            id="outlined-basic"
+            label=" 等待装车Camions en attente"
+            variant="outlined"
+            type="number"
+            value={data.park_int}
+            onChange={(e) =>
+              setData({ ...data, park_int: parseInt(e.target.value) })
+            }
+            slotProps={{
+              input: {
+                startAdornment: (
+                  <InputAdornment position="start">辆</InputAdornment>
+                ),
+              },
+            }}
+          />
+
           <TextField
             sx={{ marginTop: 2 }}
             id="outlined-basic"
-            label=" 吨位/Tonnage:"
+            label="车已经装/Camions Chargés:"
             variant="outlined"
             type="number"
-            value={data.t}
+            value={data.charges}
             onChange={(e) =>
-              setData({ ...data, t: parseFloat(e.target.value) })
+              setData({ ...data, charges: parseInt(e.target.value) })
             }
+            slotProps={{
+              input: {
+                startAdornment: (
+                  <InputAdornment position="start">辆</InputAdornment>
+                ),
+              },
+            }}
           />
-        )}
 
-        <TextField
-          sx={{ marginTop: 2 }}
-          id="outlined-basic"
-          label=" 在车道装/En cours de changement:"
-          variant="outlined"
-          type="number"
-          value={data.encours}
-          onChange={(e) =>
-            setData({ ...data, encours: parseInt(e.target.value) })
-          }
+          {showTonnage && (
+            <TextField
+              sx={{ marginTop: 2 }}
+              id="outlined-basic"
+              label=" 吨位/Tonnage:"
+              variant="outlined"
+              type="number"
+              value={data.t}
+              onChange={(e) =>
+                setData({ ...data, t: parseFloat(e.target.value) })
+              }
+              slotProps={{
+                input: {
+                  startAdornment: (
+                    <InputAdornment position="start">辆</InputAdornment>
+                  ),
+                },
+              }}
+            />
+          )}
+
+          <TextField
+            sx={{ marginTop: 2 }}
+            id="outlined-basic"
+            label=" 在车道装/En cours de changement:"
+            variant="outlined"
+            type="number"
+            value={data.encours}
+            onChange={(e) =>
+              setData({ ...data, encours: parseInt(e.target.value) })
+            }
+            slotProps={{
+              input: {
+                startAdornment: (
+                  <InputAdornment position="start">辆</InputAdornment>
+                ),
+              },
+            }}
+          />
+
+          {showBigBag && (
+            <>
+              <div>
+                吨袋车满载/Camions Chargés(BIG BAG):{" "}
+                <input
+                  value={data.charges_bigbag}
+                  onChange={(e) =>
+                    setData({
+                      ...data,
+                      charges_bigbag: parseInt(e.target.value),
+                    })
+                  }
+                  type="number"
+                  size={4}
+                  className=" outline-none border-purple-500 border rounded-md mx-1 "
+                />
+                辆
+              </div>
+              <div>
+                吨袋空车/Camions NonChargés(Big Bag):{" "}
+                <input
+                  value={data.noncharges_bigbag}
+                  onChange={(e) =>
+                    setData({
+                      ...data,
+                      noncharges_bigbag: parseInt(e.target.value),
+                    })
+                  }
+                  type="number"
+                  size={4}
+                  className=" outline-none border-purple-500 border rounded-md mx-1 "
+                />
+                辆
+              </div>
+            </>
+          )}
+        </div>
+
+        <ActionButton
+          icon={copy}
+          title="COPY"
+          onClick={(e) => onCopy(data, showTonnage)}
         />
-
-        {showBigBag && (
-          <>
-            <div>
-              吨袋车满载/Camions Chargés(BIG BAG):{" "}
-              <input
-                value={data.charges_bigbag}
-                onChange={(e) =>
-                  setData({
-                    ...data,
-                    charges_bigbag: parseInt(e.target.value),
-                  })
-                }
-                type="number"
-                size={4}
-                className=" outline-none border-purple-500 border rounded-md mx-1 "
-              />
-              辆
-            </div>
-            <div>
-              吨袋空车/Camions NonChargés(Big Bag):{" "}
-              <input
-                value={data.noncharges_bigbag}
-                onChange={(e) =>
-                  setData({
-                    ...data,
-                    noncharges_bigbag: parseInt(e.target.value),
-                  })
-                }
-                type="number"
-                size={4}
-                className=" outline-none border-purple-500 border rounded-md mx-1 "
-              />
-              辆
-            </div>
-          </>
-        )}
-      </div>
-
-      <ActionButton
-        icon={copy}
-        title="COPY"
-        onClick={(e) => onCopy(data, showTonnage)}
-      />
+      </Paper>
 
       <Snackbar
         open={open}
