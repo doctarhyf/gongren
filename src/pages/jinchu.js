@@ -124,7 +124,7 @@ ${text_bigbag}`;
         sx={{ padding: 2 }}
       >
         <div>
-          <div className=" space-x-2  ">
+          <div className=" space-x-2 flex   ">
             <button
               className=" p-1 border bg-sky-500 hover:bg-sky-600 text-white rounded-md  "
               onClick={(e) => {
@@ -158,26 +158,6 @@ ${text_bigbag}`;
               ))}
             </select>{" "}
           </div>
-
-          <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">Age</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={data.shift}
-              label="Age"
-              onChange={(e) => {
-                setData({ ...data, shift: e.target.value });
-                console.log("data.shift => ", data.shift);
-              }}
-            >
-              {SHIFTS.map((sh) => (
-                <option key={sh} value={sh}>
-                  {sh}
-                </option>
-              ))}
-            </Select>
-          </FormControl>
 
           <TextField
             sx={{
@@ -246,7 +226,7 @@ ${text_bigbag}`;
               slotProps={{
                 input: {
                   startAdornment: (
-                    <InputAdornment position="start">辆</InputAdornment>
+                    <InputAdornment position="start">T</InputAdornment>
                   ),
                 },
               }}
