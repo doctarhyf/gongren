@@ -19,7 +19,7 @@ export default function JinChu() {
   const [, , user] = useContext(UserContext);
   const [open, setOpen] = useState(false);
   const [alertMsg, setAlertMsg] = useState("");
-  const [showTonnage, setShowTonnage] = useState(false);
+  const [showTonnage, setShowTonnage] = useState(true);
   const [showBigBag, setShowBigBag] = useState(false);
   const [data, setData] = useState({
     shift: "MATIN/白班",
