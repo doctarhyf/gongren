@@ -1,20 +1,22 @@
-import Button from "@mui/material/Button";
-import { useState } from "react";
-import ActionButton from "../comps/ActionButton";
-import copy from "../img/copy.png";
 import CloseIcon from "@mui/icons-material/Close";
-import IconButton from "@mui/material/IconButton";
-import Snackbar from "@mui/material/Snackbar";
-import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
 import Paper from "@mui/material/Paper";
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import Select from "@mui/material/Select";
+import Snackbar from "@mui/material/Snackbar";
+import TextField from "@mui/material/TextField";
+import { useContext, useState } from "react";
+import ActionButton from "../comps/ActionButton";
+import copy from "../img/copy.png";
+
+import { ACCESS_CODES } from "../helpers/flow";
+import { UserHasAccessCode } from "../helpers/func";
+import { UserContext } from "../App";
 
 export default function JinChu() {
   const SHIFTS = ["MATIN/白班", "APREM/中班", "NUIT/夜班"];
+  const [, , user] = useContext(UserContext);
   const [open, setOpen] = useState(false);
   const [alertMsg, setAlertMsg] = useState("");
   const [showTonnage, setShowTonnage] = useState(false);
@@ -135,23 +137,25 @@ ${text_bigbag}`;
               {showTonnage ? "Hide Tonnage" : "Show Tonnage"}
             </button>
 
-            <button
-              className=" p-1 border bg-sky-500 hover:bg-sky-600 text-white rounded-md  "
-              onClick={(e) => {
-                e.preventDefault();
-                setShowBigBag(!showBigBag);
-              }}
-            >
-              {showBigBag ? "Hide BigBag" : "Show BigBag"}
-            </button>
+            {UserHasAccessCode(user, ACCESS_CODES.ROOT) && (
+              <button
+                className=" p-1 border bg-sky-500 hover:bg-sky-600 text-white rounded-md  "
+                onClick={(e) => {
+                  e.preventDefault();
+                  setShowBigBag(!showBigBag);
+                }}
+              >
+                {showBigBag ? "Hide BigBag" : "Show BigBag"}
+              </button>
+            )}
           </div>
 
           <div>
-            <span className=" text-black mx-1   ">•SHIFT:</span>
+            <span className=" mx-2   ">•SHIFT:</span>
             <select
               value={data.shift}
               onChange={(e) => setData({ ...data, shift: e.target.value })}
-              className=" border border-purple-500 rounded-md outline-none "
+              className=" border p-2 rounded-md outline-none dark:bg-white dark:text-black dark:border-violet-800 "
             >
               {SHIFTS.map((sh) => (
                 <option>{sh}</option>
