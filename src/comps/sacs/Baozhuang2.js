@@ -357,7 +357,7 @@ export default function Boazhuang2({
           <ActionButton
             icon={wechat}
             onClick={(e) => {
-              e.preventDefault();
+              // e.preventDefault();
               onCopy(data);
             }}
             title={"Copy for Wechat"}
