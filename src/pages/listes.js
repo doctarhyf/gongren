@@ -94,7 +94,7 @@ export default function Listes() {
     let new_agents = [...agents];
 
     team.forEach((agent, i) => {
-      const idx = agents.findIndex((it) => agent.id === it.id);
+      const idx = agents.findIndex((it) => it && agent.id === it.id);
 
       if (-1 === idx) {
         new_agents.push(agent);
