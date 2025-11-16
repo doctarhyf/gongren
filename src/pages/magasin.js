@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useState } from "react";
+import StoreAgentDashboard from "../comps/warehouse/store";
 
 const team = [
   { id: 1, role: "Store Agent", name: "Alex Johnson", icon: "🏬" },
@@ -17,6 +18,9 @@ export default function Magasin() {
 
     console.log(member.id);
   }, []);
+
+  if (selectedId !== -1)
+    return <StoreAgentDashboard onLogout={(e) => setSelctedID(-1)} />;
 
   return (
     <div className="flex justify-center items-center  flex-col h-screen -mt-28">
