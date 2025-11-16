@@ -473,10 +473,6 @@ export default function RapportChargement() {
     const frenchdate = formatFrenchDate(date);
     const filename = `PRIME_DU_${frenchdate}.pdf`;
 
-    //console.log("print cur_load: \n", cur_load);
-
-    //console.log(filteredloads);
-    // return;
     printDailyRepport(filteredloads, date, filename);
   }
 
