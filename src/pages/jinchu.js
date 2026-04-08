@@ -63,21 +63,29 @@ export default function JinChu() {
     const hr = `${now.getHours()}H${now.getMinutes()}`;
     const final_ts = addTime ? `${date} - ${hr}` : date;
 
-    const final_text = ` ${!statsMode ? `•${final_ts} ` : ""}
-     ${!statsMode ? `•${shift}` : ""}
-${showTonnage ? `•Tonnage / 已装吨位 : ${t}吨` : ``} 
-•Camions chargés / 已装车 : ${charges}辆  
-${!statsMode ? `•Camions en attente / 等待装车 : ${park_int}辆` : ""}  
-•En cours de chargement / 正在装车 : ${encours}辆  
-${
-  showBigBag
-    ? `
-•Camions chargés (BIG BAG) / 吨袋车满载 : ${charges_bigbag}辆  
-•Camions non chargés (BIG BAG) / 吨袋空车 : ${noncharges_bigbag}辆
-`
-    : ""
-}`;
+    const text_header = !statsMode ? `•${final_ts} •${shift}` : "";
 
+    const text_tonnage = showTonnage ? `•Tonnage / 已装吨位 : ${t}吨` : "";
+
+    const text_waiting = statsMode
+      ? `•Camions en attente / 等待装车 : ${park_int}辆`
+      : "";
+
+    const text_bigbag = showBigBag
+      ? `•Camions chargés (BIG BAG) / 吨袋车满载 : ${charges_bigbag}辆
+•Camions non chargés (BIG BAG) / 吨袋空车 : ${noncharges_bigbag}辆`
+      : "";
+
+    const final_text = [
+      text_header,
+      text_tonnage,
+      `•Camions chargés / 已装车 : ${charges}辆`,
+      text_waiting,
+      `•En cours de chargement / 正在装车 : ${encours}辆`,
+      text_bigbag,
+    ]
+      .filter(Boolean) // removes empty strings
+      .join("\n");
     try {
       await navigator.clipboard.writeText(final_text);
       settextToCopy(final_text);
