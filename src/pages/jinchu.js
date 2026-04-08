@@ -94,7 +94,7 @@ export default function JinChu() {
       setAlertMsg("Copy failed");
     }
     setOpen(true);
-  }
+  } //ok
 
   const handleClose = () => setOpen(false);
 
