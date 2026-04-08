@@ -1,11 +1,20 @@
 import CloseIcon from "@mui/icons-material/Close";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
-import InputAdornment from "@mui/material/InputAdornment";
-import Paper from "@mui/material/Paper";
-import Snackbar from "@mui/material/Snackbar";
-import TextField from "@mui/material/TextField";
+import {
+  Box,
+  Button,
+  IconButton,
+  InputAdornment,
+  Paper,
+  Snackbar,
+  TextField,
+  Typography,
+  Grid,
+  FormControl,
+  Select,
+  MenuItem,
+  Switch,
+  FormControlLabel,
+} from "@mui/material";
 import { useContext, useState } from "react";
 import ActionButton from "../comps/ActionButton";
 import copy from "../img/copy.png";
@@ -17,12 +26,17 @@ import { UserContext } from "../App";
 export default function JinChu() {
   const SHIFTS = ["MATIN/白班", "APREM/中班", "NUIT/夜班"];
   const [, , user] = useContext(UserContext);
+
   const [open, setOpen] = useState(false);
   const [alertMsg, setAlertMsg] = useState("");
   const [showTonnage, setShowTonnage] = useState(true);
   const [showBigBag, setShowBigBag] = useState(false);
+  const [addTime, setAddTime] = useState(false);
+  const [statsMode, setStatsMode] = useState(false);
+  const [textToCopy, settextToCopy] = useState("");
+
   const [data, setData] = useState({
-    shift: "MATIN/白班",
+    shift: SHIFTS[0],
     park_int: 0,
     charges: 0,
     t: 0,
@@ -30,9 +44,8 @@ export default function JinChu() {
     charges_bigbag: 0,
     noncharges_bigbag: 0,
   });
-  const [addTime, setAddTime] = useState(false);
 
-  async function onCopy(data, show_tonnage, show_bigbag) {
+  async function onCopy(data) {
     const {
       shift,
       park_int,
@@ -45,269 +58,221 @@ export default function JinChu() {
 
     const now = new Date();
     let [y, m, d] = now.toLocaleString("zh-CN").split(" ")[0].split("/");
-    const h = now.getHours();
-    const i = now.getMinutes();
-    const s = now.getSeconds();
 
     const date = `${y}年${m}月${d}日`;
-    const hr = `${h}H${i}`;
-    let final_ts = `${date}`;
+    const hr = `${now.getHours()}H${now.getMinutes()}`;
+    const final_ts = addTime ? `${date} - ${hr}` : date;
 
-    if (addTime) {
-      final_ts = `${date} - ${hr}`;
+    const final_text = ` ${!statsMode ? `•${final_ts} ` : ""}
+     ${!statsMode ? `•${shift}` : ""}
+${showTonnage ? `•Tonnage / 已装吨位 : ${t}吨` : ``} 
+•Camions chargés / 已装车 : ${charges}辆  
+${!statsMode ? `•Camions en attente / 等待装车 : ${park_int}辆` : ""}  
+•En cours de chargement / 正在装车 : ${encours}辆  
+${
+  showBigBag
+    ? `
+•Camions chargés (BIG BAG) / 吨袋车满载 : ${charges_bigbag}辆  
+•Camions non chargés (BIG BAG) / 吨袋空车 : ${noncharges_bigbag}辆
+`
+    : ""
+}`;
+
+    try {
+      await navigator.clipboard.writeText(final_text);
+      settextToCopy(final_text);
+      setAlertMsg(`Copied successfully`);
+    } catch (err) {
+      setAlertMsg("Copy failed");
     }
-    const text_tonnage = show_tonnage ? `Tonnage/已装吨位 : ${t}吨` : "";
-    const text_bigbag = show_bigbag
-      ? `Camions Chargés(BIG-BAG)/吨袋车满载: ${charges_bigbag}辆
-Camions NonChargés(BIG-BAG)/吨袋空车: ${noncharges_bigbag}辆`
-      : "";
-
-    const final_text = `•${final_ts}
-•${shift}
-${text_tonnage}
- Camions en attente/等待装车 : ${park_int}辆
-Camions Chargés/已装车:${charges}辆
-En cours de changement/正在装车: ${encours}辆
-${text_bigbag}`;
-
-    await navigator.clipboard
-      .writeText(final_text)
-      .then(() => {
-        console.log("Text copied to clipboard");
-
-        const msg = "Text copied to clipboard";
-        setAlertMsg(msg);
-        setOpen(true);
-        console.log(final_text);
-      })
-      .catch((err) => {
-        console.error("Failed to copy text: ", err);
-        const msg = "Failed to copy text:!\n" + JSON.stringify(err);
-        setAlertMsg(msg);
-        setOpen(true);
-      });
+    setOpen(true);
   }
 
-  const handleClose = (e, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    setOpen(false);
-  };
-
-  const action = (
-    <>
-      <Button color="secondary" size="small" onClick={handleClose}>
-        OK
-      </Button>
-      <IconButton
-        size="small"
-        aria-label="close"
-        color="inherit"
-        onClick={handleClose}
-      >
-        <CloseIcon fontSize="small" />
-      </IconButton>
-    </>
-  );
+  const handleClose = () => setOpen(false);
 
   return (
-    <Box
-      component="form"
-      sx={{ "& > :not(style)": { m: 1, width: "25ch" } }}
-      noValidate
-      autoComplete="off"
-    >
-      <Paper
-        variant="outlinded"
-        elevation={3}
-        square={false}
-        sx={{ padding: 2 }}
-      >
-        <div>
-          <div className=" space-x-2 flex   ">
-            <button
-              className=" p-1 border bg-sky-500 hover:bg-sky-600 text-white rounded-md  "
-              onClick={(e) => {
-                e.preventDefault();
-                setShowTonnage(!showTonnage);
+    <Box display="flex " justifyContent="center" mt={4}>
+      <Paper elevation={4} sx={{ p: 4, width: 400, borderRadius: 3 }}>
+        {!statsMode ? (
+          <Typography variant="h6" gutterBottom>
+            🚚 Rapport Chargement
+          </Typography>
+        ) : (
+          <Typography variant="h6" gutterBottom>
+            🚚 Statistique Chargement
+          </Typography>
+        )}
+
+        {/* Toggles */}
+        <Box display="flex" justifyContent="space-between" mb={2}>
+          <FormControlLabel
+            control={
+              <Switch
+                checked={showTonnage}
+                onChange={() => setShowTonnage(!showTonnage)}
+              />
+            }
+            label="Tonnage"
+          />
+
+          {UserHasAccessCode(user, ACCESS_CODES.ROOT) && (
+            <>
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={statsMode}
+                    onChange={() => setStatsMode(!statsMode)}
+                  />
+                }
+                label="Stats Mode"
+              />
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={showBigBag}
+                    onChange={() => setShowBigBag(!showBigBag)}
+                  />
+                }
+                label="BigBag"
+              />
+            </>
+          )}
+        </Box>
+
+        {/* Shift */}
+        <FormControl fullWidth sx={{ mb: 2 }}>
+          <Select
+            value={data.shift}
+            onChange={(e) => setData({ ...data, shift: e.target.value })}
+          >
+            {SHIFTS.map((sh) => (
+              <MenuItem key={sh} value={sh}>
+                {sh}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+
+        {/* Inputs */}
+        <Grid container spacing={2}>
+          <Grid item xs={6}>
+            <TextField
+              label="Attente"
+              type="number"
+              fullWidth
+              value={data.park_int}
+              onChange={(e) =>
+                setData({ ...data, park_int: +e.target.value || 0 })
+              }
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">辆</InputAdornment>
+                ),
               }}
-            >
-              {showTonnage ? "Hide Tonnage" : "Show Tonnage"}
-            </button>
+            />
+          </Grid>
 
-            {UserHasAccessCode(user, ACCESS_CODES.ROOT) && (
-              <button
-                className=" p-1 border bg-sky-500 hover:bg-sky-600 text-white rounded-md  "
-                onClick={(e) => {
-                  e.preventDefault();
-                  setShowBigBag(!showBigBag);
-                }}
-              >
-                {showBigBag ? "Hide BigBag" : "Show BigBag"}
-              </button>
-            )}
-          </div>
-
-          <div>
-            <span className=" mx-2   ">•SHIFT:</span>
-            <select
-              value={data.shift}
-              onChange={(e) => setData({ ...data, shift: e.target.value })}
-              className=" border p-2 rounded-md outline-none dark:bg-white dark:text-black dark:border-violet-800 "
-            >
-              {SHIFTS.map((sh) => (
-                <option>{sh}</option>
-              ))}
-            </select>{" "}
-          </div>
-
-          <TextField
-            sx={{
-              "& .MuiOutlinedInput-root": {
-                "& fieldset": { borderColor: "black", color: "black" }, // default border
-                "&:hover fieldset": { borderColor: "blue" }, // hover
-                "&.Mui-focused fieldset": { borderColor: "red" }, // focused
-              },
-              input: {
-                /*  color: "white", */
-                // text color
-                /*  backgroundColor: "#f5f5f5", */
-              },
-              label: {
-                color: "gray",
-              },
-              marginTop: 2,
-            }}
-            id="outlined-basic"
-            label=" 等待装车Camions en attente"
-            variant="outlined"
-            type="number"
-            value={data.park_int}
-            onChange={(e) =>
-              setData({ ...data, park_int: parseInt(e.target.value) })
-            }
-            slotProps={{
-              input: {
-                startAdornment: (
-                  <InputAdornment position="start">辆</InputAdornment>
-                ),
-              },
-            }}
-          />
-
-          <TextField
-            sx={{ marginTop: 2 }}
-            id="outlined-basic"
-            label="车已经装/Camions Chargés:"
-            variant="outlined"
-            type="number"
-            value={data.charges}
-            onChange={(e) =>
-              setData({ ...data, charges: parseInt(e.target.value) })
-            }
-            slotProps={{
-              input: {
-                startAdornment: (
-                  <InputAdornment position="start">辆</InputAdornment>
-                ),
-              },
-            }}
-          />
+          <Grid item xs={6}>
+            <TextField
+              label="Chargés"
+              type="number"
+              fullWidth
+              value={data.charges}
+              onChange={(e) =>
+                setData({ ...data, charges: +e.target.value || 0 })
+              }
+            />
+          </Grid>
 
           {showTonnage && (
-            <TextField
-              sx={{ marginTop: 2 }}
-              id="outlined-basic"
-              label=" 吨位/Tonnage:"
-              variant="outlined"
-              type="number"
-              value={data.t}
-              onChange={(e) =>
-                setData({ ...data, t: parseFloat(e.target.value) })
-              }
-              slotProps={{
-                input: {
+            <Grid item xs={12}>
+              <TextField
+                label="Tonnage"
+                type="number"
+                fullWidth
+                value={data.t}
+                onChange={(e) => setData({ ...data, t: +e.target.value || 0 })}
+                InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">T</InputAdornment>
                   ),
-                },
-              }}
-            />
+                }}
+              />
+            </Grid>
           )}
 
-          <TextField
-            sx={{ marginTop: 2 }}
-            id="outlined-basic"
-            label=" 在车道装/En cours de changement:"
-            variant="outlined"
-            type="number"
-            value={data.encours}
-            onChange={(e) =>
-              setData({ ...data, encours: parseInt(e.target.value) })
-            }
-            slotProps={{
-              input: {
-                startAdornment: (
-                  <InputAdornment position="start">辆</InputAdornment>
-                ),
-              },
-            }}
-          />
+          <Grid item xs={12}>
+            <TextField
+              label="En cours"
+              type="number"
+              fullWidth
+              value={data.encours}
+              onChange={(e) =>
+                setData({ ...data, encours: +e.target.value || 0 })
+              }
+            />
+          </Grid>
 
           {showBigBag && (
             <>
-              <div>
-                吨袋车满载/Camions Chargés(BIG BAG):{" "}
-                <input
+              <Grid item xs={6}>
+                <TextField
+                  label="BigBag Chargés"
+                  type="number"
+                  fullWidth
                   value={data.charges_bigbag}
                   onChange={(e) =>
                     setData({
                       ...data,
-                      charges_bigbag: parseInt(e.target.value),
+                      charges_bigbag: +e.target.value || 0,
                     })
                   }
-                  type="number"
-                  size={4}
-                  className=" outline-none border-purple-500 border rounded-md mx-1 "
                 />
-                辆
-              </div>
-              <div>
-                吨袋空车/Camions NonChargés(Big Bag):{" "}
-                <input
+              </Grid>
+
+              <Grid item xs={6}>
+                <TextField
+                  label="BigBag Vide"
+                  type="number"
+                  fullWidth
                   value={data.noncharges_bigbag}
                   onChange={(e) =>
                     setData({
                       ...data,
-                      noncharges_bigbag: parseInt(e.target.value),
+                      noncharges_bigbag: +e.target.value || 0,
                     })
                   }
-                  type="number"
-                  size={4}
-                  className=" outline-none border-purple-500 border rounded-md mx-1 "
                 />
-                辆
-              </div>
+              </Grid>
             </>
           )}
-        </div>
+        </Grid>
 
-        <ActionButton
-          icon={copy}
-          title="COPY"
-          onClick={(e) => onCopy(data, showTonnage)}
+        {/* Action */}
+        <Box mt={3}>
+          <Button
+            fullWidth
+            variant="contained"
+            onClick={() => onCopy(data)}
+            startIcon={<img src={copy} width={20} />}
+          >
+            COPY
+          </Button>
+        </Box>
+
+        {/* Snackbar */}
+        <Snackbar
+          open={open}
+          autoHideDuration={3000}
+          onClose={handleClose}
+          message={alertMsg}
+          action={
+            <IconButton onClick={handleClose}>
+              <CloseIcon />
+            </IconButton>
+          }
         />
       </Paper>
-
-      <Snackbar
-        open={open}
-        autoHideDuration={3000}
-        onClose={handleClose}
-        message={alertMsg}
-        action={action}
-      />
     </Box>
   );
 }
