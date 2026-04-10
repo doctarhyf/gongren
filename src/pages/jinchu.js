@@ -32,7 +32,7 @@ export default function JinChu() {
   const [showTonnage, setShowTonnage] = useState(true);
   const [showBigBag, setShowBigBag] = useState(false);
   const [addTime, setAddTime] = useState(false);
-  const [statsMode, setStatsMode] = useState(false);
+  const [statsMode, setStatsMode] = useState(true);
   const [textToCopy, settextToCopy] = useState("");
 
   const [data, setData] = useState({
@@ -122,18 +122,17 @@ export default function JinChu() {
             }
             label="Tonnage"
           />
-
+          <FormControlLabel
+            control={
+              <Switch
+                checked={statsMode}
+                onChange={() => setStatsMode(!statsMode)}
+              />
+            }
+            label="Stats Mode"
+          />
           {UserHasAccessCode(user, ACCESS_CODES.ROOT) && (
             <>
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={statsMode}
-                    onChange={() => setStatsMode(!statsMode)}
-                  />
-                }
-                label="Stats Mode"
-              />
               <FormControlLabel
                 control={
                   <Switch
