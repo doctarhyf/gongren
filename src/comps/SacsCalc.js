@@ -48,11 +48,7 @@ export default function SacsCalc() {
       {/* <div className=" font-bold  ">CALCULATEUR DE SACS/袋子计算</div> */}
 
       <div className=" text-white p-2 bg-slate-800 border  border-slate-200 rounded-md my-2 ">
-        <div
-          className={`  ${
-            !UserHasAccessCode(user, ACCESS_CODES.ROOT) && "hidden"
-          } `}
-        >
+        <div className={`  `}>
           <input
             type="checkbox"
             checked={lockdechires}
@@ -117,7 +113,11 @@ export default function SacsCalc() {
           <div>
             <div className="  font-bold ">SACS DECHIRES</div>
             <div className="  text-[42pt] text-green-800 font-bold ">
-              {!!sacs_dechires ? sacs_dechires : <Loading isLoading={true} />}{" "}
+              {!!sacs_dechires ? (
+                sacs_dechires
+              ) : (
+                <Loading isLoading={true} />
+              )}{" "}
             </div>
             {!sacs_dechires && (
               <div className=" bg-red-900 border-red-600 border-2  p-2 rounded-md text-red-500 text-center uppercase font-bold  ">
